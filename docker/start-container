@@ -1,17 +1,20 @@
 #!/usr/bin/env bash
 
-if [ ! -z "$WWWUSER" ]; then
-    usermod -u $WWWUSER sail
-fi
-
 if [ ! -d /.composer ]; then
     mkdir /.composer
 fi
 
 chmod -R ugo+rw /.composer
+chmod -R 777 /var/www/html/storage
 
 if [ $# -gt 0 ]; then
     exec gosu $WWWUSER "$@"
 else
-    exec /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf
+    printf "\n\nCreating storage symlink\n\n"
+    /usr/local/bin/php artisan storage:link --relative
+
+    printf "\n\nPackages installation\n\n"
+    composer install
+
+    /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf
 fi
