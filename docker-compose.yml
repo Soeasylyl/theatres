@@ -15,6 +15,7 @@ services:
         depends_on:
             - postgres
             - redis
+            - mailhog
 
     postgres:
         container_name: postgres
@@ -43,7 +44,7 @@ services:
             - '${FORWARD_REDIS_PORT:-6379}:6379'
         command: redis-server --requirepass ${REDIS_PASSWORD}
         volumes:
-            - '../onio-redis:/data'
+            - '../redis-db:/data'
         networks:
             - theatres
         healthcheck:
@@ -51,8 +52,18 @@ services:
             retries: 3
             timeout: 5s
 
+    mailhog:
+        container_name: mailhog
+        image: 'mailhog/mailhog:latest'
+        ports:
+            - '${MAIL_PORT:-1025}:1025'
+            - '8025:8025'
+        logging:
+            driver: 'none'
+        networks:
+            - theatres
+
 networks:
     theatres:
         driver: bridge
-
 

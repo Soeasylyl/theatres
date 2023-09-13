@@ -26,7 +26,6 @@ RUN chmod 0644 /etc/cron.d/crontasks &&\
 WORKDIR /var/www/html
 
 EXPOSE 80
-EXPOSE 443
 
 COPY ./start-container /usr/local/bin/start-container
 RUN chmod +x /usr/local/bin/start-container

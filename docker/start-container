@@ -10,11 +10,11 @@ chmod -R 777 /var/www/html/storage
 if [ $# -gt 0 ]; then
     exec gosu $WWWUSER "$@"
 else
+    printf "\n\nPackages installation\n\n"
+        composer install
+
     printf "\n\nCreating storage symlink\n\n"
     /usr/local/bin/php artisan storage:link --relative
-
-    printf "\n\nPackages installation\n\n"
-    composer install
 
     /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf
 fi
