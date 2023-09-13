@@ -4,22 +4,17 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 
-class Hall extends Model
+class Movie extends Model
 {
-    protected $fillable = ['name', 'description'];
+    protected $fillable = ['name', 'description', 'session_duration', 'date_start', 'rating', 'age_limit'];
 
-    public function cinema() : BelongsTo
+    public function genres(): BelongsToMany
     {
-        return $this->belongsTo(Cinema::class);
-    }
-
-    public function seats(): HasMany
-    {
-        return $this->hasMany(Seat::class);
+        return $this->belongsToMany(Genre::class);
     }
 
     public function screenings(): HasMany
