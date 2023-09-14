@@ -13,14 +13,14 @@ return new class extends Migration
     {
         Schema::create('halls', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('cinema_id')->unsigned()->index();
-            $table->text('name');
-            $table->text('description');
+            $table->unsignedBigInteger('cinema_id')->index();
+            $table->string('name');
+            $table->string('description', 1000);
             $table->timestamps();
-        });
 
-        Schema::table('halls', function (Blueprint $table) {
-            $table->foreign('cinema_id')->references('id')->on('cinemas');
+            $table->foreign('cinema_id')
+                  ->references('id')
+                  ->on('cinemas');
         });
     }
 

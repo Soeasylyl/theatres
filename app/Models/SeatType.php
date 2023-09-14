@@ -9,7 +9,11 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class SeatType extends Model
 {
-    protected $fillable = ['name', 'price'];
+    protected $fillable = [
+        'name',
+        'price',
+        'cinema_id'
+        ];
 
     public function cinema() : BelongsTo
     {

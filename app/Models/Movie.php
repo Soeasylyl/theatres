@@ -10,11 +10,18 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class Movie extends Model
 {
-    protected $fillable = ['name', 'description', 'session_duration', 'date_start', 'rating', 'age_limit'];
+    protected $fillable = [
+        'name',
+        'description',
+        'session_duration',
+        'date_start',
+        'rating',
+        'age_limit'
+    ];
 
     public function genres(): BelongsToMany
     {
-        return $this->belongsToMany(Genre::class);
+        return $this->belongsToMany(Genre::class,'movie-genre');
     }
 
     public function screenings(): HasMany

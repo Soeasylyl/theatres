@@ -13,18 +13,18 @@ return new class extends Migration
     {
         Schema::create('seats', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('seat_type_id')->unsigned()->index();
-            $table->bigInteger('hall_id')->unsigned()->index();
-            $table->text('status');
+            $table->unsignedBigInteger('seat_type_id')->index();
+            $table->unsignedBigInteger('hall_id')->index();
             $table->integer('amount');
             $table->timestamps();
-        });
 
-        Schema::table('seats', function (Blueprint $table) {
-            $table->foreign('seat_type_id')->references('id')->on('seat_types');
-        });
-        Schema::table('seats', function (Blueprint $table) {
-            $table->foreign('hall_id')->references('id')->on('halls');
+            $table->foreign('seat_type_id')
+                  ->references('id')
+                  ->on('seat_types');
+
+            $table->foreign('hall_id')
+                  ->references('id')
+                  ->on('halls');
         });
     }
 

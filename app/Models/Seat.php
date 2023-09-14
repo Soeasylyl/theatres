@@ -9,11 +9,19 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Seat extends Model
 {
-    protected $fillable = [ 'description', 'status'];
+    protected $fillable = [
+        'description',
+        'status',
+        'row',
+        'hall_id',
+        'seat_type_id',
+        'position_x',
+        'position_y'
+        ];
 
     public function hall(): BelongsTo
     {
-        return $this->BelongsTo(Hall::class);
+        return $this->belongsTo(Hall::class);
     }
 
     public function bookings(): HasMany
@@ -23,6 +31,6 @@ class Seat extends Model
 
     public function seatType(): BelongsTo
     {
-        return $this->BelongsTo(SeatType::class);
+        return $this->belongsTo(SeatType::class);
     }
 }

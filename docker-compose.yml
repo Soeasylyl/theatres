@@ -29,11 +29,19 @@ services:
             POSTGRES_PASSWORD: '${DB_PASSWORD}'
         restart: always
         volumes:
-            - '../pgsql-db:/var/lib/pgsql/data'
+            - '../pgsql-db:/var/lib/postgresql/data'
         networks:
             - theatres
         healthcheck:
-            test: [ "CMD", "pg_isready", "-q", "-d", "${DB_DATABASE}", "-U", "${DB_USERNAME}" ]
+            test: [
+                "CMD",
+                "pg_isready",
+                "-q",
+                "-d",
+                "${DB_DATABASE}",
+                "-U",
+                "${DB_USERNAME}",
+            ]
             retries: 3
             timeout: 5s
 
@@ -48,7 +56,11 @@ services:
         networks:
             - theatres
         healthcheck:
-            test: [ "CMD", "redis-cli", "ping" ]
+            test: [
+                "CMD",
+                "redis-cli",
+                "ping",
+            ]
             retries: 3
             timeout: 5s
 

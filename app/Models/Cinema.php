@@ -9,7 +9,11 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class Cinema extends Model
 {
-    protected $fillable = ['name', 'description', 'address'];
+    protected $fillable = [
+        'name',
+        'description',
+        'address'
+    ];
 
     public function seatTypes(): HasMany
     {

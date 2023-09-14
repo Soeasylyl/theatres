@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -13,15 +14,15 @@ return new class extends Migration
     {
         Schema::create('seat_types', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('cinema_id')->unsigned()->index();
-            $table->text('status');
-            $table->integer('amount');
+            $table->unsignedBigInteger('cinema_id')->index();
             $table->timestamps();
+
+            $table->foreign('cinema_id')
+                  ->references('id')
+                  ->on('cinemas');
         });
 
-        Schema::table('seat_types', function (Blueprint $table) {
-            $table->foreign('cinema_id')->references('id')->on('cinemas');
-        });
+            DB::statement('ALTER TABLE seat_types ADD COLUMN amount money');
     }
 
     /**

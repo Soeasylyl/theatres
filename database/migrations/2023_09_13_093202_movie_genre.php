@@ -13,14 +13,16 @@ return new class extends Migration
     {
         Schema::create('movie_genre', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('genre_id')->unsigned()->index();
-            $table->bigInteger('movie_id')->unsigned()->index();
-        });
-        Schema::table('movie_genre', function (Blueprint $table) {
-            $table->foreign('genre_id')->references('id')->on('genres');
-        });
-        Schema::table('movie_genre', function (Blueprint $table) {
-            $table->foreign('movie_id')->references('id')->on('movies');
+            $table->unsignedBigInteger('genre_id')->index();
+            $table->unsignedBigInteger('movie_id')->index();
+
+            $table->foreign('genre_id')
+                  ->references('id')
+                  ->on('genres');
+
+            $table->foreign('movie_id')
+                  ->references('id')
+                  ->on('movies');
         });
     }
 

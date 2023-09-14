@@ -8,10 +8,14 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Payment extends Model
 {
-    protected $fillable = [ 'status', 'amount'];
+    protected $fillable = [
+        'status',
+        'amount',
+        'booking_id'
+        ];
 
     public function booking(): BelongsTo
     {
-        return $this->BelongsTo(Booking::class);
+        return $this->belongsTo(Booking::class);
     }
 }

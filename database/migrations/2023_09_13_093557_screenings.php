@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -13,15 +14,19 @@ return new class extends Migration
     {
         Schema::create('screenings', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('movie_id')->unsigned()->index();
-            $table->bigInteger('hall_id')->unsigned()->index();
+            $table->unsignedBigInteger('movie_id')->index();
+            $table->unsignedBigInteger('hall_id')->index();
+
+            $table->foreign('movie_id')
+                  ->references('id')
+                  ->on('movies');
+
+            $table->foreign('hall_id')
+                  ->references('id')
+                  ->on('halls');
         });
-        Schema::table('screenings', function (Blueprint $table) {
-            $table->foreign('movie_id')->references('id')->on('movies');
-        });
-        Schema::table('screenings', function (Blueprint $table) {
-            $table->foreign('hall_id')->references('id')->on('halls');
-        });
+
+        DB::statement('ALTER TABLE screenings ADD COLUMN price money');
     }
 
     /**

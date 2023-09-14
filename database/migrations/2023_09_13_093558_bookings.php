@@ -13,24 +13,31 @@ return new class extends Migration
     {
         Schema::create('bookings', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('user_id')->unsigned()->index();
-            $table->bigInteger('screening_id')->unsigned()->index();
-            $table->bigInteger('seat_id')->unsigned()->index();
-            $table->text('status');
+            $table->uuid()->unique();
+            $table->unsignedBigInteger('user_id')->index();
+            $table->unsignedBigInteger('screening_id')->index();
+            $table->unsignedBigInteger('seat_id')->index();
+            $table->string('slug');
             $table->timestamps();
 
-        });
+            $table->enum('status', [
+                'free',
+                'booked',
+                'paid'
+            ])->default('free');
 
-        Schema::table('bookings', function (Blueprint $table) {
-            $table->foreign('user_id')->references('id')->on('users');
-        });
-        Schema::table('bookings', function (Blueprint $table) {
-            $table->foreign('screening_id')->references('id')->on('screenings');
-        });
-        Schema::table('bookings', function (Blueprint $table) {
-            $table->foreign('seat_id')->references('id')->on('seats');
-        });
+            $table->foreign('user_id')
+                  ->references('id')
+                  ->on('users');
 
+            $table->foreign('screening_id')
+                  ->references('id')
+                  ->on('screenings');
+
+            $table->foreign('seat_id')
+                  ->references('id')
+                  ->on('seats');
+        });
     }
 
     /**

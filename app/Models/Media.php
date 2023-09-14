@@ -8,6 +8,12 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 class Media extends Model
 {
+    protected $fillable = [
+        'path',
+        'model_type',
+        'model_id'
+    ];
+
     public function mediable(): MorphTo
     {
         return $this->morphTo();

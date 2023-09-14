@@ -10,16 +10,21 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Screening extends Model
 {
-    protected $fillable = ['start_at', 'price'];
+    protected $fillable = [
+        'start_at',
+        'price',
+        'movie_id',
+        'hall_id'
+    ];
 
     public function movie(): BelongsTo
     {
-        return $this->BelongsTo(Movie::class);
+        return $this->belongsTo(Movie::class);
     }
 
     public function hall(): BelongsTo
     {
-        return $this->BelongsTo(Hall::class);
+        return $this->belongsTo(Hall::class);
     }
 
     public function bookings(): HasMany

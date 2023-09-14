@@ -10,7 +10,11 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class Hall extends Model
 {
-    protected $fillable = ['name', 'description'];
+    protected $fillable = [
+        'name',
+        'description',
+        'cinema_id'
+        ];
 
     public function cinema() : BelongsTo
     {
