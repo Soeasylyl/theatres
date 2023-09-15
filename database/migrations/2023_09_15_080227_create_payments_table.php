@@ -2,7 +2,6 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -14,21 +13,18 @@ return new class extends Migration
     {
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('booking_id')->index();
+            $table->unsignedBigInteger('booking_id');
             $table->timestamps();
+            $table->double('amount');
 
-            $table->enum('status', [
-                'pending',
-                'success',
-                'declined'
-            ])->default('pending');
+            $table->string('status')->default('pending');
 
             $table->foreign('booking_id')
-                  ->references('id')
-                  ->on('bookings');
+                ->references('id')
+                ->on('bookings');
         });
 
-        DB::statement('ALTER TABLE payments ADD COLUMN amount money');
+        DB::statement('ALTER TABLE payments ALTER COLUMN amount TYPE money USING amount::text::money');
     }
 
     /**
@@ -36,6 +32,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
+        Schema::dropIfExists('payments');
     }
 };

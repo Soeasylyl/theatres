@@ -13,16 +13,16 @@ return new class extends Migration
     {
         Schema::create('movie_genre', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('genre_id')->index();
-            $table->unsignedBigInteger('movie_id')->index();
+            $table->unsignedBigInteger('genre_id');
+            $table->unsignedBigInteger('movie_id');
 
             $table->foreign('genre_id')
-                  ->references('id')
-                  ->on('genres');
+                ->references('id')
+                ->on('genres');
 
             $table->foreign('movie_id')
-                  ->references('id')
-                  ->on('movies');
+                ->references('id')
+                ->on('movies');
         });
     }
 
@@ -31,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
+        Schema::dropIfExists('movie_genre');
     }
 };

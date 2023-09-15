@@ -13,18 +13,17 @@ return new class extends Migration
     {
         Schema::create('seats', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('seat_type_id')->index();
-            $table->unsignedBigInteger('hall_id')->index();
-            $table->integer('amount');
+            $table->unsignedBigInteger('seat_type_id');
+            $table->unsignedBigInteger('hall_id');
             $table->timestamps();
 
             $table->foreign('seat_type_id')
-                  ->references('id')
-                  ->on('seat_types');
+                ->references('id')
+                ->on('seat_types');
 
             $table->foreign('hall_id')
-                  ->references('id')
-                  ->on('halls');
+                ->references('id')
+                ->on('halls');
         });
     }
 
@@ -33,6 +32,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
+        Schema::dropIfExists('seats');
     }
 };

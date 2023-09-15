@@ -15,28 +15,24 @@ return new class extends Migration
             $table->id();
             $table->uuid()->unique();
             $table->unsignedBigInteger('user_id')->index();
-            $table->unsignedBigInteger('screening_id')->index();
-            $table->unsignedBigInteger('seat_id')->index();
+            $table->unsignedBigInteger('screening_id');
+            $table->unsignedBigInteger('seat_id');
             $table->string('slug');
             $table->timestamps();
 
-            $table->enum('status', [
-                'free',
-                'booked',
-                'paid'
-            ])->default('free');
+            $table->string('status')->default('free');
 
             $table->foreign('user_id')
-                  ->references('id')
-                  ->on('users');
+                ->references('id')
+                ->on('users');
 
             $table->foreign('screening_id')
-                  ->references('id')
-                  ->on('screenings');
+                ->references('id')
+                ->on('screenings');
 
             $table->foreign('seat_id')
-                  ->references('id')
-                  ->on('seats');
+                ->references('id')
+                ->on('seats');
         });
     }
 
@@ -45,6 +41,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
+        Schema::dropIfExists('bookings');
     }
 };
