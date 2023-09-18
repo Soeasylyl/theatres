@@ -1,5 +1,11 @@
 FROM php:8.2-fpm
 
+ARG WWWGROUP
+ARG WWWUSER
+
+ENV WWWGROUP=$WWWGROUP
+ENV WWWUSER=$WWWUSER
+
 RUN apt-get update \
     && apt-get install nginx -y
 
@@ -13,7 +19,11 @@ RUN pecl install -o -f redis \
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/bin --filename=composer --quiet
 
+RUN groupadd --force -g $WWWGROUP sail
+RUN useradd -g sail -u $WWWUSER sail
+
 RUN rm -f /etc/nginx/sites-enabled/*
+
 COPY ./nginx/default.conf /etc/nginx/conf.d/default.conf
 
 COPY ./php.ini /usr/local/etc/php/conf.d/
@@ -30,8 +40,5 @@ EXPOSE 80
 COPY ./start-container /usr/local/bin/start-container
 RUN chmod +x /usr/local/bin/start-container
 
-RUN groupadd -r -g 1000 LARAVEL && useradd -r -u 1000 -g LARAVEL LARAVEL
-USER LARAVEL
-
-#ENTRYPOINT ["start-container"]
+ENTRYPOINT ["start-container"]
 
