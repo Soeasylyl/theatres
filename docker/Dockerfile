@@ -30,5 +30,8 @@ EXPOSE 80
 COPY ./start-container /usr/local/bin/start-container
 RUN chmod +x /usr/local/bin/start-container
 
-ENTRYPOINT ["start-container"]
+RUN groupadd -r -g 1000 LARAVEL && useradd -r -u 1000 -g LARAVEL LARAVEL
+#USER LARAVEL
+
+#ENTRYPOINT ["start-container"]
 
