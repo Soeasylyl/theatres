@@ -18,12 +18,12 @@ return new class extends Migration
             $table->timestamps();
 
             $table->foreign('seat_type_id')
-                ->references('id')
-                ->on('seat_types');
+                  ->references('id')
+                  ->on('seat_types');
 
             $table->foreign('hall_id')
-                ->references('id')
-                ->on('halls');
+                  ->references('id')
+                  ->on('halls');
         });
     }
 

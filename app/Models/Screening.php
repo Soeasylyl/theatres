@@ -17,6 +17,10 @@ class Screening extends Model
         'hall_id'
     ];
 
+    protected $casts = [
+        'start_at' => 'datetime'
+    ];
+
     public function movie(): BelongsTo
     {
         return $this->belongsTo(Movie::class);

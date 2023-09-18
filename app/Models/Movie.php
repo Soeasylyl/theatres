@@ -20,6 +20,10 @@ class Movie extends Model
         'slug'
     ];
 
+    protected $casts = [
+        'date_start' => 'date'
+    ];
+
     public function genres(): BelongsToMany
     {
         return $this->belongsToMany(Genre::class,'movie-genre');

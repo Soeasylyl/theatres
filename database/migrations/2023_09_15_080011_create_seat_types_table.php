@@ -14,15 +14,15 @@ return new class extends Migration
         Schema::create('seat_types', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('cinema_id');
-            $table->double('amount');
+            $table->decimal('amount')->unsigned();
             $table->timestamps();
 
             $table->foreign('cinema_id')
-                ->references('id')
-                ->on('cinemas');
+                  ->references('id')
+                  ->on('cinemas');
         });
 
-        DB::statement('ALTER TABLE seat_types ALTER COLUMN amount TYPE money USING amount::text::money');
+        DB::statement('ALTER TABLE seat_types ALTER COLUMN amount TYPE money USING amount::money');
     }
 
     /**

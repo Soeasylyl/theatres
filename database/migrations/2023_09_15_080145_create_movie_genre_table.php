@@ -17,12 +17,12 @@ return new class extends Migration
             $table->unsignedBigInteger('movie_id');
 
             $table->foreign('genre_id')
-                ->references('id')
-                ->on('genres');
+                  ->references('id')
+                  ->on('genres');
 
             $table->foreign('movie_id')
-                ->references('id')
-                ->on('movies');
+                  ->references('id')
+                  ->on('movies');
         });
     }
 

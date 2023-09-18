@@ -23,16 +23,16 @@ return new class extends Migration
             $table->string('status')->default('free');
 
             $table->foreign('user_id')
-                ->references('id')
-                ->on('users');
+                  ->references('id')
+                  ->on('users');
 
             $table->foreign('screening_id')
-                ->references('id')
-                ->on('screenings');
+                  ->references('id')
+                  ->on('screenings');
 
             $table->foreign('seat_id')
-                ->references('id')
-                ->on('seats');
+                  ->references('id')
+                  ->on('seats');
         });
     }
 

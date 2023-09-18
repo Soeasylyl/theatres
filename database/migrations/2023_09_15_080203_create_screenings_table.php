@@ -15,18 +15,18 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('movie_id');
             $table->unsignedBigInteger('hall_id');
-            $table->double('price');
+            $table->decimal('price')->unsigned();
 
             $table->foreign('movie_id')
-                ->references('id')
-                ->on('movies');
+                  ->references('id')
+                  ->on('movies');
 
             $table->foreign('hall_id')
-                ->references('id')
-                ->on('halls');
+                  ->references('id')
+                  ->on('halls');
         });
 
-        DB::statement('ALTER TABLE screenings ALTER COLUMN price TYPE money USING price::text::money');
+        DB::statement('ALTER TABLE screenings ALTER COLUMN price TYPE money USING price::money');
     }
 
     /**

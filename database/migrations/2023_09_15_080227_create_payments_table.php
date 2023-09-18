@@ -15,16 +15,16 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('booking_id');
             $table->timestamps();
-            $table->double('amount');
+            $table->decimal('amount')->unsigned();
 
             $table->string('status')->default('pending');
 
             $table->foreign('booking_id')
-                ->references('id')
-                ->on('bookings');
+                  ->references('id')
+                  ->on('bookings');
         });
 
-        DB::statement('ALTER TABLE payments ALTER COLUMN amount TYPE money USING amount::text::money');
+        DB::statement('ALTER TABLE payments ALTER COLUMN amount TYPE money USING amount::money');
     }
 
     /**

@@ -8,7 +8,7 @@ chmod -R ugo+rw /.composer
 chmod -R 777 /var/www/html/storage
 
 if [ $# -gt 0 ]; then
-    exec gosu $WWWUSER "$@"
+    exec gosu LARAVEL "$@"
 else
     printf "\n\nPackages installation\n\n"
         composer install
