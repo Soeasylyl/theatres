@@ -16,6 +16,8 @@ return new class extends Migration
             $table->unsignedBigInteger('movie_id');
             $table->unsignedBigInteger('hall_id');
             $table->decimal('price')->unsigned();
+            $table->date('start_at');
+            $table->timestamps();
 
             $table->foreign('movie_id')
                   ->references('id')

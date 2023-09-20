@@ -18,9 +18,8 @@ return new class extends Migration
             $table->unsignedBigInteger('screening_id');
             $table->unsignedBigInteger('seat_id');
             $table->string('slug');
-            $table->timestamps();
-
             $table->string('status')->default('free');
+            $table->timestamps();
 
             $table->foreign('user_id')
                   ->references('id')

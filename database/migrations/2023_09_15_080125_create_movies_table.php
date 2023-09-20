@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->text('description');
-            $table->integer('session_duration');
+            $table->time('session_duration');
             $table->date('date_start');
             $table->float('rating', 3,1);
             $table->integer('age_limit');

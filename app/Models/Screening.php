@@ -6,10 +6,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 
 
 class Screening extends Model
 {
+    use HasApiTokens, HasFactory, Notifiable;
+
     protected $fillable = [
         'start_at',
         'price',

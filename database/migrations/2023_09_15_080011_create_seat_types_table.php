@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('seat_types', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('cinema_id');
+            $table->string('name');
             $table->decimal('amount')->unsigned();
             $table->timestamps();
 

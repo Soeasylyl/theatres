@@ -15,6 +15,10 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('seat_type_id');
             $table->unsignedBigInteger('hall_id');
+            $table->integer('row');
+            $table->float('position_x');
+            $table->float('position_y');
+
             $table->timestamps();
 
             $table->foreign('seat_type_id')
