@@ -4,8 +4,10 @@ namespace Database\Factories;
 
 use App\Models\Cinema;
 use App\Models\Hall;
+use App\Models\Media;
 use App\Models\Seat;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Database\Eloquent\Relations\Relation;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Hall>
@@ -25,6 +27,14 @@ class HallFactory extends Factory
             Seat::factory()
                 ->count(40)
                 ->create(['hall_id' => $hall->id]);
+
+            Media::factory()
+                ->count(2)
+                ->create([
+                    'model_type' => Hall::class,
+                    'model_id' => $hall->id,
+                    'path' => $this->faker->image,
+                ]);
         });
     }
 }

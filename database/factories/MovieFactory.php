@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\Media;
+use App\Models\Movie;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
@@ -23,7 +25,17 @@ class MovieFactory extends Factory
             'slug' => Str::slug($name),
         ];
     }
+
+    public function configure(): static
+    {
+        return $this->afterCreating(function (Movie $movie) {
+            Media::factory()
+                ->count(rand(1, 3))
+                ->create([
+                    'model_type' => Movie::class,
+                    'model_id' => $movie->id,
+                    'path' => $this->faker->image,
+                ]);
+        });
+    }
 }
-
-
-

@@ -37,6 +37,10 @@ class Hall extends Model
 
     public function medias(): MorphMany
     {
-        return $this->morphMany(Media::class, 'model');
+        return $this->morphMany(Media::class,
+            'model',
+            'model_type',
+            'model_id',
+        );
     }
 }

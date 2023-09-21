@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\Booking;
+use App\Models\Payment;
 use App\Models\Screening;
 use App\Models\Seat;
 use App\Models\User;
@@ -32,5 +34,14 @@ class BookingFactory extends Factory
             'screening_id' => Screening::inRandomOrder()->first()->id,
             'seat_id' => Seat::inRandomOrder()->first()->id,
         ];
+    }
+    public function configure(): static
+    {
+        return $this->afterCreating(function (Booking $booking) {
+            Payment::factory()
+                ->count(rand(1,2))
+                ->create(['booking_id' => $booking->id]);
+        });
+        //genres->random(rand(1, 3))->pluck('id')->toArray()
     }
 }

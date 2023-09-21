@@ -30,7 +30,11 @@ class Movie extends Model
 
     public function genres(): BelongsToMany
     {
-        return $this->belongsToMany(Genre::class,'movie_genre','movie_id', 'genre_id');
+        return $this->belongsToMany(Genre::class,
+            'movie_genre',
+            'movie_id',
+            'genre_id'
+        );
     }
 
     public function screenings(): HasMany
@@ -40,6 +44,10 @@ class Movie extends Model
 
     public function medias(): MorphMany
     {
-        return $this->morphMany(Media::class, 'model');
+        return $this->morphMany(Media::class,
+            'model',
+            'model_type',
+            'model_id',
+        );
     }
 }
