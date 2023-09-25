@@ -16,13 +16,13 @@ class CinemaFactory extends Factory
 {
     public function definition(): array
     {
-        $address = fake('ru_RU')
-                 ->city . ' ' . fake('ru_RU')
+        $address = $this->faker
+                 ->city . ' ' . fake()
                  ->streetAddress();
 
         return [
-            'name' => fake('ru_RU')->unique()->colorName(),
-            'description' => fake('ru_RU')->paragraph(),
+            'name' => $this->faker->unique()->colorName,
+            'description' => $this->faker->paragraph,
             'address' => $address,
         ];
     }

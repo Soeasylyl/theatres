@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('cinema_id');
             $table->string('name');
+            $table->text('description');
             $table->decimal('amount')->unsigned();
             $table->timestamps();
 

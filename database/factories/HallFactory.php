@@ -17,10 +17,11 @@ class HallFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake('ru_RU')->unique()->word(),
-            'description' => fake('ru_RU')->paragraph(),
+            'name' => $this->faker->unique()->word,
+            'description' => $this->faker->paragraph,
         ];
     }
+
     public function configure(): static
     {
         return $this->afterCreating(function (Hall $hall) {

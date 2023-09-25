@@ -18,7 +18,7 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         User::factory(5)->create();
-        Cinema::factory(3)->create();
+        Cinema::factory(2)->create();
         Genre::factory(20)->create();
         Movie::factory(30)->create();
 
@@ -44,6 +44,6 @@ class DatabaseSeeder extends Seeder
             }
         }
 
-        Booking::factory(30)->create();
+        Booking::factory(10)->create();
     }
 }

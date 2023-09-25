@@ -2,9 +2,8 @@
 
 namespace Database\Factories;
 
-use App\Models\Cinema;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Facades\DB;
+
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\SeatType>
@@ -29,6 +28,7 @@ class SeatTypeFactory extends Factory
 
         return [
             'name' => $typeName,
+            'description' => $this->faker->paragraph(),
             'amount' => $this->faker->randomFloat(2, $min, $max),
         ];
     }

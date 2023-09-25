@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\StatusBookingsEnum;
 use App\Models\Booking;
 use App\Models\Payment;
 use App\Models\Screening;
@@ -17,13 +18,13 @@ class BookingFactory extends Factory
     public function definition(): array
     {
         $status = [
-            'Ожидание подтверждения',
-            'Подтверждено',
-            'Активно',
-            'Отменено',
-            'Завершено',
-            'Ожидание оплаты' ,
-            'Истекший',
+            StatusBookingsEnum::Active->name,
+            StatusBookingsEnum::Cancelled->name,
+            StatusBookingsEnum::Confirmed->name,
+            StatusBookingsEnum::Declined->name,
+            StatusBookingsEnum::Pending_Payment->name,
+            StatusBookingsEnum::Completed->name,
+            StatusBookingsEnum::Expired->name,
         ];
 
         return [
@@ -42,6 +43,5 @@ class BookingFactory extends Factory
                 ->count(rand(1,2))
                 ->create(['booking_id' => $booking->id]);
         });
-        //genres->random(rand(1, 3))->pluck('id')->toArray()
     }
 }

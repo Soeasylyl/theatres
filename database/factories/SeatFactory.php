@@ -14,7 +14,7 @@ class SeatFactory extends Factory
     public function definition(): array
     {
         return [
-            'seat_type_id' => fake()->randomElement(SeatType::all())['id'],
+            'seat_type_id' => $this->faker->randomElement(SeatType::all())['id'],
             'row' => rand(1,10),
             'position_x' => rand(-50,50),
             'position_y' => rand(-50,50),
