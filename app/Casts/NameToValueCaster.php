@@ -4,6 +4,7 @@ namespace App\Casts;
 
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Validation\Rules\Enum;
 
 class NameToValueCaster implements CastsAttributes
 {
@@ -14,8 +15,7 @@ class NameToValueCaster implements CastsAttributes
      */
     public function get(Model $model, string $key, mixed $value, array $attributes): mixed
     {
-        // Return the 'name' attribute value from the attributes array, if it exists.
-        return $value;
+        return $attributes['name'] ?? null;
     }
 
     /**
@@ -28,6 +28,9 @@ class NameToValueCaster implements CastsAttributes
         if ($value instanceof Enum) {
             return $value->value;
         }
+
+        $attributes['name'] = $value;
+        unset($attributes[$key]);
 
         return $value;
     }
