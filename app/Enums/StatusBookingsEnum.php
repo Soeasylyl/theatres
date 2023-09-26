@@ -17,7 +17,7 @@ enum StatusBookingsEnum: string
     #[Description('Отказ')]
     case DECLINED = 'declined';
     #[Description('Ожидание оплаты')]
-    case PENDING_PAYMENT = 'pending payment';
+    case PENDING_PAYMENT = 'pending';
     #[Description('Завершено')]
     case COMPLETED = 'completed';
     #[Description('Истекший')]
