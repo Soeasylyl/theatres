@@ -12,18 +12,8 @@ class PaymentFactory extends Factory
 {
     public function definition(): array
     {
-        $status = [
-            StatusPaymentsEnum::Pending_Payment->name,
-            StatusPaymentsEnum::Payment_Successful->name,
-            StatusPaymentsEnum::Payment_Cancelled->name,
-            StatusPaymentsEnum::Processing->name,
-            StatusPaymentsEnum::Payment_Error->name,
-            StatusPaymentsEnum::Refunded->name,
-            StatusPaymentsEnum::Completed->name,
-        ];
-
         return [
-            'status' => $this->faker->randomElement($status),
+            'status' => $this->faker->randomElement(StatusPaymentsEnum::asSelectArray())['value'],
             'amount' => fake()->randomFloat(2, 10, 20),
         ];
     }

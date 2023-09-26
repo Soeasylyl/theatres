@@ -8,18 +8,18 @@ enum StatusPaymentsEnum: string
 {
     use GetsAttributes;
 
-    #[Description('Заказ создан, но оплата еще не была завершена.')]
-    case Pending_Payment = 'Ожидание оплаты ';
-    #[Description('Оплата была успешно проведена, и средства были учтены.')]
-    case Payment_Successful = 'Успешно оплачено ';
-    #[Description('Оплата была отменена клиентом перед завершением.')]
-    case Payment_Cancelled = 'Отменено';
-    #[Description('Система обрабатывает платежную транзакцию.')]
-    case Processing = 'В обработке';
-    #[Description('Возникла ошибка в процессе оплаты, и платеж не был завершен.')]
-    case Payment_Error = 'Ошибка оплаты';
-    #[Description('Платеж был возвращен клиенту по какой-либо причине.')]
-    case Refunded = 'Возврат';
-    #[Description('Оплата была успешно проведена, и заказ завершен.')]
-    case Completed = 'Завершено';
+    #[Description('Ожидание оплаты')]
+    case PENDING_PAYMENT = 'pending payment';
+    #[Description('Успешно оплачено')]
+    case PAYMENT_SUCCESSFUL = 'payment successful';
+    #[Description('Отменено')]
+    case PAYMENT_CANCELLED = 'payment cancelled';
+    #[Description('В обработке')]
+    case PROCESSING = 'processing';
+    #[Description('Ошибка оплаты')]
+    case PAYMENT_ERROR = 'payment error';
+    #[Description('Возврат')]
+    case REFUNDED = 'refunded';
+    #[Description('Завершено')]
+    case COMPLETED = 'completed';
 }

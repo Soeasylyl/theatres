@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\StatusBookingsEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -57,6 +58,10 @@ class Booking extends Model
         'slug',
     ];
 
+    protected $casts = [
+        'status' => StatusBookingsEnum::class,
+    ];
+
     public function screening(): BelongsTo
     {
         return $this->belongsTo(Screening::class);
@@ -76,5 +81,4 @@ class Booking extends Model
     {
         return $this->belongsTo(User::class);
     }
-
 }

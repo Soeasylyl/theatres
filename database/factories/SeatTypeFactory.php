@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class SeatTypeFactory extends Factory
 {
-    protected static $currentIndex = 0;
+    private static $currentIndex = 0;
 
     public function definition(): array
     {

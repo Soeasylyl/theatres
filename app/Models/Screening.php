@@ -43,7 +43,7 @@ use Laravel\Sanctum\HasApiTokens;
  */
 class Screening extends Model
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, Notifiable;
 
     protected $fillable = [
         'start_at',

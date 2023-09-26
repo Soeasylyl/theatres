@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\StatusPaymentsEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -42,6 +43,10 @@ class Payment extends Model
         'status',
         'amount',
         'booking_id',
+    ];
+
+    protected $casts = [
+        'status' => StatusPaymentsEnum::class,
     ];
 
     public function booking(): BelongsTo

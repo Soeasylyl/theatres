@@ -36,7 +36,7 @@ use Laravel\Sanctum\HasApiTokens;
  */
 class Media extends Model
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, Notifiable;
 
     protected $fillable = [
         'path',

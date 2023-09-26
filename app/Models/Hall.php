@@ -49,7 +49,6 @@ class Hall extends Model
     protected $fillable = [
         'name',
         'description',
-        'cinema_id',
         ];
 
     public function cinema() : BelongsTo

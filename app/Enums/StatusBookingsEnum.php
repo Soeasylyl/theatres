@@ -8,18 +8,18 @@ enum StatusBookingsEnum: string
 {
     use GetsAttributes;
 
-    #[Description('Бронирование находится в активном состоянии, и клиент может использовать билеты на фильм.')]
-    case Active = 'Активно';
-    #[Description('Бронирование было отменено клиентом или администратором кинотеатра.')]
-    case Cancelled = 'Отменено';
-    #[Description('Кинотеатр подтвердил бронирование, и билеты зарезервированы для клиента.')]
-    case Confirmed = 'Подтверждено';
-    #[Description('Бронирование было отклонено, например, из-за недоступности билетов на выбранный фильм.')]
-    case Declined = 'Отказ';
-    #[Description('Бронирование было создано, но еще не оплачено. Ожидается оплата для подтверждения бронирования.')]
-    case Pending_Payment = 'Ожидание оплаты';
-    #[Description('Фильм, на который были забронированы билеты, завершился, и бронирование больше не активно.')]
-    case Completed = 'Завершено';
-    #[Description('Бронирование истекло по сроку действия и больше не действительно.')]
-    case Expired = 'Истекший';
+    #[Description('Активно')]
+    case ACTIVE = 'active';
+    #[Description('Отменено')]
+    case CANCELLED = 'cancelled';
+    #[Description('Подтверждено')]
+    case CONFIRMED = 'confirmed';
+    #[Description('Отказ')]
+    case DECLINED = 'declined';
+    #[Description('Ожидание оплаты')]
+    case PENDING_PAYMENT = 'pending payment';
+    #[Description('Завершено')]
+    case COMPLETED = 'completed';
+    #[Description('Истекший')]
+    case EXPIRED = 'expired';
 }

@@ -25,17 +25,17 @@ class HallFactory extends Factory
     public function configure(): static
     {
         return $this->afterCreating(function (Hall $hall) {
+            $mediaCount = rand(1, 3);
+
             Seat::factory()
                 ->count(40)
                 ->create(['hall_id' => $hall->id]);
 
-            Media::factory()
-                ->count(2)
-                ->create([
-                    'model_type' => Hall::class,
-                    'model_id' => $hall->id,
+            for ($i = 0; $i < $mediaCount; $i++) {
+                $hall->medias()->create([
                     'path' => $this->faker->image,
                 ]);
+            }
         });
     }
 }

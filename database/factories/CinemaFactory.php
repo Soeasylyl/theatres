@@ -27,9 +27,11 @@ class CinemaFactory extends Factory
         ];
     }
 
-        public function configure(): static
+    public function configure(): static
     {
             return $this->afterCreating(function (Cinema $cinema) {
+                $mediaCount = rand(1, 3);
+
                 SeatType::factory()
                     ->count(4)
                     ->create(['cinema_id' => $cinema->id]);
@@ -38,13 +40,11 @@ class CinemaFactory extends Factory
                     ->count(3)
                     ->create(['cinema_id' => $cinema->id]);
 
-                Media::factory()
-                    ->count(3)
-                    ->create([
-                        'model_type' => Cinema::class,
-                        'model_id' => $cinema->id,
+                for ($i = 0; $i < $mediaCount; $i++) {
+                    $cinema->medias()->create([
                         'path' => $this->faker->image,
                     ]);
+                }
             });
     }
 }

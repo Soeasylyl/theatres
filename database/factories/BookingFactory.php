@@ -17,25 +17,16 @@ class BookingFactory extends Factory
 {
     public function definition(): array
     {
-        $status = [
-            StatusBookingsEnum::Active->name,
-            StatusBookingsEnum::Cancelled->name,
-            StatusBookingsEnum::Confirmed->name,
-            StatusBookingsEnum::Declined->name,
-            StatusBookingsEnum::Pending_Payment->name,
-            StatusBookingsEnum::Completed->name,
-            StatusBookingsEnum::Expired->name,
-        ];
-
         return [
             'uuid' => $this->faker->uuid(),
             'slug' => $this->faker->slug,
-            'status' => $this->faker->randomElement($status),
+            'status' => $this->faker->randomElement(StatusBookingsEnum::asSelectArray())['value'],
             'user_id' => User::inRandomOrder()->first()->id,
             'screening_id' => Screening::inRandomOrder()->first()->id,
             'seat_id' => Seat::inRandomOrder()->first()->id,
         ];
     }
+
     public function configure(): static
     {
         return $this->afterCreating(function (Booking $booking) {
