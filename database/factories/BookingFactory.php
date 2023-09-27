@@ -8,6 +8,7 @@ use App\Models\Payment;
 use App\Models\Screening;
 use App\Models\Seat;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,13 +18,21 @@ class BookingFactory extends Factory
 {
     public function definition(): array
     {
+        $screening = Screening::select('id')->inRandomOrder()->first();
+        $seat = Seat::query()
+            ->whereHas('hall.screenings', function (Builder $builder) use ($screening) {
+                $builder->where('id', $screening->id);
+            })
+            ->inRandomOrder()
+            ->first();
+
         return [
             'uuid' => $this->faker->uuid(),
             'slug' => $this->faker->slug,
             'status' => $this->faker->randomElement(StatusBookingsEnum::asSelectArray())['value'],
             'user_id' => User::inRandomOrder()->first()->id,
-            'screening_id' => Screening::inRandomOrder()->first()->id,
-            'seat_id' => Seat::inRandomOrder()->first()->id,
+            'screening_id' => $screening->id,
+            'seat_id' => $seat->id,
         ];
     }
 
