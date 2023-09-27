@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\StatusPaymentsEnum;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -17,7 +18,7 @@ return new class extends Migration
             $table->timestamps();
             $table->decimal('amount')->unsigned();
 
-            $table->string('status')->default('pending');
+            $table->string('status')->default(StatusPaymentsEnum::PENDING_PAYMENT->value);
 
             $table->foreign('booking_id')
                   ->references('id')

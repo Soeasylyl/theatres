@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\StatusBookingsEnum;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -18,7 +19,7 @@ return new class extends Migration
             $table->unsignedBigInteger('screening_id');
             $table->unsignedBigInteger('seat_id');
             $table->string('slug');
-            $table->string('status')->default('free');
+            $table->string('status')->default(StatusBookingsEnum::ACTIVE->value);
             $table->timestamps();
 
             $table->foreign('user_id')
