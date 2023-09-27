@@ -69,7 +69,8 @@ class Movie extends Model
 
     public function genres(): BelongsToMany
     {
-        return $this->belongsToMany(Genre::class,
+        return $this->belongsToMany(
+            Genre::class,
             'movie_genre',
             'movie_id',
             'genre_id',
@@ -83,7 +84,8 @@ class Movie extends Model
 
     public function medias(): MorphMany
     {
-        return $this->morphMany(Media::class,
+        return $this->morphMany(
+            Media::class,
             'model',
             'model_type',
             'model_id',

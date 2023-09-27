@@ -49,7 +49,7 @@ class Hall extends Model
     protected $fillable = [
         'name',
         'description',
-        ];
+    ];
 
     public function cinema() : BelongsTo
     {
@@ -68,7 +68,8 @@ class Hall extends Model
 
     public function medias(): MorphMany
     {
-        return $this->morphMany(Media::class,
+        return $this->morphMany(
+            Media::class,
             'model',
             'model_type',
             'model_id',
