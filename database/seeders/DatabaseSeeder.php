@@ -3,20 +3,26 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Booking;
+use App\Models\Cinema;
+use App\Models\Genre;
+use App\Models\Movie;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
-    /**
-     * Seed the application's database.
-     */
     public function run(): void
     {
-        // \App\Models\User::factory(10)->create();
+        User::factory(5)->create();
+        Cinema::factory(2)->create();
+        Genre::factory(20)->create();
+        Movie::factory(30)->create();
 
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+        $this->call([
+            ScreeningSeeder::class
+        ]);
+
+        Booking::factory(10)->create();
     }
 }
