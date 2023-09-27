@@ -2,13 +2,11 @@
 
 namespace App\Enums;
 
-use App\Contracts\EnumInterface;
-use App\Traits\EnumFromName;
 use App\Traits\GetsAttributes;
 
-enum StatusBookingsEnum: string implements EnumInterface
+enum StatusBookingsEnum: string
 {
-    use GetsAttributes, EnumFromName;
+    use GetsAttributes;
 
     #[Description('Активно')]
     case ACTIVE = 'active';
