@@ -2,11 +2,13 @@
 
 namespace App\Enums;
 
+use App\Contracts\EnumInterface;
+use App\Traits\EnumFromName;
 use App\Traits\GetsAttributes;
 
-enum StatusPaymentsEnum: string
+enum StatusPaymentsEnum: string implements EnumInterface
 {
-    use GetsAttributes;
+    use GetsAttributes, EnumFromName;
 
     #[Description('Ожидание оплаты')]
     case PENDING_PAYMENT = 'pending';

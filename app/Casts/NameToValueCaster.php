@@ -15,7 +15,9 @@ class NameToValueCaster implements CastsAttributes
      */
     public function get(Model $model, string $key, mixed $value, array $attributes): mixed
     {
-        return $attributes['name'] ?? null;
+        $value->tryFromName();
+
+        return $value;
     }
 
     /**
@@ -25,13 +27,6 @@ class NameToValueCaster implements CastsAttributes
      */
     public function set(Model $model, string $key, mixed $value, array $attributes): mixed
     {
-        if ($value instanceof Enum) {
-            return $value->value;
-        }
-
-        $attributes['name'] = $value;
-        unset($attributes[$key]);
-
-        return $value;
+        return $value->name;
     }
 }
