@@ -14,8 +14,4 @@ enum RolesUsersEnum: string
     case CINEMA_ADMIN = 'cinema-admin';
     #[Description('Менеджер кинотеатра')]
     case CINEMA_MANAGER = 'cinema-manager';
-    #[Description('Пользователь')]
-    case USER = 'user';
-    #[Description('Гость')]
-    case GUEST = 'guest';
 }

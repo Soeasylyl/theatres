@@ -20,6 +20,4 @@ enum PermissionsUsersEnum: string
     case MANAGE_SEATS = 'manage-seats';
     #[Description('Просмотр административной панели')]
     case VIEW_ADMIN_PANEL = 'view-admin-panel';
-    #[Description('Бронирование мест')]
-    case BOOK_SEATS = 'book-seats';
 }

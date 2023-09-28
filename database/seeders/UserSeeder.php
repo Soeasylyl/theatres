@@ -16,24 +16,26 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        $this->createUser(Role::findByName(RolesUsersEnum::SUPER_ADMIN->value));
-        $this->createUser(Role::findByName(RolesUsersEnum::CINEMA_ADMIN->value));
-        $this->createUser(Role::findByName(RolesUsersEnum::CINEMA_MANAGER->value));
+        foreach (RolesUsersEnum::asSelectArray() as $role) {
+            $createUser = $this->createUser();
+            $createUser->assignRole($role['value']);
+        }
+
         for ($i = 0; $i < 4; $i++) {
-            $this->createUser(Role::findByName(RolesUsersEnum::USER->value));
+            $this->createUser();
         }
 
     }
 
-    private function createUser($role)
+    private function createUser()
     {
-        User::create([
+        return User::create([
             'name' => fake()->name,
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
             'phone' => fake()->phoneNumber(),
             'remember_token' => Str::random(10),
-        ])->assignRole($role);
+        ]);
     }
 }

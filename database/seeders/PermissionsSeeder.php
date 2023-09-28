@@ -20,32 +20,41 @@ class PermissionsSeeder extends Seeder
     {
         app()[PermissionRegistrar::class]->forgetCachedPermissions();
 
-        // create permissions
-        Permission::create(['name' => PermissionsUsersEnum::MANAGE_CINEMA]);
-        Permission::create(['name' => PermissionsUsersEnum::MANAGE_HALLS]);
-        Permission::create(['name' => PermissionsUsersEnum::MANAGE_SESSIONS]);
-        Permission::create(['name' => PermissionsUsersEnum::MANAGE_PRICES]);
-        Permission::create(['name' => PermissionsUsersEnum::MANAGE_SEATS]);
-        Permission::create(['name' => PermissionsUsersEnum::VIEW_ADMIN_PANEL]);
-        Permission::create(['name' => PermissionsUsersEnum::BOOK_SEATS]);
+        foreach (PermissionsUsersEnum::asSelectArray() as $permission) {
+            Permission::create(['name' => $permission['value']]);
+        }
 
-        // create roles and assign existing permissions
-        $role1 = Role::create(['name' => RolesUsersEnum::USER->value]);
-        $role1->givePermissionTo(PermissionsUsersEnum::BOOK_SEATS->value);
+        $cinemaManager = Role::create(['name' => RolesUsersEnum::CINEMA_MANAGER->value]);
+        foreach ($this->getCinemaManagerPermissions() as $permission) {
+            $cinemaManager->givePermissionTo($permission->value);
+        }
 
-        $role2 = Role::create(['name' => RolesUsersEnum::CINEMA_MANAGER->value]);
-        $role2->givePermissionTo(PermissionsUsersEnum::MANAGE_HALLS->value);
-        $role2->givePermissionTo(PermissionsUsersEnum::MANAGE_SESSIONS->value);
-        $role2->givePermissionTo(PermissionsUsersEnum::VIEW_ADMIN_PANEL->value);
-
-        $role3 = Role::create(['name' => RolesUsersEnum::CINEMA_ADMIN->value]);
-        $role3->givePermissionTo(PermissionsUsersEnum::MANAGE_CINEMA->value);
-        $role3->givePermissionTo(PermissionsUsersEnum::MANAGE_HALLS->value);
-        $role3->givePermissionTo(PermissionsUsersEnum::MANAGE_SESSIONS->value);
-        $role3->givePermissionTo(PermissionsUsersEnum::MANAGE_SEATS->value);
-        $role3->givePermissionTo(PermissionsUsersEnum::MANAGE_PRICES->value);
-        $role3->givePermissionTo(PermissionsUsersEnum::VIEW_ADMIN_PANEL->value);
+        $cinemaAdmin = Role::create(['name' => RolesUsersEnum::CINEMA_ADMIN->value]);
+        foreach ($this->getCinemaAdminPermissions() as $permission) {
+            $cinemaAdmin->givePermissionTo($permission->value);
+        }
 
         $role4 = Role::create(['name' => RolesUsersEnum::SUPER_ADMIN->value]);
+    }
+
+    private function getCinemaAdminPermissions(): array
+    {
+        return [
+            PermissionsUsersEnum::MANAGE_CINEMA,
+            PermissionsUsersEnum::MANAGE_HALLS,
+            PermissionsUsersEnum::MANAGE_SESSIONS,
+            PermissionsUsersEnum::MANAGE_SEATS,
+            PermissionsUsersEnum::MANAGE_PRICES,
+            PermissionsUsersEnum::VIEW_ADMIN_PANEL,
+        ];
+    }
+
+    private function getCinemaManagerPermissions(): array
+    {
+        return [
+            PermissionsUsersEnum::MANAGE_HALLS,
+            PermissionsUsersEnum::MANAGE_SESSIONS,
+            PermissionsUsersEnum::VIEW_ADMIN_PANEL,
+        ];
     }
 }
