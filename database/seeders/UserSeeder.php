@@ -16,9 +16,13 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
+        $this->createSuperAdmin()->assignRole(RolesUsersEnum::SUPER_ADMIN->value);
+
         foreach (RolesUsersEnum::asSelectArray() as $role) {
-            $createUser = $this->createUser();
-            $createUser->assignRole($role['value']);
+            if ($role['value'] != RolesUsersEnum::SUPER_ADMIN->value) {
+                $createUser = $this->createUser();
+                $createUser->assignRole($role['value']);
+            }
         }
 
         for ($i = 0; $i < 4; $i++) {
@@ -33,9 +37,19 @@ class UserSeeder extends Seeder
             'name' => fake()->name,
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
-            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+            'password' => \Hash::make(fake()->password), // password
             'phone' => fake()->phoneNumber(),
-            'remember_token' => Str::random(10),
+        ]);
+    }
+
+    private function createSuperAdmin()
+    {
+        return User::create([
+            'name' => 'admin',
+            'email' => 'admin@example.com',
+            'email_verified_at' => now(),
+            'password' => \Hash::make('1234567890'), // password
+            'phone' => fake()->phoneNumber(),
         ]);
     }
 }

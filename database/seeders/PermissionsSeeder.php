@@ -20,6 +20,8 @@ class PermissionsSeeder extends Seeder
     {
         app()[PermissionRegistrar::class]->forgetCachedPermissions();
 
+        Role::create(['name' => RolesUsersEnum::SUPER_ADMIN->value]);
+
         foreach (PermissionsUsersEnum::asSelectArray() as $permission) {
             Permission::create(['name' => $permission['value']]);
         }
@@ -33,8 +35,6 @@ class PermissionsSeeder extends Seeder
         foreach ($this->getCinemaAdminPermissions() as $permission) {
             $cinemaAdmin->givePermissionTo($permission->value);
         }
-
-        $role4 = Role::create(['name' => RolesUsersEnum::SUPER_ADMIN->value]);
     }
 
     private function getCinemaAdminPermissions(): array
