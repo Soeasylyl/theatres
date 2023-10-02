@@ -3,9 +3,8 @@
 @section('content')
     <div class="container">
         <div class="d-flex gap-4">
-            <div>
+
                 @include('admin.menu')
-            </div>
 
             <div class="row justify-content-center w-100">
                 <div class="col-md-8">
