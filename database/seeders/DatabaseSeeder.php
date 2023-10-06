@@ -18,7 +18,7 @@ class DatabaseSeeder extends Seeder
             PermissionsSeeder::class,
         ]);
 
-        Cinema::factory(2)->create();
+        Cinema::factory(rand(2, 5))->create();
         Genre::factory(20)->create();
         Movie::factory(30)->create();
 

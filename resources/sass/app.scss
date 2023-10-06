@@ -1,10 +1,13 @@
 // Fonts
 @import url('https://fonts.bunny.net/css?family=Nunito');
 
-// Variables
-@import 'variables';
+// global
+@import 'global/font-size';
+@import 'global/variables';
+@import 'global/global';
+
+// admin-panel
+@import "admin/admin";
 
 // Bootstrap
-@import 'bootstrap/scss/bootstrap';
-
-@import "admin-panel/admin-menu";
+//@import 'bootstrap/scss/bootstrap';

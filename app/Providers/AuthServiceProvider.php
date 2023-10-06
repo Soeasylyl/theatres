@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+ use App\Enums\RolesUsersEnum;
+ use Illuminate\Support\Facades\Auth;
  use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
@@ -25,7 +27,7 @@ class AuthServiceProvider extends ServiceProvider
 
         // Implicitly grant "Super-Admin" role all permission checks using can()
         Gate::before(function ($user, $ability) {
-            if ($user->hasRole('Super-Admin')) {
+            if ($user->hasRole(RolesUsersEnum::SUPER_ADMIN->value)) {
                 return true;
             }
         });
