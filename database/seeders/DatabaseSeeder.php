@@ -14,13 +14,17 @@ class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
-        User::factory(5)->create();
+        $this->call([
+            PermissionsSeeder::class,
+        ]);
+
         Cinema::factory(2)->create();
         Genre::factory(20)->create();
         Movie::factory(30)->create();
 
         $this->call([
-            ScreeningSeeder::class
+            ScreeningSeeder::class,
+            UserSeeder::class,
         ]);
 
         Booking::factory(10)->create();

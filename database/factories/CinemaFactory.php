@@ -42,7 +42,7 @@ class CinemaFactory extends Factory
 
                 for ($i = 0; $i < $mediaCount; $i++) {
                     $cinema->medias()->create([
-                        'path' => $this->faker->image,
+                        'path' => $this->faker->filePath(),
                     ]);
                 }
             });

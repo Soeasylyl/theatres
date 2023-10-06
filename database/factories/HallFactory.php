@@ -33,7 +33,7 @@ class HallFactory extends Factory
 
             for ($i = 0; $i < $mediaCount; $i++) {
                 $hall->medias()->create([
-                    'path' => $this->faker->image,
+                    'path' => $this->faker->filePath(),
                 ]);
             }
         });
