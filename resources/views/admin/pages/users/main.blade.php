@@ -1,3 +1,7 @@
+@php
+    use App\Enums\RolesUsersEnum;
+@endphp
+
 @extends('admin.layouts.app')
 
 @section('content')
@@ -26,7 +30,7 @@
                             <td>
                                 @if ($user->roles->isNotEmpty())
                                     @foreach($user->roles as $role)
-                                        {{ $enumRole::getDescription($enumRole::from($role->name)) }}
+                                        {{ RolesUsersEnum::getDescription(RolesUsersEnum::from($role->name)) }}
                                     @endforeach
                                 @else
                                     {{ __('Без роли') }}

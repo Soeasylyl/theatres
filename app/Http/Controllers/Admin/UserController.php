@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Admin;
 
 
 use App\Enums\RolesUsersEnum;
-use App\Http\Controllers\Controller;
+use App\Http\Requests\AdminProfilePasswordRequest;
+use App\Http\Requests\UserProfileUpdateInfoRequest;
+use App\Http\Requests\UserProfileUpdateRoleRequest;
 use App\Models\User;
-use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends BaseAdminController
@@ -21,88 +23,69 @@ class UserController extends BaseAdminController
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
+    // Obtaining information about all users except authorized and super administrator
     public function index()
     {
-        $superAdminRole = RolesUsersEnum::SUPER_ADMIN;
+        $users = User::whereDoesntHave('roles', function (Builder $query) {
+            $query->where('name', RolesUsersEnum::SUPER_ADMIN);
+        })->whereNot('id', \Auth::user()->id)->get();
 
-        $users = User::with('roles')
-            ->where('id', '!=', \Auth::user()->id)
-            ->whereDoesntHave('roles', function ($query) use ($superAdminRole) {
-                $query->where('name', $superAdminRole);
-            })
-            ->get();
-
-        $enumRole = RolesUsersEnum::class;
-
-        return view('admin.pages.users.users', compact('users', 'enumRole'));
+        return view('admin.pages.users.main', compact('users'));
     }
 
-    public function edit($user)
+    // Retrieving information to display on the selected user's page
+    public function edit(int $user)
     {
         $user = User::findOrFail($user);
 
-        $enumRole = RolesUsersEnum::class;
-//        dd($enumRole::asSelectArray());
-        return view('admin.pages.users.edit', compact('user','enumRole'));
+        return view('admin.pages.users.edit', compact('user'));
     }
 
-    public function updateInfo(Request $request, $user)
+    // Updating information for the selected user
+    public function updateInfo(UserProfileUpdateInfoRequest $request, User $user)
     {
-        $user = User::findOrFail($user);
-
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
-            'phone' => 'nullable|string|max:30',
+        $user->update([
+            'name' => $request->input('name'),
+            'email' => $request->input('email'),
+            'phone' => $request->input('phone'),
         ]);
-
-        $user->name = $request->input('name');
-        $user->email = $request->input('email');
-        $user->phone = $request->input('phone');
-        $user->save();
-
 
         return redirect()->route('user.edit', $user->id)->with('success', 'User information updated successfully.');
     }
 
-    public function updatePassword(Request $request, $user)
+    // Updating the password for the selected user
+    public function updatePassword(AdminProfilePasswordRequest $request, int $userId)
     {
-        $user = User::findOrFail($user);
-
-        $request->validate([
-            'current_password' => 'required',
-            'new_password' => 'required|string|min:8|confirmed',
-        ]);
+        $user = User::findOrFail($userId);
 
         if (!Hash::check($request->input('current_password'), $user->password)) {
-            return redirect()->back()->with('error', 'Current password is incorrect.');
+            return redirect()->back()->with('error', 'Текущий пароль неверен.');
         }
-//        dd($user->password);
-        $user->password = Hash::make($request->input('new_password'));
-        $user->save();
 
-        return redirect()->route('user.edit', $user->id)->with('success', 'Password changed successfully.');
+        $user->update([
+            'password' => Hash::make($request->input('new_password'))
+        ]);
+
+        return redirect()->route('user.edit', $user->id)->with('success', 'Пароль успешно изменён.');
     }
 
+    // Delete a selected user
     public function delete(User $user)
     {
         $user->delete();
-        return redirect()->route('users')->with('success', 'Пользователь успешно удален');
+
+        return redirect()->route('users')->with('success', 'Пользователь успешно удален.');
     }
 
-    public function updateRole(Request $request)
+    // Change the role of the selected user
+    public function updateRole(UserProfileUpdateRoleRequest $request)
     {
-        $request->validate([
-            'user_id' => 'required|exists:users,id',
-            'role' => 'nullable|exists:roles,name',
-        ]);
-
         $user = User::findOrFail($request->input('user_id'));
         $roleName = $request->input('role');
 
         if ($roleName === null) {
             $user->syncRoles([]);
-            return redirect()->back()->with('success', 'Все роли пользователя удалены.');
+            return redirect()->back()->with('success', 'Роль пользователя удалена.');
         } else {
             $oldRole = $user->roles->first();
 
@@ -113,22 +96,6 @@ class UserController extends BaseAdminController
             $user->assignRole($roleName);
 
             return redirect()->back()->with('success', 'Роль успешно обновлена.');
-
         }
     }
-
-//    public function sort($column, $direction)
-//    {
-//        $allowedColumns = ['name', 'email'];
-//        $allowedDirections = ['asc', 'desc'];
-//
-//        if (!in_array($column, $allowedColumns) || !in_array($direction, $allowedDirections)) {
-//            abort(400, 'Invalid sort parameters');
-//        }
-//
-//        $users = User::orderBy($column, $direction)->get();
-//        $enumRole = RolesUsersEnum::class;
-//
-//        return view('admin.pages.users.users', compact('users', 'enumRole'));
-//    }
 }

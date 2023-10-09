@@ -17,11 +17,11 @@ class TheatreController extends BaseAdminController
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
+    // Displaying information about all cinemas
     public function index()
     {
         $theatres = Cinema::withCount('halls')->get();
 
         return view('admin.pages.theatres.theatres', compact('theatres'));
     }
-
 }

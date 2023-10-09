@@ -2,74 +2,59 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Enums\RolesUsersEnum;
-use App\Http\Controllers\Controller;
-use App\Models\User;
-use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\AdminProfileInfoRequest;
+use App\Http\Requests\AdminProfilePasswordRequest;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Request;
 
 
 class AdminProfileController extends BaseAdminController
 {
+    //* Get authorized user information + role
     public function profile()
     {
-        $user = User::findOrFail(Auth::user()->id);
+        $user = auth()->user();  //* Getting the current authorized user
 
-        $userRole = Auth::user()->roles->first();
+        $userRole = $user->roles->first();
 
-//        dd(Auth::user()->roles->first());
-        $usersRoles = User::with('roles')->get();
-        $enumRole = RolesUsersEnum::class;
-
-        return view('admin.pages.users.profile', compact('user','userRole', 'usersRoles', 'enumRole'));
+        return view('admin.pages.users.profile', compact('user', 'userRole'));
     }
 
-
-    public function updateInfo(Request $request)
+    //* Updating information for an authorized user
+    public function updateInfo(AdminProfileInfoRequest $request)
     {
-        $user = User::findOrFail(Auth::user()->id);
+        $user = auth()->user();  //* Getting the current authorized user
 
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
-            'phone' => 'nullable|string|max:30',
+        $user->update([
+            'name' => $request->input('name'),
+            'email' => $request->input('email'),
+            'phone' => $request->input('phone'),
         ]);
 
-        $user->name = $request->input('name');
-        $user->email = $request->input('email');
-        $user->phone = $request->input('phone');
-        $user->save();
-
-
-        return redirect()->route('admin.pages.users.profile', $user->id)->with('success', 'User information updated successfully.');
+        return redirect()->route('admin.profile', $user->id)->with('success', 'User information updated successfully.');
     }
 
-    public function updatePassword(Request $request)
+    //* Updating the password for an authorized user
+    public function updatePassword(AdminProfilePasswordRequest $request)
     {
-        $user = User::findOrFail(Auth::user()->id);
-
-        $request->validate([
-            'current_password' => 'required',
-            'new_password' => 'required|string|min:8|confirmed',
-        ]);
+        $user = auth()->user();  //* Getting the current authorized user
 
         if (!Hash::check($request->input('current_password'), $user->password)) {
             return redirect()->back()->with('error', 'Current password is incorrect.');
         }
 
-        $user->password = Hash::make($request->input('new_password'));
-        $user->save();
+        $user->update([
+            'password' => Hash::make($request->input('new_password')),
+        ]);
 
         return redirect()->route('admin.pages.users.profile', $user->id)->with('success', 'Password changed successfully.');
     }
 
+    //* Deleting an authorized user
     public function deleteProfile()
     {
-        $user = User::findOrFail(Auth::user()->id);
+        $user = auth()->user();  //* Getting the current authorized user
         $user->delete();
 
         return redirect()->route('users')->with('success', 'Пользователь успешно удален');
     }
-
 }

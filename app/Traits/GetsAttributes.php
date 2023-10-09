@@ -39,4 +39,15 @@ trait GetsAttributes
 
         return $values;
     }
+
+    public static function toArray(): array
+    {
+        /** @var array<string,string> $values */
+        $values = collect(self::cases())
+            ->map(function ($enum) {
+                return $enum->value;
+            })->toArray();
+
+        return $values;
+    }
 }

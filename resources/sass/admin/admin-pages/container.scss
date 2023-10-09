@@ -31,9 +31,11 @@
         margin-top: 5px;
         box-sizing: border-box;
 
-        input{
+        input {
             @include font-type-6;
             color: #495057;
+            width: 100%;
+
             &:focus {
                 background-color: $c-adp-hov;;
                 border-color: rgba(189, 189, 189, 0.29);
@@ -94,7 +96,7 @@
     }
 
     &__table {
-        width: 100%;
+        width: 100%!important;
         border: 1px solid #dddddd;
         border-collapse: collapse;
 

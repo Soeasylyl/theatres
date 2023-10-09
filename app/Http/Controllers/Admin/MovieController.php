@@ -17,18 +17,12 @@ class MovieController extends BaseAdminController
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
+    // Display information about all films
     public function index()
     {
         $movies = Movie::all();
 
         return view('admin.pages.movies.movies',compact('movies'));
 
-    }
-
-    public function edit($movie)
-    {
-//        $movies = Movie::findOrFail($movie);
-//
-//        return view('admin.pages.users.edit',  compact('movies'));
     }
 }
