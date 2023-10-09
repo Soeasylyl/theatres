@@ -29,6 +29,13 @@
                             @csrf
                             @method('PUT')
 
+                            <div class="success-messages-wrapper">
+                                @if(session('success_update_profile_info'))
+                                    <div class="success-messages">
+                                        {{ session('success_update_profile_info') }}
+                                    </div>
+                                @endif
+                            </div>
                             <div class="admin-container__items">
                                 <label for="name">{{ __('Имя пользователя:') }}</label>
                                 <div>
@@ -82,9 +89,17 @@
                         {{ __('Изменение пароля') }}
                     </div>
                     <div class="admin-container__form-body">
-                        <form method="POST" action="{{ route('user.updatePassword', $user->id) }}">
+                        <form method="POST" action="{{ route('admin.profile.updatePassword', $user->id) }}">
                             @csrf
                             @method('PUT')
+
+                            <div class="success-messages-wrapper">
+                                @if(session('success_update_profile_password'))
+                                    <div class="success-messages">
+                                        {{ session('success_update_profile_password') }}
+                                    </div>
+                                @endif
+                            </div>
 
                             <div class="admin-container__items">
                                 <label for="current_password">{{ __('Введите старый пароль:') }}</label>
@@ -123,6 +138,7 @@
                                     @enderror
                                 </div>
                             </div>
+
                             <div class="page-wrapper__panel-btn-wrapper">
                                 <button type="submit"
                                         class="page-wrapper__panel-btn">{{ __('Изменить пароль') }}</button>
@@ -138,6 +154,7 @@
                 <div class="admin-container__form-header">
                     {{ __('Удаление пользователя') }}
                 </div>
+
                 <div class="admin-container__form-body">
                     <form method="POST" action="{{ route('user.delete', $user->id) }}">
                         @csrf

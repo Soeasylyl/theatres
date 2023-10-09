@@ -12,10 +12,19 @@
                     <div class="admin-container__form-header">
                         {{ __('Редактирование информации') }}
                     </div>
+
                     <div class="admin-container__form-body">
                         <form method="POST" action="{{ route('user.updateInfo', $user->id) }}">
                             @csrf
                             @method('PUT')
+
+                            <div class="success-messages-wrapper">
+                                @if(session('success_update_user_info'))
+                                    <div class="success-messages">
+                                        {{ session('success_update_user_info') }}
+                                    </div>
+                                @endif
+                            </div>
 
                             <div class="admin-container__items">
                                 <label for="name">{{ __('Имя пользователя:') }}</label>
@@ -57,6 +66,7 @@
                                     @enderror
                                 </div>
                             </div>
+
                             <div class="page-wrapper__panel-btn-wrapper">
                                 <button type="submit"
                                         class="page-wrapper__panel-btn">{{ __('Сохранить информацию') }}</button>
@@ -69,6 +79,15 @@
                     <div class="admin-container__form-header">
                         {{ __('Изменение роли') }}
                     </div>
+
+                    <div class="success-messages-wrapper">
+                        @if(session('success_update_role'))
+                            <div class="success-messages">
+                                {{ session('success_update_role') }}
+                            </div>
+                        @endif
+                    </div>
+
                     <div class="adminp-container__form-body">
                         <div class="admin-container__items">
                             <label for="current_password">{{ __('Текущая роль пользователя:') }}</label>
@@ -97,6 +116,7 @@
                                     <option value="{{ null }}"> {{ __('Без роли') }}</option>
                                 </select>
                             </div>
+
                             <div class="page-wrapper__panel-btn-wrapper">
                                 <button type="submit"
                                         class="page-wrapper__panel-btn">{{ __('Сохранить роль') }}</button>
@@ -110,6 +130,7 @@
             <div class="admin-container__form-header">
                 {{ __('Удаление пользователя') }}
             </div>
+
             <div class="admin-container__form-body">
                 <form method="POST" action="{{ route('user.delete', $user->id) }}">
                     @csrf

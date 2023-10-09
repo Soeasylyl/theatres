@@ -30,7 +30,7 @@ class AdminProfileController extends BaseAdminController
             'phone' => $request->input('phone'),
         ]);
 
-        return redirect()->route('admin.profile', $user->id)->with('success', 'User information updated successfully.');
+        return redirect()->route('admin.profile', $user->id)->with('success_update_profile_info', 'Информация о пользователе успешно обновлена.');
     }
 
     //* Updating the password for an authorized user
@@ -46,7 +46,7 @@ class AdminProfileController extends BaseAdminController
             'password' => Hash::make($request->input('new_password')),
         ]);
 
-        return redirect()->route('admin.pages.users.profile', $user->id)->with('success', 'Password changed successfully.');
+        return redirect()->route('admin.profile', $user->id)->with('success_update_profile_password', 'Пароль успешно изменен.');
     }
 
     //* Deleting an authorized user

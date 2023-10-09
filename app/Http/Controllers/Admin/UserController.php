@@ -50,7 +50,7 @@ class UserController extends BaseAdminController
             'phone' => $request->input('phone'),
         ]);
 
-        return redirect()->route('user.edit', $user->id)->with('success', 'User information updated successfully.');
+        return redirect()->route('user.edit', $user->id)->with('success_update_user_info', 'Информация о пользователе успешно обновлена.');
     }
 
     // Updating the password for the selected user
@@ -85,7 +85,7 @@ class UserController extends BaseAdminController
 
         if ($roleName === null) {
             $user->syncRoles([]);
-            return redirect()->back()->with('success', 'Роль пользователя удалена.');
+            return redirect()->back()->with('success_update_role', 'Роль у пользователя успешно удалена.');
         } else {
             $oldRole = $user->roles->first();
 
@@ -95,7 +95,7 @@ class UserController extends BaseAdminController
 
             $user->assignRole($roleName);
 
-            return redirect()->back()->with('success', 'Роль успешно обновлена.');
+            return redirect()->back()->with('success_update_role', 'Роль у пользователя успешно изменена.');
         }
     }
 }
