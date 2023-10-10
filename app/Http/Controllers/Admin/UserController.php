@@ -84,19 +84,38 @@ class UserController extends BaseAdminController
         $user = User::findOrFail($request->input('user_id'));
         $roleName = $request->input('role');
 
-        if ($roleName === null) {
-            $user->syncRoles([]);
-            return redirect()->back()->with('success_update_role', 'Роль у пользователя успешно удалена.');
-        } else {
-            $oldRole = $user->roles->first();
+        // Checking that only super-administrator and administrator can change roles
+        if (auth()->user()->roles->first()->name == RolesUsersEnum::SUPER_ADMIN->value || auth()->user()->roles->first()->name == RolesUsersEnum::CINEMA_ADMIN->value) {
 
-            if ($oldRole) {
-                $user->removeRole($oldRole->name);
+            if (auth()->user()->roles->first()->name == RolesUsersEnum::CINEMA_ADMIN->value && ($user->roles->isNotEmpty() && $user->roles->first()->name == RolesUsersEnum::CINEMA_ADMIN->value)) {
+                return redirect()->back()->with('error_role', 'Администратор не может изменять роль другому администратору.');
             }
 
-            $user->assignRole($roleName);
+            if (auth()->user()->roles->first()->name == RolesUsersEnum::CINEMA_ADMIN->value && $roleName == RolesUsersEnum::CINEMA_ADMIN->value) {
+                return redirect()->back()->with('error_role', 'Администратор не может давать роль администратора.');
+            }
 
-            return redirect()->back()->with('success_update_role', 'Роль у пользователя успешно изменена.');
+            if (auth()->user()->roles->first()->name == RolesUsersEnum::CINEMA_MANAGER->value) {
+                return redirect()->back()->with('error_role', 'Менеджеры не могут изменять роли.');
+            }
+
+            if ($roleName === null) {
+                $user->syncRoles([]);
+                return redirect()->back()->with('success_update_role', 'Роль у пользователя успешно удалена.');
+            } else {
+                $oldRole = $user->roles->first();
+
+                if ($oldRole) {
+                    $user->removeRole($oldRole->name);
+                }
+
+                $user->assignRole($roleName);
+
+                return redirect()->back()->with('success_update_role', 'Роль у пользователя успешно изменена.');
+            }
+        } else {
+            return redirect()->back()->with('error_role', 'Недостатоно прав для изменения ролей.');
         }
+
     }
 }

@@ -104,18 +104,25 @@
                             @csrf
                             @method('PUT')
                             <input type="hidden" name="user_id" value="{{ $user->id }}">
-                            <div class="admin-container__items">
-                                <label for="current_password">{{ __('Выберите новую роль: ') }}</label>
-                                <select name="role" class="admin-container__select">
-                                    <option value="" disabled selected>{{ __('Список ролей') }}</option>
-                                    @foreach(RolesUsersEnum::asSelectArray() as $role)
-                                        @if ($role['value'] !==  RolesUsersEnum::SUPER_ADMIN->value)
-                                            <option value="{{ $role['value'] }}"> {{ $role['name'] }}</option>
-                                        @endif
-                                    @endforeach
-                                    <option value="{{ null }}"> {{ __('Без роли') }}</option>
-                                </select>
+                            <div class="error-messages__wrapper">
+                                @if(session('error_role'))
+                                    <div class="error-messages">
+                                        {{ session('error_role') }}
+                                    </div>
+                                @endif
                             </div>
+                            <div class="admin-container__items">
+                                    <label>{{ __('Выберите новую роль: ') }}</label>
+                                    <select name="role" class="admin-container__select">
+                                        <option value="" disabled selected>{{ __('Список ролей') }}</option>
+                                        @foreach(RolesUsersEnum::asSelectArray() as $role)
+                                            @if ($role['value'] !==  RolesUsersEnum::SUPER_ADMIN->value)
+                                                <option value="{{ $role['value'] }}"> {{ $role['name'] }}</option>
+                                            @endif
+                                        @endforeach
+                                        <option value="{{ null }}"> {{ __('Без роли') }}</option>
+                                    </select>
+                                </div>
 
                             <div class="page-wrapper__panel-btn-wrapper">
                                 <button type="submit"
