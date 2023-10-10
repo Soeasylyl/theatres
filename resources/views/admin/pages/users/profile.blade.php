@@ -105,7 +105,7 @@
                                 <label for="current_password">{{ __('Введите старый пароль:') }}</label>
                                 <div>
                                     <input type="password" id="current_password" name="current_password"
-                                           required>
+                                           required placeholder="Текущий пароль">
                                     @error('current_password')
                                     <div class="error-messages">
                                         {{$message}}
@@ -117,7 +117,8 @@
                             <div class="admin-container__items">
                                 <label for="new_password">{{ __('Введите новый пароль:') }}</label>
                                 <div>
-                                    <input type="password" id="new_password" name="new_password" required>
+                                    <input type="password" id="new_password" name="new_password"
+                                           required placeholder= "Новый пароль">
                                     @error('new_password')
                                     <div class="error-messages">
                                         {{$message}}
@@ -130,7 +131,8 @@
                                 <label for="new_password_confirmation">{{ __('Повторите новый пароль:') }}</label>
                                 <div>
                                     <input type="password" id="new_password_confirmation"
-                                           name="new_password_confirmation" required>
+                                           name="new_password_confirmation" required
+                                           placeholder="Новый пароль">
                                     @error('new_password_confirmation')
                                     <div class="error-messages">
                                         {{$message}}
@@ -156,13 +158,15 @@
                 </div>
 
                 <div class="admin-container__form-body">
-                    <form method="POST" action="{{ route('user.delete', $user->id) }}">
+                    <form method="POST" action="{{ route('admin.profile.delete') }}">
                         @csrf
                         @method('DELETE')
 
                         <div class="page-wrapper__panel-btn-wrapper">
                             <button type="submit" class="page-wrapper__panel-btn"
-                                    onclick="return confirm('Вы уверены, что хотите удалить пользователя {{ $user->name }}?')">{{ __('Удалить пользователя?') }}</button>
+                                    id="deleteProfileButton">
+                                {{ __('Удалить пользователя') }}
+                            </button>
                         </div>
                     </form>
                 </div>

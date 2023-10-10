@@ -70,8 +70,9 @@ class UserController extends BaseAdminController
     }
 
     // Delete a selected user
-    public function delete(User $user)
+    public function delete(int $userId)
     {
+        $user = User::findOrFail($userId);
         $user->delete();
 
         return redirect()->route('users')->with('success', 'Пользователь успешно удален.');

@@ -36,6 +36,10 @@
             color: #495057;
             width: 100%;
 
+            &::placeholder {
+                opacity:0.6;
+            }
+
             &:focus {
                 background-color: $c-adp-hov;;
                 border-color: rgba(189, 189, 189, 0.29);

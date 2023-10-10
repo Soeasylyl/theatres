@@ -50,7 +50,7 @@
                                         @method('DELETE')
 
                                         <div class="admin-container__table_last_cell_trash"
-                                             onclick="return confirm('Вы уверены, что хотите удалить пользователя {{ $user->name }}?')"
+                                             data-username="{{ $user->name }}"
                                              title="{{ __('Удалить') }}">
                                             {!! file_get_contents(public_path('/images/svg/delete.svg')) !!}
                                         </div>
