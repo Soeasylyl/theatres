@@ -25,7 +25,7 @@ class UserSeeder extends Seeder
             }
         }
 
-        for ($i = 0; $i < 4; $i++) {
+        for ($i = 0; $i < 7; $i++) {
             $this->createUser();
         }
 

@@ -73,9 +73,22 @@ class UserController extends BaseAdminController
     public function delete(int $userId)
     {
         $user = User::findOrFail($userId);
+
+        if (auth()->user()->roles->first()->name == RolesUsersEnum::CINEMA_ADMIN->value && ($user->roles->isNotEmpty() && $user->roles->first()->name == RolesUsersEnum::CINEMA_ADMIN->value)) {
+            return redirect()->back()->with('error_delete_user', 'Администратор не может удалить другого администратора.');
+        }
+
+        if (auth()->user()->roles->first()->name == RolesUsersEnum::CINEMA_MANAGER->value && ($user->roles->isNotEmpty() && $user->roles->first()->name == RolesUsersEnum::CINEMA_ADMIN->value)) {
+            return redirect()->back()->with('error_delete_user', 'Менеджеры не может удалить другого администратора.');
+        }
+
+        if (auth()->user()->roles->first()->name == RolesUsersEnum::CINEMA_MANAGER->value && ($user->roles->isNotEmpty() && $user->roles->first()->name == RolesUsersEnum::CINEMA_MANAGER->value)) {
+            return redirect()->back()->with('error_delete_user', 'Менеджеры не может удалить другого менеджера.');
+        }
+
         $user->delete();
 
-        return redirect()->route('users')->with('success', 'Пользователь успешно удален.');
+        return redirect()->route('users')->with('success_delete_user', 'Пользователь успешно удален.');
     }
 
     // Change the role of the selected user

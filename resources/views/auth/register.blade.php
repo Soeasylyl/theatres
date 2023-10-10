@@ -1,4 +1,4 @@
-@extends('admin.layouts.app')
+@extends('auth.layouts.app')
 
 @section('content')
     <div class="login-container">
@@ -18,7 +18,7 @@
 
                             @error('name')
                             <span role="alert">
-                                        <strong>{{ $message }}</strong>
+                                        <strong class="invalid-feedback">{{ $message }}</strong>
                                     </span>
                             @enderror
                         </div>
@@ -34,7 +34,7 @@
                                    value="{{ old('email') }}" required autocomplete="email">
                             @error('email')
                             <span role="alert">
-                                        <strong>{{ $message }}</strong>
+                                        <strong class="invalid-feedback">{{ $message }}</strong>
                                     </span>
                             @enderror
                         </div>
@@ -50,7 +50,7 @@
                                    value="{{ old('phone') }}" required autocomplete="phone">
                             @error('phone')
                             <span role="alert">
-                                        <strong>{{ $message }}</strong>
+                                        <strong class="invalid-feedback">{{ $message }}</strong>
                                     </span>
                             @enderror
                         </div>
@@ -66,7 +66,7 @@
 
                             @error('password')
                             <span role="alert">
-                                        <strong>{{ $message }}</strong>
+                                        <strong class="invalid-feedback">{{ $message }}</strong>
                                     </span>
                             @enderror
                         </div>

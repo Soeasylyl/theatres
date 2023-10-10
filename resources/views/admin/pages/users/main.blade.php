@@ -9,6 +9,18 @@
         <div class="admin-container__form">
             <div class="admin-container__form-header">
                 {{ __('Список пользователей') }}
+                @if(session('error_delete_user'))
+                    <div class="error-messages">
+                        {{ session('error_delete_user') }}
+                    </div>
+                @endif
+                <div class="success-messages-wrapper">
+                    @if(session('success_delete_user'))
+                        <div class="success-messages">
+                            {{ session('success_delete_user') }}
+                        </div>
+                    @endif
+                </div>
             </div>
             <div class="admin-container__form-body">
                 <table class="admin-container__table">

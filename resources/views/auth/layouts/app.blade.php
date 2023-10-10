@@ -19,11 +19,7 @@
 <body>
 <div id="app">
 
-        @include('admin.partials.header')
-
-        @include('admin.partials.menu')
-
-        <section class="admin-main">
+        <section>
             @yield('content')
         </section>
 
