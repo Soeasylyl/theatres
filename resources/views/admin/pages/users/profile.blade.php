@@ -155,6 +155,11 @@
             <div class="admin-container__form grid-center-item">
                 <div class="admin-container__form-header">
                     {{ __('Удаление пользователя') }}
+                    @if(session('error_delete_profile'))
+                        <div class="error-messages">
+                            {{ session('error_delete_profile') }}
+                        </div>
+                    @endif
                 </div>
 
                 <div class="admin-container__form-body">

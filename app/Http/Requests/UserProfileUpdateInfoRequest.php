@@ -25,7 +25,7 @@ class UserProfileUpdateInfoRequest extends FormRequest
         $userId = $this->route('user'); // Getting user ID from route
 
         return [
-            'name' => 'required|string|min:2|max:30',
+            'name' => 'required|string|min:2|max:50',
             'email' => [
                 'required',
                 'string',
