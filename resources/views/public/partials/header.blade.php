@@ -1,5 +1,5 @@
 <header id='headerId' class="header">
-<div class="header-container">
+<div class="container">
     <div class="header-wrapper">
         <div class="header-wrapper__hamburger"></div>
         <div class="header-wrapper__logo">

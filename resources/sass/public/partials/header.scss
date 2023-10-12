@@ -33,9 +33,10 @@
 
 .header-wrapper {
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     align-items: center;
     height: 80px;
+    padding: 0 60px;
 
     &__hamburger {
         display: none;

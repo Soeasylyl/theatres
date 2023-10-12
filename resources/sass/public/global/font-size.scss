@@ -15,10 +15,9 @@ $font-size-adp: 30px;
 }
 
 @mixin font-type-3() {
-    font-weight: 400;
-    font-size: 24px;
-    line-height: 36px;
-    font-style: italic;
+    text-size-adjust: 100%;
+    white-space: pre-line;
+    font: 600 1.50em/30px Ubuntu, Roboto, Arial, Helvetica, sans-serif;
 
     @include mobile() {
         font-size: 16px;

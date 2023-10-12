@@ -1,0 +1,2144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg enable-background="new 0 0 841.9 436" version="1.1" viewBox="0 0 841.9 436" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<style type="text/css">
+	.st0{opacity:0.5;clip-path:url(#gm); opacity: .12;}
+	.st1{opacity:0.5;clip-path:url(#a);}
+	.st2{clip-path:url(#cf);}
+	.st3{filter:url(#pv);}
+	.st4{clip-path:url(#e);fill:url(#nk);}
+	.st5{clip-path:url(#e);mask:url(#be);fill:url(#na);}
+	.st6{clip-path:url(#mh);}
+	.st7{filter:url(#pk);}
+	.st8{clip-path:url(#av);fill:url(#kw);}
+	.st9{clip-path:url(#av);mask:url(#lg);fill:url(#km);}
+	.st10{clip-path:url(#jt);}
+	.st11{filter:url(#oz);}
+	.st12{clip-path:url(#ak);fill:url(#ii);}
+	.st13{clip-path:url(#ak);mask:url(#ir);fill:url(#hy);}
+	.st14{clip-path:url(#hf);}
+	.st15{filter:url(#oo);}
+	.st16{clip-path:url(#z);fill:url(#ft);}
+	.st17{clip-path:url(#z);mask:url(#gc);fill:url(#fj);}
+	.st18{clip-path:url(#eq);}
+	.st19{filter:url(#od);}
+	.st20{clip-path:url(#o);fill:url(#dj);}
+	.st21{clip-path:url(#o);mask:url(#do);fill:url(#di);}
+	.st22{clip-path:url(#df);}
+	.st23{filter:url(#ny);}
+	.st24{clip-path:url(#l);fill:url(#dc);}
+	.st25{clip-path:url(#l);mask:url(#dd);fill:url(#db);}
+	.st26{clip-path:url(#cz);}
+	.st27{filter:url(#nx);}
+	.st28{clip-path:url(#k);fill:url(#cw);}
+	.st29{clip-path:url(#k);mask:url(#cx);fill:url(#cv);}
+	.st30{clip-path:url(#ct);}
+	.st31{filter:url(#nw);}
+	.st32{clip-path:url(#j);fill:url(#cq);}
+	.st33{clip-path:url(#j);mask:url(#cr);fill:url(#co);}
+	.st34{clip-path:url(#cm);}
+	.st35{filter:url(#nv);}
+	.st36{clip-path:url(#i);fill:url(#cj);}
+	.st37{clip-path:url(#i);mask:url(#ck);fill:url(#ci);}
+	.st38{clip-path:url(#cg);}
+	.st39{filter:url(#nu);}
+	.st40{clip-path:url(#h);fill:url(#cc);}
+	.st41{clip-path:url(#h);mask:url(#cd);fill:url(#cb);}
+	.st42{clip-path:url(#bz);}
+	.st43{filter:url(#pu);}
+	.st44{clip-path:url(#g);fill:url(#bv);}
+	.st45{clip-path:url(#g);mask:url(#bx);fill:url(#bu);}
+	.st46{opacity:0.2;clip-path:url(#a);}
+	.st47{clip-path:url(#bs);}
+	.st48{filter:url(#pt);}
+	.st49{clip-path:url(#f);fill:url(#bp);}
+	.st50{clip-path:url(#f);mask:url(#bq);fill:url(#bo);}
+	.st51{clip-path:url(#bm);}
+	.st52{filter:url(#ps);}
+	.st53{clip-path:url(#d);fill:url(#bj);}
+	.st54{clip-path:url(#d);mask:url(#bk);fill:url(#bi);}
+	.st55{clip-path:url(#bg);}
+	.st56{filter:url(#pr);}
+	.st57{clip-path:url(#c);fill:url(#ns);}
+	.st58{clip-path:url(#c);mask:url(#nt);fill:url(#nr);}
+	.st59{clip-path:url(#np);}
+	.st60{filter:url(#pq);}
+	.st61{clip-path:url(#bd);fill:url(#nm);}
+	.st62{clip-path:url(#bd);mask:url(#nn);fill:url(#nl);}
+	.st63{clip-path:url(#ni);}
+	.st64{filter:url(#pp);}
+	.st65{clip-path:url(#bc);fill:url(#nf);}
+	.st66{clip-path:url(#bc);mask:url(#ng);fill:url(#ne);}
+	.st67{clip-path:url(#nc);}
+	.st68{filter:url(#po);}
+	.st69{clip-path:url(#bb);fill:url(#my);}
+	.st70{clip-path:url(#bb);mask:url(#mz);fill:url(#mx);}
+	.st71{clip-path:url(#mv);}
+	.st72{filter:url(#pn);}
+	.st73{clip-path:url(#ba);fill:url(#ms);}
+	.st74{clip-path:url(#ba);mask:url(#mt);fill:url(#mq);}
+	.st75{clip-path:url(#mo);}
+	.st76{filter:url(#pm);}
+	.st77{clip-path:url(#az);fill:url(#ml);}
+	.st78{clip-path:url(#az);mask:url(#mm);fill:url(#mk);}
+	.st79{clip-path:url(#mi);}
+	.st80{filter:url(#pl);}
+	.st81{clip-path:url(#ay);fill:url(#me);}
+	.st82{clip-path:url(#ay);mask:url(#mf);fill:url(#md);}
+	.st83{clip-path:url(#mb);}
+	.st84{filter:url(#pj);}
+	.st85{clip-path:url(#ax);fill:url(#lx);}
+	.st86{clip-path:url(#ax);mask:url(#lz);fill:url(#lw);}
+	.st87{opacity:0.3;clip-path:url(#a);}
+	.st88{clip-path:url(#lu);}
+	.st89{filter:url(#pi);}
+	.st90{clip-path:url(#aw);fill:url(#lr);}
+	.st91{clip-path:url(#aw);mask:url(#ls);fill:url(#lq);}
+	.st92{clip-path:url(#lo);}
+	.st93{filter:url(#ph);}
+	.st94{clip-path:url(#au);fill:url(#ll);}
+	.st95{clip-path:url(#au);mask:url(#lm);fill:url(#lk);}
+	.st96{clip-path:url(#li);}
+	.st97{filter:url(#pg);}
+	.st98{clip-path:url(#at);fill:url(#le);}
+	.st99{clip-path:url(#at);mask:url(#lf);fill:url(#ld);}
+	.st100{clip-path:url(#lb);}
+	.st101{filter:url(#pf);}
+	.st102{clip-path:url(#as);fill:url(#ky);}
+	.st103{clip-path:url(#as);mask:url(#kz);fill:url(#kx);}
+	.st104{clip-path:url(#ku);}
+	.st105{filter:url(#pe);}
+	.st106{clip-path:url(#ar);fill:url(#kr);}
+	.st107{clip-path:url(#ar);mask:url(#ks);fill:url(#kq);}
+	.st108{clip-path:url(#ko);}
+	.st109{filter:url(#pd);}
+	.st110{clip-path:url(#aq);fill:url(#kk);}
+	.st111{clip-path:url(#aq);mask:url(#kl);fill:url(#kj);}
+	.st112{opacity:0.5;clip-path:url(#b);}
+	.st113{clip-path:url(#kg);}
+	.st114{filter:url(#pc);}
+	.st115{clip-path:url(#ap);fill:url(#kb);}
+	.st116{clip-path:url(#ap);mask:url(#kc);fill:url(#ka);}
+	.st117{clip-path:url(#jy);}
+	.st118{filter:url(#pb);}
+	.st119{clip-path:url(#ao);fill:url(#jv);}
+	.st120{clip-path:url(#ao);mask:url(#jw);fill:url(#ju);}
+	.st121{clip-path:url(#jr);}
+	.st122{filter:url(#pa);}
+	.st123{clip-path:url(#an);fill:url(#jo);}
+	.st124{clip-path:url(#an);mask:url(#jp);fill:url(#jn);}
+	.st125{clip-path:url(#jl);}
+	.st126{filter:url(#oy);}
+	.st127{clip-path:url(#am);fill:url(#jh);}
+	.st128{clip-path:url(#am);mask:url(#ji);fill:url(#jg);}
+	.st129{clip-path:url(#je);}
+	.st130{filter:url(#ox);}
+	.st131{clip-path:url(#al);fill:url(#jb);}
+	.st132{clip-path:url(#al);mask:url(#jc);fill:url(#ja);}
+	.st133{clip-path:url(#iy);}
+	.st134{filter:url(#ow);}
+	.st135{clip-path:url(#aj);fill:url(#iv);}
+	.st136{clip-path:url(#aj);mask:url(#iw);fill:url(#iu);}
+	.st137{clip-path:url(#is);}
+	.st138{filter:url(#ov);}
+	.st139{clip-path:url(#ai);fill:url(#io);}
+	.st140{clip-path:url(#ai);mask:url(#ip);fill:url(#in);}
+	.st141{clip-path:url(#il);}
+	.st142{filter:url(#ou);}
+	.st143{clip-path:url(#ah);fill:url(#ih);}
+	.st144{clip-path:url(#ah);mask:url(#ij);fill:url(#ig);}
+	.st145{clip-path:url(#ie);}
+	.st146{filter:url(#ot);}
+	.st147{clip-path:url(#ag);fill:url(#ib);}
+	.st148{clip-path:url(#ag);mask:url(#ic);fill:url(#ia);}
+	.st149{clip-path:url(#hx);}
+	.st150{filter:url(#os);}
+	.st151{clip-path:url(#af);fill:url(#hu);}
+	.st152{clip-path:url(#af);mask:url(#hv);fill:url(#ht);}
+	.st153{clip-path:url(#hr);}
+	.st154{filter:url(#or);}
+	.st155{clip-path:url(#ae);fill:url(#hn);}
+	.st156{clip-path:url(#ae);mask:url(#ho);fill:url(#hm);}
+	.st157{opacity:0.2;clip-path:url(#b);}
+	.st158{clip-path:url(#hk);}
+	.st159{filter:url(#oq);}
+	.st160{clip-path:url(#ad);fill:url(#hh);}
+	.st161{clip-path:url(#ad);mask:url(#hi);fill:url(#hg);}
+	.st162{clip-path:url(#hd);}
+	.st163{filter:url(#op);}
+	.st164{clip-path:url(#ac);fill:url(#ha);}
+	.st165{clip-path:url(#ac);mask:url(#hb);fill:url(#gz);}
+	.st166{clip-path:url(#gx);}
+	.st167{filter:url(#on);}
+	.st168{clip-path:url(#ab);fill:url(#gt);}
+	.st169{clip-path:url(#ab);mask:url(#gu);fill:url(#gs);}
+	.st170{clip-path:url(#gq);}
+	.st171{filter:url(#om);}
+	.st172{clip-path:url(#aa);fill:url(#gn);}
+	.st173{clip-path:url(#aa);mask:url(#go);fill:url(#gl);}
+	.st174{clip-path:url(#gj);}
+	.st175{filter:url(#ol);}
+	.st176{clip-path:url(#y);fill:url(#gg);}
+	.st177{clip-path:url(#y);mask:url(#gh);fill:url(#gf);}
+	.st178{clip-path:url(#gd);}
+	.st179{filter:url(#ok);}
+	.st180{clip-path:url(#x);fill:url(#fz);}
+	.st181{clip-path:url(#x);mask:url(#ga);fill:url(#fy);}
+	.st182{clip-path:url(#fw);}
+	.st183{filter:url(#oj);}
+	.st184{clip-path:url(#w);fill:url(#fs);}
+	.st185{clip-path:url(#w);mask:url(#fu);fill:url(#fr);}
+	.st186{clip-path:url(#fp);}
+	.st187{filter:url(#oi);}
+	.st188{clip-path:url(#v);fill:url(#fm);}
+	.st189{clip-path:url(#v);mask:url(#fn);fill:url(#fl);}
+	.st190{clip-path:url(#fi);}
+	.st191{filter:url(#oh);}
+	.st192{clip-path:url(#u);fill:url(#ff);}
+	.st193{clip-path:url(#u);mask:url(#fg);fill:url(#fe);}
+	.st194{clip-path:url(#fc);}
+	.st195{filter:url(#og);}
+	.st196{clip-path:url(#t);fill:url(#ey);}
+	.st197{clip-path:url(#t);mask:url(#ez);fill:url(#ex);}
+	.st198{opacity:0.3;clip-path:url(#b);}
+	.st199{clip-path:url(#ev);}
+	.st200{filter:url(#of);}
+	.st201{clip-path:url(#s);fill:url(#es);}
+	.st202{clip-path:url(#s);mask:url(#et);fill:url(#er);}
+	.st203{clip-path:url(#eo);}
+	.st204{filter:url(#oe);}
+	.st205{clip-path:url(#r);fill:url(#el);}
+	.st206{clip-path:url(#r);mask:url(#em);fill:url(#ek);}
+	.st207{clip-path:url(#ei);}
+	.st208{filter:url(#oc);}
+	.st209{clip-path:url(#q);fill:url(#ee);}
+	.st210{clip-path:url(#q);mask:url(#ef);fill:url(#ed);}
+	.st211{clip-path:url(#eb);}
+	.st212{filter:url(#ob);}
+	.st213{clip-path:url(#p);fill:url(#dy);}
+	.st214{clip-path:url(#p);mask:url(#dz);fill:url(#dx);}
+	.st215{clip-path:url(#dv);}
+	.st216{filter:url(#oa);}
+	.st217{clip-path:url(#n);fill:url(#ds);}
+	.st218{clip-path:url(#n);mask:url(#dt);fill:url(#dr);}
+	.st219{clip-path:url(#dp);}
+	.st220{filter:url(#nz);}
+	.st221{clip-path:url(#m);fill:url(#dl);}
+	.st222{clip-path:url(#m);mask:url(#dm);fill:url(#dk);}
+</style>
+		<defs>
+			<rect id="kd" y="-159.3" width="841.9" height="595.3"/>
+		</defs>
+		<clipPath id="gm">
+			<use xlink:href="#kd"/>
+		</clipPath>
+		<g class="st0">
+				<defs>
+					<rect id="dh" x="-41.1" y="-224.3" width="483.4" height="652.9"/>
+				</defs>
+				<clipPath id="a">
+					<use xlink:href="#dh"/>
+				</clipPath>
+				<g class="st1">
+						<defs>
+							<rect id="cp" x="10.2" y="-6.1" width="103.3" height="152"/>
+						</defs>
+						<clipPath id="cf">
+							<use xlink:href="#cp"/>
+						</clipPath>
+						<g class="st2">
+							<defs>
+								<path id="bw" d="M10.2-6.1c21,69,43.1,117.1,66,152c12.2-38,24.7-67.9,37.3-91.9C77.3,37.3,42.4,17,10.2-6.1"/>
+							</defs>
+							<clipPath id="e">
+								<use xlink:href="#bw"/>
+							</clipPath>
+							<defs>
+								<filter id="pv" x="10.2" y="-6.1" width="103.3" height="152" filterUnits="userSpaceOnUse">
+									<feColorMatrix values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1 0"/>
+								</filter>
+							</defs>
+							<mask id="be" x="10.2" y="-6.1" width="103.3" height="152" maskUnits="userSpaceOnUse">
+								<g class="st3">
+										<linearGradient id="nk" x1="-3.7407e-6" x2="1" y1="436" y2="436" gradientTransform="matrix(103.25 0 0 -103.25 10.153 45088)" gradientUnits="userSpaceOnUse">
+										<stop stop-color="#ccc" offset="0"/>
+										<stop stop-color="#fff" offset="1"/>
+									</linearGradient>
+									<rect class="st4" x="10.2" y="-6.1" width="103.3" height="152"/>
+								</g>
+							</mask>
+								<linearGradient id="na" x1="-3.7407e-6" x2="1" y1="436" y2="436" gradientTransform="matrix(103.25 0 0 -103.25 10.153 45088)" gradientUnits="userSpaceOnUse">
+								<stop stop-color="#fff" offset="0"/>
+								<stop offset="1"/>
+							</linearGradient>
+							<rect class="st5" x="10.2" y="-6.1" width="103.3" height="152"/>
+						</g>
+				</g>
+				<g class="st1">
+						<defs>
+							<rect id="mr" x="-32.5" y="-6.1" width="108.7" height="218.5"/>
+						</defs>
+						<clipPath id="mh">
+							<use xlink:href="#mr"/>
+						</clipPath>
+						<g class="st6">
+							<defs>
+								<path id="ly" d="m-32.5 212.4c32.8-35.9 69.7-55.2 108.7-66.6-22.8-34.8-44.9-83-66-152-14.9 54.8-29.2 125.8-42.7 218.6"/>
+							</defs>
+							<clipPath id="av">
+								<use xlink:href="#ly"/>
+							</clipPath>
+							<defs>
+								<filter id="pk" x="-32.5" y="-6.1" width="108.7" height="218.5" filterUnits="userSpaceOnUse">
+									<feColorMatrix values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1 0"/>
+								</filter>
+							</defs>
+							<mask id="lg" x="-32.5" y="-6.1" width="108.7" height="218.5" maskUnits="userSpaceOnUse">
+								<g class="st7">
+										<linearGradient id="kw" x1="-3.8267e-6" x2="1" y1="436" y2="436" gradientTransform="matrix(108.66 0 0 -108.66 -32.546 47478)" gradientUnits="userSpaceOnUse">
+										<stop stop-color="#ccc" offset="0"/>
+										<stop stop-color="#fff" offset="1"/>
+									</linearGradient>
+									<rect class="st8" x="-32.5" y="-6.1" width="108.7" height="218.5"/>
+								</g>
+							</mask>
+								<linearGradient id="km" x1="-3.8267e-6" x2="1" y1="436" y2="436" gradientTransform="matrix(108.66 0 0 -108.66 -32.546 47478)" gradientUnits="userSpaceOnUse">
+								<stop stop-color="#fff" offset="0"/>
+								<stop offset="1"/>
+							</linearGradient>
+							<rect class="st9" x="-32.5" y="-6.1" width="108.7" height="218.5"/>
+						</g>
+				</g>
+				<g class="st1">
+						<defs>
+							<rect id="ke" x="-29.5" y="-224.3" width="142.9" height="278.2"/>
+						</defs>
+						<clipPath id="jt">
+							<use xlink:href="#ke"/>
+						</clipPath>
+						<g class="st10">
+							<defs>
+								<path id="jj" d="M-29.5-224.3C-16.8-137-3.6-65.4,10.2-6.1C42.4,17,77.3,37.3,113.4,53.9C62,2.7,13-78.7-29.5-224.3"/>
+							</defs>
+							<clipPath id="ak">
+								<use xlink:href="#jj"/>
+							</clipPath>
+							<defs>
+								<filter id="oz" x="-168.6" y="-295.8" width="421.1" height="421.1" filterUnits="userSpaceOnUse">
+									<feColorMatrix values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1 0"/>
+								</filter>
+							</defs>
+							<mask id="ir" x="-168.6" y="-295.8" width="421.1" height="421.1" maskUnits="userSpaceOnUse">
+								<g class="st11">
+										<linearGradient id="ii" x1="-8.3338e-7" x2="1" y1="435.95" y2="435.95" gradientTransform="matrix(-210.56 -210.56 -210.56 210.56 91941 -91773)" gradientUnits="userSpaceOnUse">
+										<stop stop-color="#ccc" offset="0"/>
+										<stop stop-color="#fff" offset="1"/>
+									</linearGradient>
+									<polygon class="st12" points="42 125.4 -168.6 -85.2 42 -295.8 252.5 -85.2"/>
+								</g>
+							</mask>
+								<linearGradient id="hy" x1="-7.609e-7" x2="1" y1="435.95" y2="435.95" gradientTransform="matrix(-210.56 -210.56 -210.56 210.56 91941 -91773)" gradientUnits="userSpaceOnUse">
+								<stop stop-color="#fff" offset="0"/>
+								<stop offset="1"/>
+							</linearGradient>
+							<polygon class="st13" points="42 125.4 -168.6 -85.2 42 -295.8 252.5 -85.2"/>
+						</g>
+				</g>
+				<g class="st1">
+						<defs>
+							<rect id="hp" x="76.1" y="53.9" width="118.4" height="100"/>
+						</defs>
+						<clipPath id="hf">
+							<use xlink:href="#hp"/>
+						</clipPath>
+						<g class="st14">
+							<defs>
+								<path id="gv" d="m113.4 53.9c-12.6 24-25 53.9-37.3 91.9 38.1 4.5 78.2 6.7 118.4 8.1-27.2-21.2-54.5-51.5-81.1-100"/>
+							</defs>
+							<clipPath id="z">
+								<use xlink:href="#gv"/>
+							</clipPath>
+							<defs>
+								<filter id="oo" x="32.8" y="2.6" width="205" height="202.6" filterUnits="userSpaceOnUse">
+									<feColorMatrix values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1 0"/>
+								</filter>
+							</defs>
+							<mask id="gc" x="32.8" y="2.6" width="205" height="202.6" maskUnits="userSpaceOnUse">
+								<g class="st15">
+										<linearGradient id="ft" x1="-1.2733e-11" x2="1" y1="436.09" y2="436.09" gradientTransform="matrix(85.326 -49.263 -49.263 -85.326 21556 37350)" gradientUnits="userSpaceOnUse">
+										<stop stop-color="#ccc" offset="0"/>
+										<stop stop-color="#fff" offset="1"/>
+									</linearGradient>
+									<polygon class="st16" points="32.8 78.9 164.9 2.6 237.8 128.9 105.7 205.2"/>
+								</g>
+							</mask>
+								<linearGradient id="fj" x1="-6.3665e-12" x2="1" y1="436.09" y2="436.09" gradientTransform="matrix(85.326 -49.263 -49.263 -85.326 21556 37350)" gradientUnits="userSpaceOnUse">
+								<stop stop-color="#fff" offset="0"/>
+								<stop offset="1"/>
+							</linearGradient>
+							<polygon class="st17" points="32.8 78.9 164.9 2.6 237.8 128.9 105.7 205.2"/>
+						</g>
+				</g>
+				<g class="st1">
+						<defs>
+							<rect id="fa" x="-32.5" y="145.8" width="147.9" height="119.2"/>
+						</defs>
+						<clipPath id="eq">
+							<use xlink:href="#fa"/>
+						</clipPath>
+						<g class="st18">
+							<defs>
+								<path id="eg" d="m76.1 145.8c-38.9 11.4-75.8 30.6-108.7 66.6 43.7 51.1 94.5 56 147.9 51.3-13.2-30.5-26.3-68.8-39.2-117.9"/>
+							</defs>
+							<clipPath id="o">
+								<use xlink:href="#eg"/>
+							</clipPath>
+							<defs>
+								<filter id="od" x="-85.6" y="81.8" width="254" height="250.6" filterUnits="userSpaceOnUse">
+									<feColorMatrix values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1 0"/>
+								</filter>
+							</defs>
+							<mask id="do" x="-85.6" y="81.8" width="254" height="250.6" maskUnits="userSpaceOnUse">
+								<g class="st19">
+										<linearGradient id="dj" x2="1" y1="436.17" y2="436.17" gradientTransform="matrix(110.31 -63.69 -63.69 -110.31 27763 48356)" gradientUnits="userSpaceOnUse">
+										<stop stop-color="#ccc" offset="0"/>
+										<stop stop-color="#fff" offset="1"/>
+									</linearGradient>
+									<polygon class="st20" points="-85.6 176.5 78.4 81.8 168.4 237.8 4.4 332.4"/>
+								</g>
+							</mask>
+								<linearGradient id="di" x2="1" y1="436.17" y2="436.17" gradientTransform="matrix(110.31 -63.69 -63.69 -110.31 27763 48356)" gradientUnits="userSpaceOnUse">
+								<stop stop-color="#fff" offset="0"/>
+								<stop offset="1"/>
+							</linearGradient>
+							<polygon class="st21" points="-85.6 176.5 78.4 81.8 168.4 237.8 4.4 332.4"/>
+						</g>
+				</g>
+				<g class="st1">
+						<defs>
+							<rect id="dg" x="-41.1" y="212.4" width="100.1" height="216.2"/>
+						</defs>
+						<clipPath id="df">
+							<use xlink:href="#dg"/>
+						</clipPath>
+						<g class="st22">
+							<defs>
+								<path id="de" d="m-32.5 212.4c-2.9 67.9-5.7 139.3-8.5 214.4 30.1 6.8 64-6.8 100-26.2-32.6-24.7-63.6-77.4-91.5-188.2"/>
+							</defs>
+							<clipPath id="l">
+								<use xlink:href="#de"/>
+							</clipPath>
+							<defs>
+								<filter id="ny" x="-136.9" y="169" width="291.7" height="307.9" filterUnits="userSpaceOnUse">
+									<feColorMatrix values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1 0"/>
+								</filter>
+							</defs>
+							<mask id="dd" x="-136.9" y="169" width="291.7" height="307.9" maskUnits="userSpaceOnUse">
+								<g class="st23">
+										<linearGradient id="dc" x1="1.4552e-11" x2="1" y1="435.89" y2="435.89" gradientTransform="matrix(99.223 -57.286 -57.286 -99.223 24897 43621)" gradientUnits="userSpaceOnUse">
+										<stop stop-color="#ccc" offset="0"/>
+										<stop stop-color="#fff" offset="1"/>
+									</linearGradient>
+									<polygon class="st24" points="-136.9 267.7 34 169 154.8 378.3 -16 477"/>
+								</g>
+							</mask>
+								<linearGradient id="db" x1="6.3665e-12" x2="1" y1="435.89" y2="435.89" gradientTransform="matrix(99.223 -57.286 -57.286 -99.223 24897 43621)" gradientUnits="userSpaceOnUse">
+								<stop stop-color="#fff" offset="0"/>
+								<stop offset="1"/>
+							</linearGradient>
+							<polygon class="st25" points="-136.9 267.7 34 169 154.8 378.3 -16 477"/>
+						</g>
+				</g>
+				<g class="st1">
+						<defs>
+							<rect id="da" x="194.5" y="153" width="107.5" height="31.8"/>
+						</defs>
+						<clipPath id="cz">
+							<use xlink:href="#da"/>
+						</clipPath>
+						<g class="st26">
+							<defs>
+								<path id="cy" d="m302 153c-35 0.2-71.3 0.4-107.5 0.9 18.6 13.6 37.2 23.2 55.6 30.9 17.6-13.1 34.9-23.1 51.9-31.8"/>
+							</defs>
+							<clipPath id="k">
+								<use xlink:href="#cy"/>
+							</clipPath>
+							<defs>
+								<filter id="nx" x="180.8" y="106.5" width="135" height="124.9" filterUnits="userSpaceOnUse">
+									<feColorMatrix values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1 0"/>
+								</filter>
+							</defs>
+							<mask id="cx" x="180.8" y="106.5" width="135" height="124.9" maskUnits="userSpaceOnUse">
+								<g class="st27">
+										<linearGradient id="cw" x1="-9.0949e-12" x2="1" y1="435.87" y2="435.87" gradientTransform="matrix(80.985 -46.757 -46.757 -80.985 20594 35487)" gradientUnits="userSpaceOnUse">
+										<stop stop-color="#ccc" offset="0"/>
+										<stop stop-color="#fff" offset="1"/>
+									</linearGradient>
+									<polygon class="st28" points="180.8 161 275.2 106.5 315.8 176.9 221.4 231.4"/>
+								</g>
+							</mask>
+								<linearGradient id="cv" x1="-2.0009e-11" x2="1" y1="435.87" y2="435.87" gradientTransform="matrix(80.985 -46.757 -46.757 -80.985 20594 35487)" gradientUnits="userSpaceOnUse">
+								<stop stop-color="#fff" offset="0"/>
+								<stop offset="1"/>
+							</linearGradient>
+							<polygon class="st29" points="180.8 161 275.2 106.5 315.8 176.9 221.4 231.4"/>
+						</g>
+				</g>
+				<g class="st1">
+						<defs>
+							<rect id="cu" x="302" y="153" width="98.5" height="38.6"/>
+						</defs>
+						<clipPath id="ct">
+							<use xlink:href="#cu"/>
+						</clipPath>
+						<g class="st30">
+							<defs>
+								<path id="cs" d="m400.5 162c-30.7-3.2-63.9-5.6-98.5-8.9 31 14.6 61.1 25.4 89.1 38.6 3.2-9.9 6.3-19.8 9.4-29.7"/>
+							</defs>
+							<clipPath id="j">
+								<use xlink:href="#cs"/>
+							</clipPath>
+							<defs>
+								<filter id="nw" x="285.3" y="110.4" width="131.9" height="123.9" filterUnits="userSpaceOnUse">
+									<feColorMatrix values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1 0"/>
+								</filter>
+							</defs>
+							<mask id="cr" x="285.3" y="110.4" width="131.9" height="123.9" maskUnits="userSpaceOnUse">
+								<g class="st31">
+										<linearGradient id="cq" x2="1" y1="435.97" y2="435.97" gradientTransform="matrix(69.975 -40.4 -40.4 -69.975 17936 30696)" gradientUnits="userSpaceOnUse">
+										<stop offset="0"/>
+										<stop stop-color="#fff" offset="1"/>
+									</linearGradient>
+									<polygon class="st32" points="285.3 162.7 375.9 110.4 417.2 182 326.6 234.3"/>
+								</g>
+							</mask>
+								<linearGradient id="co" x1="-5.457e-12" x2="1" y1="435.97" y2="435.97" gradientTransform="matrix(69.975 -40.4 -40.4 -69.975 17936 30696)" gradientUnits="userSpaceOnUse">
+								<stop stop-color="#fff" offset="0"/>
+								<stop offset="1"/>
+							</linearGradient>
+							<polygon class="st33" points="285.3 162.7 375.9 110.4 417.2 182 326.6 234.3"/>
+						</g>
+				</g>
+				<g class="st1">
+						<defs>
+							<rect id="cn" x="-29.5" y="-224.3" width="227.7" height="278.2"/>
+						</defs>
+						<clipPath id="cm">
+							<use xlink:href="#cn"/>
+						</clipPath>
+						<g class="st34">
+							<defs>
+								<path id="cl" d="M-29.5-224.3C13-78.7,62,2.7,113.4,53.9c27.8-8.3,56.3-8.9,84.8-7.8C117,1.5,36-81.7-29.5-224.3"/>
+							</defs>
+							<clipPath id="i">
+								<use xlink:href="#cl"/>
+							</clipPath>
+							<defs>
+								<filter id="nv" x="-150" y="-322.9" width="468.7" height="475.4" filterUnits="userSpaceOnUse">
+									<feColorMatrix values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1 0"/>
+								</filter>
+							</defs>
+							<mask id="ck" x="-150" y="-322.9" width="468.7" height="475.4" maskUnits="userSpaceOnUse">
+								<g class="st35">
+										<linearGradient id="cj" x1="-1.6371e-11" x2="1" y1="435.96" y2="435.96" gradientTransform="matrix(78.46 -45.299 -45.299 -78.46 19783 34149)" gradientUnits="userSpaceOnUse">
+										<stop stop-color="#ccc" offset="0"/>
+										<stop stop-color="#fff" offset="1"/>
+									</linearGradient>
+									<polygon class="st36" points="-150 -154.7 141.3 -322.9 318.7 -15.6 27.4 152.5"/>
+								</g>
+							</mask>
+								<linearGradient id="ci" x1="2.8194e-11" x2="1" y1="435.96" y2="435.96" gradientTransform="matrix(78.46 -45.299 -45.299 -78.46 19783 34149)" gradientUnits="userSpaceOnUse">
+								<stop stop-color="#fff" offset="0"/>
+								<stop offset="1"/>
+							</linearGradient>
+							<polygon class="st37" points="-150 -154.7 141.3 -322.9 318.7 -15.6 27.4 152.5"/>
+						</g>
+				</g>
+				<g class="st1">
+						<defs>
+							<rect id="ch" x="113.4" y="45.7" width="136.8" height="71.4"/>
+						</defs>
+						<clipPath id="cg">
+							<use xlink:href="#ch"/>
+						</clipPath>
+						<g class="st38">
+							<defs>
+								<path id="ce" d="m198.2 46.1c-28.5-1.1-57-0.5-84.8 7.8 44.7 33.4 91.3 51.8 136.8 63.2-17.2-18.4-34.6-41-52-71"/>
+							</defs>
+							<clipPath id="h">
+								<use xlink:href="#ce"/>
+							</clipPath>
+							<defs>
+								<filter id="nu" x="82.2" y="-14.2" width="199.2" height="190.6" filterUnits="userSpaceOnUse">
+									<feColorMatrix values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1 0"/>
+								</filter>
+							</defs>
+							<mask id="cd" x="82.2" y="-14.2" width="199.2" height="190.6" maskUnits="userSpaceOnUse">
+								<g class="st39">
+										<linearGradient id="cc" x1="9.0949e-13" x2="1" y1="436.04" y2="436.04" gradientTransform="matrix(75.21 -43.422 -43.422 -75.21 19076 32899)" gradientUnits="userSpaceOnUse">
+										<stop stop-color="#E6E6E6" offset="0"/>
+										<stop stop-color="#fff" offset="1"/>
+									</linearGradient>
+									<polygon class="st40" points="82.2 63.1 216 -14.2 281.4 99.1 147.6 176.4"/>
+								</g>
+							</mask>
+								<linearGradient id="cb" x1="9.0949e-13" x2="1" y1="436.04" y2="436.04" gradientTransform="matrix(75.21 -43.422 -43.422 -75.21 19076 32899)" gradientUnits="userSpaceOnUse">
+								<stop stop-color="#fff" offset="0"/>
+								<stop offset="1"/>
+							</linearGradient>
+							<polygon class="st41" points="82.2 63.1 216 -14.2 281.4 99.1 147.6 176.4"/>
+						</g>
+				</g>
+				<g class="st1">
+						<defs>
+							<rect id="ca" x="250.2" y="76.8" width="93.3" height="42.6"/>
+						</defs>
+						<clipPath id="bz">
+							<use xlink:href="#ca"/>
+						</clipPath>
+						<g class="st42">
+							<defs>
+								<path id="by" d="m276.7 76.8c-8.8 12.1-17.6 25.3-26.5 40.4 31.9 1.8 63.3 2.7 93.3 1.9-21.6-11-44-23.8-66.8-42.3"/>
+							</defs>
+							<clipPath id="g">
+								<use xlink:href="#by"/>
+							</clipPath>
+							<defs>
+								<filter id="pu" x="231.5" y="36.4" width="130.6" height="123.9" filterUnits="userSpaceOnUse">
+									<feColorMatrix values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1 0"/>
+								</filter>
+							</defs>
+							<mask id="bx" x="231.5" y="36.4" width="130.6" height="123.9" maskUnits="userSpaceOnUse">
+								<g class="st43">
+										<linearGradient id="bv" x1="-1.2733e-11" x2="1" y1="436.08" y2="436.08" gradientTransform="matrix(69.167 -39.934 -39.934 -69.167 17668 30286)" gradientUnits="userSpaceOnUse">
+										<stop stop-color="#ccc" offset="0"/>
+										<stop stop-color="#fff" offset="1"/>
+									</linearGradient>
+									<polygon class="st44" points="231.5 87.5 320.2 36.4 362.2 109.1 273.5 160.3"/>
+								</g>
+							</mask>
+								<linearGradient id="bu" x1="-1.2733e-11" x2="1" y1="436.08" y2="436.08" gradientTransform="matrix(69.167 -39.934 -39.934 -69.167 17668 30286)" gradientUnits="userSpaceOnUse">
+								<stop stop-color="#fff" offset="0"/>
+								<stop offset="1"/>
+							</linearGradient>
+							<polygon class="st45" points="231.5 87.5 320.2 36.4 362.2 109.1 273.5 160.3"/>
+						</g>
+				</g>
+				<g class="st46">
+						<defs>
+							<rect id="bt" x="302" y="119" width="98.5" height="42.9"/>
+						</defs>
+						<clipPath id="bs">
+							<use xlink:href="#bt"/>
+						</clipPath>
+						<g class="st47">
+							<defs>
+								<path id="br" d="m343.5 119c-13.6 10.6-27.4 21.5-41.5 34 34.5 3.4 67.8 5.8 98.5 8.9-18.2-14-37.3-27.4-57-42.9"/>
+							</defs>
+							<clipPath id="f">
+								<use xlink:href="#br"/>
+							</clipPath>
+							<defs>
+								<filter id="pt" x="283.4" y="76.4" width="135.6" height="128.2" filterUnits="userSpaceOnUse">
+									<feColorMatrix values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1 0"/>
+								</filter>
+							</defs>
+							<mask id="bq" x="283.4" y="76.4" width="135.6" height="128.2" maskUnits="userSpaceOnUse">
+								<g class="st48">
+										<linearGradient id="bp" x1="2.7285e-12" x2="1" y1="436.13" y2="436.13" gradientTransform="matrix(69.975 -40.4 -40.4 -69.975 17929 30683)" gradientUnits="userSpaceOnUse">
+										<stop offset="0"/>
+										<stop stop-color="#fff" offset="1"/>
+									</linearGradient>
+									<polygon class="st49" points="283.4 129.8 375.9 76.4 419.1 151.2 326.6 204.6"/>
+								</g>
+							</mask>
+								<linearGradient id="bo" x1="-2.7285e-12" x2="1" y1="436.13" y2="436.13" gradientTransform="matrix(69.975 -40.4 -40.4 -69.975 17929 30683)" gradientUnits="userSpaceOnUse">
+								<stop stop-color="#fff" offset="0"/>
+								<stop offset="1"/>
+							</linearGradient>
+							<polygon class="st50" points="283.4 129.8 375.9 76.4 419.1 151.2 326.6 204.6"/>
+						</g>
+				</g>
+				<g class="st1">
+						<defs>
+							<rect id="bn" x="194.5" y="117.1" width="107.5" height="36.8"/>
+						</defs>
+						<clipPath id="bm">
+							<use xlink:href="#bn"/>
+						</clipPath>
+						<g class="st51">
+							<defs>
+								<path id="bl" d="m250.2 117.1c-18.4 9.2-37 20.6-55.6 36.8 36.2-0.5 72.5-0.7 107.5-0.9-17.1-9.7-34.4-21.1-51.9-35.9"/>
+							</defs>
+							<clipPath id="d">
+								<use xlink:href="#bl"/>
+							</clipPath>
+							<defs>
+								<filter id="ps" x="178.6" y="70.6" width="139.3" height="129.8" filterUnits="userSpaceOnUse">
+									<feColorMatrix values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1 0"/>
+								</filter>
+							</defs>
+							<mask id="bk" x="178.6" y="70.6" width="139.3" height="129.8" maskUnits="userSpaceOnUse">
+								<g class="st52">
+										<linearGradient id="bj" x1="1.3071e-6" x2="1" y1="436.14" y2="436.14" gradientTransform="matrix(80.985 -46.757 -46.757 -80.985 20593 35484)" gradientUnits="userSpaceOnUse">
+										<stop stop-color="#666" offset="0"/>
+										<stop stop-color="#fff" offset="1"/>
+									</linearGradient>
+									<polygon class="st53" points="178.6 126.3 275.2 70.6 317.9 144.7 221.4 200.4"/>
+								</g>
+							</mask>
+								<linearGradient id="bi" x1="1.3889e-6" x2="1" y1="436.14" y2="436.14" gradientTransform="matrix(80.985 -46.757 -46.757 -80.985 20593 35484)" gradientUnits="userSpaceOnUse">
+								<stop stop-color="#fff" offset="0"/>
+								<stop offset="1"/>
+							</linearGradient>
+							<polygon class="st54" points="178.6 126.3 275.2 70.6 317.9 144.7 221.4 200.4"/>
+						</g>
+				</g>
+				<g class="st1">
+						<defs>
+							<rect id="bh" x="113.4" y="53.9" width="136.8" height="100"/>
+						</defs>
+						<clipPath id="bg">
+							<use xlink:href="#bh"/>
+						</clipPath>
+						<g class="st55">
+							<defs>
+								<path id="bf" d="m194.5 153.9c-27.3-21.3-54.5-51.5-81.1-100 44.7 33.4 91.3 51.8 136.8 63.2-18.5 9.2-37.1 20.7-55.7 36.8"/>
+							</defs>
+							<clipPath id="c">
+								<use xlink:href="#bf"/>
+							</clipPath>
+							<defs>
+								<filter id="pr" x="70.1" y="-5.3" width="223.4" height="218.4" filterUnits="userSpaceOnUse">
+									<feColorMatrix values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1 0"/>
+								</filter>
+							</defs>
+							<mask id="nt" x="70.1" y="-5.3" width="223.4" height="218.4" maskUnits="userSpaceOnUse">
+								<g class="st56">
+										<linearGradient id="ns" x1="4.5475e-12" x2="1" y1="435.84" y2="435.84" gradientTransform="matrix(75.305 -43.477 -43.477 -75.305 19101 32942)" gradientUnits="userSpaceOnUse">
+										<stop stop-color="#ccc" offset="0"/>
+										<stop stop-color="#fff" offset="1"/>
+									</linearGradient>
+									<polygon class="st57" points="70.1 78.9 216 -5.3 293.5 128.9 147.6 213.1"/>
+								</g>
+							</mask>
+								<linearGradient id="nr" x1="-1.819e-12" x2="1" y1="435.84" y2="435.84" gradientTransform="matrix(75.305 -43.477 -43.477 -75.305 19101 32942)" gradientUnits="userSpaceOnUse">
+								<stop stop-color="#fff" offset="0"/>
+								<stop offset="1"/>
+							</linearGradient>
+							<polygon class="st58" points="70.1 78.9 216 -5.3 293.5 128.9 147.6 213.1"/>
+						</g>
+				</g>
+				<g class="st1">
+						<defs>
+							<rect id="nq" x="343.5" y="90.6" width="98.9" height="30.9"/>
+						</defs>
+						<clipPath id="np">
+							<use xlink:href="#nq"/>
+						</clipPath>
+						<g class="st59">
+							<defs>
+								<path id="no" d="m442.4 121c-29.8 1-63.3 1-98.9-1.9 18.2-9.1 35.8-18.1 52.6-28.4 16.2 10.2 31.7 19.8 46.3 30.3"/>
+							</defs>
+							<clipPath id="bd">
+								<use xlink:href="#no"/>
+							</clipPath>
+							<defs>
+								<filter id="pq" x="329.9" y="47.8" width="126" height="117" filterUnits="userSpaceOnUse">
+									<feColorMatrix values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1 0"/>
+								</filter>
+							</defs>
+							<mask id="nn" x="329.9" y="47.8" width="126" height="117" maskUnits="userSpaceOnUse">
+								<g class="st60">
+										<linearGradient id="nm" x1="3.638e-12" x2="1" y1="436.14" y2="436.14" gradientTransform="matrix(73.324 -42.334 -42.334 -73.324 18814 32110)" gradientUnits="userSpaceOnUse">
+										<stop offset="0"/>
+										<stop stop-color="#fff" offset="1"/>
+									</linearGradient>
+									<polygon class="st61" points="329.9 98.4 417.7 47.8 455.9 114.1 368.2 164.8"/>
+								</g>
+							</mask>
+								<linearGradient id="nl" x1="-1.819e-12" x2="1" y1="436.14" y2="436.14" gradientTransform="matrix(73.324 -42.334 -42.334 -73.324 18814 32110)" gradientUnits="userSpaceOnUse">
+								<stop stop-color="#fff" offset="0"/>
+								<stop offset="1"/>
+							</linearGradient>
+							<polygon class="st62" points="329.9 98.4 417.7 47.8 455.9 114.1 368.2 164.8"/>
+						</g>
+				</g>
+				<g class="st1">
+						<defs>
+							<rect id="nj" x="343.5" y="119" width="98.9" height="42.9"/>
+						</defs>
+						<clipPath id="ni">
+							<use xlink:href="#nj"/>
+						</clipPath>
+						<g class="st63">
+							<defs>
+								<path id="nh" d="m400.5 162c-18.2-14.1-37.3-27.5-57-42.9 35.5 2.9 69 2.9 98.9 1.9-13.3 14.7-27.3 28-41.9 41"/>
+							</defs>
+							<clipPath id="bc">
+								<use xlink:href="#nh"/>
+							</clipPath>
+							<defs>
+								<filter id="pp" x="324.9" y="76.2" width="136.1" height="128.6" filterUnits="userSpaceOnUse">
+									<feColorMatrix values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1 0"/>
+								</filter>
+							</defs>
+							<mask id="ng" x="324.9" y="76.2" width="136.1" height="128.6" maskUnits="userSpaceOnUse">
+								<g class="st64">
+										<linearGradient id="nf" x1="6.3665e-12" x2="1" y1="435.88" y2="435.88" gradientTransform="matrix(73.324 -42.334 -42.334 -73.324 18817 32117)" gradientUnits="userSpaceOnUse">
+										<stop offset="0"/>
+										<stop offset=".0049261"/>
+										<stop stop-color="#fff" offset="1"/>
+									</linearGradient>
+									<polygon class="st65" points="324.9 129.8 417.7 76.2 461 151.2 368.2 204.8"/>
+								</g>
+							</mask>
+								<linearGradient id="ne" x1="9.0949e-13" x2="1" y1="435.88" y2="435.88" gradientTransform="matrix(73.324 -42.334 -42.334 -73.324 18817 32117)" gradientUnits="userSpaceOnUse">
+								<stop stop-color="#fff" offset="0"/>
+								<stop stop-color="#fff" offset=".0049261"/>
+								<stop offset="1"/>
+							</linearGradient>
+							<polygon class="st66" points="324.9 129.8 417.7 76.2 461 151.2 368.2 204.8"/>
+						</g>
+				</g>
+				<g class="st1">
+						<defs>
+							<rect id="nd" x="198.2" y="46.1" width="78.5" height="71"/>
+						</defs>
+						<clipPath id="nc">
+							<use xlink:href="#nd"/>
+						</clipPath>
+						<g class="st67">
+							<defs>
+								<path id="nb" d="m250.2 117.1c-17.2-18.4-34.6-41.1-51.9-71 26.3 13.7 52.7 23.7 78.5 30.7-8.9 12.1-17.7 25.3-26.6 40.3"/>
+							</defs>
+							<clipPath id="bb">
+								<use xlink:href="#nb"/>
+							</clipPath>
+							<defs>
+								<filter id="po" x="167.5" y="12.1" width="140" height="139" filterUnits="userSpaceOnUse">
+									<feColorMatrix values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1 0"/>
+								</filter>
+							</defs>
+							<mask id="mz" x="167.5" y="12.1" width="140" height="139" maskUnits="userSpaceOnUse">
+								<g class="st68">
+										<linearGradient id="my" x1="-1.0004e-11" x2="1" y1="435.87" y2="435.87" gradientTransform="matrix(45.592 -26.323 -26.323 -45.592 11697 19962)" gradientUnits="userSpaceOnUse">
+										<stop stop-color="#ccc" offset="0"/>
+										<stop stop-color="#fff" offset="1"/>
+									</linearGradient>
+									<polygon class="st69" points="167.5 63.9 257.1 12.1 307.5 99.4 217.9 151.1"/>
+								</g>
+							</mask>
+								<linearGradient id="mx" x1="7.276e-12" x2="1" y1="435.87" y2="435.87" gradientTransform="matrix(45.592 -26.323 -26.323 -45.592 11697 19962)" gradientUnits="userSpaceOnUse">
+								<stop stop-color="#fff" offset="0"/>
+								<stop offset="1"/>
+							</linearGradient>
+							<polygon class="st70" points="167.5 63.9 257.1 12.1 307.5 99.4 217.9 151.1"/>
+						</g>
+				</g>
+				<g class="st46">
+						<defs>
+							<rect id="mw" x="276.7" y="76.8" width="119.4" height="42.3"/>
+						</defs>
+						<clipPath id="mv">
+							<use xlink:href="#mw"/>
+						</clipPath>
+						<g class="st71">
+							<defs>
+								<path id="mu" d="m343.5 119c-21.6-10.9-44-23.8-66.8-42.3 41.9 12 82.5 15.4 119.4 13.8-16.8 10.4-34.4 19.4-52.6 28.5"/>
+							</defs>
+							<clipPath id="ba">
+								<use xlink:href="#mu"/>
+							</clipPath>
+							<defs>
+								<filter id="pn" x="258.4" y="25.1" width="156" height="145.7" filterUnits="userSpaceOnUse">
+									<feColorMatrix values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1 0"/>
+								</filter>
+							</defs>
+							<mask id="mt" x="258.4" y="25.1" width="156" height="145.7" maskUnits="userSpaceOnUse">
+								<g class="st72">
+										<linearGradient id="ms" x1="-2.7285e-11" x2="1" y1="435.87" y2="435.87" gradientTransform="matrix(83.573 -48.251 -48.251 -83.573 21332 36546)" gradientUnits="userSpaceOnUse">
+										<stop stop-color="#ccc" offset="0"/>
+										<stop stop-color="#fff" offset="1"/>
+									</linearGradient>
+									<polygon class="st73" points="258.4 87.3 366.3 25.1 414.4 108.5 306.6 170.7"/>
+								</g>
+							</mask>
+								<linearGradient id="mq" x1="-2.7285e-11" x2="1" y1="435.87" y2="435.87" gradientTransform="matrix(83.573 -48.251 -48.251 -83.573 21332 36546)" gradientUnits="userSpaceOnUse">
+								<stop stop-color="#fff" offset="0"/>
+								<stop offset="1"/>
+							</linearGradient>
+							<polygon class="st74" points="258.4 87.3 366.3 25.1 414.4 108.5 306.6 170.7"/>
+						</g>
+				</g>
+				<g class="st1">
+						<defs>
+							<rect id="mp" x="115.3" y="153.9" width="134.9" height="109.7"/>
+						</defs>
+						<clipPath id="mo">
+							<use xlink:href="#mp"/>
+						</clipPath>
+						<g class="st75">
+							<defs>
+								<path id="mn" d="m250.2 184.8c-44.9 14-90.7 36-134.9 78.8 26-52.7 52.6-86.1 79.2-109.7 18.6 13.6 37.2 23.2 55.7 30.9"/>
+							</defs>
+							<clipPath id="az">
+								<use xlink:href="#mn"/>
+							</clipPath>
+							<defs>
+								<filter id="pm" x="67.8" y="95.5" width="229.9" height="226.5" filterUnits="userSpaceOnUse">
+									<feColorMatrix values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1 0"/>
+								</filter>
+							</defs>
+							<mask id="mm" x="67.8" y="95.5" width="229.9" height="226.5" maskUnits="userSpaceOnUse">
+								<g class="st76">
+										<linearGradient id="ml" x1="5.457e-12" x2="1" y1="435.86" y2="435.86" gradientTransform="matrix(-27.706 -47.988 -47.988 27.706 21106 -11855)" gradientUnits="userSpaceOnUse">
+										<stop stop-color="#999" offset="0"/>
+										<stop stop-color="#fff" offset="1"/>
+									</linearGradient>
+									<polygon class="st77" points="149 322 67.8 181.3 216.5 95.5 297.7 236.2"/>
+								</g>
+							</mask>
+								<linearGradient id="mk" x1="-9.0949e-13" x2="1" y1="435.86" y2="435.86" gradientTransform="matrix(-27.706 -47.988 -47.988 27.706 21106 -11855)" gradientUnits="userSpaceOnUse">
+								<stop stop-color="#fff" offset="0"/>
+								<stop offset="1"/>
+							</linearGradient>
+							<polygon class="st78" points="149 322 67.8 181.3 216.5 95.5 297.7 236.2"/>
+						</g>
+				</g>
+				<g class="st46">
+						<defs>
+							<rect id="mj" x="250.2" y="117.1" width="93.3" height="35.9"/>
+						</defs>
+						<clipPath id="mi">
+							<use xlink:href="#mj"/>
+						</clipPath>
+						<g class="st79">
+							<defs>
+								<path id="mg" d="m302 153c-17-9.8-34.4-21.1-51.8-35.9 31.9 1.8 63.3 2.7 93.3 1.9-13.6 10.6-27.4 21.5-41.5 34"/>
+							</defs>
+							<clipPath id="ay">
+								<use xlink:href="#mg"/>
+							</clipPath>
+							<defs>
+								<filter id="pl" x="234.6" y="76.7" width="124.4" height="116.7" filterUnits="userSpaceOnUse">
+									<feColorMatrix values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1 0"/>
+								</filter>
+							</defs>
+							<mask id="mf" x="234.6" y="76.7" width="124.4" height="116.7" maskUnits="userSpaceOnUse">
+								<g class="st80">
+										<linearGradient id="me" x1="9.0949e-12" x2="1" y1="436.15" y2="436.15" gradientTransform="matrix(-28.504 -49.371 -49.371 28.504 21839 -12281)" gradientUnits="userSpaceOnUse">
+										<stop stop-color="#ccc" offset="0"/>
+										<stop stop-color="#fff" offset="1"/>
+									</linearGradient>
+									<polygon class="st81" points="273.5 193.4 234.6 126.1 320.2 76.7 359 144.1"/>
+								</g>
+							</mask>
+								<linearGradient id="md" x1="9.0949e-12" x2="1" y1="436.15" y2="436.15" gradientTransform="matrix(-28.504 -49.371 -49.371 28.504 21839 -12281)" gradientUnits="userSpaceOnUse">
+								<stop stop-color="#fff" offset="0"/>
+								<stop offset="1"/>
+							</linearGradient>
+							<polygon class="st82" points="273.5 193.4 234.6 126.1 320.2 76.7 359 144.1"/>
+						</g>
+				</g>
+				<g class="st46">
+						<defs>
+							<rect id="mc" x="250.2" y="153" width="141" height="38.6"/>
+						</defs>
+						<clipPath id="mb">
+							<use xlink:href="#mc"/>
+						</clipPath>
+						<g class="st83">
+							<defs>
+								<path id="ma" d="m391.1 191.7c-43.4-5.9-91.6-6.6-141-6.8 17.5-13.1 34.8-23.1 51.8-31.8 31.2 14.6 61.2 25.3 89.2 38.6"/>
+							</defs>
+							<clipPath id="ax">
+								<use xlink:href="#ma"/>
+							</clipPath>
+							<defs>
+								<filter id="pj" x="250.2" y="153" width="141" height="38.6" filterUnits="userSpaceOnUse">
+									<feColorMatrix values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1 0"/>
+								</filter>
+							</defs>
+							<mask id="lz" x="250.2" y="153" width="141" height="38.6" maskUnits="userSpaceOnUse">
+								<g class="st84">
+										<linearGradient id="lx" x1="1.9485e-6" x2="1" y1="436" y2="436" gradientTransform="matrix(-140.96 0 0 140.96 391.14 -61286)" gradientUnits="userSpaceOnUse">
+										<stop stop-color="#333" offset="0"/>
+										<stop stop-color="#fff" offset="1"/>
+									</linearGradient>
+									<rect class="st85" x="250.2" y="153" width="141" height="38.6"/>
+								</g>
+							</mask>
+								<linearGradient id="lw" x1="1.9485e-6" x2="1" y1="436" y2="436" gradientTransform="matrix(-140.96 0 0 140.96 391.14 -61286)" gradientUnits="userSpaceOnUse">
+								<stop stop-color="#fff" offset="0"/>
+								<stop offset="1"/>
+							</linearGradient>
+							<rect class="st86" x="250.2" y="153" width="141" height="38.6"/>
+						</g>
+				</g>
+				<g class="st87">
+						<defs>
+							<rect id="lv" x="-32.5" y="212.4" width="147.9" height="188.2"/>
+						</defs>
+						<clipPath id="lu">
+							<use xlink:href="#lv"/>
+						</clipPath>
+						<g class="st88">
+							<defs>
+								<path id="lt" d="m59 400.6c-32.7-24.6-63.6-77.4-91.6-188.2 43.7 51.1 94.5 56 147.9 51.3-19.1 34.9-38 79.2-56.3 136.9"/>
+							</defs>
+							<clipPath id="aw">
+								<use xlink:href="#lt"/>
+							</clipPath>
+							<defs>
+								<filter id="pi" x="-114" y="148.4" width="310.8" height="316.2" filterUnits="userSpaceOnUse">
+									<feColorMatrix values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1 0"/>
+								</filter>
+							</defs>
+							<mask id="ls" x="-114" y="148.4" width="310.8" height="316.2" maskUnits="userSpaceOnUse">
+								<g class="st89">
+										<linearGradient id="lr" x1="8.1855e-12" x2="1" y1="436.1" y2="436.1" gradientTransform="matrix(-104.38 -180.79 -180.79 104.38 78929 -45135)" gradientUnits="userSpaceOnUse">
+										<stop stop-color="#E6E6E6" offset="0"/>
+										<stop stop-color="#fff" offset="1"/>
+									</linearGradient>
+									<polygon class="st90" points="4.4 464.6 -114 259.4 78.4 148.4 196.8 353.5"/>
+								</g>
+							</mask>
+								<linearGradient id="lq" x1="1.0004e-11" x2="1" y1="436.1" y2="436.1" gradientTransform="matrix(-104.38 -180.79 -180.79 104.38 78929 -45135)" gradientUnits="userSpaceOnUse">
+								<stop stop-color="#fff" offset="0"/>
+								<stop offset="1"/>
+							</linearGradient>
+							<polygon class="st91" points="4.4 464.6 -114 259.4 78.4 148.4 196.8 353.5"/>
+						</g>
+				</g>
+				<g class="st1">
+						<defs>
+							<rect id="lp" x="115.3" y="184.8" width="134.9" height="97.3"/>
+						</defs>
+						<clipPath id="lo">
+							<use xlink:href="#lp"/>
+						</clipPath>
+						<g class="st92">
+							<defs>
+								<path id="ln" d="m173 282.1c-19.4-2.6-38.7-7.8-57.7-18.4 44.2-42.9 90-64.9 134.9-78.8-25.6 22.1-51.5 51.7-77.2 97.2"/>
+							</defs>
+							<clipPath id="au">
+								<use xlink:href="#ln"/>
+							</clipPath>
+							<defs>
+								<filter id="ph" x="73.2" y="126.4" width="219.1" height="214.1" filterUnits="userSpaceOnUse">
+									<feColorMatrix values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1 0"/>
+								</filter>
+							</defs>
+							<mask id="lm" x="73.2" y="126.4" width="219.1" height="214.1" maskUnits="userSpaceOnUse">
+								<g class="st93">
+										<linearGradient id="ll" x1="-4.5475e-12" x2="1" y1="436.08" y2="436.08" gradientTransform="matrix(-27.398 -47.455 -47.455 27.398 20896 -11682)" gradientUnits="userSpaceOnUse">
+										<stop stop-color="#999" offset="0"/>
+										<stop stop-color="#fff" offset="1"/>
+									</linearGradient>
+									<polygon class="st94" points="149 340.5 73.2 209.1 216.5 126.4 292.3 257.8"/>
+								</g>
+							</mask>
+								<linearGradient id="lk" x1="2.7285e-12" x2="1" y1="436.08" y2="436.08" gradientTransform="matrix(-27.398 -47.455 -47.455 27.398 20896 -11682)" gradientUnits="userSpaceOnUse">
+								<stop stop-color="#fff" offset="0"/>
+								<stop offset="1"/>
+							</linearGradient>
+							<polygon class="st95" points="149 340.5 73.2 209.1 216.5 126.4 292.3 257.8"/>
+						</g>
+				</g>
+				<g class="st1">
+						<defs>
+							<rect id="lj" x="250.2" y="184.8" width="141" height="34.8"/>
+						</defs>
+						<clipPath id="li">
+							<use xlink:href="#lj"/>
+						</clipPath>
+						<g class="st96">
+							<defs>
+								<path id="lh" d="m309.5 219.6c-19.4-10-39.3-20.5-59.3-34.8 49.4 0.2 97.5 1 141 6.8-25.8 6.8-53.3 14.7-81.7 28"/>
+							</defs>
+							<clipPath id="at">
+								<use xlink:href="#lh"/>
+							</clipPath>
+							<defs>
+								<filter id="pg" x="235.1" y="123.8" width="171.1" height="156.9" filterUnits="userSpaceOnUse">
+									<feColorMatrix values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1 0"/>
+								</filter>
+							</defs>
+							<mask id="lf" x="235.1" y="123.8" width="171.1" height="156.9" maskUnits="userSpaceOnUse">
+								<g class="st97">
+										<linearGradient id="le" x1="-3.638e-12" x2="1" y1="436.09" y2="436.09" gradientTransform="matrix(-38.202 -66.168 -66.168 38.202 29189 -16435)" gradientUnits="userSpaceOnUse">
+										<stop offset="0"/>
+										<stop stop-color="#fff" offset="1"/>
+									</linearGradient>
+									<polygon class="st98" points="285.4 280.7 235.1 193.5 355.9 123.8 406.2 210.9"/>
+								</g>
+							</mask>
+								<linearGradient id="ld" x1="-3.638e-12" x2="1" y1="436.09" y2="436.09" gradientTransform="matrix(-38.202 -66.168 -66.168 38.202 29189 -16435)" gradientUnits="userSpaceOnUse">
+								<stop stop-color="#fff" offset="0"/>
+								<stop offset="1"/>
+							</linearGradient>
+							<polygon class="st99" points="285.4 280.7 235.1 193.5 355.9 123.8 406.2 210.9"/>
+						</g>
+				</g>
+				<g class="st1">
+						<defs>
+							<rect id="lc" x="59" y="263.6" width="114" height="136.9"/>
+						</defs>
+						<clipPath id="lb">
+							<use xlink:href="#lc"/>
+						</clipPath>
+						<g class="st100">
+							<defs>
+								<path id="la" d="m173 282.1c-39 27.8-77.5 66.2-114 118.5 18.3-57.6 37.1-101.9 56.3-136.9 19 10.6 38.3 15.8 57.7 18.4"/>
+							</defs>
+							<clipPath id="as">
+								<use xlink:href="#la"/>
+							</clipPath>
+							<defs>
+								<filter id="pf" x="-.2" y="214.3" width="232.6" height="235.6" filterUnits="userSpaceOnUse">
+									<feColorMatrix values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1 0"/>
+								</filter>
+							</defs>
+							<mask id="kz" x="-0.2" y="214.3" width="232.6" height="235.6" maskUnits="userSpaceOnUse">
+								<g class="st101">
+										<linearGradient id="ky" x1="-9.0949e-12" x2="1" y1="435.95" y2="435.95" gradientTransform="matrix(-45.22 -78.322 -78.322 45.22 34276 -19355)" gradientUnits="userSpaceOnUse">
+										<stop stop-color="#999" offset="0"/>
+										<stop stop-color="#fff" offset="1"/>
+									</linearGradient>
+									<polygon class="st102" points="87.5 449.9 -0.2 297.9 144.5 214.3 232.3 366.3"/>
+								</g>
+							</mask>
+								<linearGradient id="kx" x1="2.5466e-11" x2="1" y1="435.95" y2="435.95" gradientTransform="matrix(-45.22 -78.322 -78.322 45.22 34276 -19355)" gradientUnits="userSpaceOnUse">
+								<stop stop-color="#BCBEC0" offset="0"/>
+								<stop offset="1"/>
+							</linearGradient>
+							<polygon class="st103" points="87.5 449.9 -0.2 297.9 144.5 214.3 232.3 366.3"/>
+						</g>
+				</g>
+				<g class="st1">
+						<defs>
+							<rect id="kv" x="76.1" y="145.8" width="118.4" height="117.8"/>
+						</defs>
+						<clipPath id="ku">
+							<use xlink:href="#kv"/>
+						</clipPath>
+						<g class="st104">
+							<defs>
+								<path id="kt" d="m115.3 263.6c-13.2-30.5-26.3-68.8-39.2-117.8 38.1 4.5 78.2 6.7 118.4 8.1-26.6 23.6-53.2 57-79.2 109.7"/>
+							</defs>
+							<clipPath id="ar">
+								<use xlink:href="#kt"/>
+							</clipPath>
+							<defs>
+								<filter id="pe" x="25.1" y="94.5" width="220.5" height="220.4" filterUnits="userSpaceOnUse">
+									<feColorMatrix values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1 0"/>
+								</filter>
+							</defs>
+							<mask id="ks" x="25.1" y="94.5" width="220.5" height="220.4" maskUnits="userSpaceOnUse">
+								<g class="st105">
+										<linearGradient id="kr" x1="2.4556e-11" x2="1" y1="435.84" y2="435.84" gradientTransform="matrix(106.93 -61.739 -61.739 -106.93 27003 46834)" gradientUnits="userSpaceOnUse">
+										<stop stop-color="#ccc" offset="0"/>
+										<stop stop-color="#fff" offset="1"/>
+									</linearGradient>
+									<polygon class="st106" points="25.1 175.3 164.9 94.5 245.6 234.2 105.7 314.9"/>
+								</g>
+							</mask>
+								<linearGradient id="kq" x1="1.0914e-11" x2="1" y1="435.84" y2="435.84" gradientTransform="matrix(106.93 -61.739 -61.739 -106.93 27003 46834)" gradientUnits="userSpaceOnUse">
+								<stop stop-color="#BCBEC0" offset="0"/>
+								<stop offset="1"/>
+							</linearGradient>
+							<polygon class="st107" points="25.1 175.3 164.9 94.5 245.6 234.2 105.7 314.9"/>
+						</g>
+				</g>
+				<g class="st1">
+						<defs>
+							<rect id="kp" x="173" y="184.8" width="136.5" height="97.3"/>
+						</defs>
+						<clipPath id="ko">
+							<use xlink:href="#kp"/>
+						</clipPath>
+						<g class="st108">
+							<defs>
+								<path id="kn" d="m309.5 219.6c-44.2 9.6-90.6 28.2-136.5 62.4 25.7-45.5 51.6-75.1 77.2-97.3 20 14.4 39.9 24.9 59.3 34.9"/>
+							</defs>
+							<clipPath id="aq">
+								<use xlink:href="#kn"/>
+							</clipPath>
+							<defs>
+								<filter id="pd" x="130.9" y="125.7" width="220.7" height="215.5" filterUnits="userSpaceOnUse">
+									<feColorMatrix values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1 0"/>
+								</filter>
+							</defs>
+							<mask id="kl" x="130.9" y="125.7" width="220.7" height="215.5" maskUnits="userSpaceOnUse">
+								<g class="st109">
+										<linearGradient id="kk" x1="2.7285e-12" x2="1" y1="435.85" y2="435.85" gradientTransform="matrix(-29.91 -51.805 -51.805 29.91 22832 -12784)" gradientUnits="userSpaceOnUse">
+										<stop stop-color="#ccc" offset="0"/>
+										<stop stop-color="#fff" offset="1"/>
+									</linearGradient>
+									<polygon class="st110" points="207.1 341.2 130.9 209.1 275.4 125.7 351.6 257.8"/>
+								</g>
+							</mask>
+								<linearGradient id="kj" x1="7.276e-12" x2="1" y1="435.85" y2="435.85" gradientTransform="matrix(-29.91 -51.805 -51.805 29.91 22832 -12784)" gradientUnits="userSpaceOnUse">
+								<stop stop-color="#fff" offset="0"/>
+								<stop offset="1"/>
+							</linearGradient>
+							<polygon class="st111" points="207.1 341.2 130.9 209.1 275.4 125.7 351.6 257.8"/>
+						</g>
+				</g>
+		</g>
+		<g class="st0">
+				<defs>
+					<rect id="ki" x="400.8" y="-144.8" width="483.5" height="652.9"/>
+				</defs>
+				<clipPath id="b">
+					<use xlink:href="#ki"/>
+				</clipPath>
+				<g class="st112">
+						<defs>
+							<rect id="kh" x="729.8" y="137.9" width="103.3" height="152"/>
+						</defs>
+						<clipPath id="kg">
+							<use xlink:href="#kh"/>
+						</clipPath>
+						<g class="st113">
+							<defs>
+								<path id="kf" d="m833 289.9c-21-69-43.1-117.1-66-152-12.2 38-24.7 67.9-37.3 91.9 36.1 16.6 71 36.9 103.3 60.1"/>
+							</defs>
+							<clipPath id="ap">
+								<use xlink:href="#kf"/>
+							</clipPath>
+							<defs>
+								<filter id="pc" x="729.8" y="137.9" width="103.3" height="152" filterUnits="userSpaceOnUse">
+									<feColorMatrix values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1 0"/>
+								</filter>
+							</defs>
+							<mask id="kc" x="729.8" y="137.9" width="103.3" height="152" maskUnits="userSpaceOnUse">
+								<g class="st114">
+										<linearGradient id="kb" x1="-4.1379e-6" x2="1" y1="436" y2="436" gradientTransform="matrix(-103.25 0 0 103.25 833.01 -44804)" gradientUnits="userSpaceOnUse">
+										<stop stop-color="#ccc" offset="0"/>
+										<stop stop-color="#fff" offset="1"/>
+									</linearGradient>
+									<rect class="st115" x="729.8" y="137.9" width="103.3" height="152"/>
+								</g>
+							</mask>
+								<linearGradient id="ka" x1="-4.1379e-6" x2="1" y1="436" y2="436" gradientTransform="matrix(-103.25 0 0 103.25 833.01 -44804)" gradientUnits="userSpaceOnUse">
+								<stop stop-color="#fff" offset="0"/>
+								<stop offset="1"/>
+							</linearGradient>
+							<rect class="st116" x="729.8" y="137.9" width="103.3" height="152"/>
+						</g>
+				</g>
+				<g class="st112">
+						<defs>
+							<rect id="jz" x="767.1" y="71.3" width="108.7" height="218.5"/>
+						</defs>
+						<clipPath id="jy">
+							<use xlink:href="#jz"/>
+						</clipPath>
+						<g class="st117">
+							<defs>
+								<path id="jx" d="m875.7 71.3c-32.8 35.9-69.7 55.2-108.7 66.6 22.8 34.8 44.9 83 66 152 14.8-54.8 29.1-125.8 42.7-218.6"/>
+							</defs>
+							<clipPath id="ao">
+								<use xlink:href="#jx"/>
+							</clipPath>
+							<defs>
+								<filter id="pb" x="767.1" y="71.3" width="108.7" height="218.5" filterUnits="userSpaceOnUse">
+									<feColorMatrix values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1 0"/>
+								</filter>
+							</defs>
+							<mask id="jw" x="767.1" y="71.3" width="108.7" height="218.5" maskUnits="userSpaceOnUse">
+								<g class="st118">
+										<linearGradient id="jv" x1="5.0555e-6" x2="1" y1="436" y2="436" gradientTransform="matrix(-108.66 0 0 108.66 875.71 -47194)" gradientUnits="userSpaceOnUse">
+										<stop stop-color="#ccc" offset="0"/>
+										<stop stop-color="#fff" offset="1"/>
+									</linearGradient>
+									<rect class="st119" x="767.1" y="71.3" width="108.7" height="218.5"/>
+								</g>
+							</mask>
+								<linearGradient id="ju" x1="5.0555e-6" x2="1" y1="436" y2="436" gradientTransform="matrix(-108.66 0 0 108.66 875.71 -47194)" gradientUnits="userSpaceOnUse">
+								<stop stop-color="#fff" offset="0"/>
+								<stop offset="1"/>
+							</linearGradient>
+							<rect class="st120" x="767.1" y="71.3" width="108.7" height="218.5"/>
+						</g>
+				</g>
+				<g class="st112">
+						<defs>
+							<rect id="js" x="729.8" y="229.8" width="142.9" height="278.2"/>
+						</defs>
+						<clipPath id="jr">
+							<use xlink:href="#js"/>
+						</clipPath>
+						<g class="st121">
+							<defs>
+								<path id="jq" d="m872.6 508c-12.6-87.3-25.9-158.9-39.6-218.1-32.3-23.1-67.2-43.5-103.3-60.1 51.5 51.2 100.5 132.6 142.9 278.2"/>
+							</defs>
+							<clipPath id="an">
+								<use xlink:href="#jq"/>
+							</clipPath>
+							<defs>
+								<filter id="pa" x="590.6" y="158.3" width="421.1" height="421.1" filterUnits="userSpaceOnUse">
+									<feColorMatrix values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1 0"/>
+								</filter>
+							</defs>
+							<mask id="jp" x="590.6" y="158.3" width="421.1" height="421.1" maskUnits="userSpaceOnUse">
+								<g class="st122">
+										<linearGradient id="jo" x1="-5.4351e-7" x2="1" y1="435.95" y2="435.95" gradientTransform="matrix(210.56 210.56 210.56 -210.56 -91098 92057)" gradientUnits="userSpaceOnUse">
+										<stop stop-color="#ccc" offset="0"/>
+										<stop stop-color="#fff" offset="1"/>
+									</linearGradient>
+									<polygon class="st123" points="801.2 158.3 1011.8 368.9 801.2 579.5 590.6 368.9"/>
+								</g>
+							</mask>
+								<linearGradient id="jn" x1="-5.7973e-7" x2="1" y1="435.95" y2="435.95" gradientTransform="matrix(210.56 210.56 210.56 -210.56 -91098 92057)" gradientUnits="userSpaceOnUse">
+								<stop stop-color="#fff" offset="0"/>
+								<stop offset="1"/>
+							</linearGradient>
+							<polygon class="st124" points="801.2 158.3 1011.8 368.9 801.2 579.5 590.6 368.9"/>
+						</g>
+				</g>
+				<g class="st112">
+						<defs>
+							<rect id="jm" x="648.6" y="129.8" width="118.4" height="100"/>
+						</defs>
+						<clipPath id="jl">
+							<use xlink:href="#jm"/>
+						</clipPath>
+						<g class="st125">
+							<defs>
+								<path id="jk" d="m729.8 229.8c12.6-24 25-53.9 37.3-91.9-38.1-4.5-78.2-6.7-118.4-8.1 27.2 21.3 54.4 51.5 81.1 100"/>
+							</defs>
+							<clipPath id="am">
+								<use xlink:href="#jk"/>
+							</clipPath>
+							<defs>
+								<filter id="oy" x="605.3" y="78.5" width="205" height="202.6" filterUnits="userSpaceOnUse">
+									<feColorMatrix values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1 0"/>
+								</filter>
+							</defs>
+							<mask id="ji" x="605.3" y="78.5" width="205" height="202.6" maskUnits="userSpaceOnUse">
+								<g class="st126">
+										<linearGradient id="jh" x1="-2.7285e-12" x2="1" y1="436.09" y2="436.09" gradientTransform="matrix(-85.326 49.263 49.263 85.326 -20713 -37067)" gradientUnits="userSpaceOnUse">
+										<stop stop-color="#ccc" offset="0"/>
+										<stop stop-color="#fff" offset="1"/>
+									</linearGradient>
+									<polygon class="st127" points="810.3 204.8 678.2 281.1 605.3 154.8 737.4 78.5"/>
+								</g>
+							</mask>
+								<linearGradient id="jg" x1="-1.2733e-11" x2="1" y1="436.09" y2="436.09" gradientTransform="matrix(-85.326 49.263 49.263 85.326 -20713 -37067)" gradientUnits="userSpaceOnUse">
+								<stop stop-color="#fff" offset="0"/>
+								<stop offset="1"/>
+							</linearGradient>
+							<polygon class="st128" points="810.3 204.8 678.2 281.1 605.3 154.8 737.4 78.5"/>
+						</g>
+				</g>
+				<g class="st112">
+						<defs>
+							<rect id="jf" x="727.8" y="18.7" width="147.9" height="119.2"/>
+						</defs>
+						<clipPath id="je">
+							<use xlink:href="#jf"/>
+						</clipPath>
+						<g class="st129">
+							<defs>
+								<path id="jd" d="m767.1 137.9c38.9-11.4 75.8-30.6 108.7-66.6-43.7-51.1-94.5-56-147.9-51.3 13.2 30.5 26.3 68.8 39.2 117.9"/>
+							</defs>
+							<clipPath id="al">
+								<use xlink:href="#jd"/>
+							</clipPath>
+							<defs>
+								<filter id="ox" x="674.8" y="-48.7" width="254" height="250.6" filterUnits="userSpaceOnUse">
+									<feColorMatrix values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1 0"/>
+								</filter>
+							</defs>
+							<mask id="jc" x="674.8" y="-48.7" width="254" height="250.6" maskUnits="userSpaceOnUse">
+								<g class="st130">
+										<linearGradient id="jb" x1="-2.1828e-11" x2="1" y1="436.17" y2="436.17" gradientTransform="matrix(-110.31 63.69 63.69 110.31 -26920 -48072)" gradientUnits="userSpaceOnUse">
+										<stop stop-color="#ccc" offset="0"/>
+										<stop stop-color="#fff" offset="1"/>
+									</linearGradient>
+									<polygon class="st131" points="928.8 107.2 764.8 201.9 674.8 46 838.7 -48.7"/>
+								</g>
+							</mask>
+								<linearGradient id="ja" x1="-2.1828e-11" x2="1" y1="436.17" y2="436.17" gradientTransform="matrix(-110.31 63.69 63.69 110.31 -26920 -48072)" gradientUnits="userSpaceOnUse">
+								<stop stop-color="#fff" offset="0"/>
+								<stop offset="1"/>
+							</linearGradient>
+							<polygon class="st132" points="928.8 107.2 764.8 201.9 674.8 46 838.7 -48.7"/>
+						</g>
+				</g>
+				<g class="st112">
+						<defs>
+							<rect id="iz" x="784.1" y="-144.8" width="100.1" height="216.2"/>
+						</defs>
+						<clipPath id="iy">
+							<use xlink:href="#iz"/>
+						</clipPath>
+						<g class="st133">
+							<defs>
+								<path id="ix" d="m875.7 71.3c2.9-67.9 5.7-139.3 8.5-214.4-30.2-6.9-64.1 6.8-100.1 26.2 32.7 24.7 63.6 77.4 91.6 188.2"/>
+							</defs>
+							<clipPath id="aj">
+								<use xlink:href="#ix"/>
+							</clipPath>
+							<defs>
+								<filter id="ow" x="688.3" y="-193.2" width="291.7" height="307.9" filterUnits="userSpaceOnUse">
+									<feColorMatrix values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1 0"/>
+								</filter>
+							</defs>
+							<mask id="iw" x="688.3" y="-193.2" width="291.7" height="307.9" maskUnits="userSpaceOnUse">
+								<g class="st134">
+										<linearGradient id="iv" x1="-1.2733e-11" x2="1" y1="435.89" y2="435.89" gradientTransform="matrix(-99.223 57.286 57.286 99.223 -24054 -43337)" gradientUnits="userSpaceOnUse">
+										<stop stop-color="#ccc" offset="0"/>
+										<stop stop-color="#fff" offset="1"/>
+									</linearGradient>
+									<polygon class="st135" points="980 16 809.2 114.7 688.3 -94.6 859.2 -193.2"/>
+								</g>
+							</mask>
+								<linearGradient id="iu" x1="-2.0918e-11" x2="1" y1="435.89" y2="435.89" gradientTransform="matrix(-99.223 57.286 57.286 99.223 -24054 -43337)" gradientUnits="userSpaceOnUse">
+								<stop stop-color="#fff" offset="0"/>
+								<stop offset="1"/>
+							</linearGradient>
+							<polygon class="st136" points="980 16 809.2 114.7 688.3 -94.6 859.2 -193.2"/>
+						</g>
+				</g>
+				<g class="st112">
+						<defs>
+							<rect id="it" x="541.1" y="98.9" width="107.5" height="31.8"/>
+						</defs>
+						<clipPath id="is">
+							<use xlink:href="#it"/>
+						</clipPath>
+						<g class="st137">
+							<defs>
+								<path id="iq" d="m541.1 130.7c35-0.2 71.3-0.4 107.5-0.9-18.6-13.6-37.2-23.2-55.6-30.9-17.5 13.1-34.8 23.1-51.9 31.8"/>
+							</defs>
+							<clipPath id="ai">
+								<use xlink:href="#iq"/>
+							</clipPath>
+							<defs>
+								<filter id="ov" x="527.4" y="52.4" width="135" height="124.9" filterUnits="userSpaceOnUse">
+									<feColorMatrix values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1 0"/>
+								</filter>
+							</defs>
+							<mask id="ip" x="527.4" y="52.4" width="135" height="124.9" maskUnits="userSpaceOnUse">
+								<g class="st138">
+										<linearGradient id="io" x1="1.819e-12" x2="1" y1="435.87" y2="435.87" gradientTransform="matrix(-80.985 46.757 46.757 80.985 -19751 -35203)" gradientUnits="userSpaceOnUse">
+										<stop stop-color="#ccc" offset="0"/>
+										<stop stop-color="#fff" offset="1"/>
+									</linearGradient>
+									<polygon class="st139" points="662.4 122.7 568 177.2 527.4 106.8 621.7 52.4"/>
+								</g>
+							</mask>
+								<linearGradient id="in" x1="3.638e-12" x2="1" y1="435.87" y2="435.87" gradientTransform="matrix(-80.985 46.757 46.757 80.985 -19751 -35203)" gradientUnits="userSpaceOnUse">
+								<stop stop-color="#fff" offset="0"/>
+								<stop offset="1"/>
+							</linearGradient>
+							<polygon class="st140" points="662.4 122.7 568 177.2 527.4 106.8 621.7 52.4"/>
+						</g>
+				</g>
+				<g class="st112">
+						<defs>
+							<rect id="im" x="442.7" y="92.1" width="98.5" height="38.6"/>
+						</defs>
+						<clipPath id="il">
+							<use xlink:href="#im"/>
+						</clipPath>
+						<g class="st141">
+							<defs>
+								<path id="ik" d="m442.7 121.7c30.7 3.2 63.9 5.6 98.5 8.9-31-14.6-61.1-25.4-89.1-38.6-3.2 9.9-6.3 19.8-9.4 29.7"/>
+							</defs>
+							<clipPath id="ah">
+								<use xlink:href="#ik"/>
+							</clipPath>
+							<defs>
+								<filter id="ou" x="426" y="49.4" width="131.9" height="123.9" filterUnits="userSpaceOnUse">
+									<feColorMatrix values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1 0"/>
+								</filter>
+							</defs>
+							<mask id="ij" x="426" y="49.4" width="131.9" height="123.9" maskUnits="userSpaceOnUse">
+								<g class="st142">
+										<linearGradient id="ih" x1="-5.457e-12" x2="1" y1="435.97" y2="435.97" gradientTransform="matrix(-69.975 40.4 40.4 69.975 -17093 -30412)" gradientUnits="userSpaceOnUse">
+										<stop offset="0"/>
+										<stop stop-color="#fff" offset="1"/>
+									</linearGradient>
+									<polygon class="st143" points="557.9 121 467.3 173.3 426 101.7 516.5 49.4"/>
+								</g>
+							</mask>
+								<linearGradient id="ig" x1="-7.276e-12" x2="1" y1="435.97" y2="435.97" gradientTransform="matrix(-69.975 40.4 40.4 69.975 -17093 -30412)" gradientUnits="userSpaceOnUse">
+								<stop stop-color="#fff" offset="0"/>
+								<stop offset="1"/>
+							</linearGradient>
+							<polygon class="st144" points="557.9 121 467.3 173.3 426 101.7 516.5 49.4"/>
+						</g>
+				</g>
+				<g class="st112">
+						<defs>
+							<rect id="if" x="644.9" y="229.8" width="227.7" height="278.2"/>
+						</defs>
+						<clipPath id="ie">
+							<use xlink:href="#if"/>
+						</clipPath>
+						<g class="st145">
+							<defs>
+								<path id="id" d="m872.6 508c-42.5-145.6-91.5-227-142.9-278.2-27.8 8.3-56.3 8.9-84.8 7.8 81.2 44.6 162.3 127.8 227.7 270.4"/>
+							</defs>
+							<clipPath id="ag">
+								<use xlink:href="#id"/>
+							</clipPath>
+							<defs>
+								<filter id="ot" x="524.5" y="131.2" width="468.7" height="475.4" filterUnits="userSpaceOnUse">
+									<feColorMatrix values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1 0"/>
+								</filter>
+							</defs>
+							<mask id="ic" x="524.5" y="131.2" width="468.7" height="475.4" maskUnits="userSpaceOnUse">
+								<g class="st146">
+										<linearGradient id="ib" x1="1.0004e-11" x2="1" y1="435.96" y2="435.96" gradientTransform="matrix(-78.46 45.299 45.299 78.46 -18940 -33865)" gradientUnits="userSpaceOnUse">
+										<stop stop-color="#ccc" offset="0"/>
+										<stop stop-color="#fff" offset="1"/>
+									</linearGradient>
+									<polygon class="st147" points="993.1 438.5 701.9 606.6 524.5 299.4 815.7 131.2"/>
+								</g>
+							</mask>
+								<linearGradient id="ia" x1="7.276e-12" x2="1" y1="435.96" y2="435.96" gradientTransform="matrix(-78.46 45.299 45.299 78.46 -18940 -33865)" gradientUnits="userSpaceOnUse">
+								<stop stop-color="#fff" offset="0"/>
+								<stop offset="1"/>
+							</linearGradient>
+							<polygon class="st148" points="993.1 438.5 701.9 606.6 524.5 299.4 815.7 131.2"/>
+						</g>
+				</g>
+				<g class="st112">
+						<defs>
+							<rect id="hz" x="593" y="166.6" width="136.8" height="71.4"/>
+						</defs>
+						<clipPath id="hx">
+							<use xlink:href="#hz"/>
+						</clipPath>
+						<g class="st149">
+							<defs>
+								<path id="hw" d="m644.9 237.6c28.5 1.1 57 0.5 84.8-7.8-44.7-33.4-91.2-51.8-136.7-63.2 17.2 18.4 34.6 41 51.9 71"/>
+							</defs>
+							<clipPath id="af">
+								<use xlink:href="#hw"/>
+							</clipPath>
+							<defs>
+								<filter id="os" x="561.8" y="107.4" width="199.2" height="190.6" filterUnits="userSpaceOnUse">
+									<feColorMatrix values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1 0"/>
+								</filter>
+							</defs>
+							<mask id="hv" x="561.8" y="107.4" width="199.2" height="190.6" maskUnits="userSpaceOnUse">
+								<g class="st150">
+										<linearGradient id="hu" x1="1.819e-12" x2="1" y1="436.04" y2="436.04" gradientTransform="matrix(-75.21 43.422 43.422 75.21 -18233 -32615)" gradientUnits="userSpaceOnUse">
+										<stop stop-color="#E6E6E6" offset="0"/>
+										<stop stop-color="#fff" offset="1"/>
+									</linearGradient>
+									<polygon class="st151" points="761 220.7 627.2 297.9 561.8 184.6 695.6 107.4"/>
+								</g>
+							</mask>
+								<linearGradient id="ht" x1="1.819e-12" x2="1" y1="436.04" y2="436.04" gradientTransform="matrix(-75.21 43.422 43.422 75.21 -18233 -32615)" gradientUnits="userSpaceOnUse">
+								<stop stop-color="#fff" offset="0"/>
+								<stop offset="1"/>
+							</linearGradient>
+							<polygon class="st152" points="761 220.7 627.2 297.9 561.8 184.6 695.6 107.4"/>
+						</g>
+				</g>
+				<g class="st112">
+						<defs>
+							<rect id="hs" x="499.7" y="164.4" width="93.3" height="42.6"/>
+						</defs>
+						<clipPath id="hr">
+							<use xlink:href="#hs"/>
+						</clipPath>
+						<g class="st153">
+							<defs>
+								<path id="hq" d="m566.4 206.9c8.8-12.1 17.7-25.3 26.5-40.4-31.9-1.8-63.3-2.7-93.3-1.9 21.7 11 44.1 23.9 66.8 42.3"/>
+							</defs>
+							<clipPath id="ae">
+								<use xlink:href="#hq"/>
+							</clipPath>
+							<defs>
+								<filter id="or" x="481" y="123.4" width="130.6" height="123.9" filterUnits="userSpaceOnUse">
+									<feColorMatrix values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1 0"/>
+								</filter>
+							</defs>
+							<mask id="ho" x="481" y="123.4" width="130.6" height="123.9" maskUnits="userSpaceOnUse">
+								<g class="st154">
+										<linearGradient id="hn" x1="-1.0914e-11" x2="1" y1="436.08" y2="436.08" gradientTransform="matrix(-69.167 39.934 39.934 69.167 -16825 -30002)" gradientUnits="userSpaceOnUse">
+										<stop stop-color="#ccc" offset="0"/>
+										<stop stop-color="#fff" offset="1"/>
+									</linearGradient>
+									<polygon class="st155" points="611.6 196.2 523 247.4 481 174.6 569.7 123.4"/>
+								</g>
+							</mask>
+								<linearGradient id="hm" x1="-1.0914e-11" x2="1" y1="436.08" y2="436.08" gradientTransform="matrix(-69.167 39.934 39.934 69.167 -16825 -30002)" gradientUnits="userSpaceOnUse">
+								<stop stop-color="#fff" offset="0"/>
+								<stop offset="1"/>
+							</linearGradient>
+							<polygon class="st156" points="611.6 196.2 523 247.4 481 174.6 569.7 123.4"/>
+						</g>
+				</g>
+				<g class="st157">
+						<defs>
+							<rect id="hl" x="442.7" y="121.7" width="98.5" height="42.9"/>
+						</defs>
+						<clipPath id="hk">
+							<use xlink:href="#hl"/>
+						</clipPath>
+						<g class="st158">
+							<defs>
+								<path id="hj" d="m499.7 164.7c13.6-10.6 27.4-21.5 41.5-34-34.5-3.4-67.8-5.8-98.5-8.9 18.2 14.1 37.3 27.4 57 42.9"/>
+							</defs>
+							<clipPath id="ad">
+								<use xlink:href="#hj"/>
+							</clipPath>
+							<defs>
+								<filter id="oq" x="424.1" y="79.1" width="135.6" height="128.2" filterUnits="userSpaceOnUse">
+									<feColorMatrix values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1 0"/>
+								</filter>
+							</defs>
+							<mask id="hi" x="424.1" y="79.1" width="135.6" height="128.2" maskUnits="userSpaceOnUse">
+								<g class="st159">
+										<linearGradient id="hh" x2="1" y1="436.13" y2="436.13" gradientTransform="matrix(-69.975 40.4 40.4 69.975 -17085 -30399)" gradientUnits="userSpaceOnUse">
+										<stop offset="0"/>
+										<stop stop-color="#fff" offset="1"/>
+									</linearGradient>
+									<polygon class="st160" points="559.7 154 467.3 207.3 424.1 132.5 516.5 79.1"/>
+								</g>
+							</mask>
+								<linearGradient id="hg" x1="-2.7285e-12" x2="1" y1="436.13" y2="436.13" gradientTransform="matrix(-69.975 40.4 40.4 69.975 -17085 -30399)" gradientUnits="userSpaceOnUse">
+								<stop stop-color="#fff" offset="0"/>
+								<stop offset="1"/>
+							</linearGradient>
+							<polygon class="st161" points="559.7 154 467.3 207.3 424.1 132.5 516.5 79.1"/>
+						</g>
+				</g>
+				<g class="st112">
+						<defs>
+							<rect id="he" x="541.1" y="129.8" width="107.5" height="36.8"/>
+						</defs>
+						<clipPath id="hd">
+							<use xlink:href="#he"/>
+						</clipPath>
+						<g class="st162">
+							<defs>
+								<path id="hc" d="m593 166.6c18.4-9.2 37-20.6 55.6-36.8-36.2 0.5-72.5 0.7-107.5 0.9 17.1 9.8 34.4 21.1 51.9 35.9"/>
+							</defs>
+							<clipPath id="ac">
+								<use xlink:href="#hc"/>
+							</clipPath>
+							<defs>
+								<filter id="op" x="525.2" y="83.3" width="139.3" height="129.8" filterUnits="userSpaceOnUse">
+									<feColorMatrix values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1 0"/>
+								</filter>
+							</defs>
+							<mask id="hb" x="525.2" y="83.3" width="139.3" height="129.8" maskUnits="userSpaceOnUse">
+								<g class="st163">
+										<linearGradient id="ha" x1="9.6562e-7" x2="1" y1="436.14" y2="436.14" gradientTransform="matrix(-80.985 46.757 46.757 80.985 -19749 -35201)" gradientUnits="userSpaceOnUse">
+										<stop stop-color="#666" offset="0"/>
+										<stop stop-color="#fff" offset="1"/>
+									</linearGradient>
+									<polygon class="st164" points="664.5 157.4 568 213.1 525.2 139 621.7 83.3"/>
+								</g>
+							</mask>
+								<linearGradient id="gz" x1="9.8679e-7" x2="1" y1="436.14" y2="436.14" gradientTransform="matrix(-80.985 46.757 46.757 80.985 -19749 -35201)" gradientUnits="userSpaceOnUse">
+								<stop stop-color="#fff" offset="0"/>
+								<stop offset="1"/>
+							</linearGradient>
+							<polygon class="st165" points="664.5 157.4 568 213.1 525.2 139 621.7 83.3"/>
+						</g>
+				</g>
+				<g class="st112">
+						<defs>
+							<rect id="gy" x="593" y="129.8" width="136.8" height="100"/>
+						</defs>
+						<clipPath id="gx">
+							<use xlink:href="#gy"/>
+						</clipPath>
+						<g class="st166">
+							<defs>
+								<path id="gw" d="m648.6 129.8c27.3 21.3 54.5 51.5 81.1 100-44.7-33.4-91.2-51.8-136.7-63.2 18.4-9.2 37-20.6 55.6-36.8"/>
+							</defs>
+							<clipPath id="ab">
+								<use xlink:href="#gw"/>
+							</clipPath>
+							<defs>
+								<filter id="on" x="549.7" y="70.6" width="223.4" height="218.4" filterUnits="userSpaceOnUse">
+									<feColorMatrix values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1 0"/>
+								</filter>
+							</defs>
+							<mask id="gu" x="549.7" y="70.6" width="223.4" height="218.4" maskUnits="userSpaceOnUse">
+								<g class="st167">
+										<linearGradient id="gt" x1="1.819e-12" x2="1" y1="435.84" y2="435.84" gradientTransform="matrix(-75.305 43.477 43.477 75.305 -18258 -32658)" gradientUnits="userSpaceOnUse">
+										<stop stop-color="#ccc" offset="0"/>
+										<stop stop-color="#fff" offset="1"/>
+									</linearGradient>
+									<polygon class="st168" points="773.1 204.8 627.2 289 549.7 154.8 695.6 70.6"/>
+								</g>
+							</mask>
+								<linearGradient id="gs" x1="-3.638e-12" x2="1" y1="435.84" y2="435.84" gradientTransform="matrix(-75.305 43.477 43.477 75.305 -18258 -32658)" gradientUnits="userSpaceOnUse">
+								<stop stop-color="#fff" offset="0"/>
+								<stop offset="1"/>
+							</linearGradient>
+							<polygon class="st169" points="773.1 204.8 627.2 289 549.7 154.8 695.6 70.6"/>
+						</g>
+				</g>
+				<g class="st112">
+						<defs>
+							<rect id="gr" x="400.8" y="162.2" width="98.9" height="30.9"/>
+						</defs>
+						<clipPath id="gq">
+							<use xlink:href="#gr"/>
+						</clipPath>
+						<g class="st170">
+							<defs>
+								<path id="gp" d="m400.8 162.8c29.8-1 63.3-1 98.9 1.9-18.2 9.1-35.8 18.1-52.6 28.4-16.2-10.3-31.7-19.9-46.3-30.3"/>
+							</defs>
+							<clipPath id="aa">
+								<use xlink:href="#gp"/>
+							</clipPath>
+							<defs>
+								<filter id="om" x="387.2" y="118.9" width="126" height="117" filterUnits="userSpaceOnUse">
+									<feColorMatrix values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1 0"/>
+								</filter>
+							</defs>
+							<mask id="go" x="387.2" y="118.9" width="126" height="117" maskUnits="userSpaceOnUse">
+								<g class="st171">
+										<linearGradient id="gn" x2="1" y1="436.14" y2="436.14" gradientTransform="matrix(-73.324 42.334 42.334 73.324 -17971 -31827)" gradientUnits="userSpaceOnUse">
+										<stop offset="0"/>
+										<stop stop-color="#fff" offset="1"/>
+									</linearGradient>
+									<polygon class="st172" points="513.2 185.3 425.5 235.9 387.2 169.6 475 118.9"/>
+								</g>
+							</mask>
+								<linearGradient id="gl" x2="1" y1="436.14" y2="436.14" gradientTransform="matrix(-73.324 42.334 42.334 73.324 -17971 -31827)" gradientUnits="userSpaceOnUse">
+								<stop stop-color="#fff" offset="0"/>
+								<stop offset="1"/>
+							</linearGradient>
+							<polygon class="st173" points="513.2 185.3 425.5 235.9 387.2 169.6 475 118.9"/>
+						</g>
+				</g>
+				<g class="st112">
+						<defs>
+							<rect id="gk" x="400.8" y="121.7" width="98.9" height="42.9"/>
+						</defs>
+						<clipPath id="gj">
+							<use xlink:href="#gk"/>
+						</clipPath>
+						<g class="st174">
+							<defs>
+								<path id="gi" d="m442.7 121.7c18.2 14.1 37.3 27.5 57 42.9-35.5-2.9-69-2.9-98.9-1.9 13.3-14.7 27.3-28 41.9-41"/>
+							</defs>
+							<clipPath id="y">
+								<use xlink:href="#gi"/>
+							</clipPath>
+							<defs>
+								<filter id="ol" x="382.2" y="78.9" width="136.1" height="128.6" filterUnits="userSpaceOnUse">
+									<feColorMatrix values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1 0"/>
+								</filter>
+							</defs>
+							<mask id="gh" x="382.2" y="78.9" width="136.1" height="128.6" maskUnits="userSpaceOnUse">
+								<g class="st175">
+										<linearGradient id="gg" x1="3.638e-12" x2="1" y1="435.88" y2="435.88" gradientTransform="matrix(-73.324 42.334 42.334 73.324 -17974 -31833)" gradientUnits="userSpaceOnUse">
+										<stop offset="0"/>
+										<stop offset=".0049261"/>
+										<stop stop-color="#fff" offset="1"/>
+									</linearGradient>
+									<polygon class="st176" points="518.3 154 425.5 207.5 382.2 132.5 475 78.9"/>
+								</g>
+							</mask>
+								<linearGradient id="gf" x1="-1.819e-12" x2="1" y1="435.88" y2="435.88" gradientTransform="matrix(-73.324 42.334 42.334 73.324 -17974 -31833)" gradientUnits="userSpaceOnUse">
+								<stop stop-color="#fff" offset="0"/>
+								<stop stop-color="#fff" offset=".0049261"/>
+								<stop offset="1"/>
+							</linearGradient>
+							<polygon class="st177" points="518.3 154 425.5 207.5 382.2 132.5 475 78.9"/>
+						</g>
+				</g>
+				<g class="st112">
+						<defs>
+							<rect id="ge" x="566.4" y="166.6" width="78.5" height="71"/>
+						</defs>
+						<clipPath id="gd">
+							<use xlink:href="#ge"/>
+						</clipPath>
+						<g class="st178">
+							<defs>
+								<path id="gb" d="m593 166.6c17.2 18.4 34.6 41.1 51.9 71-26.3-13.7-52.7-23.7-78.5-30.7 8.8-12.1 17.7-25.3 26.6-40.3"/>
+							</defs>
+							<clipPath id="x">
+								<use xlink:href="#gb"/>
+							</clipPath>
+							<defs>
+								<filter id="ok" x="535.7" y="132.6" width="140" height="139" filterUnits="userSpaceOnUse">
+									<feColorMatrix values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1 0"/>
+								</filter>
+							</defs>
+							<mask id="ga" x="535.7" y="132.6" width="140" height="139" maskUnits="userSpaceOnUse">
+								<g class="st179">
+										<linearGradient id="fz" x1="-9.0949e-12" x2="1" y1="435.87" y2="435.87" gradientTransform="matrix(-45.592 26.323 26.323 45.592 -10854 -19679)" gradientUnits="userSpaceOnUse">
+										<stop stop-color="#ccc" offset="0"/>
+										<stop stop-color="#fff" offset="1"/>
+									</linearGradient>
+									<polygon class="st180" points="675.7 219.8 586.1 271.6 535.7 184.3 625.3 132.6"/>
+								</g>
+							</mask>
+								<linearGradient id="fy" x1="6.3665e-12" x2="1" y1="435.87" y2="435.87" gradientTransform="matrix(-45.592 26.323 26.323 45.592 -10854 -19679)" gradientUnits="userSpaceOnUse">
+								<stop stop-color="#fff" offset="0"/>
+								<stop offset="1"/>
+							</linearGradient>
+							<polygon class="st181" points="675.7 219.8 586.1 271.6 535.7 184.3 625.3 132.6"/>
+						</g>
+				</g>
+				<g class="st157">
+						<defs>
+							<rect id="fx" x="447" y="164.7" width="119.4" height="42.3"/>
+						</defs>
+						<clipPath id="fw">
+							<use xlink:href="#fx"/>
+						</clipPath>
+						<g class="st182">
+							<defs>
+								<path id="fv" d="m499.7 164.7c21.6 10.9 44 23.8 66.8 42.3-41.9-12-82.5-15.4-119.4-13.8 16.8-10.4 34.4-19.4 52.6-28.5"/>
+							</defs>
+							<clipPath id="w">
+								<use xlink:href="#fv"/>
+							</clipPath>
+							<defs>
+								<filter id="oj" x="428.7" y="113" width="156" height="145.7" filterUnits="userSpaceOnUse">
+									<feColorMatrix values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1 0"/>
+								</filter>
+							</defs>
+							<mask id="fu" x="428.7" y="113" width="156" height="145.7" maskUnits="userSpaceOnUse">
+								<g class="st183">
+										<linearGradient id="fs" x1="9.0949e-12" x2="1" y1="435.87" y2="435.87" gradientTransform="matrix(-83.573 48.251 48.251 83.573 -20489 -36262)" gradientUnits="userSpaceOnUse">
+										<stop stop-color="#ccc" offset="0"/>
+										<stop stop-color="#fff" offset="1"/>
+									</linearGradient>
+									<polygon class="st184" points="584.7 196.4 476.9 258.7 428.7 175.3 536.6 113"/>
+								</g>
+							</mask>
+								<linearGradient id="fr" x1="9.0949e-12" x2="1" y1="435.87" y2="435.87" gradientTransform="matrix(-83.573 48.251 48.251 83.573 -20489 -36262)" gradientUnits="userSpaceOnUse">
+								<stop stop-color="#fff" offset="0"/>
+								<stop offset="1"/>
+							</linearGradient>
+							<polygon class="st185" points="584.7 196.4 476.9 258.7 428.7 175.3 536.6 113"/>
+						</g>
+				</g>
+				<g class="st112">
+						<defs>
+							<rect id="fq" x="593" y="20.1" width="134.9" height="109.7"/>
+						</defs>
+						<clipPath id="fp">
+							<use xlink:href="#fq"/>
+						</clipPath>
+						<g class="st186">
+							<defs>
+								<path id="fo" d="m593 98.9c44.9-14 90.7-36 134.9-78.8-26 52.7-52.6 86.1-79.2 109.7-18.7-13.6-37.3-23.2-55.7-30.9"/>
+							</defs>
+							<clipPath id="v">
+								<use xlink:href="#fo"/>
+							</clipPath>
+							<defs>
+								<filter id="oi" x="545.5" y="-38.3" width="229.9" height="226.5" filterUnits="userSpaceOnUse">
+									<feColorMatrix values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1 0"/>
+								</filter>
+							</defs>
+							<mask id="fn" x="545.5" y="-38.3" width="229.9" height="226.5" maskUnits="userSpaceOnUse">
+								<g class="st187">
+										<linearGradient id="fm" x1="1.2733e-11" x2="1" y1="435.86" y2="435.86" gradientTransform="matrix(27.706 47.988 47.988 -27.706 -20263 12139)" gradientUnits="userSpaceOnUse">
+										<stop stop-color="#999" offset="0"/>
+										<stop stop-color="#fff" offset="1"/>
+									</linearGradient>
+									<polygon class="st188" points="694.1 -38.3 775.4 102.4 626.7 188.2 545.5 47.5"/>
+								</g>
+							</mask>
+								<linearGradient id="fl" x1="7.276e-12" x2="1" y1="435.86" y2="435.86" gradientTransform="matrix(27.706 47.988 47.988 -27.706 -20263 12139)" gradientUnits="userSpaceOnUse">
+								<stop stop-color="#fff" offset="0"/>
+								<stop offset="1"/>
+							</linearGradient>
+							<polygon class="st189" points="694.1 -38.3 775.4 102.4 626.7 188.2 545.5 47.5"/>
+						</g>
+				</g>
+				<g class="st157">
+						<defs>
+							<rect id="fk" x="499.7" y="130.7" width="93.3" height="35.9"/>
+						</defs>
+						<clipPath id="fi">
+							<use xlink:href="#fk"/>
+						</clipPath>
+						<g class="st190">
+							<defs>
+								<path id="fh" d="m541.1 130.7c17 9.8 34.4 21.1 51.8 35.9-31.9-1.8-63.3-2.7-93.3-1.9 13.6-10.6 27.5-21.5 41.5-34"/>
+							</defs>
+							<clipPath id="u">
+								<use xlink:href="#fh"/>
+							</clipPath>
+							<defs>
+								<filter id="oh" x="484.1" y="90.3" width="124.4" height="116.7" filterUnits="userSpaceOnUse">
+									<feColorMatrix values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1 0"/>
+								</filter>
+							</defs>
+							<mask id="fg" x="484.1" y="90.3" width="124.4" height="116.7" maskUnits="userSpaceOnUse">
+								<g class="st191">
+										<linearGradient id="ff" x1="1.5461e-11" x2="1" y1="436.15" y2="436.15" gradientTransform="matrix(28.504 49.371 49.371 -28.504 -20996 12565)" gradientUnits="userSpaceOnUse">
+										<stop stop-color="#ccc" offset="0"/>
+										<stop stop-color="#fff" offset="1"/>
+									</linearGradient>
+									<polygon class="st192" points="569.7 90.3 608.5 157.6 523 207 484.1 139.7"/>
+								</g>
+							</mask>
+								<linearGradient id="fe" x1="1.5461e-11" x2="1" y1="436.15" y2="436.15" gradientTransform="matrix(28.504 49.371 49.371 -28.504 -20996 12565)" gradientUnits="userSpaceOnUse">
+								<stop stop-color="#fff" offset="0"/>
+								<stop offset="1"/>
+							</linearGradient>
+							<polygon class="st193" points="569.7 90.3 608.5 157.6 523 207 484.1 139.7"/>
+						</g>
+				</g>
+				<g class="st157">
+						<defs>
+							<rect id="fd" x="452" y="92.1" width="141" height="38.6"/>
+						</defs>
+						<clipPath id="fc">
+							<use xlink:href="#fd"/>
+						</clipPath>
+						<g class="st194">
+							<defs>
+								<path id="fb" d="m452 92.1c43.4 5.9 91.6 6.6 141 6.8-17.5 13.1-34.8 23.1-51.8 31.8-31.1-14.7-61.1-25.4-89.2-38.6"/>
+							</defs>
+							<clipPath id="t">
+								<use xlink:href="#fb"/>
+							</clipPath>
+							<defs>
+								<filter id="og" x="452" y="92.1" width="141" height="38.6" filterUnits="userSpaceOnUse">
+									<feColorMatrix values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1 0"/>
+								</filter>
+							</defs>
+							<mask id="ez" x="452" y="92.1" width="141" height="38.6" maskUnits="userSpaceOnUse">
+								<g class="st195">
+										<linearGradient id="ey" x1="2.165e-6" x2="1" y1="436" y2="436" gradientTransform="matrix(140.96 0 0 -140.96 452.02 61570)" gradientUnits="userSpaceOnUse">
+										<stop stop-color="#333" offset="0"/>
+										<stop stop-color="#fff" offset="1"/>
+									</linearGradient>
+									<rect class="st196" x="452" y="92.1" width="141" height="38.6"/>
+								</g>
+							</mask>
+								<linearGradient id="ex" x1="2.165e-6" x2="1" y1="436" y2="436" gradientTransform="matrix(140.96 0 0 -140.96 452.02 61570)" gradientUnits="userSpaceOnUse">
+								<stop stop-color="#fff" offset="0"/>
+								<stop offset="1"/>
+							</linearGradient>
+							<rect class="st197" x="452" y="92.1" width="141" height="38.6"/>
+						</g>
+				</g>
+				<g class="st198">
+						<defs>
+							<rect id="ew" x="727.8" y="-116.8" width="147.9" height="188.2"/>
+						</defs>
+						<clipPath id="ev">
+							<use xlink:href="#ew"/>
+						</clipPath>
+						<g class="st199">
+							<defs>
+								<path id="eu" d="m784.1-116.8c32.7 24.6 63.6 77.4 91.6 188.2-43.7-51.1-94.5-56-147.9-51.3 19.2-35 38-79.3 56.3-136.9"/>
+							</defs>
+							<clipPath id="s">
+								<use xlink:href="#eu"/>
+							</clipPath>
+							<defs>
+								<filter id="of" x="646.4" y="-180.9" width="310.8" height="316.2" filterUnits="userSpaceOnUse">
+									<feColorMatrix values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1 0"/>
+								</filter>
+							</defs>
+							<mask id="et" x="646.4" y="-180.9" width="310.8" height="316.2" maskUnits="userSpaceOnUse">
+								<g class="st200">
+										<linearGradient id="es" x1="2.7285e-12" x2="1" y1="436.1" y2="436.1" gradientTransform="matrix(104.38 180.79 180.79 -104.38 -78086 45419)" gradientUnits="userSpaceOnUse">
+										<stop stop-color="#E6E6E6" offset="0"/>
+										<stop stop-color="#fff" offset="1"/>
+									</linearGradient>
+									<polygon class="st201" points="838.7 -180.9 957.2 24.3 764.8 135.4 646.4 -69.8"/>
+								</g>
+							</mask>
+								<linearGradient id="er" x1="1.819e-11" x2="1" y1="436.1" y2="436.1" gradientTransform="matrix(104.38 180.79 180.79 -104.38 -78086 45419)" gradientUnits="userSpaceOnUse">
+								<stop stop-color="#fff" offset="0"/>
+								<stop offset="1"/>
+							</linearGradient>
+							<polygon class="st202" points="838.7 -180.9 957.2 24.3 764.8 135.4 646.4 -69.8"/>
+						</g>
+				</g>
+				<g class="st112">
+						<defs>
+							<rect id="ep" x="593" y="1.6" width="134.9" height="97.3"/>
+						</defs>
+						<clipPath id="eo">
+							<use xlink:href="#ep"/>
+						</clipPath>
+						<g class="st203">
+							<defs>
+								<path id="en" d="m670.1 1.6c19.4 2.6 38.7 7.8 57.7 18.4-44.2 42.9-90 64.9-134.9 78.8 25.7-22 51.5-51.7 77.2-97.2"/>
+							</defs>
+							<clipPath id="r">
+								<use xlink:href="#en"/>
+							</clipPath>
+							<defs>
+								<filter id="oe" x="550.9" y="-56.8" width="219.1" height="214.1" filterUnits="userSpaceOnUse">
+									<feColorMatrix values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1 0"/>
+								</filter>
+							</defs>
+							<mask id="em" x="550.9" y="-56.8" width="219.1" height="214.1" maskUnits="userSpaceOnUse">
+								<g class="st204">
+										<linearGradient id="el" x1="-9.0949e-13" x2="1" y1="436.08" y2="436.08" gradientTransform="matrix(27.398 47.455 47.455 -27.398 -20053 11966)" gradientUnits="userSpaceOnUse">
+										<stop stop-color="#999" offset="0"/>
+										<stop stop-color="#fff" offset="1"/>
+									</linearGradient>
+									<polygon class="st205" points="694.1 -56.8 770 74.6 626.7 157.3 550.9 26"/>
+								</g>
+							</mask>
+								<linearGradient id="ek" x1="-9.0949e-13" x2="1" y1="436.08" y2="436.08" gradientTransform="matrix(27.398 47.455 47.455 -27.398 -20053 11966)" gradientUnits="userSpaceOnUse">
+								<stop stop-color="#fff" offset="0"/>
+								<stop offset="1"/>
+							</linearGradient>
+							<polygon class="st206" points="694.1 -56.8 770 74.6 626.7 157.3 550.9 26"/>
+						</g>
+				</g>
+				<g class="st112">
+						<defs>
+							<rect id="ej" x="452" y="64.1" width="141" height="34.8"/>
+						</defs>
+						<clipPath id="ei">
+							<use xlink:href="#ej"/>
+						</clipPath>
+						<g class="st207">
+							<defs>
+								<path id="eh" d="m533.7 64.1c19.4 10 39.3 20.5 59.3 34.8-49.4-0.2-97.5-1-141-6.8 25.8-6.8 53.3-14.7 81.7-28"/>
+							</defs>
+							<clipPath id="q">
+								<use xlink:href="#eh"/>
+							</clipPath>
+							<defs>
+								<filter id="oc" x="436.9" y="3" width="171.1" height="156.9" filterUnits="userSpaceOnUse">
+									<feColorMatrix values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1 0"/>
+								</filter>
+							</defs>
+							<mask id="ef" x="436.9" y="3" width="171.1" height="156.9" maskUnits="userSpaceOnUse">
+								<g class="st208">
+										<linearGradient id="ee" x1="-8.1855e-12" x2="1" y1="436.09" y2="436.09" gradientTransform="matrix(38.202 66.168 66.168 -38.202 -28346 16718)" gradientUnits="userSpaceOnUse">
+										<stop offset="0"/>
+										<stop stop-color="#fff" offset="1"/>
+									</linearGradient>
+									<polygon class="st209" points="557.7 3 608.1 90.2 487.3 159.9 436.9 72.8"/>
+								</g>
+							</mask>
+								<linearGradient id="ed" x1="-8.1855e-12" x2="1" y1="436.09" y2="436.09" gradientTransform="matrix(38.202 66.168 66.168 -38.202 -28346 16718)" gradientUnits="userSpaceOnUse">
+								<stop stop-color="#fff" offset="0"/>
+								<stop offset="1"/>
+							</linearGradient>
+							<polygon class="st210" points="557.7 3 608.1 90.2 487.3 159.9 436.9 72.8"/>
+						</g>
+				</g>
+				<g class="st112">
+						<defs>
+							<rect id="ec" x="670.1" y="-116.8" width="114" height="136.9"/>
+						</defs>
+						<clipPath id="eb">
+							<use xlink:href="#ec"/>
+						</clipPath>
+						<g class="st211">
+							<defs>
+								<path id="ea" d="m670.1 1.6c39-27.8 77.5-66.2 114-118.5-18.3 57.7-37.1 102-56.3 137-18.9-10.6-38.2-15.8-57.7-18.5"/>
+							</defs>
+							<clipPath id="p">
+								<use xlink:href="#ea"/>
+							</clipPath>
+							<defs>
+								<filter id="ob" x="610.9" y="-166.2" width="232.6" height="235.6" filterUnits="userSpaceOnUse">
+									<feColorMatrix values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1 0"/>
+								</filter>
+							</defs>
+							<mask id="dz" x="610.9" y="-166.2" width="232.6" height="235.6" maskUnits="userSpaceOnUse">
+								<g class="st212">
+										<linearGradient id="dy" x1="-7.276e-12" x2="1" y1="435.95" y2="435.95" gradientTransform="matrix(45.22 78.322 78.322 -45.22 -33433 19638)" gradientUnits="userSpaceOnUse">
+										<stop stop-color="#999" offset="0"/>
+										<stop stop-color="#fff" offset="1"/>
+									</linearGradient>
+									<polygon class="st213" points="755.6 -166.2 843.4 -14.2 698.6 69.4 610.9 -82.6"/>
+								</g>
+							</mask>
+								<linearGradient id="dx" x2="1" y1="435.95" y2="435.95" gradientTransform="matrix(45.22 78.322 78.322 -45.22 -33433 19638)" gradientUnits="userSpaceOnUse">
+								<stop stop-color="#BCBEC0" offset="0"/>
+								<stop offset="1"/>
+							</linearGradient>
+							<polygon class="st214" points="755.6 -166.2 843.4 -14.2 698.6 69.4 610.9 -82.6"/>
+						</g>
+				</g>
+				<g class="st112">
+						<defs>
+							<rect id="dw" x="648.6" y="20.1" width="118.4" height="117.8"/>
+						</defs>
+						<clipPath id="dv">
+							<use xlink:href="#dw"/>
+						</clipPath>
+						<g class="st215">
+							<defs>
+								<path id="du" d="m727.8 20.1c13.2 30.5 26.3 68.8 39.2 117.8-38.1-4.5-78.2-6.7-118.4-8.1 26.7-23.6 53.2-57 79.2-109.7"/>
+							</defs>
+							<clipPath id="n">
+								<use xlink:href="#du"/>
+							</clipPath>
+							<defs>
+								<filter id="oa" x="597.6" y="-31.2" width="220.5" height="220.4" filterUnits="userSpaceOnUse">
+									<feColorMatrix values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1 0"/>
+								</filter>
+							</defs>
+							<mask id="dt" x="597.6" y="-31.2" width="220.5" height="220.4" maskUnits="userSpaceOnUse">
+								<g class="st216">
+										<linearGradient id="ds" x1="2.9104e-11" x2="1" y1="435.84" y2="435.84" gradientTransform="matrix(-106.93 61.739 61.739 106.93 -26160 -46551)" gradientUnits="userSpaceOnUse">
+										<stop stop-color="#ccc" offset="0"/>
+										<stop stop-color="#fff" offset="1"/>
+									</linearGradient>
+									<polygon class="st217" points="818.1 108.4 678.2 189.2 597.6 49.5 737.4 -31.2"/>
+								</g>
+							</mask>
+								<linearGradient id="dr" x1="3.3651e-11" x2="1" y1="435.84" y2="435.84" gradientTransform="matrix(-106.93 61.739 61.739 106.93 -26160 -46551)" gradientUnits="userSpaceOnUse">
+								<stop stop-color="#BCBEC0" offset="0"/>
+								<stop offset="1"/>
+							</linearGradient>
+							<polygon class="st218" points="818.1 108.4 678.2 189.2 597.6 49.5 737.4 -31.2"/>
+						</g>
+				</g>
+				<g class="st112">
+						<defs>
+							<rect id="dq" x="533.7" y="1.6" width="136.5" height="97.3"/>
+						</defs>
+						<clipPath id="dp">
+							<use xlink:href="#dq"/>
+						</clipPath>
+						<g class="st219">
+							<defs>
+								<path id="dn" d="m533.7 64.1c44.2-9.6 90.6-28.2 136.5-62.4-25.7 45.5-51.6 75.1-77.2 97.3-20.1-14.4-39.9-24.9-59.3-34.9"/>
+							</defs>
+							<clipPath id="m">
+								<use xlink:href="#dn"/>
+							</clipPath>
+							<defs>
+								<filter id="nz" x="491.5" y="-57.5" width="220.7" height="215.5" filterUnits="userSpaceOnUse">
+									<feColorMatrix values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1 0"/>
+								</filter>
+							</defs>
+							<mask id="dm" x="491.5" y="-57.5" width="220.7" height="215.5" maskUnits="userSpaceOnUse">
+								<g class="st220">
+										<linearGradient id="dl" x1="1.2733e-11" x2="1" y1="435.85" y2="435.85" gradientTransform="matrix(29.91 51.805 51.805 -29.91 -21989 13067)" gradientUnits="userSpaceOnUse">
+										<stop stop-color="#ccc" offset="0"/>
+										<stop stop-color="#fff" offset="1"/>
+									</linearGradient>
+									<polygon class="st221" points="636 -57.5 712.3 74.6 567.8 158 491.5 26"/>
+								</g>
+							</mask>
+								<linearGradient id="dk" x1="3.638e-12" x2="1" y1="435.85" y2="435.85" gradientTransform="matrix(29.91 51.805 51.805 -29.91 -21989 13067)" gradientUnits="userSpaceOnUse">
+								<stop stop-color="#fff" offset="0"/>
+								<stop offset="1"/>
+							</linearGradient>
+							<polygon class="st222" points="636 -57.5 712.3 74.6 567.8 158 491.5 26"/>
+						</g>
+				</g>
+		</g>
+</svg>
