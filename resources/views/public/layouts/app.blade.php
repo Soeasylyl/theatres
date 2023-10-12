@@ -7,22 +7,24 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>{{ __('КиноБронь') }}</title>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.bunny.net">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
 
     <!-- Scripts -->
-    @vite(['resources/sass/admin/app.scss', 'resources/js/admin/app.js'])
+    <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-element-bundle.min.js"></script>
+    @vite(['resources/sass/public/app.scss', 'resources/js/public/app.js'])
 </head>
 <body>
 <div id="app">
+    @include('public.partials.header')
 
-        <section>
-            @yield('content')
-        </section>
+    @yield('content')
 
+    @include('public.partials.footer')
 </div>
 </body>
 </html>

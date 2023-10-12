@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\MovieController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\TheatreController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\public\HomeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,6 +21,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::view('/', 'welcome');
+
+Route::get('/home',[HomeController::class, 'index'])->name( 'public.pages.home');
 
 Auth::routes();
 

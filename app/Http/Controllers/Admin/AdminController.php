@@ -23,6 +23,6 @@ class AdminController extends BaseAdminController
      */
     public function index()
     {
-        return view('admin.admin');
+        return view('admin.pages.dashboard');
     }
 }

@@ -34,7 +34,7 @@ class MovieFactory extends Factory
 
             for ($i = 0; $i < $mediaCount; $i++) {
                 $movie->medias()->create([
-                    'path' => $this->faker->filePath(),
+                    'path' => $this->faker->imageUrl(),
                 ]);
             }
 
