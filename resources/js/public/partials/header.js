@@ -3,7 +3,7 @@ class header {
     constructor() {
         this.getHeader = document.getElementById('headerId');
         this.logoWrapper = document.querySelector('.header-wrapper__logo');
-        this.svgElement = this.logoWrapper.querySelector('svg');
+        this.svgElement = this.logoWrapper && this.logoWrapper.querySelector('svg');
         this.headerWrapper = document.querySelector('.header-wrapper');
 
         this.init();

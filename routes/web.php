@@ -24,6 +24,10 @@ Route::view('/', 'welcome');
 
 Route::get('/home',[HomeController::class, 'index'])->name( 'public.pages.home');
 
+Route::prefix('afisha')->group(function (){
+    Route::get('/{slug}', [MovieController::class, 'show'])->name('user.show.movie');
+});
+
 Auth::routes();
 
 Route::prefix('admin')->middleware('AdminAccess')->group(function () {

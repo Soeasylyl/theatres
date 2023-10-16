@@ -4,6 +4,7 @@ namespace App\Http\Controllers\public;
 
 
 
+use App\Models\Cinema;
 use App\Models\Movie;
 
 class HomeController extends BasePublicController
@@ -16,7 +17,8 @@ class HomeController extends BasePublicController
     public function index()
     {
         $movies = Movie::inRandomOrder()->limit(10)->get();
+        $cinemas = Cinema::all();
 
-        return view('public.pages.home', compact('movies'));
+        return view('public.pages.home', compact('movies', 'cinemas'));
     }
 }

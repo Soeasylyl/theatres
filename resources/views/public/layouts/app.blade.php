@@ -21,11 +21,16 @@
 </head>
 <body>
 <div id="app">
-    @include('public.partials.header')
+    @if(strpos(request()->path(), 'afisha/') !== 0)
+        @include('public.partials.header')
+    @endif
 
     @yield('content')
 
-    @include('public.partials.footer')
+    @if(strpos(request()->path(), 'afisha/') !== 0)
+        @include('public.partials.footer')
+    @endif
+
 </div>
 </body>
 </html>

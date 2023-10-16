@@ -15,6 +15,13 @@ class MovieFactory extends Factory
     public function definition(): array
     {
         $name = $this->faker->sentence(3);
+        $slug = Str::slug($name);
+
+        $count = 2;
+        while (Movie::where('slug', $slug)->exists()) {
+            $slug = Str::slug($name) . '-' . $count;
+            $count++;
+        }
 
         return [
             'name' => $name,
@@ -23,7 +30,7 @@ class MovieFactory extends Factory
             'date_start' => $this->faker->dateTimeBetween('now','+7 months'),
             'rating' => rand(10,100)/10,
             'age_limit' => rand(6, 21),
-            'slug' => Str::slug($name),
+            'slug' => $slug,
         ];
     }
 

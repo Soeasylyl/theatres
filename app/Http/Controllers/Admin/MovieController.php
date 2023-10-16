@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
 use App\Models\Movie;
 
 class MovieController extends BaseAdminController
 {
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('auth')->only('index');
     }
 
     /**
@@ -22,7 +21,12 @@ class MovieController extends BaseAdminController
     {
         $movies = Movie::all();
 
-        return view('admin.pages.movies.movies',compact('movies'));
+        return view('admin.pages.movies.movies-information',compact('movies'));
+    }
 
+    public function show( $slug)
+    {
+        $movie = Movie::where('slug', $slug)->firstOrFail();
+        return view('public.pages.movie', compact('movie'));
     }
 }
