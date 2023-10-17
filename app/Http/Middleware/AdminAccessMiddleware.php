@@ -21,7 +21,6 @@ class AdminAccessMiddleware
             return $next($request);
         }
 
-        Auth::logout();
-        abort(403);
+        return redirect('/');
     }
 }

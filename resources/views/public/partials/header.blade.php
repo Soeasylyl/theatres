@@ -22,21 +22,32 @@
                 </div>
                 <div class="header-wrapper__authorization">
                     <div class="header-wrapper__menu-item">
-                <span class="header-wrapper__text">
-                    @if (Route::has('login.admin'))
-                        <div>
-                        @auth
-                                <a class="header-wrapper__text" href="{{ url('/admin') }}">{{ __('Амин-панель') }}</a>
-                            @else
-                                <a class="header-wrapper__text" href="{{ route('login.admin') }}">{{ __('Войти в личный кабинет') }}</a>
-                                <br>
-                                @if (Route::has('register.admin'))
-                                    <a class="header-wrapper__text" href="{{ route('register.admin') }}">{{ __('Регистрация') }}</a>
-                                @endif
-                            @endauth
-                    </div>
-                    @endif
-                </span>
+                    <span class="header-wrapper__text">
+                        @if (Route::has('login.admin'))
+                            <div>
+                                @auth
+                                    <a class="header-wrapper__text"
+                                       href="{{ url('/admin') }}">{{ __('Амин-панель') }}</a>
+                                    <a class="header-wrapper__text" style="padding-left: 15px"
+                                       href="{{ route('logout') }}"
+                                       onclick="event.preventDefault();
+                                       document.getElementById('logout-form').submit();">{{ __('Выход') }}</a>
+
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                    @csrf
+                                    </form>
+                                @else
+                                    <a class="header-wrapper__text"
+                                       href="{{ route('login.admin') }}">{{ __('Войти в личный кабинет') }}</a>
+                                    <br>
+                                    @if (Route::has('register.admin'))
+                                        <a class="header-wrapper__text"
+                                           href="{{ route('register.admin') }}">{{ __('Регистрация') }}</a>
+                                    @endif
+                                @endauth
+                        </div>
+                        @endif
+                    </span>
                     </div>
                 </div>
             </div>
