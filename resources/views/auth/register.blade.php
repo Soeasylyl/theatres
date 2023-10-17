@@ -5,7 +5,7 @@
         <div class="login-container__wrapper" >
             <div class="login-container__card-header">{{ __('Регистрация') }} </div>
             <div class="login-container__card-body">
-                <form method="POST" action="{{ route('register') }}">
+                <form method="POST" action="{{ route('register.admin') }}">
                     @csrf
 
                     <div class="login-container__card-item">
