@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class AdminProfilePasswordRequest extends FormRequest
+class UpdateCinemaRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,20 +22,11 @@ class AdminProfilePasswordRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'current_password' => 'required',
-            'new_password' => 'required|string|min:8|confirmed',
-        ];
-    }
-
-    /**
-     * Get the error messages for the defined validation rules.
-     *
-     * @return string[]
-     */
-    public function messages(): array
-    {
-        return [
-            'new_password.confirmed' => 'Пароли не совпадают.',
+            'user_id' => 'required|exists:users,id',
+            'cinema' => [
+                'nullable',
+                'exists:cinemas,id'
+            ],
         ];
     }
 }

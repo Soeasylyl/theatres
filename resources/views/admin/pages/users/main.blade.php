@@ -15,14 +15,25 @@
                     </div>
                 @endif
                 <div class="success-messages-wrapper">
-                    @if(session('success_delete_user'))
-                        <div class="success-messages">
-                            {{ session('success_delete_user') }}
-                        </div>
-                    @endif
+                    @php
+                        $successMessages = ['success_delete_user', 'success_create_user'];
+                    @endphp
+                    @foreach($successMessages as $message)
+                        @if(session($message))
+                            <div class="success-messages">
+                                {{ session($message) }}
+                            </div>
+                        @endif
+                    @endforeach
                 </div>
             </div>
             <div class="admin-container__form-body">
+                <div class="admin-container__menu">
+                    <a class="page-wrapper__panel-btn"
+                       href="{{ route('users.create') }}"> {{ __('Добавить пользователя') }}</a>
+                    <input class="admin-container__search-bar" type="text"
+                           placeholder="{{ __('Поиск пользователей') }}">
+                </div>
                 <table class="admin-container__table">
                     <thead>
                     <th>{{ __('Имя') }}</th>
@@ -38,15 +49,13 @@
                             <td>{{ $user->name }}</td>
                             <td>{{ $user->email }}</td>
                             <td>{{ $user->phone }}</td>
-                            <td>{{ $user->email_verified_at ? $user->email_verified_at->format('d.m.Y') : 'Не верифицирован' }}</td>
+                            <td>{{ $user->email_verified_at ? $user->email_verified_at->format('d.m.Y') : __('Не верифицирован') }}</td>
                             <td>
-                                @if ($user->roles->isNotEmpty())
-                                    @foreach($user->roles as $role)
-                                        {{ RolesUsersEnum::getDescription(RolesUsersEnum::from($role->name)) }}
-                                    @endforeach
-                                @else
+                                @forelse($user->roles as $role)
+                                    {{ RolesUsersEnum::getDescription(RolesUsersEnum::from($role->name)) }}
+                                @empty
                                     {{ __('Без роли') }}
-                                @endif
+                                @endforelse
 
                             </td>
                             <td>

@@ -27,6 +27,7 @@ class MovieController extends BaseAdminController
     public function show( $slug)
     {
         $movie = Movie::where('slug', $slug)->firstOrFail();
+
         return view('public.pages.movie', compact('movie'));
     }
 }

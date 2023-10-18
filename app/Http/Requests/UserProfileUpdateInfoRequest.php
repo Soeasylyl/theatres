@@ -33,7 +33,21 @@ class UserProfileUpdateInfoRequest extends FormRequest
                 'max:255',
                 Rule::unique('users')->ignore($userId),
             ],
-            'phone' => 'required|string|min:7|max:17',
+            'phone' => ['required', 'string', 'regex:/\+375\d{9}/', 'min:13', 'max:13'],
         ];
     }
+
+    /**
+     * Get the error messages for the defined validation rules.
+     *
+     * @return array<string, string>
+     */
+    public function messages(): array
+    {
+        return [
+            'phone.regex' => 'Номер телефона должен начинаться с "+375" и состоять из 9 цифр.',
+            'phone.max' => 'Номер телефона не может быть длиннее или короче 13 символов.',
+        ];
+    }
+
 }

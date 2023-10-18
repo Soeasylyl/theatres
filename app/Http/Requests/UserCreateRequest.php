@@ -2,9 +2,11 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\RolesUsersEnum;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
-class AdminProfileInfoRequest extends FormRequest
+class UserCreateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -21,12 +23,13 @@ class AdminProfileInfoRequest extends FormRequest
      */
     public function rules(): array
     {
-        $user = auth()->user();  //* Getting the current authorized user
-
         return [
-            'name' => 'required|string|min:2|max:30',
-            'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
-            'phone' => ['required', 'string', 'regex:/\+375\d{9}/', 'min:13', 'max:13'],
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'phone' => ['required', 'string', 'regex:/\+375\d{9}/', 'min:13', 'max:13', 'unique:users'],
+            'password' => ['required', 'string', 'max:50'],
+            'role' => ['nullable', Rule::in(RolesUsersEnum::toArray())],
+            'cinema' => ['nullable', 'exists:cinemas,id'],
         ];
     }
 

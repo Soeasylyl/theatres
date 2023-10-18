@@ -11,37 +11,47 @@ use Illuminate\Support\Facades\Hash;
 
 class AdminProfileController extends BaseAdminController
 {
-    private $userRepository;
-    public function __construct(UserRepositoryInterface $userRepository)
+    public function __construct(private readonly UserRepositoryInterface $userRepository)
     {
-        $this->userRepository =$userRepository;
         $this->middleware('auth');
     }
 
-    //* Get authorized user information + role
+    /**
+     *  Get authorized user information + role
+     *
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Foundation\Application
+     */
     public function profile()
     {
-        $user = $this->userRepository->getAuthUser();  //* Getting the current authorized user
-
-        $userRole = $this->userRepository->getRoleUser($user);
+        $user = auth()->user();  //* Getting the current authorized user
+        $userRole = $user->roles->first();
 
         return view('admin.pages.users.profile', compact('user', 'userRole'));
     }
 
-    //* Updating information for an authorized user
+    /**
+     * Updating information for an authorized user
+     *
+     * @param AdminProfileInfoRequest $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function updateInfo(AdminProfileInfoRequest $request)
     {
-        $user = $this->userRepository->getAuthUser();  //* Getting the current authorized user
-
+        $user = auth()->user();  //* Getting the current authorized user
         $this->userRepository->updateInfoByUser($request, $user);
 
         return redirect()->route('admin.profile', $user->id)->with('success_update_profile_info', 'Информация о пользователе успешно обновлена.');
     }
 
-    //* Updating the password for an authorized user
+    /**
+     * Updating the password for an authorized user
+     *
+     * @param AdminProfilePasswordRequest $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function updatePassword(AdminProfilePasswordRequest $request)
     {
-        $user = $this->userRepository->getAuthUser();  //* Getting the current authorized user
+        $user = auth()->user();  //* Getting the current authorized user
 
         if (!Hash::check($request->input('current_password'), $user->password)) {
             return redirect()->back()->with('error', 'Текущий пароль неверен.');
@@ -50,20 +60,5 @@ class AdminProfileController extends BaseAdminController
         $this->userRepository->updatePasswordByProfile($request, $user);
 
         return redirect()->route('admin.profile', $user->id)->with('success_update_profile_password', 'Пароль успешно изменен.');
-    }
-
-    //* Deleting an authorized user
-    public function deleteProfile()
-    {
-        $user = $this->userRepository->getAuthUser();   //* Getting the current authorized user
-        $role = $this->userRepository->getRoleUser($user);
-
-        if ($role->name == RolesUsersEnum::CINEMA_ADMIN->value) {
-            return redirect()->back()->with('error_delete_profile', 'Администратор не может удалить себя.');
-        }
-
-        $this->userRepository->deleteUser($user);
-
-        return redirect()->route('users')->with('success', 'Пользователь успешно удален');
     }
 }
