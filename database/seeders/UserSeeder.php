@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Enums\RolesUsersEnum;
+use App\Models\Cinema;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -18,17 +19,25 @@ class UserSeeder extends Seeder
     {
         $this->createSuperAdmin()->assignRole(RolesUsersEnum::SUPER_ADMIN->value);
 
-        foreach (RolesUsersEnum::asSelectArray() as $role) {
-            if ($role['value'] != RolesUsersEnum::SUPER_ADMIN->value) {
-                $createUser = $this->createUser();
-                $createUser->assignRole($role['value']);
+        $cinemas = Cinema::all();
+        foreach ($cinemas as $cinema) {
+            foreach (RolesUsersEnum::asSelectArray() as $role) {
+                if ($role['value'] != RolesUsersEnum::SUPER_ADMIN->value) {
+                    $createUser = $this->createUser();
+                    $createUser->assignRole($role['value']);
+                    $cinema->users()->attach($createUser);
+                }
             }
         }
 
-        for ($i = 0; $i < 7; $i++) {
-            $this->createUser();
+        for ($i = 0; $i < 20; $i++) {
+            $user = $this->createUser();
+            $cinemaCount = rand(0, 2);
+            for ($j = 0; $j < $cinemaCount; $j++) {
+                $randomCinema = $cinemas->random();
+                $randomCinema->users()->attach($user);
+            }
         }
-
     }
 
     private function createUser()

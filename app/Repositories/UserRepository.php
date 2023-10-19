@@ -9,11 +9,13 @@ use app\Models\User;
 use App\Repositories\Interfaces\UserRepositoryInterface;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Hash;
-use Spatie\Permission\Models\Role;
+
 
 class UserRepository implements UserRepositoryInterface
 {
-    //Obtaining information about all users except authorized and super administrator
+    /*
+     * Obtaining information about all users except authorized and super administrator
+     */
     public function getAllUsers()
     {
         return User::whereDoesntHave('roles', function (Builder $query) {
@@ -21,31 +23,25 @@ class UserRepository implements UserRepositoryInterface
         })->whereNot('id', \Auth::user()->id)->get();
     }
 
-    //Searching for a user by ID
-    public function getUserById(int $userId)
+    /*
+     * Searching for a user by ID
+     */
+    public function getUserByIdOrFail(int $userId)
     {
         return User::findOrFail($userId);
     }
 
-    //Search for a user by request
-    public function getUserByRequest($request)
+    /*
+     * Search for a user by request
+     */
+    public function getUserByRequestOrFail($request)
     {
         return User::findOrFail($request->input('user_id'));
     }
 
-    //getting an authorized user
-    public function getAuthUser()
-    {
-        return auth()->user();
-    }
-
-    //Getting the role associated with the passed user
-    public function getRoleUser(User $user)
-    {
-        return $user->roles->first();
-    }
-
-    //Changing user information
+    /*
+     * Changing user information
+     */
     public function updateInfoByUser($request, User $user)
     {
         return $user->update([
@@ -55,7 +51,9 @@ class UserRepository implements UserRepositoryInterface
         ]);
     }
 
-    //Changing the user password
+    /*
+     * Changing the user password
+     */
     public function updatePasswordByProfile($request, User $user)
     {
         return $user->update([
@@ -63,13 +61,17 @@ class UserRepository implements UserRepositoryInterface
         ]);
     }
 
-    //Adding the selected role to a user
+    /*
+     * Adding the selected role to a user
+     */
     public function addRoleByUser(User $user, $roleName)
     {
         return $user->assignRole($roleName);
     }
 
-    //Removing all user roles
+    /*
+     * Removing all user roles
+     */
     public function deleteAllRoleByUser(User $user)
     {
         return $user->syncRoles([]);
@@ -79,10 +81,4 @@ class UserRepository implements UserRepositoryInterface
    {
        return $user->removeRole($userRole->name);
    }
-
-    //Deleting a user
-    public function deleteUser(User $user)
-    {
-        return $user->delete();
-    }
 }

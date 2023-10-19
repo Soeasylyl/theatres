@@ -6,7 +6,7 @@ use App\Http\Controllers\Admin\BaseAdminController;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
-class LoginController extends BaseAdminController
+class AuthController extends BaseAdminController
 {
     /*
     |--------------------------------------------------------------------------
@@ -26,15 +26,5 @@ class LoginController extends BaseAdminController
      *
      * @var string
      */
-    protected $redirectTo = RouteServiceProvider::ADMIN;
-
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('guest')->except('logout');
-    }
+    protected string $redirectTo = RouteServiceProvider::ADMIN;
 }

@@ -3,11 +3,9 @@
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\AdminProfileController;
 use App\Http\Controllers\Admin\MovieController;
-use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\TheatreController;
 use App\Http\Controllers\Admin\UserController;
-use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\Auth\LogoutController;
+use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\public\HomeController;
 use Illuminate\Support\Facades\Route;
@@ -25,9 +23,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/',[HomeController::class, 'index'])->name( 'public.pages.home');
 
-Route::get('/login',[LoginController::class, 'showLoginForm'])->name('login.admin');
-Route::post('/login', [LoginController::class, 'login']);
-Route::post('/logout', [LogoutController::class, 'logout'])->name('logout');
+Route::get('/login',[AuthController::class, 'showLoginForm'])->name('login.admin');
+Route::post('/login', [AuthController::class, 'login']);
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register.admin');
 Route::post('/register', [RegisterController::class, 'register']);
 
@@ -50,11 +48,13 @@ Route::prefix('admin')->middleware('AdminAccess')->group(function () {
         Route::get('/', [AdminProfileController::class, 'profile'])->name('admin.profile');
         Route::put('/update-info', [AdminProfileController::class, 'updateInfo'])->name('admin.profile.updateInfo');
         Route::put('/update-password', [AdminProfileController::class, 'updatePassword'])->name('admin.profile.updatePassword');
-        Route::delete('/', [AdminProfileController::class, 'deleteProfile'])->name('admin.profile.delete');
     });
 
     Route::prefix('users')->group(function () {
         Route::get('/', [UserController::class, 'index'])->name('users');
+
+        Route::get('/create', [UserController::class, 'showAddForm'])->name('users.create');
+        Route::post('/create', [UserController::class, 'createUser']);
 
         Route::get('/{user}/edit', [UserController::class, 'edit'])
             ->where('user', '[0-9]+')
@@ -72,12 +72,12 @@ Route::prefix('admin')->middleware('AdminAccess')->group(function () {
             ->where('user', '[0-9]+')
             ->name('user.updateRole');
 
+        Route::put('/{user}/update-cinema', [UserController::class, 'updateCinema'])
+            ->where('user', '[0-9]+')
+            ->name('user.updateCinema');
+
         Route::delete('/{user}', [UserController::class, 'delete'])
             ->where('user', '[0-9]+')
             ->name('user.delete');
-    });
-
-    Route::prefix('roles')->group(function () {
-        Route::get('/', [RoleController::class, 'index'])->name('roles');
     });
 });

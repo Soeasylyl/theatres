@@ -2,7 +2,7 @@
     <div class="admin-header__wrapper">
         <a class="admin-header__logo" href="{{ route('admin') }}">
             <img src="{{ asset('images/logo.png') }}" alt="Логотип">
-            <div>{{ __('Админ панель') }}</div>
+            <div>{{ __('Админ-панель') }}</div>
         </a>
 
         <div class="admin-header__content">
