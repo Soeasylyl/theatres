@@ -5,7 +5,7 @@
         <div class="login-container__wrapper">
                 <div class="login-container__card-header">{{ __('Вход') }}</div>
                 <div class="login-container__card-body">
-                    <form method="POST" action="{{ route('login') }}">
+                    <form method="POST" action="{{ route('login.admin') }}">
                         @csrf
                         <div class="login-container__card-item">
                             <label for="email">{{ __('Email Адрес') }}</label>

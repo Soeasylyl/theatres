@@ -6,6 +6,9 @@ use App\Http\Controllers\Admin\MovieController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\TheatreController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\LogoutController;
+use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\public\HomeController;
 use Illuminate\Support\Facades\Route;
 
@@ -20,15 +23,17 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::view('/', 'welcome');
+Route::get('/',[HomeController::class, 'index'])->name( 'public.pages.home');
 
-Route::get('/home',[HomeController::class, 'index'])->name( 'public.pages.home');
+Route::get('/login',[LoginController::class, 'showLoginForm'])->name('login.admin');
+Route::post('/login', [LoginController::class, 'login']);
+Route::post('/logout', [LogoutController::class, 'logout'])->name('logout');
+Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register.admin');
+Route::post('/register', [RegisterController::class, 'register']);
 
 Route::prefix('afisha')->group(function (){
     Route::get('/{slug}', [MovieController::class, 'show'])->name('user.show.movie');
 });
-
-Auth::routes();
 
 Route::prefix('admin')->middleware('AdminAccess')->group(function () {
     Route::get('/', [AdminController::class, 'index'])->name('admin');
