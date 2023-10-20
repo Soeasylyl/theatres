@@ -6,14 +6,14 @@ use App\Enums\RolesUsersEnum;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class UserProfileUpdateRoleRequest extends FormRequest
+class AdminUpdateRoleUserProfileRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return true;
+        return auth()->check();
     }
 
     /**

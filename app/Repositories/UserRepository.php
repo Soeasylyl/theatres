@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 
 
+use App\DTO\Users\UserDTO;
 use App\Enums\RolesUsersEnum;
 use app\Models\User;
 use App\Repositories\Interfaces\UserRepositoryInterface;
@@ -19,8 +20,8 @@ class UserRepository implements UserRepositoryInterface
     public function getAllUsers()
     {
         return User::whereDoesntHave('roles', function (Builder $query) {
-            $query->where('name', RolesUsersEnum::SUPER_ADMIN);
-        })->whereNot('id', \Auth::user()->id)->get();
+                $query->where('name', RolesUsersEnum::SUPER_ADMIN);
+                })->whereNot('id', \Auth::user()->id)->get();
     }
 
     /*
@@ -34,30 +35,30 @@ class UserRepository implements UserRepositoryInterface
     /*
      * Search for a user by request
      */
-    public function getUserByRequestOrFail($request)
+    public function getUserByRequestOrFail($requestDTO): User
     {
-        return User::findOrFail($request->input('user_id'));
+        return User::findOrFail($requestDTO->getUserId());
     }
 
     /*
      * Changing user information
      */
-    public function updateInfoByUser($request, User $user)
+    public function updateInfoByUser($requestDTO, User $user): bool
     {
         return $user->update([
-            'name' => $request->input('name'),
-            'email' => $request->input('email'),
-            'phone' => $request->input('phone'),
+            'name' => $requestDTO->getName(),
+            'email' => $requestDTO->getEmail(),
+            'phone' => $requestDTO->getPhone(),
         ]);
     }
 
     /*
      * Changing the user password
      */
-    public function updatePasswordByProfile($request, User $user)
+    public function updatePasswordByUser($requestDTO, User $user): bool
     {
         return $user->update([
-            'password' => Hash::make($request->input('new_password'))
+            'password' => Hash::make($requestDTO->getPassword())
         ]);
     }
 
@@ -81,4 +82,38 @@ class UserRepository implements UserRepositoryInterface
    {
        return $user->removeRole($userRole->name);
    }
+
+    /**
+     * @param UserDTO $userDTO
+     * @return void
+     */
+   public function createUser(UserDTO $userDTO)
+   {
+       return User::create([
+           'name' => $userDTO->getName(),
+           'email' => $userDTO->getEmail(),
+           'phone' => $userDTO->getPhone(),
+           'password' => bcrypt($userDTO->getPassword()),
+       ]);
+   }
+
+    /**
+     * @param User $user
+     * @param string $role
+     * @return void
+     */
+    public function assignRoleToUser(User $user, string $role): void
+    {
+        $user->assignRole($role);
+    }
+
+    /**
+     * @param User $user
+     * @param int $cinemaId
+     * @return void
+     */
+    public function attachUserToCinema(User $user, int $cinemaId): void
+    {
+        $user->cinemas()->attach($cinemaId);
+    }
 }
