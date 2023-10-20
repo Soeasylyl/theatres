@@ -44,12 +44,6 @@ Route::prefix('admin')->middleware('AdminAccess')->group(function () {
         Route::get('/', [TheatreController::class, 'index'])->name('admin.theatres');
     });
 
-    Route::prefix('profile')->group(function () {
-        Route::get('/', [AdminProfileController::class, 'profile'])->name('admin.profile');
-        Route::put('/update-info', [AdminProfileController::class, 'updateInfo'])->name('admin.profile.updateInfo');
-        Route::put('/update-password', [AdminProfileController::class, 'updatePassword'])->name('admin.profile.updatePassword');
-    });
-
     Route::prefix('users')->group(function () {
         Route::get('/', [UserController::class, 'index'])->name('users');
 

@@ -6,7 +6,7 @@
         </a>
 
         <div class="admin-header__content">
-            <a href="{{ route('admin.profile') }}"
+            <a href="{{ route('user.edit', auth()->user()->id) }}"
                class="admin-header__button">
                 <img src="{{ asset('images/svg/user.svg') }}" alt="Мой профиль">
                 <div>{{ __('Мой профиль') }}</div>

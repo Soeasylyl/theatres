@@ -12,7 +12,7 @@
                     <th>{{ __('Название') }}</th>
                     <th>{{ __('Адрес') }}</th>
                     <th>{{ __('Количество залов') }}</th>
-                    <th>{{ __('Общая вместимость') }}</th>
+
 
                     <th>{{ __(' ') }}</th>
                     </thead>
@@ -22,14 +22,6 @@
                             <td>{{ $theatre->name }}</td>
                             <td>{{ $theatre->address }}</td>
                             <td>{{ $theatre->halls_count }}</td>
-                            <td>  @php
-                                    $totalCapacity = 0;
-                                    foreach($theatre->halls as $hall) {
-                                        $totalCapacity += $hall->seats->count();
-                                    }
-                                    echo $totalCapacity;
-                                @endphp
-                            </td>
                         </tr>
                     @endforeach
                     </tbody>

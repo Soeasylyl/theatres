@@ -6,6 +6,156 @@
 
 @section('content')
     <div class="admin-container">
+
+        @if(auth()->user()->id === $user->id)
+            <div class="admin-container__form">
+                <div class="admin-container__items">
+                    <label for="current_password">{{ __('Текущая роль пользователя:') }}</label>
+                    <label class="admin-container__label">
+                        @if ($userRole)
+                            {{ RolesUsersEnum::getDescription(RolesUsersEnum::from($userRole->name)) }}
+                        @else
+                            {{ __('Роль не определена') }}
+                        @endif
+                    </label>
+                </div>
+
+                @if(auth()->user()->id != 1)
+                    <div class="admin-container__items">
+                        <label for="current_password">{{ __('Кинотеатры к которым относятся пользователи:') }}</label>
+                        <label class="admin-container__label">
+                            @if($user->cinemas->isNotEmpty())
+                                {{ $user->cinemas->pluck('name')->implode(', ') }}
+                            @else
+                                {{ __('Нет кинотеатра') }}
+                            @endif
+                        </label>
+                    </div>
+                @endif
+            </div>
+        @endif
+
+        @if(!(auth()->user()->id === $user->id))
+            <div class="admin-container__form">
+                <div class="admin-container__grid">
+                    <div class="admin-container__grid-left">
+                        <div class="admin-container__form-header">
+                            {{ __('Изменение кинотеатра') }}
+                        </div>
+
+                        <div class="success-messages-wrapper">
+                            @if(session('success_update_cinema'))
+                                <div class="success-messages">
+                                    {{ session('success_update_cinema') }}
+                                </div>
+                            @endif
+                        </div>
+
+                        <div class="admin-container__form-body">
+                            <div class="admin-container__items">
+                                <label for="current_password">{{ __('Текущие кинотеатры пользователя:') }}</label>
+                                <label class="admin-container__label">
+                                    @if($user->cinemas->isNotEmpty())
+                                        {{ $user->cinemas->pluck('name')->implode(', ') }}
+                                    @else
+                                        {{ __('Нет кинотеатра') }}
+                                    @endif
+                                </label>
+                            </div>
+
+                            <form method="POST" action="{{ route('user.updateCinema', ['user' => $user->id]) }}">
+                                @csrf
+                                @method('PUT')
+                                <input type="hidden" name="user_id" value="{{ $user->id }}">
+                                <div class="error-messages__wrapper">
+                                    @if(session('error_cinema'))
+                                        <div class="error-messages">
+                                            {{ session('error_cinema') }}
+                                        </div>
+                                    @endif
+                                </div>
+                                <div class="admin-container__items">
+                                    <label>{{ __('Выберите новый кинотеатр:') }}</label>
+                                    <div class="login-container__card-item">
+                                        <select name="cinema" class="admin-container__select">
+                                            <option value="" disabled selected>{{ __('Список кинотеатров') }}</option>
+                                            @foreach($cinemas as $cinema)
+                                                <option value="{{ $cinema->id }}">{{ $cinema->name }}</option>
+                                            @endforeach
+                                            <option value="{{ null }}"> {{ __('Без кинотеатра') }}</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="page-wrapper__panel-btn-wrapper">
+                                    <button type="submit"
+                                            class="page-wrapper__panel-btn">{{ __('Сохранить') }}</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="admin-container__grid-right">
+                        <div class="admin-container__form-header">
+                            {{ __('Изменение роли') }}
+                        </div>
+
+                        <div class="success-messages-wrapper">
+                            @if(session('success_update_role'))
+                                <div class="success-messages">
+                                    {{ session('success_update_role') }}
+                                </div>
+                            @endif
+                        </div>
+
+                        <div class="admin-container__form-body">
+                            <div class="admin-container__items">
+                                <label for="current_password">{{ __('Текущая роль пользователя:') }}</label>
+                                <label class="admin-container__label">
+                                    @forelse($user->roles as $role)
+                                        {{ RolesUsersEnum::getDescription(RolesUsersEnum::from($role->name)) }}
+                                    @empty
+                                        {{ __('Без роли') }}
+                                    @endforelse
+                                </label>
+                            </div>
+
+                            <form method="POST" action="{{ route('user.updateRole', ['user' => $user->id]) }}">
+                                @csrf
+                                @method('PUT')
+                                <input type="hidden" name="user_id" value="{{ $user->id }}">
+                                <div class="error-messages__wrapper">
+                                    @if(session('error_role'))
+                                        <div class="error-messages">
+                                            {{ session('error_role') }}
+                                        </div>
+                                    @endif
+                                </div>
+                                <div class="admin-container__items">
+                                    <label>{{ __('Выберите новую роль:') }}</label>
+                                    <div class="login-container__card-item">
+                                        <select name="role" class="admin-container__select">
+                                            <option value="" disabled selected>{{ __('Список ролей') }}</option>
+                                            @foreach(RolesUsersEnum::asSelectArray() as $role)
+                                                @if ($role['value'] !==  RolesUsersEnum::SUPER_ADMIN->value)
+                                                    <option value="{{ $role['value'] }}"> {{ $role['name'] }}</option>
+                                                @endif
+                                            @endforeach
+                                            <option value="{{ null }}"> {{ __('Без роли') }}</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="page-wrapper__panel-btn-wrapper">
+                                    <button type="submit"
+                                            class="page-wrapper__panel-btn">{{ __('Сохранить роль') }}</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endif
         <div class="admin-container__form">
             <div class="admin-container__grid">
                 <div class="admin-container__grid-left">
@@ -13,9 +163,9 @@
                         {{ __('Редактирование информации') }}
                     </div>
                     @if (session('error'))
-                    <div class="error-messages">
-                        {{ session('error') }}
-                    </div>
+                        <div class="error-messages">
+                            {{ session('error') }}
+                        </div>
                     @endif
 
                     <div class="admin-container__form-body">
@@ -82,128 +232,9 @@
 
                 <div class="admin-container__grid-right">
                     <div class="admin-container__form-header">
-                        {{ __('Изменение роли') }}
-                    </div>
-
-                    <div class="success-messages-wrapper">
-                        @if(session('success_update_role'))
-                            <div class="success-messages">
-                                {{ session('success_update_role') }}
-                            </div>
-                        @endif
-                    </div>
-
-                    <div class="admin-container__form-body">
-                        <div class="admin-container__items">
-                            <label for="current_password">{{ __('Текущая роль пользователя:') }}</label>
-                            <label class="admin-container__label">
-                                @forelse($user->roles as $role)
-                                    {{ RolesUsersEnum::getDescription(RolesUsersEnum::from($role->name)) }}
-                                @empty
-                                    {{ __('Без роли') }}
-                                @endforelse
-                            </label>
-                        </div>
-
-                        <form method="POST" action="{{ route('user.updateRole', ['user' => $user->id]) }}">
-                            @csrf
-                            @method('PUT')
-                            <input type="hidden" name="user_id" value="{{ $user->id }}">
-                            <div class="error-messages__wrapper">
-                                @if(session('error_role'))
-                                    <div class="error-messages">
-                                        {{ session('error_role') }}
-                                    </div>
-                                @endif
-                            </div>
-                            <div class="admin-container__items">
-                                    <label>{{ __('Выберите новую роль:') }}</label>
-                                <div class="login-container__card-item">
-                                    <select name="role" class="admin-container__select">
-                                        <option value="" disabled selected>{{ __('Список ролей') }}</option>
-                                        @foreach(RolesUsersEnum::asSelectArray() as $role)
-                                            @if ($role['value'] !==  RolesUsersEnum::SUPER_ADMIN->value)
-                                                <option value="{{ $role['value'] }}"> {{ $role['name'] }}</option>
-                                            @endif
-                                        @endforeach
-                                        <option value="{{ null }}"> {{ __('Без роли') }}</option>
-                                    </select>
-                                </div>
-                                </div>
-
-                            <div class="page-wrapper__panel-btn-wrapper">
-                                <button type="submit"
-                                        class="page-wrapper__panel-btn">{{ __('Сохранить роль') }}</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="admin-container__form">
-            <div class="admin-container__grid">
-                <div class="admin-container__grid-left">
-                    <div class="admin-container__form-header">
-                        {{ __('Изменение кинотеатра') }}
-                    </div>
-
-                    <div class="success-messages-wrapper">
-                        @if(session('success_update_cinema'))
-                            <div class="success-messages">
-                                {{ session('success_update_cinema') }}
-                            </div>
-                        @endif
-                    </div>
-
-                    <div class="admin-container__form-body">
-                        <div class="admin-container__items">
-                            <label for="current_password">{{ __('Текущие кинотеатры пользователя:') }}</label>
-                            <label class="admin-container__label">
-                                @if($user->cinemas->isNotEmpty())
-                                    {{ $user->cinemas->pluck('name')->implode(', ') }}
-                                @else
-                                    {{ __('Нет кинотеатра') }}
-                                @endif
-                            </label>
-                        </div>
-
-                        <form method="POST" action="{{ route('user.updateCinema', ['user' => $user->id]) }}">
-                            @csrf
-                            @method('PUT')
-                            <input type="hidden" name="user_id" value="{{ $user->id }}">
-                            <div class="error-messages__wrapper">
-                                @if(session('error_cinema'))
-                                    <div class="error-messages">
-                                        {{ session('error_cinema') }}
-                                    </div>
-                                @endif
-                            </div>
-                            <div class="admin-container__items">
-                                <label>{{ __('Выберите новый кинотеатр:') }}</label>
-                                <div class="login-container__card-item">
-                                    <select name="cinema" class="admin-container__select">
-                                        <option value="" disabled selected>{{ __('Список кинотеатров') }}</option>
-                                        @foreach($cinemas as $cinema)
-                                            <option value="{{ $cinema->id }}">{{ $cinema->name }}</option>
-                                        @endforeach
-                                        <option value="{{ null }}"> {{ __('Без кинотеатра') }}</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="page-wrapper__panel-btn-wrapper">
-                                <button type="submit"
-                                        class="page-wrapper__panel-btn">{{ __('Сохранить') }}</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-
-                <div class="admin-container__grid-right">
-                    <div class="admin-container__form-header">
                         {{ __('Изменение пароля') }}
                     </div>
+
                     <div class="admin-container__form-body">
                         <form method="POST" action="{{ route('user.updatePassword', $user->id) }}">
                             @csrf
@@ -216,6 +247,28 @@
                                     </div>
                                 @endif
                             </div>
+                            <div class="error-messages__wrapper">
+                                @if(session('password_error'))
+                                    <div class="error-messages">
+                                        {{ session('password_error') }}
+                                    </div>
+                                @endif
+                            </div>
+
+                            @if(auth()->user()->id === $user->id)
+                                <div class="admin-container__items">
+                                    <label for="current_password">{{ __('Введите старый пароль:') }}</label>
+                                    <div>
+                                        <input type="password" id="current_password" name="current_password"
+                                               required placeholder="{{ __('Текущий пароль') }}">
+                                        @error('current_password')
+                                        <div class="error-messages">
+                                            {{$message}}
+                                        </div>
+                                        @enderror
+                                    </div>
+                                </div>
+                            @endif
 
                             <div class="admin-container__items">
                                 <label for="new_password">{{ __('Введите новый пароль:') }}</label>
@@ -240,7 +293,8 @@
                             </div>
 
                             <div class="page-wrapper__panel-btn-wrapper">
-                                <button type="submit" class="page-wrapper__panel-btn">{{ __('Изменить пароль') }}</button>
+                                <button type="submit"
+                                        class="page-wrapper__panel-btn">{{ __('Изменить пароль') }}</button>
                             </div>
                         </form>
                     </div>
@@ -250,22 +304,24 @@
             </div>
         </div>
 
-        <div class="admin-container__form grid-center-item">
-            <div class="admin-container__form-header">
-                {{ __('Удаление пользователя') }}
-            </div>
+        @if(!(auth()->user()->id === $user->id))
+            <div class="admin-container__form grid-center-item">
+                <div class="admin-container__form-header">
+                    {{ __('Удаление пользователя') }}
+                </div>
 
-            <div class="admin-container__form-body">
-                <form method="POST" action="{{ route('user.delete', $user->id) }}">
-                    @csrf
-                    @method('DELETE')
+                <div class="admin-container__form-body">
+                    <form method="POST" action="{{ route('user.delete', $user->id) }}">
+                        @csrf
+                        @method('DELETE')
 
-                    <div class="page-wrapper__panel-btn-wrapper">
-                        <button type="submit" class="page-wrapper__panel-btn"
-                                onclick="return confirm('Вы уверены, что хотите удалить пользователя {{ $user->name }}?')">{{ __('Удалить пользователя?') }}</button>
-                    </div>
-                </form>
+                        <div class="page-wrapper__panel-btn-wrapper">
+                            <button type="submit" class="page-wrapper__panel-btn"
+                                    onclick="return confirm('Вы уверены, что хотите удалить пользователя {{ $user->name }}?')">{{ __('Удалить пользователя?') }}</button>
+                        </div>
+                    </form>
+                </div>
             </div>
-        </div>
+        @endif
     </div>
 @endsection

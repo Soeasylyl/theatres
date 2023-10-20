@@ -8,6 +8,12 @@
     <div class="admin-container">
         <div class="admin-container__form">
             <div class="admin-container__form-header">{{ __('Создание нового пользователя') }} </div>
+            @if (session('error'))
+                <div class="error-messages">
+                    {{ session('error') }}
+                </div>
+            @endif
+
             <form method="POST" action="{{ route('users.create') }}">
                 @csrf
                 <div class="admin-container__grid">
