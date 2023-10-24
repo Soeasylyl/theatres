@@ -42,10 +42,10 @@ class Genre extends Model
     public function movies(): BelongsToMany
     {
         return $this->belongsToMany(
-            Movie::class,
-            'movie_genre',
-            'genre_id',
-            'movie_id',
+            related: Movie::class,
+            table: 'movie_genre',
+            foreignPivotKey: 'genre_id',
+            relatedPivotKey: 'movie_id',
         );
     }
 }

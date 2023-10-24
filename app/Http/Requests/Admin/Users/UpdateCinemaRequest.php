@@ -1,12 +1,10 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Admin\Users;
 
-use App\Enums\RolesUsersEnum;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
-class AdminUpdateRoleUserProfileRequest extends FormRequest
+class UpdateCinemaRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,9 +23,9 @@ class AdminUpdateRoleUserProfileRequest extends FormRequest
     {
         return [
             'user_id' => 'required|exists:users,id',
-            'role' => [
+            'cinema' => [
                 'nullable',
-                Rule::in(RolesUsersEnum::toArray())
+                'exists:cinemas,id'
             ],
         ];
     }

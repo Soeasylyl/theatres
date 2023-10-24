@@ -3,12 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Movie;
+use App\Repositories\Interfaces\MovieRepositoryInterface;
 
 class MovieController extends BaseAdminController
 {
-    public function __construct()
+    public function __construct(private readonly MovieRepositoryInterface $movieRepository)
     {
-        $this->middleware('auth')->only('index');
     }
 
     /**
@@ -19,12 +19,12 @@ class MovieController extends BaseAdminController
     // Display information about all films
     public function index()
     {
-        $movies = Movie::all();
+        $movies = $this->movieRepository->getAllMovies();
 
-        return view('admin.pages.movies.movies-information',compact('movies'));
+        return view('admin.pages.movies.movies-information', compact('movies'));
     }
 
-    public function show( $slug)
+    public function show($slug)
     {
         $movie = Movie::where('slug', $slug)->firstOrFail();
 

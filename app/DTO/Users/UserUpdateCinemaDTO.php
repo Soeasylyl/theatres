@@ -5,8 +5,8 @@ namespace App\DTO\Users;
 class UserUpdateCinemaDTO
 {
     public function __construct(
-        private readonly ?int   $userId,
-        private readonly ?string   $cinema,
+        private readonly int     $userId,
+        private readonly ?string $cinema,
     )
     {
     }

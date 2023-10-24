@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use App\DTO\Users\UserDTO;
+use App\DTO\Users\CreateUserDTO;
 use App\DTO\Users\UserUpdateCinemaDTO;
 use App\DTO\Users\UserUpdateInfoDTO;
 use App\DTO\Users\UserUpdatePasswordDTO;
@@ -20,19 +20,25 @@ class UserService
     {
     }
 
+    public function getUsersByRole()
+    {
+        $authUser = auth()->user();
+        if ($authUser->hasRole(RolesUsersEnum::SUPER_ADMIN->value)) {
+            return $this->userRepository->getAllUsers();
+        } else {
+
+            return $this->userRepository->getUsersByCinema($authUser->cinemas->pluck('id'), $authUser);
+        }
+    }
+
     /**
      * Creating a user
      *
-     * @param UserDTO $requestDTO
+     * @param CreateUserDTO $requestDTO
      * @return RedirectResponse
      */
-    public function createUser(UserDTO $requestDTO): RedirectResponse
+    public function createUser(CreateUserDTO $requestDTO): RedirectResponse
     {
-        if (!auth()->user()->hasRole(RolesUsersEnum::SUPER_ADMIN->value) && (!auth()->user()->hasRole(RolesUsersEnum::CINEMA_ADMIN->value))) {
-
-            return redirect()->back()->with('error', 'Пользователей может добавлять только Администратор');
-        }
-
         $user = $this->userRepository->createUser($requestDTO);
 
         if ($requestDTO->getCinemaId()) {
@@ -51,35 +57,18 @@ class UserService
      *
      * @param UserUpdateInfoDTO $requestDTO
      * @param User $user
-     * @return RedirectResponse|void
+     * @return RedirectResponse
      */
-    public function updateInfoByUser (UserUpdateInfoDTO $requestDTO, User $user)
+    public function updateInfoByUser(UserUpdateInfoDTO $requestDTO, User $user): RedirectResponse
     {
-        if (auth()->user()->hasRole(RolesUsersEnum::CINEMA_MANAGER->value) && ($user->id === auth()->user()->id)) {
+        try {
+            $this->checkAdminEditingPermission($user);
             $this->userRepository->updateInfoByUser($requestDTO, $user);
 
             return redirect()->route('user.edit', $user->id)->with('success_update_user_info', 'Информация о пользователе успешно обновлена.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', $e->getMessage());
         }
-
-        if (auth()->user()->hasRole(RolesUsersEnum::CINEMA_ADMIN->value) && ($user->id === auth()->user()->id)) {
-            $this->userRepository->updateInfoByUser($requestDTO, $user);
-
-            return redirect()->route('user.edit', $user->id)->with('success_update_user_info', 'Информация о пользователе успешно обновлена.');
-        }
-
-        if (!auth()->user()->hasRole(RolesUsersEnum::SUPER_ADMIN->value) && (!auth()->user()->hasRole(RolesUsersEnum::CINEMA_ADMIN->value))) {
-
-            return redirect()->back()->with('password_error', 'Информацию о пользователях может изменять только Администратор');
-        }
-
-        if (auth()->user()->hasRole(RolesUsersEnum::CINEMA_ADMIN->value) && ($user->hasRole(RolesUsersEnum::CINEMA_ADMIN->value))) {
-
-            return redirect()->back()->with('error', 'Администратор не может редактировать данные другому администратору.');
-        }
-
-        $this->userRepository->updateInfoByUser($requestDTO, $user);
-
-        return redirect()->route('user.edit', $user->id)->with('success_update_user_info', 'Информация о пользователе успешно обновлена.');
     }
 
     /**
@@ -89,50 +78,39 @@ class UserService
      * @param int $userId
      * @return RedirectResponse
      */
-    public function updatePasswordByUser (UserUpdatePasswordDTO $requestDTO, int $userId): RedirectResponse
+    public function updatePasswordByUser(UserUpdatePasswordDTO $requestDTO, int $userId): RedirectResponse
     {
         $user = $this->userRepository->getUserByIdOrFail($userId);
 
-        if (auth()->user()->hasRole(RolesUsersEnum::CINEMA_MANAGER->value) && ($user->id === auth()->user()->id)) {
+        try {
+            $this->checkAdminEditingPermission($user);
 
-            return $this->hashCheckUpdatePassword($requestDTO, $user);
+            if ($requestDTO->getCurrentPassword() && !Hash::check($requestDTO->getCurrentPassword(), $user->password)) {
+                return redirect()->back()->with('password_error', 'Текущий пароль неверен.');
+            }
+
+            $this->userRepository->updatePasswordByUser($requestDTO, $user);
+
+            return redirect()->route('user.edit', $user->id)->with('success_update_user_password', 'Пароль успешно изменён.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', $e->getMessage());
         }
-
-        if (auth()->user()->hasRole(RolesUsersEnum::CINEMA_ADMIN->value) && ($user->id === auth()->user()->id)) {
-
-            return $this->hashCheckUpdatePassword($requestDTO, $user);
-        }
-
-        if (!auth()->user()->hasRole(RolesUsersEnum::SUPER_ADMIN->value) && (!auth()->user()->hasRole(RolesUsersEnum::CINEMA_ADMIN->value))) {
-
-            return redirect()->back()->with('password_error', 'Информацию о пользователях может изменять только Администратор');
-        }
-
-        if (auth()->user()->hasRole(RolesUsersEnum::CINEMA_ADMIN->value) && ($user->hasRole(RolesUsersEnum::CINEMA_ADMIN->value))) {
-
-            return redirect()->back()->with('password_error', 'Администратор не может изменить пароль другому администратору.');
-        }
-
-        return $this->hashCheckUpdatePassword($requestDTO, $user);
     }
 
     /**
-     * Checking the current password and changing the password
+     * Checking that the administrator does not change data for another administrator
      *
-     * @param UserUpdatePasswordDTO $requestDTO
      * @param User $user
-     * @return RedirectResponse
+     * @return void
+     * @throws \Exception
      */
-    private function hashCheckUpdatePassword (UserUpdatePasswordDTO $requestDTO, User $user): RedirectResponse
+    private function checkAdminEditingPermission(User $user): void
     {
-        if ($requestDTO->getCurrentPassword() && !Hash::check($requestDTO->getCurrentPassword(), $user->password)) {
+        $hasCinemaAdminRole = auth()->user()->hasRole(RolesUsersEnum::CINEMA_ADMIN->value);
 
-            return redirect()->back()->with('password_error', 'Текущий пароль неверен.');
+        if ($hasCinemaAdminRole && ($user->hasRole(RolesUsersEnum::CINEMA_ADMIN->value))) {
+            throw new \Exception('Невозможно изменить данные другого администратора.');
         }
-
-        $this->userRepository->updatePasswordByUser($requestDTO, $user);
-
-        return redirect()->route('user.edit', $user->id)->with('success_update_user_password', 'Пароль успешно изменён.');
     }
 
     /**
@@ -141,23 +119,18 @@ class UserService
      * @param int $userId
      * @return RedirectResponse
      */
-    public function deleteUser (int $userId): RedirectResponse
+    public function deleteUser(int $userId): RedirectResponse
     {
         $user = $this->userRepository->getUserByIdOrFail($userId);
 
-        if (!auth()->user()->hasRole(RolesUsersEnum::SUPER_ADMIN->value) && (!auth()->user()->hasRole(RolesUsersEnum::CINEMA_ADMIN->value))) {
+        try {
+            $this->checkAdminEditingPermission($user);
+            $user->delete();
 
-            return redirect()->back()->with('error_delete_user', 'Удалять пользователей может только Администратор');
+            return redirect()->route('users')->with('success_delete_user', 'Пользователь успешно удален.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', $e->getMessage());
         }
-
-        if (auth()->user()->hasRole(RolesUsersEnum::CINEMA_ADMIN->value) && ($user->hasRole(RolesUsersEnum::CINEMA_ADMIN->value))) {
-
-            return redirect()->back()->with('error_delete_user', 'Администратор не может удалить другого администратора.');
-        }
-
-        $user->delete();
-
-        return redirect()->route('users')->with('success_delete_user', 'Пользователь успешно удален.');
     }
 
     /**
@@ -166,46 +139,37 @@ class UserService
      * @param UserUpdateRoleDTO $requestDTO
      * @return RedirectResponse
      */
-    public function updateRoleUser (UserUpdateRoleDTO $requestDTO): RedirectResponse
+    public function updateUserRole(UserUpdateRoleDTO $requestDTO): RedirectResponse
     {
-        $user = $this->userRepository->getUserByRequestOrFail($requestDTO);
-        $roleNameRequest = $requestDTO->getRole();
+        $user = $this->userRepository->getUserByIdOrFail($requestDTO->getUserId());
+        $roleName = $requestDTO->getRole();
+        $hasCinemaAdminRole = auth()->user()->hasRole(RolesUsersEnum::CINEMA_ADMIN->value);
 
-        if (auth()->user()->hasRole(RolesUsersEnum::SUPER_ADMIN->value) || auth()->user()->hasRole(RolesUsersEnum::CINEMA_ADMIN->value)) {
+        try {
+            $this->checkAdminEditingPermission($user);
 
-            if (auth()->user()->hasRole(RolesUsersEnum::CINEMA_ADMIN->value) && ($user->roles->isNotEmpty() && $user->hasRole(RolesUsersEnum::CINEMA_ADMIN->value))) {
-
-                return redirect()->back()->with('error_role', 'Администратор не может изменять роль другому администратору.');
-            }
-
-            if (auth()->user()->hasRole(RolesUsersEnum::CINEMA_ADMIN->value) && $roleNameRequest == RolesUsersEnum::CINEMA_ADMIN->value) {
-
+            if ($hasCinemaAdminRole && $roleName == RolesUsersEnum::CINEMA_ADMIN->value) {
                 return redirect()->back()->with('error_role', 'Администратор не может давать роль администратора.');
             }
 
-            if (auth()->user()->hasRole(RolesUsersEnum::CINEMA_MANAGER->value)) {
-
-                return redirect()->back()->with('error_role', 'Менеджеры не могут изменять роли.');
-            }
-
-            if ($roleNameRequest === null) {
+            if ($roleName === null) {
                 $this->userRepository->deleteAllRoleByUser($user);
 
                 return redirect()->back()->with('success_update_role', 'Роль у пользователя успешно удалена.');
-            } else {
-
-                if ($user->roles->first()) {
-                    $this->userRepository->deleteRoleByUser($user, $user->roles->first());        //deleting the current user role
-                }
-
-                $this->userRepository->addRoleByUser($user, $roleNameRequest);
-
-                return redirect()->back()->with('success_update_role', 'Роль у пользователя успешно изменена.');
             }
-        }
-        else {
 
-            return redirect()->back()->with('error_role', 'Недостатоно прав для изменения ролей.');
+            if ($user->roles->first()) {
+                $role = RolesUsersEnum::from($user->roles->first()->name);
+                $this->userRepository->deleteRoleByUser($user, $role);        //deleting the current user role
+            }
+
+            $role = RolesUsersEnum::from($roleName);
+            $this->userRepository->addRoleByUser($user, $role);
+
+            return redirect()->back()->with('success_update_role', 'Роль у пользователя успешно изменена.');
+
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', $e->getMessage());
         }
     }
 
@@ -215,21 +179,13 @@ class UserService
      * @param UserUpdateCinemaDTO $requestDTO
      * @return RedirectResponse
      */
-    public function updateCinemaUser (UserUpdateCinemaDTO $requestDTO): RedirectResponse
+    public function updateCinemaUser(UserUpdateCinemaDTO $requestDTO): RedirectResponse
     {
-        $user = $this->userRepository->getUserByRequestOrFail($requestDTO);
+        $user = $this->userRepository->getUserByIdOrFail($requestDTO->getUserId());
         $cinemaIdRequest = $requestDTO->getCinema();
 
-        if (auth()->user()->hasRole(RolesUsersEnum::SUPER_ADMIN->value) || auth()->user()->hasRole(RolesUsersEnum::CINEMA_ADMIN->value)) {
-            if (auth()->user()->hasRole(RolesUsersEnum::CINEMA_ADMIN->value) && ($user->hasRole(RolesUsersEnum::CINEMA_ADMIN->value))) {
-
-                return redirect()->back()->with('error_cinema', 'Администратор не может изменять кинотеатр другому администратору.');
-            }
-
-            if (auth()->user()->hasRole(RolesUsersEnum::CINEMA_MANAGER->value)) {
-
-                return redirect()->back()->with('error_cinema', 'Менеджеры не могут изменять кинотеатры других пользователей.');
-            }
+        try {
+            $this->checkAdminEditingPermission($user);
 
             if ($cinemaIdRequest === null) {
                 $user->cinemas()->detach();
@@ -240,9 +196,8 @@ class UserService
 
                 return redirect()->back()->with('success_update_cinema', 'Кинотеатр у пользователя успешно изменен.');
             }
-        } else {
-
-            return redirect()->back()->with('error_cinema', 'Недостаточно прав для изменения кинотеатров.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', $e->getMessage());
         }
     }
 }
