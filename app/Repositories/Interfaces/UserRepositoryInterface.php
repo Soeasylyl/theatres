@@ -95,4 +95,11 @@ interface UserRepositoryInterface
      * @return void
      */
     public function attachUserToCinema(User $user, int $cinemaId): void;
+
+    /**
+     * @param $userId
+     * @param $requestedUserCinemas
+     * @return bool
+     */
+    public function checkUserCinemas($userId, $requestedUserCinemas): bool;
 }

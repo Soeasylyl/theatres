@@ -4,6 +4,7 @@ namespace App\Http\Middleware\Users;
 
 use App\Enums\RolesUsersEnum;
 use App\Models\User;
+use App\Repositories\Interfaces\UserRepositoryInterface;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -11,6 +12,10 @@ use Symfony\Component\HttpFoundation\Response;
 
 class CheckUserAccessMiddleware
 {
+
+    public function __construct(private readonly UserRepositoryInterface   $userRepository)
+    {
+    }
     /**
      * Handle an incoming request.
      *
@@ -19,25 +24,25 @@ class CheckUserAccessMiddleware
     public function handle(Request $request, Closure $next): Response
     {
         $currentUser = auth()->user();
-        $requestedUser = User::find($request->route('user')) ?: abort(404);
+        $requestedUser = User::find($request->route('user'));
 
-        if ($this->userBelongsToSameCinema($currentUser, $requestedUser)) {
+        if (!$requestedUser) {
+            abort(404);
+        }
+
+        $currentUserCinemas = $currentUser->cinemas->pluck('id')->toArray();
+        $requestedUserCinemas = $requestedUser->cinemas->pluck('id')->toArray();
+
+        if (empty($currentUserCinemas) || empty($requestedUserCinemas)) {
+            abort(404);
+        }
+
+        $commonCinemas = $this->userRepository->checkUserCinemas($currentUser->id, $requestedUserCinemas);
+
+        if ($currentUser->hasRole(RolesUsersEnum::SUPER_ADMIN->value) || $commonCinemas) {
             return $next($request);
         }
 
         abort(404);
-    }
-
-    private function userBelongsToSameCinema($user, $requestedUser): bool
-    {
-        $currentUserCinemas = $user->cinemas->pluck('id')->toArray();
-        $requestedUserCinemas = $requestedUser->cinemas->pluck('id')->toArray();
-        $commonCinemas = array_intersect($currentUserCinemas, $requestedUserCinemas);
-
-        if ($user->hasRole(RolesUsersEnum::SUPER_ADMIN->value) || count($commonCinemas) > 0) {
-            return true;
-        }
-
-        return false;
     }
 }

@@ -123,4 +123,18 @@ class UserRepository implements UserRepositoryInterface
     {
         $user->cinemas()->attach($cinemaId);
     }
+
+    /**
+     * @param $userId
+     * @param $requestedUserCinemas
+     * @return bool
+     */
+    public function checkUserCinemas($userId, $requestedUserCinemas): bool
+    {
+        return User::where('users.id', $userId)
+            ->whereHas('cinemas', function ($query) use ($requestedUserCinemas) {
+                $query->whereIn('cinemas.id', $requestedUserCinemas);
+            })
+            ->exists();
+    }
 }
