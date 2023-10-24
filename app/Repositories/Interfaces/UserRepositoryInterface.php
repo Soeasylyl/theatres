@@ -2,7 +2,8 @@
 
 namespace App\Repositories\Interfaces;
 
-use App\DTO\Users\UserDTO;
+use App\DTO\Users\CreateUserDTO;
+use App\Enums\RolesUsersEnum;
 use app\Models\User;
 
 interface UserRepositoryInterface
@@ -12,7 +13,16 @@ interface UserRepositoryInterface
      *
      * @return mixed
      */
-    public function getAllUsers();
+    public function getAllUsers(): mixed;
+
+    /**
+     * Receiving all users from one cinema, except the authorized one
+     *
+     * @param $cinemaId
+     * @param User $authUser
+     * @return mixed
+     */
+    public function getUsersByCinema($cinemaId, User $authUser): mixed;
 
     /**
      * Searching for a user by ID
@@ -20,15 +30,7 @@ interface UserRepositoryInterface
      * @param int $user
      * @return mixed
      */
-    public function getUserByIdOrFail(int $user);
-
-    /**
-     * Search for a user by request
-     *
-     * @param $requestDTO
-     * @return mixed
-     */
-    public function getUserByRequestOrFail($requestDTO);
+    public function getUserByIdOrFail(int $user): mixed;
 
     /**
      * Changing user information
@@ -37,7 +39,7 @@ interface UserRepositoryInterface
      * @param User $user
      * @return mixed
      */
-    public function updateInfoByUser($requestDTO, User $user);
+    public function updateInfoByUser($requestDTO, User $user): mixed;
 
     /**
      * Changing the user password
@@ -46,16 +48,16 @@ interface UserRepositoryInterface
      * @param User $user
      * @return mixed
      */
-    public function updatePasswordByUser($requestDTO, User $user);
+    public function updatePasswordByUser($requestDTO, User $user): mixed;
 
     /**
      * Adding the selected role to a user
      *
      * @param User $user
-     * @param $roleName
+     * @param RolesUsersEnum $role
      * @return mixed
      */
-    public function addRoleByUser (User $user, $roleName);
+    public function addRoleByUser(User $user, RolesUsersEnum $role): mixed;
 
     /**
      * Removing all user roles
@@ -63,34 +65,34 @@ interface UserRepositoryInterface
      * @param User $user
      * @return mixed
      */
-    public function deleteAllRoleByUser (User $user);
+    public function deleteAllRoleByUser(User $user): mixed;
 
     /**
      * Removing a user role
      *
      * @param User $user
-     * @param $userRole
+     * @param RolesUsersEnum $role
      * @return mixed
      */
-    public function deleteRoleByUser (User $user, $userRole);
+    public function deleteRoleByUser(User $user, RolesUsersEnum $role): mixed;
 
     /**
-     * @param UserDTO $requestDTO
+     * @param CreateUserDTO $requestDTO
      * @return mixed
      */
-    public function createUser (UserDTO $requestDTO);
+    public function createUser(CreateUserDTO $requestDTO): mixed;
 
     /**
      * @param User $user
      * @param string $role
-     * @return mixed
+     * @return void
      */
-    public function assignRoleToUser(User $user, string $role);
+    public function assignRoleToUser(User $user, string $role): void;
 
     /**
      * @param User $user
      * @param int $cinemaId
-     * @return mixed
+     * @return void
      */
-    public function attachUserToCinema(User $user, int $cinemaId);
+    public function attachUserToCinema(User $user, int $cinemaId): void;
 }

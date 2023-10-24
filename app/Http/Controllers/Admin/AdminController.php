@@ -13,7 +13,6 @@ class AdminController extends BaseAdminController
      */
     public function __construct()
     {
-        $this->middleware('auth');
     }
 
     /**
@@ -23,7 +22,6 @@ class AdminController extends BaseAdminController
      */
     public function index()
     {
-
         return view('admin.pages.dashboard');
     }
 }

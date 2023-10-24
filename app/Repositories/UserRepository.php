@@ -3,13 +3,12 @@
 namespace App\Repositories;
 
 
-
-use App\DTO\Users\UserDTO;
+use App\DTO\Users\CreateUserDTO;
 use App\Enums\RolesUsersEnum;
 use app\Models\User;
 use App\Repositories\Interfaces\UserRepositoryInterface;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 
 class UserRepository implements UserRepositoryInterface
@@ -17,27 +16,35 @@ class UserRepository implements UserRepositoryInterface
     /*
      * Obtaining information about all users except authorized and super administrator
      */
-    public function getAllUsers()
+    public function getAllUsers(): array|\Illuminate\Pagination\LengthAwarePaginator|\LaravelIdea\Helper\App\Models\_IH_User_C|\Illuminate\Contracts\Pagination\LengthAwarePaginator
     {
         return User::whereDoesntHave('roles', function (Builder $query) {
-                $query->where('name', RolesUsersEnum::SUPER_ADMIN);
-                })->whereNot('id', \Auth::user()->id)->get();
+            $query->where('name', RolesUsersEnum::SUPER_ADMIN);
+        })->whereNot('id', \Auth::user()->id)->paginate(10);
+    }
+
+    /**
+     * Receiving all users from one cinema, except the authorized one
+     *
+     * @param $cinemaId
+     * @param User $authUser
+     * @return LengthAwarePaginator
+     */
+    public function getUsersByCinema($cinemaId, User $authUser): LengthAwarePaginator
+    {
+        return User::whereHas('cinemas', function ($query) use ($cinemaId) {
+            $query->where('cinema_id', $cinemaId);
+        })
+            ->where('id', '!=', $authUser->id)
+            ->paginate(10);
     }
 
     /*
      * Searching for a user by ID
      */
-    public function getUserByIdOrFail(int $userId)
+    public function getUserByIdOrFail(int $userId): User
     {
         return User::findOrFail($userId);
-    }
-
-    /*
-     * Search for a user by request
-     */
-    public function getUserByRequestOrFail($requestDTO): User
-    {
-        return User::findOrFail($requestDTO->getUserId());
     }
 
     /*
@@ -58,44 +65,44 @@ class UserRepository implements UserRepositoryInterface
     public function updatePasswordByUser($requestDTO, User $user): bool
     {
         return $user->update([
-            'password' => Hash::make($requestDTO->getPassword())
+            'password' => $requestDTO->getPassword()
         ]);
     }
 
     /*
      * Adding the selected role to a user
      */
-    public function addRoleByUser(User $user, $roleName)
+    public function addRoleByUser(User $user, RolesUsersEnum $role): User
     {
-        return $user->assignRole($roleName);
+        return $user->assignRole($role->value);
     }
 
     /*
      * Removing all user roles
      */
-    public function deleteAllRoleByUser(User $user)
+    public function deleteAllRoleByUser(User $user): User
     {
         return $user->syncRoles([]);
     }
 
-   public function deleteRoleByUser(User $user, $userRole)
-   {
-       return $user->removeRole($userRole->name);
-   }
+    public function deleteRoleByUser(User $user, RolesUsersEnum $role): User
+    {
+        return $user->removeRole($role);
+    }
 
     /**
-     * @param UserDTO $userDTO
-     * @return void
+     * @param CreateUserDTO $requestDTO
+     * @return mixed
      */
-   public function createUser(UserDTO $userDTO)
-   {
-       return User::create([
-           'name' => $userDTO->getName(),
-           'email' => $userDTO->getEmail(),
-           'phone' => $userDTO->getPhone(),
-           'password' => bcrypt($userDTO->getPassword()),
-       ]);
-   }
+    public function createUser(CreateUserDTO $requestDTO): mixed
+    {
+        return User::create([
+            'name' => $requestDTO->getName(),
+            'email' => $requestDTO->getEmail(),
+            'phone' => $requestDTO->getPhone(),
+            'password' => $requestDTO->getPassword(),
+        ]);
+    }
 
     /**
      * @param User $user

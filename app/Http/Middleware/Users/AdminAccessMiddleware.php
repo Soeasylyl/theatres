@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Middleware;
+namespace App\Http\Middleware\Users;
 
 use App\Enums\RolesUsersEnum;
 use Closure;
@@ -17,10 +17,11 @@ class AdminAccessMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (Auth::user() && Auth::user()->hasRole(RolesUsersEnum::toArray())) {
+        $authUser = Auth::user();
+        if ($authUser && $authUser->hasRole(RolesUsersEnum::toArray())) {
             return $next($request);
         }
 
-        return redirect('/');
+        abort(404);
     }
 }

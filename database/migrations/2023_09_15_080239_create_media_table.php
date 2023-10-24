@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('path', 1000);
             $table->morphs('model');
+            $table->string('collection')->nullable();
             $table->timestamps();
         });
     }

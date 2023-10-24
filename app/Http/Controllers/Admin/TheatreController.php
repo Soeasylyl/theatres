@@ -2,14 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
 use App\Models\Cinema;
 
 class TheatreController extends BaseAdminController
 {
     public function __construct()
     {
-        $this->middleware('auth');
     }
 
     /**

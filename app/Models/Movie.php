@@ -70,10 +70,10 @@ class Movie extends Model
     public function genres(): BelongsToMany
     {
         return $this->belongsToMany(
-            Genre::class,
-            'movie_genre',
-            'movie_id',
-            'genre_id',
+            related: Genre::class,
+            table: 'movie_genre',
+            foreignPivotKey: 'movie_id',
+            relatedPivotKey: 'genre_id',
         );
     }
 
@@ -85,10 +85,18 @@ class Movie extends Model
     public function medias(): MorphMany
     {
         return $this->morphMany(
-            Media::class,
-            'model',
-            'model_type',
-            'model_id',
+            related: Media::class,
+            name: 'model',
+            type: 'model_type',
+            id: 'model_id',
         );
+    }
+
+    /**
+     * @return string
+     */
+    public function getRouteKeyName(): string
+    {
+        return 'slug';
     }
 }

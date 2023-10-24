@@ -25,6 +25,7 @@
                             </div>
                         @endif
                     @endforeach
+
                 </div>
             </div>
             <div class="admin-container__form-body">
@@ -49,7 +50,7 @@
                             <td>{{ $user->name }}</td>
                             <td>{{ $user->email }}</td>
                             <td>{{ $user->phone }}</td>
-                            <td>{{ $user->email_verified_at ? $user->email_verified_at->format('d.m.Y') : __('Не верифицирован') }}</td>
+                            <td>{{ $user->email_verified_at ? \Carbon\Carbon::parse($user->email_verified_at)->isoFormat('D MMMM YYYY') : __('Не верифицирован') }}</td>
                             <td>
                                 @forelse($user->roles as $role)
                                     {{ RolesUsersEnum::getDescription(RolesUsersEnum::from($role->name)) }}
@@ -80,8 +81,11 @@
                             </td>
                         </tr>
                     @endforeach
+
                     </tbody>
+
                 </table>
+                {{ $users->links() }}
             </div>
         </div>
     </div>

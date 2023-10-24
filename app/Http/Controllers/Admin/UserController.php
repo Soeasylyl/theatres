@@ -3,17 +3,16 @@
 namespace App\Http\Controllers\Admin;
 
 
-use App\DTO\Users\UserDTO;
+use App\DTO\Users\CreateUserDTO;
 use App\DTO\Users\UserUpdateCinemaDTO;
 use App\DTO\Users\UserUpdateInfoDTO;
 use App\DTO\Users\UserUpdatePasswordDTO;
 use App\DTO\Users\UserUpdateRoleDTO;
-
-use App\Http\Requests\AdminPasswordRequest;
-use App\Http\Requests\AdminUpdateCinemaRequest;
-use App\Http\Requests\AdminCreateUserRequest;
-use App\Http\Requests\AdminUpdateInfoUserProfileRequest;
-use App\Http\Requests\AdminUpdateRoleUserProfileRequest;
+use App\Http\Requests\Admin\Users\UserRequest;
+use App\Http\Requests\Admin\Users\UpdatePasswordRequest;
+use App\Http\Requests\Admin\Users\UpdateCinemaRequest;
+use App\Http\Requests\Admin\Users\UpdateProfileRequest;
+use App\Http\Requests\Admin\Users\UpdateRoleRequest;
 use App\Models\User;
 use App\Repositories\Interfaces\CinemaRepositoryInterface;
 use App\Repositories\Interfaces\UserRepositoryInterface;
@@ -24,12 +23,11 @@ use Illuminate\Http\RedirectResponse;
 class UserController extends BaseAdminController
 {
     public function __construct(
-        private readonly UserRepositoryInterface $userRepository,
+        private readonly UserRepositoryInterface   $userRepository,
         private readonly CinemaRepositoryInterface $cinemaRepository,
-        private readonly UserService $userService
+        private readonly UserService               $userService
     )
     {
-        $this->middleware('auth');
     }
 
     /**
@@ -45,7 +43,7 @@ class UserController extends BaseAdminController
      */
     public function index()
     {
-        $users = $this->userRepository->getAllUsers();
+        $users = $this->userService->getUsersByRole();
 
         return view('admin.pages.users.main', compact('users'));
     }
@@ -65,18 +63,17 @@ class UserController extends BaseAdminController
     /**
      * Create a new user instance after a valid registration.
      *
-     * @param  array  $data
      * @return RedirectResponse
      */
-    protected function createUser(AdminCreateUserRequest $request)
+    protected function create(UserRequest $request)
     {
-        $requestDTO = new UserDTO(
+        $requestDTO = new CreateUserDTO(
             name: $request->input('name'),
             email: $request->input('email'),
             phone: $request->input('phone'),
             password: $request->input('password'),
             cinemaId: $request->input('cinema'),
-            role:  $request->input('role'),
+            role: $request->input('role'),
         );
 
         return $this->userService->createUser($requestDTO);
@@ -94,17 +91,35 @@ class UserController extends BaseAdminController
         $userRole = auth()->user()->roles->first();
         $cinemas = $this->cinemaRepository->getAllCinemas();
 
-        return view('admin.pages.users.edit', compact('user', 'cinemas','userRole'));
+        return view('admin.pages.users.edit', compact('user', 'cinemas', 'userRole'));
     }
 
     /**
      * Updating information for the selected user
      *
-     * @param AdminUpdateInfoUserProfileRequest $request
+     * @param UpdateProfileRequest $request
      * @param User $user
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function updateInfo(AdminUpdateInfoUserProfileRequest $request, User $user)
+    public function update(UpdateProfileRequest $request, User $user)
+    {
+        $requestDTO = new UserUpdateInfoDTO(
+            name: $request->input('name'),
+            email: $request->input('email'),
+            phone: $request->input('phone'),
+        );
+
+        return $this->userService->updateInfoByUser($requestDTO, $user);
+    }
+
+    /**
+     * Updating information for the selected user
+     *
+     * @param UpdateProfileRequest $request
+     * @param User $user
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function updateProfile(UpdateProfileRequest $request, User $user)
     {
         $requestDTO = new UserUpdateInfoDTO(
             name: $request->input('name'),
@@ -118,11 +133,28 @@ class UserController extends BaseAdminController
     /**
      * Updating the password for the selected user
      *
-     * @param AdminPasswordRequest $request
+     * @param UpdatePasswordRequest $request
      * @param int $userId
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function updatePassword(AdminPasswordRequest $request, int $userId)
+    public function updatePassword(UpdatePasswordRequest $request, int $userId)
+    {
+        $requestDTO = new UserUpdatePasswordDTO(
+            password: $request->input('new_password'),
+            currentPassword: $request->input('current_password'),
+        );
+
+        return $this->userService->updatePasswordByUser($requestDTO, $userId);
+    }
+
+    /**
+     * Updating the password for the selected user
+     *
+     * @param UpdatePasswordRequest $request
+     * @param int $userId
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function updatePasswordProfile(UpdatePasswordRequest $request, int $userId)
     {
         $requestDTO = new UserUpdatePasswordDTO(
             password: $request->input('new_password'),
@@ -146,26 +178,26 @@ class UserController extends BaseAdminController
     /**
      * Change the role of the selected user
      *
-     * @param AdminUpdateRoleUserProfileRequest $request
+     * @param AdminUpdateUserRoleProfileRequest $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function updateRole(AdminUpdateRoleUserProfileRequest $request)
+    public function updateRole(UpdateRoleRequest $request)
     {
         $requestDTO = new UserUpdateRoleDTO(
-            user_id: $request->input('user_id'),
+            userId: $request->input('user_id'),
             role: $request->input('role'),
         );
 
-        return $this->userService->updateRoleUser($requestDTO);
+        return $this->userService->updateUserRole($requestDTO);
     }
 
     /**
      * Updating information about the cinema to which the user belongs
      *
-     * @param AdminUpdateCinemaRequest $request
+     * @param UpdateCinemaRequest $request
      * @return RedirectResponse
      */
-    public function updateCinema(AdminUpdateCinemaRequest $request)
+    public function updateCinemaAction(UpdateCinemaRequest $request)
     {
         $requestDTO = new UserUpdateCinemaDTO (
             userId: $request->input('user_id'),

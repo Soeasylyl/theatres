@@ -63,7 +63,7 @@
                                 </label>
                             </div>
 
-                            <form method="POST" action="{{ route('user.updateCinema', ['user' => $user->id]) }}">
+                            <form method="POST" action="{{ route('user.updateCinemaAction', ['user' => $user->id]) }}">
                                 @csrf
                                 @method('PUT')
                                 <input type="hidden" name="user_id" value="{{ $user->id }}">
@@ -169,7 +169,8 @@
                     @endif
 
                     <div class="admin-container__form-body">
-                        <form method="POST" action="{{ route('user.updateInfo', $user->id) }}">
+                        <form method="POST"
+                              action="{{ auth()->user()->can(\App\Enums\PermissionsUsersEnum::MANAGE_USERS->value) ? route('user.update', $user->id) : route('user.updateProfile', $user->id)   }}">
                             @csrf
                             @method('PUT')
 
@@ -236,7 +237,8 @@
                     </div>
 
                     <div class="admin-container__form-body">
-                        <form method="POST" action="{{ route('user.updatePassword', $user->id) }}">
+                        <form method="POST"
+                              action="{{ auth()->user()->can(\App\Enums\PermissionsUsersEnum::MANAGE_USERS->value) ? route('user.updatePassword', $user->id) : route('user.updatePasswordProfile', $user->id)  }}">
                             @csrf
                             @method('PUT')
 

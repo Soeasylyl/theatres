@@ -3,12 +3,19 @@
 namespace App\Http\Controllers\public;
 
 
-
-use App\Models\Cinema;
-use App\Models\Movie;
+use App\Repositories\Interfaces\CinemaRepositoryInterface;
+use App\Repositories\Interfaces\MovieRepositoryInterface;
+use Illuminate\Support\Carbon;
 
 class HomeController extends BasePublicController
 {
+    public function __construct(
+        private readonly MovieRepositoryInterface  $movieRepository,
+        private readonly CinemaRepositoryInterface $cinemaRepository
+    )
+    {
+    }
+
     /**
      * Show the application dashboard.
      *
@@ -16,8 +23,9 @@ class HomeController extends BasePublicController
      */
     public function index()
     {
-        $movies = Movie::inRandomOrder()->limit(10)->get();
-        $cinemas = Cinema::all();
+        $currentDateTime = Carbon::now();
+        $movies = $this->movieRepository->getRandomMoviesWithScreenings($currentDateTime);
+        $cinemas = $this->cinemaRepository->getAllCinemas();  //// потом удалю когда придумаю как и куда выводить кинотеатры
 
         return view('public.pages.home', compact('movies', 'cinemas'));
     }

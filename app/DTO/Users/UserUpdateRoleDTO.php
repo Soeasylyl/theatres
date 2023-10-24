@@ -5,7 +5,7 @@ namespace App\DTO\Users;
 class UserUpdateRoleDTO
 {
     public function __construct(
-        private readonly int $user_id,
+        private readonly int     $userId,
         private readonly ?string $role,
     )
     {
@@ -13,7 +13,7 @@ class UserUpdateRoleDTO
 
     public function getUserId(): int
     {
-        return $this->user_id;
+        return $this->userId;
     }
 
     public function getRole(): ?string

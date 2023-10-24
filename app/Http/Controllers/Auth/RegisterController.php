@@ -53,7 +53,7 @@ class RegisterController extends BaseAdminController
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'phone' => ['required', 'string', 'regex:/\+375\d{9}/', 'min:13', 'max:13', 'unique:users'],
-            'password' => ['required', 'string', 'max:50' ],
+            'password' => ['required', 'string', 'min:8', 'confirmed', 'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/'],
         ]);
     }
 
@@ -65,8 +65,10 @@ class RegisterController extends BaseAdminController
     public function messages(): array
     {
         return [
-            'phone.regex' => 'Номер телефона должен начинаться с "+375" и состоять из 9 цифр.',
-            'phone.max' => 'Номер телефона не может быть длиннее или короче 13 символов.',
+            'phone.regex' => 'Номер телефона должен начинаться с "+375" и содержать 12 цифр в общей сложности, включая код страны.',
+            'phone.max' => 'Номер телефона не может быть длиннее 13 символов.',
+            'phone.min' => 'Номер телефона не может быть короче 13 символов.',
+            'password.regex' => 'Поле :attribute должно содержать как минимум одну маленькую букву, одну заглавную букву и одну цифру.',
         ];
     }
 
@@ -82,7 +84,7 @@ class RegisterController extends BaseAdminController
             'name' => $data['name'],
             'email' => $data['email'],
             'phone' => $data['phone'],
-            'password' => Hash::make($data['password']),
+            'password' =>  $data['password'],
         ]);
     }
 }

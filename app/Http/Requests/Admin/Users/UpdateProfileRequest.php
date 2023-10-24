@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Admin\Users;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class AdminUpdateInfoUserProfileRequest extends FormRequest
+class UpdateProfileRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -33,7 +33,7 @@ class AdminUpdateInfoUserProfileRequest extends FormRequest
                 'max:255',
                 Rule::unique('users')->ignore($userId),
             ],
-            'phone' => ['required', 'string', 'regex:/\+375\d{9}/', 'min:13', 'max:13'],
+            'phone' => 'required|string|regex:/\+375\d{9}/|min:13|max:13',
         ];
     }
 
@@ -45,9 +45,7 @@ class AdminUpdateInfoUserProfileRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'phone.regex' => 'Номер телефона должен начинаться с "+375" и состоять из 9 цифр.',
-            'phone.max' => 'Номер телефона не может быть длиннее или короче 13 символов.',
+            'phone.regex' => 'Номер телефона должен начинаться с "+375" и содержать 12 цифр в общей сложности, включая код страны',
         ];
     }
-
 }

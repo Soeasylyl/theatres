@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use App\Enums\PermissionsUsersEnum;
 use App\Enums\RolesUsersEnum;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
 use Spatie\Permission\Models\Permission;
@@ -20,10 +19,13 @@ class PermissionsSeeder extends Seeder
     {
         app()[PermissionRegistrar::class]->forgetCachedPermissions();
 
-        Role::create(['name' => RolesUsersEnum::SUPER_ADMIN->value]);
-
         foreach (PermissionsUsersEnum::asSelectArray() as $permission) {
             Permission::create(['name' => $permission['value']]);
+        }
+
+        $superAdmin = Role::create(['name' => RolesUsersEnum::SUPER_ADMIN->value]);
+        foreach (PermissionsUsersEnum::toArray() as $permission) {
+            $superAdmin->givePermissionTo($permission);
         }
 
         $cinemaManager = Role::create(['name' => RolesUsersEnum::CINEMA_MANAGER->value]);
@@ -45,6 +47,7 @@ class PermissionsSeeder extends Seeder
             PermissionsUsersEnum::MANAGE_SESSIONS,
             PermissionsUsersEnum::MANAGE_SEATS,
             PermissionsUsersEnum::MANAGE_PRICES,
+            PermissionsUsersEnum::MANAGE_USERS,
             PermissionsUsersEnum::VIEW_ADMIN_PANEL,
         ];
     }

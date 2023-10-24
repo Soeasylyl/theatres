@@ -19,13 +19,50 @@
                     @foreach($movies as $movie)
                         <tr>
                             <td>{{ $movie->name }}</td>
-                            <td>{{ $movie->date_start->format('Y-m-d') }}</td>
+                            <td>{{ \Carbon\Carbon::parse($movie->date_start)->isoFormat('D MMMM YYYY') }}</td>
                             <td>{{ substr($movie->session_duration, 0, 5) }}</td>
                             <td>{{ $movie->rating }}</td>
                         </tr>
                     @endforeach
                     </tbody>
                 </table>
+
+                <nav aria-label="pagination">
+                    <ul class="pagination justify-content-center">
+                        <!-- Предыдущая страница -->
+                        @if ($movies->onFirstPage())
+                            <li class="page-item disabled">
+                                <span class="page-link">{{ __('Предыдущая') }}</span>
+                            </li>
+                        @else
+                            <li class="page-item">
+                                <a class="page-link" href="{{ $movies->previousPageUrl() }}"
+                                   rel="prev">{{ __('Предыдущая') }}</a>
+                            </li>
+                        @endif
+
+                        <!-- Страницы -->
+                        @foreach ($movies as $movie)
+                            <li class="page-item {{ $movie->isActive ? 'active' : '' }}">
+                                <a class="page-link" href="{{ $movie->url }}">{{ $movie->label }}</a>
+                            </li>
+                        @endforeach
+
+                        <!-- Следующая страница -->
+                        @if ($movies->hasMorePages())
+                            <li class="page-item">
+                                <a class="page-link" href="{{ $movies->nextPageUrl() }}"
+                                   rel="next">{{ __('Следующая') }}</a>
+                            </li>
+                        @else
+                            <li class="page-item disabled">
+                                <span class="page-link">{{ __('Следующая') }}</span>
+                            </li>
+                        @endif
+                    </ul>
+                </nav>
+
+
             </div>
         </div>
     </div>

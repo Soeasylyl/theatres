@@ -5,10 +5,7 @@ namespace Database\Seeders;
 use App\Enums\RolesUsersEnum;
 use App\Models\Cinema;
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Str;
-use Spatie\Permission\Models\Role;
 
 class UserSeeder extends Seeder
 {
@@ -46,7 +43,7 @@ class UserSeeder extends Seeder
             'name' => fake()->name,
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
-            'password' => \Hash::make(fake()->password), // password
+            'password' => fake()->password, // password
             'phone' => fake()->phoneNumber(),
         ]);
     }
@@ -57,7 +54,7 @@ class UserSeeder extends Seeder
             'name' => 'admin',
             'email' => 'admin@example.com',
             'email_verified_at' => now(),
-            'password' => \Hash::make('1234567890'), // password
+            'password' => '1234567890', // password
             'phone' => fake()->phoneNumber(),
         ]);
     }

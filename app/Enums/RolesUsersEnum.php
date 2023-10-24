@@ -9,7 +9,7 @@ enum RolesUsersEnum: string
     use GetsAttributes;
 
     #[Description('Супер администратор')]
-    case SUPER_ADMIN = 'super-admin';
+    case SUPER_ADMIN = 'Super-Admin';
     #[Description('Администратор кинотеатра')]
     case CINEMA_ADMIN = 'cinema-admin';
     #[Description('Менеджер кинотеатра')]

@@ -64,20 +64,20 @@ class Cinema extends Model
     public function medias(): MorphMany
     {
         return $this->morphMany(
-            Media::class,
-            'model',
-            'model_type',
-            'model_id',
+            related: Media::class,
+            name: 'model',
+            type: 'model_type',
+            id: 'model_id',
         );
     }
 
-    public function users():BelongsToMany
+    public function users(): BelongsToMany
     {
         return $this->belongsToMany(
-            User::class,
-            'user_cinema',
-            'cinema_id',
-            'user_id',
+            related: User::class,
+            table: 'user_cinema',
+            foreignPivotKey: 'cinema_id',
+            relatedPivotKey: 'user_id',
         );
     }
 }

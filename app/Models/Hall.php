@@ -51,7 +51,7 @@ class Hall extends Model
         'description',
     ];
 
-    public function cinema() : BelongsTo
+    public function cinema(): BelongsTo
     {
         return $this->belongsTo(Cinema::class);
     }
@@ -69,10 +69,10 @@ class Hall extends Model
     public function medias(): MorphMany
     {
         return $this->morphMany(
-            Media::class,
-            'model',
-            'model_type',
-            'model_id',
+            related: Media::class,
+            name: 'model',
+            type: 'model_type',
+            id: 'model_id',
         );
     }
 }
