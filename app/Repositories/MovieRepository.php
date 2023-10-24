@@ -16,12 +16,14 @@ class MovieRepository implements MovieRepositoryInterface
         return Movie::paginate(10);
     }
 
-    public function getRandomMoviesWithScreenings($currentDateTime): array|\Illuminate\Database\Eloquent\Collection|\LaravelIdea\Helper\App\Models\_IH_Movie_C|\Illuminate\Support\Collection
+    public function getRandomMoviesWithScreenings($currentDateTime): \Illuminate\Database\Eloquent\Collection
     {
-        return Movie::whereHas('screenings', function ($query) use ($currentDateTime) {
-            $query->where('start_at', '>=', $currentDateTime);
-        })->with(['screenings' => function ($query) use ($currentDateTime) {
+        return Movie::with(['screenings' => function ($query) use ($currentDateTime) {
             $query->where('start_at', '>=', $currentDateTime)->orderBy('start_at', 'asc')->limit(1);
-        }])->inRandomOrder()->limit(10)->get();
+        }])->whereHas('screenings', function ($query) use ($currentDateTime) {
+                $query->where('start_at', '>=', $currentDateTime);
+            })->inRandomOrder()
+            ->limit(10)
+            ->get();
     }
 }
