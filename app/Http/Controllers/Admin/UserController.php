@@ -3,11 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 
-use App\DTO\Users\CreateUserDTO;
-use App\DTO\Users\UserUpdateCinemaDTO;
-use App\DTO\Users\UserUpdateInfoDTO;
-use App\DTO\Users\UserUpdatePasswordDTO;
-use App\DTO\Users\UserUpdateRoleDTO;
+use App\DTO\Users\CreateDTO;
+use App\DTO\Users\UpdateInfoDTO;
+use App\DTO\Users\UpdatePasswordDTO;
+use App\DTO\Users\UpdateRoleDTO;
 use App\Http\Requests\Admin\Users\UserRequest;
 use App\Http\Requests\Admin\Users\UpdatePasswordRequest;
 use App\Http\Requests\Admin\Users\UpdateCinemaRequest;
@@ -37,8 +36,6 @@ class UserController extends BaseAdminController
      */
 
     /**
-     * Obtaining information about all users except authorized and super administrator
-     *
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Foundation\Application
      */
     public function index()
@@ -67,7 +64,7 @@ class UserController extends BaseAdminController
      */
     protected function create(UserRequest $request)
     {
-        $requestDTO = new CreateUserDTO(
+        $requestDTO = new CreateDTO(
             name: $request->input('name'),
             email: $request->input('email'),
             phone: $request->input('phone'),
@@ -98,36 +95,37 @@ class UserController extends BaseAdminController
      * Updating information for the selected user
      *
      * @param UpdateProfileRequest $request
-     * @param User $user
-     * @return \Illuminate\Http\RedirectResponse
+     * @param int $userId
+     * @return RedirectResponse
      */
-    public function update(UpdateProfileRequest $request, User $user)
+    public function update(UpdateProfileRequest $request, int $userId)
     {
-        $requestDTO = new UserUpdateInfoDTO(
+        $requestDTO = new UpdateInfoDTO(
+            userId: $userId,
             name: $request->input('name'),
             email: $request->input('email'),
             phone: $request->input('phone'),
         );
 
-        return $this->userService->updateInfoByUser($requestDTO, $user);
+        return $this->userService->updateInfoByUser($requestDTO);
     }
 
     /**
      * Updating information for the selected user
      *
      * @param UpdateProfileRequest $request
-     * @param User $user
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
-    public function updateProfile(UpdateProfileRequest $request, User $user)
+    public function updateProfile(UpdateProfileRequest $request)
     {
-        $requestDTO = new UserUpdateInfoDTO(
+        $requestDTO = new UpdateInfoDTO(
+            userId: $request->input('id'),
             name: $request->input('name'),
             email: $request->input('email'),
             phone: $request->input('phone'),
         );
 
-        return $this->userService->updateInfoByUser($requestDTO, $user);
+        return $this->userService->updateInfoByUser($requestDTO);
     }
 
     /**
@@ -135,16 +133,17 @@ class UserController extends BaseAdminController
      *
      * @param UpdatePasswordRequest $request
      * @param int $userId
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
     public function updatePassword(UpdatePasswordRequest $request, int $userId)
     {
-        $requestDTO = new UserUpdatePasswordDTO(
+        $requestDTO = new UpdatePasswordDTO(
             password: $request->input('new_password'),
             currentPassword: $request->input('current_password'),
+            userId: $userId,
         );
 
-        return $this->userService->updatePasswordByUser($requestDTO, $userId);
+        return $this->userService->updatePasswordByUser($requestDTO);
     }
 
     /**
@@ -152,23 +151,24 @@ class UserController extends BaseAdminController
      *
      * @param UpdatePasswordRequest $request
      * @param int $userId
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
     public function updatePasswordProfile(UpdatePasswordRequest $request, int $userId)
     {
-        $requestDTO = new UserUpdatePasswordDTO(
+        $requestDTO = new UpdatePasswordDTO(
             password: $request->input('new_password'),
             currentPassword: $request->input('current_password'),
+            userId: $userId,
         );
 
-        return $this->userService->updatePasswordByUser($requestDTO, $userId);
+        return $this->userService->updatePasswordByUser($requestDTO);
     }
 
     /**
      * Delete a selected user
      *
      * @param int $userId
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
     public function delete(int $userId)
     {
@@ -178,12 +178,12 @@ class UserController extends BaseAdminController
     /**
      * Change the role of the selected user
      *
-     * @param AdminUpdateUserRoleProfileRequest $request
-     * @return \Illuminate\Http\RedirectResponse
+     * @param UpdateRoleRequest $request
+     * @return RedirectResponse
      */
     public function updateRole(UpdateRoleRequest $request)
     {
-        $requestDTO = new UserUpdateRoleDTO(
+        $requestDTO = new UpdateRoleDTO(
             userId: $request->input('user_id'),
             role: $request->input('role'),
         );
@@ -199,11 +199,11 @@ class UserController extends BaseAdminController
      */
     public function updateCinemaAction(UpdateCinemaRequest $request)
     {
-        $requestDTO = new UserUpdateCinemaDTO (
+        $requestDTO = new UpdateCinemaDTO (
             userId: $request->input('user_id'),
-            cinema: $request->input('cinema'),
+            cinemaId: $request->input('cinema'),
         );
 
-        return $this->userService->updateCinemaUser($requestDTO);
+        return $this->userService->updateUserCinemas($requestDTO);
     }
 }

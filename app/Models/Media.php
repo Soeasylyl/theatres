@@ -15,6 +15,7 @@ use Laravel\Sanctum\HasApiTokens;
  * @property string $path
  * @property string $model_type
  * @property int $model_id
+ * @property string|null $collection
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read Model|\Eloquent $mediable
@@ -22,10 +23,10 @@ use Laravel\Sanctum\HasApiTokens;
  * @property-read int|null $notifications_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Laravel\Sanctum\PersonalAccessToken> $tokens
  * @property-read int|null $tokens_count
- * @method static \Database\Factories\MediaFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Media newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Media newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Media query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Media whereCollection($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Media whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Media whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Media whereModelId($value)

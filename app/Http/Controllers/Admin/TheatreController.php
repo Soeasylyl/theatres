@@ -18,6 +18,7 @@ class TheatreController extends BaseAdminController
     // Displaying information about all cinemas
     public function index()
     {
+        // TODO: обратить внимание на withCount, для чего мне оно???
         $theatres = Cinema::withCount('halls')->get();
 
         return view('admin.pages.theatres.theatres', compact('theatres'));

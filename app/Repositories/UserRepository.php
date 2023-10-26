@@ -3,7 +3,7 @@
 namespace App\Repositories;
 
 
-use App\DTO\Users\CreateUserDTO;
+use App\DTO\Users\CreateDTO;
 use App\Enums\RolesUsersEnum;
 use app\Models\User;
 use App\Repositories\Interfaces\UserRepositoryInterface;
@@ -13,14 +13,18 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
 class UserRepository implements UserRepositoryInterface
 {
-    /*
+    /**
      * Obtaining information about all users except authorized and super administrator
+     *
+     * @return LengthAwarePaginator
      */
-    public function getAllUsers(): array|\Illuminate\Pagination\LengthAwarePaginator|\LaravelIdea\Helper\App\Models\_IH_User_C|\Illuminate\Contracts\Pagination\LengthAwarePaginator
+    public function getAllUsers(): LengthAwarePaginator
     {
-        return User::whereDoesntHave('roles', function (Builder $query) {
-            $query->where('name', RolesUsersEnum::SUPER_ADMIN);
-        })->whereNot('id', \Auth::user()->id)->paginate(10);
+        return User::query()
+            ->whereDoesntHave('roles', function (Builder $query) {
+                $query->where('name', RolesUsersEnum::SUPER_ADMIN);
+            })
+            ->whereNot('id', \Auth::user()->id)->paginate(10);
     }
 
     /**
@@ -32,23 +36,32 @@ class UserRepository implements UserRepositoryInterface
      */
     public function getUsersByCinema($cinemaId, User $authUser): LengthAwarePaginator
     {
-        return User::whereHas('cinemas', function ($query) use ($cinemaId) {
-            $query->where('cinema_id', $cinemaId);
-        })
+        return User::query()
+            ->whereHas('cinemas', function ($query) use ($cinemaId) {
+                $query->where('cinema_id', $cinemaId);
+            })
             ->where('id', '!=', $authUser->id)
             ->paginate(10);
     }
 
-    /*
+    /**
      * Searching for a user by ID
+     *
+     * @param int $userId
+     * @param array|null $relations
+     * @return User
      */
-    public function getUserByIdOrFail(int $userId): User
+    public function getUserByIdOrFail(int $userId, ?array $relations = []): User
     {
-        return User::findOrFail($userId);
+        return User::with($relations)->findOrFail($userId);
     }
 
-    /*
+    /**
      * Changing user information
+     *
+     * @param $requestDTO
+     * @param User $user
+     * @return bool
      */
     public function updateInfoByUser($requestDTO, User $user): bool
     {
@@ -59,8 +72,12 @@ class UserRepository implements UserRepositoryInterface
         ]);
     }
 
-    /*
+    /**
      * Changing the user password
+     *
+     * @param $requestDTO
+     * @param User $user
+     * @return bool
      */
     public function updatePasswordByUser($requestDTO, User $user): bool
     {
@@ -69,32 +86,34 @@ class UserRepository implements UserRepositoryInterface
         ]);
     }
 
-    /*
+    /**
      * Adding the selected role to a user
+     *
+     * @param User $user
+     * @param RolesUsersEnum $role
+     * @return User
      */
     public function addRoleByUser(User $user, RolesUsersEnum $role): User
     {
         return $user->assignRole($role->value);
     }
 
-    /*
+    /**
      * Removing all user roles
+     *
+     * @param User $user
+     * @return User
      */
-    public function deleteAllRoleByUser(User $user): User
+    public function deleteAllRoles(User $user): User
     {
         return $user->syncRoles([]);
     }
 
-    public function deleteRoleByUser(User $user, RolesUsersEnum $role): User
-    {
-        return $user->removeRole($role);
-    }
-
     /**
-     * @param CreateUserDTO $requestDTO
+     * @param CreateDTO $requestDTO
      * @return mixed
      */
-    public function createUser(CreateUserDTO $requestDTO): mixed
+    public function createUser(CreateDTO $requestDTO): mixed
     {
         return User::create([
             'name' => $requestDTO->getName(),
@@ -106,35 +125,11 @@ class UserRepository implements UserRepositoryInterface
 
     /**
      * @param User $user
-     * @param string $role
-     * @return void
-     */
-    public function assignRoleToUser(User $user, string $role): void
-    {
-        $user->assignRole($role);
-    }
-
-    /**
-     * @param User $user
      * @param int $cinemaId
      * @return void
      */
     public function attachUserToCinema(User $user, int $cinemaId): void
     {
         $user->cinemas()->attach($cinemaId);
-    }
-
-    /**
-     * @param $userId
-     * @param $requestedUserCinemas
-     * @return bool
-     */
-    public function checkUserCinemas($userId, $requestedUserCinemas): bool
-    {
-        return User::where('users.id', $userId)
-            ->whereHas('cinemas', function ($query) use ($requestedUserCinemas) {
-                $query->whereIn('cinemas.id', $requestedUserCinemas);
-            })
-            ->exists();
     }
 }

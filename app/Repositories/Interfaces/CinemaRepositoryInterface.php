@@ -3,12 +3,14 @@
 namespace App\Repositories\Interfaces;
 
 
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+
 interface CinemaRepositoryInterface
 {
     /**
      * Get all cinemas
      *
-     * @return mixed
+     * @return LengthAwarePaginator
      */
-    public function getAllCinemas(): mixed;
+    public function getAllCinemas(): LengthAwarePaginator;
 }

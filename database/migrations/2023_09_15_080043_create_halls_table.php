@@ -20,7 +20,8 @@ return new class extends Migration
 
             $table->foreign('cinema_id')
                   ->references('id')
-                  ->on('cinemas');
+                  ->on('cinemas')
+                  ->cascadeOnDelete();
         });
     }
 

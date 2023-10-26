@@ -2,22 +2,22 @@
 
 namespace App\DTO\Users;
 
-class UserUpdateCinemaDTO
+class UpdateRoleDTO
 {
     public function __construct(
         private readonly int     $userId,
-        private readonly ?string $cinema,
+        private readonly ?string $role,
     )
     {
     }
 
-    public function getUserId(): ?int
+    public function getUserId(): int
     {
         return $this->userId;
     }
 
-    public function getCinema(): ?string
+    public function getRole(): ?string
     {
-        return $this->cinema;
+        return $this->role;
     }
 }

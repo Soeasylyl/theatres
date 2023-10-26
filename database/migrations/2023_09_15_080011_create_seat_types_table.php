@@ -21,7 +21,8 @@ return new class extends Migration
 
             $table->foreign('cinema_id')
                   ->references('id')
-                  ->on('cinemas');
+                  ->on('cinemas')
+                  ->nullOnDelete();
         });
 
         DB::statement('ALTER TABLE seat_types ALTER COLUMN amount TYPE money USING amount::money');

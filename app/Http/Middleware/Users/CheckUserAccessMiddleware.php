@@ -6,9 +6,14 @@ use App\Enums\RolesUsersEnum;
 use App\Models\User;
 use App\Repositories\Interfaces\UserRepositoryInterface;
 use Closure;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
+use function PHPUnit\Framework\isTrue;
 
 class CheckUserAccessMiddleware
 {
@@ -23,26 +28,22 @@ class CheckUserAccessMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $currentUser = auth()->user();
-        $requestedUser = User::find($request->route('user'));
+        $requestedUser = $this->userRepository->getUserByIdOrFail($request->route('user'), ['cinemas']);
 
-        if (!$requestedUser) {
+        /** @var User $currentUser */
+        $currentUser = auth()?->user()?->load([
+            'cinemas' => function (Builder|BelongsToMany $builder) use ($requestedUser) {
+                $builder->whereIn('cinema_id', $requestedUser->cinemas->pluck('id'));
+            }
+        ]);
+
+        if (
+            ! $currentUser ||
+            (! $currentUser->hasRole(RolesUsersEnum::SUPER_ADMIN->value) && $currentUser->cinemas->isEmpty())
+        ) {
             abort(404);
         }
 
-        $currentUserCinemas = $currentUser->cinemas->pluck('id')->toArray();
-        $requestedUserCinemas = $requestedUser->cinemas->pluck('id')->toArray();
-
-        if (empty($currentUserCinemas) || empty($requestedUserCinemas)) {
-            abort(404);
-        }
-
-        $commonCinemas = $this->userRepository->checkUserCinemas($currentUser->id, $requestedUserCinemas);
-
-        if ($currentUser->hasRole(RolesUsersEnum::SUPER_ADMIN->value) || $commonCinemas) {
-            return $next($request);
-        }
-
-        abort(404);
+        return $next($request);
     }
 }

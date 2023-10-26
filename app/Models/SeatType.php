@@ -15,6 +15,7 @@ use Laravel\Sanctum\HasApiTokens;
  * @property int $id
  * @property int $cinema_id
  * @property string $name
+ * @property string $description
  * @property string $amount
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
@@ -32,6 +33,7 @@ use Laravel\Sanctum\HasApiTokens;
  * @method static \Illuminate\Database\Eloquent\Builder|SeatType whereAmount($value)
  * @method static \Illuminate\Database\Eloquent\Builder|SeatType whereCinemaId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|SeatType whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|SeatType whereDescription($value)
  * @method static \Illuminate\Database\Eloquent\Builder|SeatType whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|SeatType whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|SeatType whereUpdatedAt($value)

@@ -6,6 +6,7 @@ namespace App\Repositories;
 
 use App\Models\Cinema;
 use App\Repositories\Interfaces\CinemaRepositoryInterface;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 
 class CinemaRepository implements CinemaRepositoryInterface
@@ -13,9 +14,9 @@ class CinemaRepository implements CinemaRepositoryInterface
     /**
      * Obtaining information about all users except authorized and super administrator
      *
-     * @return array|\Illuminate\Pagination\LengthAwarePaginator|\LaravelIdea\Helper\App\Models\_IH_Cinema_C|\Illuminate\Contracts\Pagination\LengthAwarePaginator
+     * @return LengthAwarePaginator
      */
-    public function getAllCinemas(): array|\Illuminate\Pagination\LengthAwarePaginator|\LaravelIdea\Helper\App\Models\_IH_Cinema_C|\Illuminate\Contracts\Pagination\LengthAwarePaginator
+    public function getAllCinemas(): LengthAwarePaginator
     {
          return Cinema::paginate(10);
     }
