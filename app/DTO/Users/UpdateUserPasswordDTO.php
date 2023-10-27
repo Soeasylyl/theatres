@@ -2,12 +2,12 @@
 
 namespace App\DTO\Users;
 
-class UpdatePasswordDTO
+class UpdateUserPasswordDTO
 {
     public function __construct(
+        private readonly int $userId,
         private readonly ?string $password,
         private readonly ?string $currentPassword,
-        private readonly int $userId,
     )
     {
     }

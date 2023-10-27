@@ -16,8 +16,8 @@ class CinemaRepository implements CinemaRepositoryInterface
      *
      * @return LengthAwarePaginator
      */
-    public function getAllCinemas(): LengthAwarePaginator
+    public function getCinemasPaginateList(): LengthAwarePaginator
     {
-         return Cinema::paginate(10);
+         return Cinema::paginate(config('app.pagination_limit'));
     }
 }

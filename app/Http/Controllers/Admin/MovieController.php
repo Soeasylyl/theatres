@@ -19,7 +19,7 @@ class MovieController extends BaseAdminController
     // Display information about all films
     public function index()
     {
-        $movies = $this->movieRepository->getAllMovies();
+        $movies = $this->movieRepository->getMoviesPaginatedList();
 
         return view('admin.pages.movies.movies-information', compact('movies'));
     }

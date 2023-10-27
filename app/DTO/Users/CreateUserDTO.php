@@ -2,7 +2,7 @@
 
 namespace App\DTO\Users;
 
-class CreateDTO
+class CreateUserDTO
 {
     public function __construct(
         private readonly string  $name,

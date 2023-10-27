@@ -12,5 +12,5 @@ interface CinemaRepositoryInterface
      *
      * @return LengthAwarePaginator
      */
-    public function getAllCinemas(): LengthAwarePaginator;
+    public function getCinemasPaginateList(): LengthAwarePaginator;
 }

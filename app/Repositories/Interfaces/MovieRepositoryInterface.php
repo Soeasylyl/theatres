@@ -5,6 +5,7 @@ namespace App\Repositories\Interfaces;
 
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Carbon;
 
 interface MovieRepositoryInterface
 {
@@ -13,11 +14,12 @@ interface MovieRepositoryInterface
      *
      * @return LengthAwarePaginator
      */
-    public function getAllMovies(): LengthAwarePaginator;
+    public function getMoviesPaginatedList(): LengthAwarePaginator;
 
     /**
-     * @param $currentDateTime
+     * @param Carbon $currentDateTime
+     * @param int|null $limit
      * @return mixed
      */
-    public function getRandomMoviesWithScreenings($currentDateTime): Collection;
+    public function getRandomMoviesWithScreenings(Carbon $currentDateTime, int $limit = null): Collection;
 }

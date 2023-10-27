@@ -25,7 +25,7 @@ return new class extends Migration
             $table->foreign('user_id')
                   ->references('id')
                   ->on('users')
-                  ->nullOnDelete();;
+                  ->nullOnDelete();
 
             $table->foreign('screening_id')
                   ->references('id')

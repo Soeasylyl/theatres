@@ -2,11 +2,14 @@
 
 namespace App\Services;
 
-use App\DTO\Users\CreateDTO;
-use App\DTO\Users\UpdateInfoDTO;
-use App\DTO\Users\UpdatePasswordDTO;
-use App\DTO\Users\UpdateRoleDTO;
+use App\DTO\Users\CreateUserDTO;
+use App\DTO\Users\DeleteUserDTO;
+use App\DTO\Users\EditUserDTO;
+use App\DTO\Users\UpdateUserInfoDTO;
+use App\DTO\Users\UpdateUserPasswordDTO;
+use App\DTO\Users\UpdateUserRoleDTO;
 use App\Enums\RolesUsersEnum;
+use App\Models\Role;
 use App\Models\User;
 use App\Repositories\Interfaces\UserRepositoryInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
@@ -26,20 +29,22 @@ class UserService
     public function getUsersByRole(): LengthAwarePaginator
     {
         $authUser = auth()->user();
+        $authUserId = auth()->user()->id;
+
         if ($authUser->hasRole(RolesUsersEnum::SUPER_ADMIN->value)) {
-            return $this->userRepository->getAllUsers();
+            return $this->userRepository->getUsersWithoutAdminRolePaginatedList($authUserId);
         }
 
-        return $this->userRepository->getUsersByCinema($authUser->cinemas->pluck('id'), $authUser);
+        return $this->userRepository->getUsersByCinemaPaginatedList($authUser->cinemas->pluck('id'), $authUserId);
     }
 
     /**
      * Creating a user
      *
-     * @param CreateDTO $requestDTO
+     * @param CreateUserDTO $requestDTO
      * @return RedirectResponse
      */
-    public function createUser(CreateDTO $requestDTO): RedirectResponse
+    public function createUser(CreateUserDTO $requestDTO): RedirectResponse
     {
         $user = $this->userRepository->createUser($requestDTO);
 
@@ -57,19 +62,20 @@ class UserService
     /**
      * Updating user information
      *
-     * @param UpdateInfoDTO $requestDTO
+     * @param UpdateUserInfoDTO $requestDTO
      * @return RedirectResponse
      */
-    public function updateInfoByUser(UpdateInfoDTO $requestDTO): RedirectResponse
+    public function updateInfoByUser(UpdateUserInfoDTO $requestDTO): RedirectResponse
     {
         $user = $this->userRepository->getUserByIdOrFail($requestDTO->getUserId());
+        $authUser = auth()->user();
 
         try {
-            $this->checkAdminEditingPermission($user);
+            $this->checkAdminEditingPermission($user, $authUser);
             $this->userRepository->updateInfoByUser($requestDTO, $user);
 
             return redirect()->route('user.edit', $user->id)->with('success_update_user_info', 'Информация о пользователе успешно обновлена.');
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             return redirect()->back()->with('error', $e->getMessage());
         }
     }
@@ -77,15 +83,16 @@ class UserService
     /**
      * Password update
      *
-     * @param UpdatePasswordDTO $requestDTO
+     * @param UpdateUserPasswordDTO $requestDTO
      * @return RedirectResponse
      */
-    public function updatePasswordByUser(UpdatePasswordDTO $requestDTO): RedirectResponse
+    public function updatePasswordByUser(UpdateUserPasswordDTO $requestDTO): RedirectResponse
     {
         $user = $this->userRepository->getUserByIdOrFail($requestDTO->getUserId());
+        $authUser = auth()->user();
 
         try {
-            $this->checkAdminEditingPermission($user);
+            $this->checkAdminEditingPermission($user, $authUser);
 
             if ($requestDTO->getCurrentPassword() && !Hash::check($requestDTO->getCurrentPassword(), $user->password)) {
                 return redirect()->back()->with('password_error', 'Текущий пароль неверен.');
@@ -94,7 +101,7 @@ class UserService
             $this->userRepository->updatePasswordByUser($requestDTO, $user);
 
             return redirect()->route('user.edit', $user->id)->with('success_update_user_password', 'Пароль успешно изменён.');
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             return redirect()->back()->with('error', $e->getMessage());
         }
     }
@@ -103,12 +110,13 @@ class UserService
      * Checking that the administrator does not change data for another administrator
      *
      * @param User $user
+     * @param User $authUser
      * @return void
      * @throws \Exception
      */
-    private function checkAdminEditingPermission(User $user): void
+    private function checkAdminEditingPermission(User $user, User $authUser): void
     {
-        $hasCinemaAdminRole = auth()->user()->hasRole(RolesUsersEnum::CINEMA_ADMIN->value);
+        $hasCinemaAdminRole = $authUser->hasRole(RolesUsersEnum::CINEMA_ADMIN->value);
         $currentUserHasCinemaAdminRole = $user->hasRole(RolesUsersEnum::CINEMA_ADMIN->value);
 
         if ($hasCinemaAdminRole && $currentUserHasCinemaAdminRole) {
@@ -119,58 +127,59 @@ class UserService
     /**
      * Deleting a user
      *
-     * @param int $userId
+     * @param DeleteUserDTO $deleteUserDTO
      * @return RedirectResponse
      */
-    public function deleteUser(int $userId): RedirectResponse
+    public function deleteUser(DeleteUserDTO $deleteUserDTO): RedirectResponse
     {
-        $user = $this->userRepository->getUserByIdOrFail($userId);
+        $user = $this->userRepository->getUserByIdOrFail($deleteUserDTO->getUserId());
+        $authUser = auth()->user();
 
         try {
-            $this->checkAdminEditingPermission($user);
+            $this->checkAdminEditingPermission($user, $authUser);
             $user->delete();
 
             return redirect()->route('users')->with('success_delete_user', 'Пользователь успешно удален.');
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             return redirect()->back()->with('error', $e->getMessage());
         }
     }
 
     /**
-     *  Сhanging user roles
+     *  Changing user roles
      *
-     * @param UpdateRoleDTO $requestDTO
+     * @param UpdateUserRoleDTO $requestDTO
      * @return RedirectResponse
      */
-    public function updateUserRole(UpdateRoleDTO $requestDTO): RedirectResponse
+    public function updateUserRole(UpdateUserRoleDTO $requestDTO): RedirectResponse
     {
-        $user = $this->userRepository->getUserByIdOrFail($requestDTO->getUserId());
-        $roleName = $requestDTO->getRole();
-        $hasCinemaAdminRole = auth()->user()->hasRole(RolesUsersEnum::CINEMA_ADMIN->value);
+        $user = $this->userRepository->getUserByIdWithRolesOrFail($requestDTO->getUserId());
+        $role = RolesUsersEnum::tryFrom($requestDTO->getRole());
+        $authUser = auth()->user();
+        $hasCinemaAdminRole = $authUser->hasRole(RolesUsersEnum::CINEMA_ADMIN);
 
         try {
-            $this->checkAdminEditingPermission($user);
 
-            if ($hasCinemaAdminRole && $roleName == RolesUsersEnum::CINEMA_ADMIN->value) {
-                return redirect()->back()->with('error_role', 'Администратор не может давать роль администратора.');
-            }
+            $this->checkAdminEditingPermission($user, $authUser);
 
-            if ($roleName === null) {
-                $this->userRepository->deleteAllRoles($user);
+            if ($role === null) {
+                $user->syncRoles([]);;
 
                 return redirect()->back()->with('success_update_role', 'Роль у пользователя успешно удалена.');
             }
 
-            if ($user->roles->first()) {
-                $role = RolesUsersEnum::from($user->roles->first()->name);
-                $user->removeRole($role);        //deleting the current user role
+            if ($hasCinemaAdminRole && $role == RolesUsersEnum::CINEMA_ADMIN) {
+                return redirect()->back()->with('error_role', 'Администратор не может давать роль администратора.');
             }
 
-            $role = RolesUsersEnum::from($roleName);
-            $this->userRepository->addRoleByUser($user, $role);
+            if ($user->roles->first() !== null) {
+                $user->removeRole($user->roles->first()->name);        //deleting the current user role
+            }
+
+            $user->assignRole($role->value);
 
             return redirect()->back()->with('success_update_role', 'Роль у пользователя успешно изменена.');
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             return redirect()->back()->with('error', $e->getMessage());
         }
     }

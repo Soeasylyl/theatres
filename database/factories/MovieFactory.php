@@ -14,14 +14,8 @@ class MovieFactory extends Factory
 {
     public function definition(): array
     {
-        $name = $this->faker->sentence(3);
+        $name = $this->faker->unique()->sentence(3);
         $slug = Str::slug($name);
-
-        $count = 2;
-        while (Movie::where('slug', $slug)->exists()) {
-            $slug = Str::slug($name) . '-' . $count;
-            $count++;
-        }
 
         return [
             'name' => $name,

@@ -3,15 +3,18 @@
 namespace App\Http\Controllers\Admin;
 
 
-use App\DTO\Users\CreateDTO;
-use App\DTO\Users\UpdateInfoDTO;
-use App\DTO\Users\UpdatePasswordDTO;
-use App\DTO\Users\UpdateRoleDTO;
+use App\DTO\Users\CreateUserDTO;
+use App\DTO\Users\DeleteUserDTO;
+use App\DTO\Users\EditUserDTO;
+use App\DTO\Users\UpdateUserInfoDTO;
+use App\DTO\Users\UpdateUserPasswordDTO;
+use App\DTO\Users\UpdateUserRoleDTO;
 use App\Http\Requests\Admin\Users\UserRequest;
 use App\Http\Requests\Admin\Users\UpdatePasswordRequest;
 use App\Http\Requests\Admin\Users\UpdateCinemaRequest;
 use App\Http\Requests\Admin\Users\UpdateProfileRequest;
 use App\Http\Requests\Admin\Users\UpdateRoleRequest;
+use App\Models\Role;
 use App\Models\User;
 use App\Repositories\Interfaces\CinemaRepositoryInterface;
 use App\Repositories\Interfaces\UserRepositoryInterface;
@@ -40,6 +43,7 @@ class UserController extends BaseAdminController
      */
     public function index()
     {
+        dd(Role::findOrFail(1)->name);
         $users = $this->userService->getUsersByRole();
 
         return view('admin.pages.users.main', compact('users'));
@@ -52,7 +56,7 @@ class UserController extends BaseAdminController
      */
     public function showAddForm()
     {
-        $cinemas = $this->cinemaRepository->getAllCinemas();
+        $cinemas = $this->cinemaRepository->getCinemasPaginateList();
 
         return view('admin.pages.users.add', compact('cinemas'));
     }
@@ -64,7 +68,7 @@ class UserController extends BaseAdminController
      */
     protected function create(UserRequest $request)
     {
-        $requestDTO = new CreateDTO(
+        $requestDTO = new CreateUserDTO(
             name: $request->input('name'),
             email: $request->input('email'),
             phone: $request->input('phone'),
@@ -84,9 +88,13 @@ class UserController extends BaseAdminController
      */
     public function edit(int $userId)
     {
-        $user = $this->userRepository->getUserByIdOrFail($userId);
+        $editUserDTO = new EditUserDTO(
+          userId: $userId
+        );
+
+        $user = $this->userRepository->getUserByIdOrFail($editUserDTO->getUserId());
         $userRole = auth()->user()->roles->first();
-        $cinemas = $this->cinemaRepository->getAllCinemas();
+        $cinemas = $this->cinemaRepository->getCinemasPaginateList();
 
         return view('admin.pages.users.edit', compact('user', 'cinemas', 'userRole'));
     }
@@ -100,7 +108,7 @@ class UserController extends BaseAdminController
      */
     public function update(UpdateProfileRequest $request, int $userId)
     {
-        $requestDTO = new UpdateInfoDTO(
+        $requestDTO = new UpdateUserInfoDTO(
             userId: $userId,
             name: $request->input('name'),
             email: $request->input('email'),
@@ -118,7 +126,7 @@ class UserController extends BaseAdminController
      */
     public function updateProfile(UpdateProfileRequest $request)
     {
-        $requestDTO = new UpdateInfoDTO(
+        $requestDTO = new UpdateUserInfoDTO(
             userId: $request->input('id'),
             name: $request->input('name'),
             email: $request->input('email'),
@@ -137,10 +145,10 @@ class UserController extends BaseAdminController
      */
     public function updatePassword(UpdatePasswordRequest $request, int $userId)
     {
-        $requestDTO = new UpdatePasswordDTO(
+        $requestDTO = new UpdateUserPasswordDTO(
+            userId: $userId,
             password: $request->input('new_password'),
             currentPassword: $request->input('current_password'),
-            userId: $userId,
         );
 
         return $this->userService->updatePasswordByUser($requestDTO);
@@ -155,10 +163,10 @@ class UserController extends BaseAdminController
      */
     public function updatePasswordProfile(UpdatePasswordRequest $request, int $userId)
     {
-        $requestDTO = new UpdatePasswordDTO(
+        $requestDTO = new UpdateUserPasswordDTO(
+            userId: $userId,
             password: $request->input('new_password'),
             currentPassword: $request->input('current_password'),
-            userId: $userId,
         );
 
         return $this->userService->updatePasswordByUser($requestDTO);
@@ -172,7 +180,11 @@ class UserController extends BaseAdminController
      */
     public function delete(int $userId)
     {
-        return $this->userService->deleteUser($userId);
+        $deleteUserDTO = new DeleteUserDTO(
+            userId: $userId,
+        );
+
+        return $this->userService->deleteUser($deleteUserDTO);
     }
 
     /**
@@ -183,27 +195,11 @@ class UserController extends BaseAdminController
      */
     public function updateRole(UpdateRoleRequest $request)
     {
-        $requestDTO = new UpdateRoleDTO(
+        $requestDTO = new UpdateUserRoleDTO(
             userId: $request->input('user_id'),
             role: $request->input('role'),
         );
 
         return $this->userService->updateUserRole($requestDTO);
-    }
-
-    /**
-     * Updating information about the cinema to which the user belongs
-     *
-     * @param UpdateCinemaRequest $request
-     * @return RedirectResponse
-     */
-    public function updateCinemaAction(UpdateCinemaRequest $request)
-    {
-        $requestDTO = new UpdateCinemaDTO (
-            userId: $request->input('user_id'),
-            cinemaId: $request->input('cinema'),
-        );
-
-        return $this->userService->updateUserCinemas($requestDTO);
     }
 }

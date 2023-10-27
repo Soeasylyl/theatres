@@ -2,28 +2,32 @@
 
 namespace App\Repositories\Interfaces;
 
-use App\DTO\Users\CreateDTO;
+use App\DTO\Users\CreateUserDTO;
+use App\DTO\Users\UpdateUserInfoDTO;
+use App\DTO\Users\UpdateUserPasswordDTO;
 use App\Enums\RolesUsersEnum;
 use app\Models\User;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Collection;
 
 interface UserRepositoryInterface
 {
     /**
      * Obtaining information about all users except authorized and super administrator
      *
+     * @param int $authUserId
      * @return LengthAwarePaginator
      */
-    public function getAllUsers(): LengthAwarePaginator;
+    public function getUsersWithoutAdminRolePaginatedList(int $authUserId): LengthAwarePaginator;
 
     /**
      * Receiving all users from one cinema, except the authorized one
      *
-     * @param $cinemaId
-     * @param User $authUser
+     * @param Collection $cinemaId
+     * @param int $authUserId
      * @return LengthAwarePaginator
      */
-    public function getUsersByCinema($cinemaId, User $authUser): LengthAwarePaginator;
+    public function getUsersByCinemaPaginatedList(Collection $cinemaId, int $authUserId): LengthAwarePaginator;
 
     /**
      * Searching for a user by ID
@@ -35,45 +39,36 @@ interface UserRepositoryInterface
     public function getUserByIdOrFail(int $userId, ?array $relations = []): mixed;
 
     /**
+     * Searching for a user by ID with roles
+     *
+     * @param int $userId
+     * @return mixed
+     */
+    public function getUserByIdWithRolesOrFail(int $userId): mixed;
+
+    /**
      * Changing user information
      *
-     * @param $requestDTO
+     * @param UpdateUserInfoDTO $requestDTO
      * @param User $user
      * @return mixed
      */
-    public function updateInfoByUser($requestDTO, User $user): mixed;
+    public function updateInfoByUser(UpdateUserInfoDTO $requestDTO, User $user): User;
 
     /**
      * Changing the user password
      *
-     * @param $requestDTO
+     * @param UpdateUserPasswordDTO $requestDTO
      * @param User $user
      * @return mixed
      */
-    public function updatePasswordByUser($requestDTO, User $user): mixed;
+    public function updatePasswordByUser(UpdateUserPasswordDTO $requestDTO, User $user): User;
 
     /**
-     * Adding the selected role to a user
-     *
-     * @param User $user
-     * @param RolesUsersEnum $role
+     * @param CreateUserDTO $requestDTO
      * @return mixed
      */
-    public function addRoleByUser(User $user, RolesUsersEnum $role): mixed;
-
-    /**
-     * Removing all user roles
-     *
-     * @param User $user
-     * @return mixed
-     */
-    public function deleteAllRoles(User $user): mixed;
-
-    /**
-     * @param CreateDTO $requestDTO
-     * @return mixed
-     */
-    public function createUser(CreateDTO $requestDTO): mixed;
+    public function createUser(CreateUserDTO $requestDTO): mixed;
 
     /**
      * @param User $user

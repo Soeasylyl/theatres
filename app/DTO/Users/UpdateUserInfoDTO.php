@@ -2,7 +2,7 @@
 
 namespace App\DTO\Users;
 
-class UpdateInfoDTO
+class UpdateUserInfoDTO
 {
     public function __construct(
         private readonly int $userId,

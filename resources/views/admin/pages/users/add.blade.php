@@ -77,9 +77,13 @@
                             <div class="login-container__card-item">
                                 <select name="cinema" class="admin-container__select">
                                     <option value="" disabled selected>{{ __('Список кинотеатров') }}</option>
-                                    @foreach($cinemas as $cinema)
+                                    @forelse($cinemas as $cinema)
                                         <option value="{{ $cinema->id }}">{{ $cinema->name }}</option>
-                                    @endforeach
+                                    @@empty
+                                            <tr>
+                                                <td>{{ __('Фильмов не существует') }}</td>
+                                            </tr>
+                                        @endforelse
                                     <option value="{{ null }}"> {{ __('Без кинотеатра') }}</option>
                                 </select>
                             </div>

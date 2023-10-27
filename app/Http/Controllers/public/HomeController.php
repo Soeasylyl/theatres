@@ -24,8 +24,8 @@ class HomeController extends BasePublicController
     public function index()
     {
         $currentDateTime = Carbon::now();
-        $movies = $this->movieRepository->getRandomMoviesWithScreenings($currentDateTime);
-        $cinemas = $this->cinemaRepository->getAllCinemas();  //// потом удалю когда придумаю как и куда выводить кинотеатры
+        $movies = $this->movieRepository->getRandomMoviesWithScreenings($currentDateTime, 10);
+        $cinemas = $this->cinemaRepository->getCinemasPaginateList();  //// потом удалю когда придумаю как и куда выводить кинотеатры
 
         return view('public.pages.home', compact('movies', 'cinemas'));
     }

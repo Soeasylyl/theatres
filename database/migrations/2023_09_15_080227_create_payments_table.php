@@ -23,7 +23,7 @@ return new class extends Migration
             $table->foreign('booking_id')
                   ->references('id')
                   ->on('bookings')
-                  ->nullOnDelete();;
+                  ->nullOnDelete();
         });
 
         DB::statement('ALTER TABLE payments ALTER COLUMN amount TYPE money USING amount::money');

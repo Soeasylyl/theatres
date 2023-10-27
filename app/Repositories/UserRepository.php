@@ -3,12 +3,15 @@
 namespace App\Repositories;
 
 
-use App\DTO\Users\CreateDTO;
+use App\DTO\Users\CreateUserDTO;
+use App\DTO\Users\UpdateUserInfoDTO;
+use App\DTO\Users\UpdateUserPasswordDTO;
 use App\Enums\RolesUsersEnum;
 use app\Models\User;
 use App\Repositories\Interfaces\UserRepositoryInterface;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Collection;
 
 
 class UserRepository implements UserRepositoryInterface
@@ -16,32 +19,34 @@ class UserRepository implements UserRepositoryInterface
     /**
      * Obtaining information about all users except authorized and super administrator
      *
+     * @param int $authUserId
      * @return LengthAwarePaginator
      */
-    public function getAllUsers(): LengthAwarePaginator
+    public function getUsersWithoutAdminRolePaginatedList(int $authUserId): LengthAwarePaginator
     {
         return User::query()
             ->whereDoesntHave('roles', function (Builder $query) {
                 $query->where('name', RolesUsersEnum::SUPER_ADMIN);
             })
-            ->whereNot('id', \Auth::user()->id)->paginate(10);
+            ->whereNot('id', $authUserId)
+            ->paginate(config('app.pagination_limit'));
     }
 
     /**
      * Receiving all users from one cinema, except the authorized one
      *
-     * @param $cinemaId
-     * @param User $authUser
+     * @param Collection $cinemaId
+     * @param int $authUserId
      * @return LengthAwarePaginator
      */
-    public function getUsersByCinema($cinemaId, User $authUser): LengthAwarePaginator
+    public function getUsersByCinemaPaginatedList(Collection $cinemaId, int $authUserId): LengthAwarePaginator
     {
         return User::query()
             ->whereHas('cinemas', function ($query) use ($cinemaId) {
                 $query->where('cinema_id', $cinemaId);
             })
-            ->where('id', '!=', $authUser->id)
-            ->paginate(10);
+            ->where('id', '!=', $authUserId)
+            ->paginate(config('app.pagination_limit'));
     }
 
     /**
@@ -57,63 +62,54 @@ class UserRepository implements UserRepositoryInterface
     }
 
     /**
+     * Searching for a user by ID with roles
+     *
+     * @param int $userId
+     * @return mixed
+     */
+    public function getUserByIdWithRolesOrFail(int $userId): mixed
+    {
+        return User::with('roles')->findOrFail($userId);
+    }
+
+    /**
      * Changing user information
      *
-     * @param $requestDTO
+     * @param UpdateUserInfoDTO $requestDTO
      * @param User $user
-     * @return bool
+     * @return User
      */
-    public function updateInfoByUser($requestDTO, User $user): bool
+    public function updateInfoByUser(UpdateUserInfoDTO $requestDTO, User $user): User
     {
-        return $user->update([
+        $user->update([
             'name' => $requestDTO->getName(),
             'email' => $requestDTO->getEmail(),
             'phone' => $requestDTO->getPhone(),
         ]);
+        return $user->refresh();
     }
 
     /**
      * Changing the user password
      *
-     * @param $requestDTO
+     * @param UpdateUserPasswordDTO $requestDTO
      * @param User $user
-     * @return bool
+     * @return User
      */
-    public function updatePasswordByUser($requestDTO, User $user): bool
+    public function updatePasswordByUser(UpdateUserPasswordDTO $requestDTO, User $user): User
     {
-        return $user->update([
+        $user->update([
             'password' => $requestDTO->getPassword()
         ]);
+
+        return $user->refresh();
     }
 
     /**
-     * Adding the selected role to a user
-     *
-     * @param User $user
-     * @param RolesUsersEnum $role
-     * @return User
-     */
-    public function addRoleByUser(User $user, RolesUsersEnum $role): User
-    {
-        return $user->assignRole($role->value);
-    }
-
-    /**
-     * Removing all user roles
-     *
-     * @param User $user
-     * @return User
-     */
-    public function deleteAllRoles(User $user): User
-    {
-        return $user->syncRoles([]);
-    }
-
-    /**
-     * @param CreateDTO $requestDTO
+     * @param CreateUserDTO $requestDTO
      * @return mixed
      */
-    public function createUser(CreateDTO $requestDTO): mixed
+    public function createUser(CreateUserDTO $requestDTO): mixed
     {
         return User::create([
             'name' => $requestDTO->getName(),

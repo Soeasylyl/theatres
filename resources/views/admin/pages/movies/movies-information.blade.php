@@ -16,14 +16,18 @@
                     <th>{{ __(' ') }}</th>
                     </thead>
                     <tbody>
-                    @foreach($movies as $movie)
+                    @forelse($movies as $movie)
                         <tr>
                             <td>{{ $movie->name }}</td>
                             <td>{{ \Carbon\Carbon::parse($movie->date_start)->isoFormat('D MMMM YYYY') }}</td>
                             <td>{{ substr($movie->session_duration, 0, 5) }}</td>
                             <td>{{ $movie->rating }}</td>
                         </tr>
-                    @endforeach
+                    @empty
+                        <tr>
+                            <td>{{ __('Фильмов не существует') }}</td>
+                        </tr>
+                    @endforelse
                     </tbody>
                 </table>
 
