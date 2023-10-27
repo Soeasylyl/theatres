@@ -79,11 +79,11 @@
                                     <option value="" disabled selected>{{ __('Список кинотеатров') }}</option>
                                     @forelse($cinemas as $cinema)
                                         <option value="{{ $cinema->id }}">{{ $cinema->name }}</option>
-                                    @@empty
-                                            <tr>
-                                                <td>{{ __('Фильмов не существует') }}</td>
-                                            </tr>
-                                        @endforelse
+                                    @empty
+                                        <tr>
+                                            <td>{{ __('Фильмов не существует') }}</td>
+                                        </tr>
+                                    @endforelse
                                     <option value="{{ null }}"> {{ __('Без кинотеатра') }}</option>
                                 </select>
                             </div>

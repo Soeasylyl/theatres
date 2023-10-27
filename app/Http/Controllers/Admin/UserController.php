@@ -18,6 +18,7 @@ use App\Models\Role;
 use App\Models\User;
 use App\Repositories\Interfaces\CinemaRepositoryInterface;
 use App\Repositories\Interfaces\UserRepositoryInterface;
+use App\Services\CinemaService;
 use App\Services\UserService;
 use Illuminate\Http\RedirectResponse;
 
@@ -25,9 +26,8 @@ use Illuminate\Http\RedirectResponse;
 class UserController extends BaseAdminController
 {
     public function __construct(
-        private readonly UserRepositoryInterface   $userRepository,
-        private readonly CinemaRepositoryInterface $cinemaRepository,
-        private readonly UserService               $userService
+        private readonly UserService               $userService,
+        private readonly CinemaService             $cinemaService,
     )
     {
     }
@@ -43,20 +43,19 @@ class UserController extends BaseAdminController
      */
     public function index()
     {
-        dd(Role::findOrFail(1)->name);
         $users = $this->userService->getUsersByRole();
 
         return view('admin.pages.users.main', compact('users'));
     }
 
     /**
-     * Getting all cinemas
+     * Getting all cinemas PaginateList
      *
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Foundation\Application
      */
     public function showAddForm()
     {
-        $cinemas = $this->cinemaRepository->getCinemasPaginateList();
+        $cinemas = $this->cinemaService->getCinemasPaginateList();
 
         return view('admin.pages.users.add', compact('cinemas'));
     }
@@ -77,7 +76,9 @@ class UserController extends BaseAdminController
             role: $request->input('role'),
         );
 
-        return $this->userService->createUser($requestDTO);
+        $this->userService->createUser($requestDTO);
+
+        return redirect()->route('users')->with('success_create_user', 'Пользователь успешно создан');
     }
 
     /**
@@ -89,14 +90,12 @@ class UserController extends BaseAdminController
     public function edit(int $userId)
     {
         $editUserDTO = new EditUserDTO(
-          userId: $userId
+            userId: $userId
         );
 
-        $user = $this->userRepository->getUserByIdOrFail($editUserDTO->getUserId());
-        $userRole = auth()->user()->roles->first();
-        $cinemas = $this->cinemaRepository->getCinemasPaginateList();
+        $userData = $this->userService->getUserDataForEdit($editUserDTO);
 
-        return view('admin.pages.users.edit', compact('user', 'cinemas', 'userRole'));
+        return view('admin.pages.users.edit', ['user' => $userData['user'], 'cinemas' => $userData['cinemas'], 'userRole' => $userData['userRole']]);
     }
 
     /**
@@ -115,7 +114,9 @@ class UserController extends BaseAdminController
             phone: $request->input('phone'),
         );
 
-        return $this->userService->updateInfoByUser($requestDTO);
+        $message = $this->userService->updateInfoByUser($requestDTO);
+
+        return redirect()->route('user.edit', $userId)->with('message', $message);
     }
 
     /**
@@ -133,7 +134,9 @@ class UserController extends BaseAdminController
             phone: $request->input('phone'),
         );
 
-        return $this->userService->updateInfoByUser($requestDTO);
+        $message = $this->userService->updateInfoByUser($requestDTO);
+
+        return redirect()->route('user.profile')->with('message', $message);
     }
 
     /**
@@ -184,7 +187,9 @@ class UserController extends BaseAdminController
             userId: $userId,
         );
 
-        return $this->userService->deleteUser($deleteUserDTO);
+        $message = $this->userService->deleteUser($deleteUserDTO);
+
+        return redirect()->route('users')->with('message', $message);
     }
 
     /**

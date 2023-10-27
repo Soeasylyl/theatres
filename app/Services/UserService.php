@@ -11,6 +11,7 @@ use App\DTO\Users\UpdateUserRoleDTO;
 use App\Enums\RolesUsersEnum;
 use App\Models\Role;
 use App\Models\User;
+use App\Repositories\Interfaces\CinemaRepositoryInterface;
 use App\Repositories\Interfaces\UserRepositoryInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Http\RedirectResponse;
@@ -19,7 +20,10 @@ use Illuminate\Support\Facades\Hash;
 
 class UserService
 {
-    public function __construct(private readonly UserRepositoryInterface $userRepository)
+    public function __construct(
+        private readonly UserRepositoryInterface $userRepository,
+        private readonly CinemaRepositoryInterface $cinemaRepository,
+    )
     {
     }
 
@@ -42,9 +46,9 @@ class UserService
      * Creating a user
      *
      * @param CreateUserDTO $requestDTO
-     * @return RedirectResponse
+     * @return void
      */
-    public function createUser(CreateUserDTO $requestDTO): RedirectResponse
+    public function createUser(CreateUserDTO $requestDTO): void
     {
         $user = $this->userRepository->createUser($requestDTO);
 
@@ -55,17 +59,30 @@ class UserService
         if ($roleId = $requestDTO->getRole()) {
             $user->assignRole($roleId);
         }
+    }
 
-        return redirect()->route('users')->with('success_create_user', 'Пользователь успешно создан');
+    /**
+     *Retrieves user data for the purpose of editing.
+     *
+     * @param $editUserDTO
+     * @return array
+     */
+    public function getUserDataForEdit($editUserDTO): array
+    {
+        $user = $this->userRepository->getUserByIdOrFail($editUserDTO->getUserId());
+        $userRole = auth()->user()->roles->first();
+        $cinemas = $this->cinemaRepository->getCinemasPaginateList();
+
+        return compact('user', 'userRole', 'cinemas');
     }
 
     /**
      * Updating user information
      *
      * @param UpdateUserInfoDTO $requestDTO
-     * @return RedirectResponse
+     * @return string
      */
-    public function updateInfoByUser(UpdateUserInfoDTO $requestDTO): RedirectResponse
+    public function updateInfoByUser(UpdateUserInfoDTO $requestDTO): string
     {
         $user = $this->userRepository->getUserByIdOrFail($requestDTO->getUserId());
         $authUser = auth()->user();
@@ -74,9 +91,9 @@ class UserService
             $this->checkAdminEditingPermission($user, $authUser);
             $this->userRepository->updateInfoByUser($requestDTO, $user);
 
-            return redirect()->route('user.edit', $user->id)->with('success_update_user_info', 'Информация о пользователе успешно обновлена.');
+            return 'Информация о пользователе успешно обновлена.';
         } catch (\Throwable $e) {
-            return redirect()->back()->with('error', $e->getMessage());
+            return $e->getMessage();
         }
     }
 
@@ -128,9 +145,9 @@ class UserService
      * Deleting a user
      *
      * @param DeleteUserDTO $deleteUserDTO
-     * @return RedirectResponse
+     * @return string
      */
-    public function deleteUser(DeleteUserDTO $deleteUserDTO): RedirectResponse
+    public function deleteUser(DeleteUserDTO $deleteUserDTO): string
     {
         $user = $this->userRepository->getUserByIdOrFail($deleteUserDTO->getUserId());
         $authUser = auth()->user();
@@ -139,9 +156,9 @@ class UserService
             $this->checkAdminEditingPermission($user, $authUser);
             $user->delete();
 
-            return redirect()->route('users')->with('success_delete_user', 'Пользователь успешно удален.');
+            return 'Пользователь успешно удален.';
         } catch (\Throwable $e) {
-            return redirect()->back()->with('error', $e->getMessage());
+            return $e->getMessage();
         }
     }
 

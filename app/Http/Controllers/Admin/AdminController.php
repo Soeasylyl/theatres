@@ -30,21 +30,15 @@ class AdminController extends BaseAdminController
             $query->where('name', RolesUsersEnum::SUPER_ADMIN->value);
         })->count();
 
-        $cinemas = Cinema::all();
-        $countCinemas = Cinema::count();
+        $cinemas = Cinema::with('halls.seats')->get();
+        $countCinemas = $cinemas->count();
         $totalCountSeats = 0;
+
         foreach ($cinemas as $cinema) {
-            $countSeats = Hall::where('cinema_id', $cinema->id)
-                ->with('seats')->get()->
-                sum(function (Hall $hall) {
-                   return $hall->seats->count();
-                });
-            $totalCountSeats += $countSeats;
+            $totalCountSeats += $cinema->halls->sum(function ($hall) {
+                return $hall->seats->count();
+            });
         }
-
-
-
-
 
         return view('admin.pages.dashboard',
             compact('countUsers'),
