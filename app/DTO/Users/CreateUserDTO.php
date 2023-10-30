@@ -10,9 +10,14 @@ class CreateUserDTO
         private readonly string  $phone,
         private readonly string  $password,
         private readonly ?int    $cinemaId = null,
-        private readonly ?string $role = null,
+        private readonly ?string $roleName = null,
     )
     {
+    }
+
+    public function getRoleName(): ?string
+    {
+        return $this->roleName;
     }
 
     public function getName(): string
@@ -38,10 +43,5 @@ class CreateUserDTO
     public function getCinemaId(): ?int
     {
         return $this->cinemaId;
-    }
-
-    public function getRole(): ?string
-    {
-        return $this->role;
     }
 }

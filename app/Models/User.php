@@ -105,11 +105,11 @@ class User extends Authenticatable
 
     public function cinemas(): BelongsToMany
     {
-        return  $this->belongsToMany(
-          related: Cinema::class,
-          table: 'user_cinema',
-          foreignPivotKey: 'user_id',
-          relatedPivotKey: 'cinema_id',
+        return $this->belongsToMany(
+            related: Cinema::class,
+            table: 'user_cinema',
+            foreignPivotKey: 'user_id',
+            relatedPivotKey: 'cinema_id',
         );
     }
 

@@ -33,7 +33,7 @@ class UpdateProfileRequest extends FormRequest
                 'max:255',
                 Rule::unique('users')->ignore($userId),
             ],
-            'phone' => 'required|string|regex:/\+375\d{9}/|min:13|max:13',
+            'phone' => 'required|string|regex:/\+375\d{9}/|min:13|max:13|unique:users',
         ];
     }
 

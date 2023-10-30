@@ -122,9 +122,9 @@
                                         @method('PUT')
 
                                         <div class="success-messages-wrapper">
-                                            @if(session('success_update_user_info'))
+                                            @if(session('message'))
                                                 <div class="success-messages">
-                                                    {{ session('success_update_user_info') }}
+                                                    {{ session('message') }}
                                                 </div>
                                             @endif
                                         </div>
@@ -186,7 +186,14 @@
 
                                 <div class="admin-container__form-body">
                                     <form method="POST"
-                                          action="{{ auth()->user()->can(\App\Enums\PermissionsUsersEnum::MANAGE_USERS->value) ? route('user.updatePassword', $user->id) : route('user.updatePasswordProfile', $user->id)  }}">
+                                          @if($user->id === auth()->user()->id)
+                                              action="{{ route('user.updatePasswordProfile', $user->id) }}"
+                                          @else
+                                              action="{{
+                                                            auth()->user()->can(\App\Enums\PermissionsUsersEnum::MANAGE_USERS->value) ?
+                                                            route('user.updatePassword', $user->id) : route('user.updatePasswordProfile', $user->id)
+                                              }}"
+                                        @endif>
                                         @csrf
                                         @method('PUT')
 
