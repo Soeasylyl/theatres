@@ -93,7 +93,11 @@ class UserController extends BaseAdminController
 
         $userData = $this->userService->getUserDataForEdit($editUserDTO);
 
-        return view('admin.pages.users.edit', ['user' => $userData['user'], 'cinemas' => $userData['cinemas'], 'userRole' => $userData['userRole']]);
+        return view('admin.pages.users.edit',compact('authUser'), [
+            'user' => $userData['user'],
+            'cinemas' => $userData['cinemas'],
+            'userRole' => $userData['userRole'],
+        ]);
     }
 
     /**

@@ -9,7 +9,7 @@
         @php
             //FIXME: Сделать через роли, а не по ID
         @endphp
-        @if(auth()->user()->id === $user->id)
+        @if($authUser->id === $user->id)
             <div class="admin-container__form">
                 <div class="admin-container__items">
                     <label for="current_password">{{ __('Текущая роль пользователя:') }}</label>
@@ -37,7 +37,7 @@
             </div>
 
 
-            @if(!(auth()->user()->id === $user->id))
+            @if(!($authUser->id === $user->id))
 
                 <div class="admin-container">
                     <div class="admin-container__form">
@@ -117,7 +117,7 @@
 
                                 <div class="admin-container__form-body">
                                     <form method="POST"
-                                          action="{{ auth()->user()->can(\App\Enums\PermissionsUsersEnum::MANAGE_USERS->value) ? route('user.update', $user->id) : route('user.updateProfile', $user->id)   }}">
+                                          action="{{ $authUser->can(\App\Enums\PermissionsUsersEnum::MANAGE_USERS->value) ? route('user.update', $user->id) : route('user.updateProfile', $user->id)   }}">
                                         @csrf
                                         @method('PUT')
 
@@ -186,11 +186,11 @@
 
                                 <div class="admin-container__form-body">
                                     <form method="POST"
-                                          @if($user->id === auth()->user()->id)
+                                          @if($user->id === $authUser->id)
                                               action="{{ route('user.updatePasswordProfile', $user->id) }}"
                                           @else
                                               action="{{
-                                                            auth()->user()->can(\App\Enums\PermissionsUsersEnum::MANAGE_USERS->value) ?
+                                                            $authUser->can(\App\Enums\PermissionsUsersEnum::MANAGE_USERS->value) ?
                                                             route('user.updatePassword', $user->id) : route('user.updatePasswordProfile', $user->id)
                                               }}"
                                         @endif>
@@ -212,7 +212,7 @@
                                             @endif
                                         </div>
 
-                                        @if(auth()->user()->id === $user->id)
+                                        @if($authUser->id === $user->id)
                                             <div class="admin-container__items">
                                                 <label for="current_password">{{ __('Введите старый пароль:') }}</label>
                                                 <div>
@@ -261,7 +261,7 @@
                     </div>
                 </div>
 
-                @if(!(auth()->user()->id === $user->id))
+                @if(!($authUser->id === $user->id))
                     <div class="admin-container__form grid-center-item">
                         <div class="admin-container__form-header">
                             {{ __('Удаление пользователя') }}
