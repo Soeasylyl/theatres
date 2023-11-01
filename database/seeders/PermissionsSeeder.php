@@ -23,20 +23,33 @@ class PermissionsSeeder extends Seeder
             Permission::create(['name' => $permission['value']]);
         }
 
-        $superAdmin = Role::create(['name' => RolesUsersEnum::SUPER_ADMIN->value]);
-        foreach (PermissionsUsersEnum::toArray() as $permission) {
-            $superAdmin->givePermissionTo($permission);
+        foreach (RolesUsersEnum::asSelectArray() as $role) {
+            $createdRole = Role::create(['name' => $role['value']]);
+            $permissions = $this->getPermissionsForRole($role);
+            foreach ($permissions as $permission) {
+                $createdRole->givePermissionTo($permission->value);
+            }
+        }
+    }
+
+    private function getPermissionsForRole(array $role): array
+    {
+        return match ($role['value']) {
+            RolesUsersEnum::SUPER_ADMIN->value => $this->getSuperAdminPermissions(),
+            RolesUsersEnum::CINEMA_MANAGER->value => $this->getCinemaManagerPermissions(),
+            RolesUsersEnum::CINEMA_ADMIN->value => $this->getCinemaAdminPermissions(),
+            default => [],
+        };
+    }
+
+    private function getSuperAdminPermissions(): array
+    {
+        $superAdminPermissions = [];
+        foreach (PermissionsUsersEnum::asSelectArray() as $permission) {
+            $superAdminPermissions[] = PermissionsUsersEnum::from($permission['value']);
         }
 
-        $cinemaManager = Role::create(['name' => RolesUsersEnum::CINEMA_MANAGER->value]);
-        foreach ($this->getCinemaManagerPermissions() as $permission) {
-            $cinemaManager->givePermissionTo($permission->value);
-        }
-
-        $cinemaAdmin = Role::create(['name' => RolesUsersEnum::CINEMA_ADMIN->value]);
-        foreach ($this->getCinemaAdminPermissions() as $permission) {
-            $cinemaAdmin->givePermissionTo($permission->value);
-        }
+        return $superAdminPermissions;
     }
 
     private function getCinemaAdminPermissions(): array

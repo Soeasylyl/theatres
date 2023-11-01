@@ -6,6 +6,7 @@ use App\Enums\RolesUsersEnum;
 use App\Models\Cinema;
 use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Collection;
 
 class UserSeeder extends Seeder
 {
@@ -16,25 +17,26 @@ class UserSeeder extends Seeder
     {
         $this->createSuperAdmin()->assignRole(RolesUsersEnum::SUPER_ADMIN->value);
 
-        $cinemas = Cinema::all();
-        foreach ($cinemas as $cinema) {
-            foreach (RolesUsersEnum::asSelectArray() as $role) {
-                if ($role['value'] != RolesUsersEnum::SUPER_ADMIN->value) {
-                    $createUser = $this->createUser();
-                    $createUser->assignRole($role['value']);
-                    $cinema->users()->attach($createUser);
+        Cinema::chunk(10, function (Collection $cinemas) {
+            foreach ($cinemas as $cinema) {
+                foreach (RolesUsersEnum::asSelectArray() as $role) {
+                    if ($role['value'] != RolesUsersEnum::SUPER_ADMIN->value) {
+                        $createUser = $this->createUser();
+                        $createUser->assignRole($role['value']);
+                        $cinema->users()->attach($createUser);
+                    }
                 }
             }
-        }
 
-        for ($i = 0; $i < 20; $i++) {
-            $user = $this->createUser();
-            $cinemaCount = rand(0, 2);
-            for ($j = 0; $j < $cinemaCount; $j++) {
-                $randomCinema = $cinemas->random();
-                $randomCinema->users()->attach($user);
+            for ($i = 0; $i < 30; $i++) {
+                $user = $this->createUser();
+                $cinemaCount = rand(0, 2);
+                for ($j = 0; $j < $cinemaCount; $j++) {
+                    $randomCinema = $cinemas->random();
+                    $randomCinema->users()->attach($user);
+                }
             }
-        }
+        });
     }
 
     private function createUser()

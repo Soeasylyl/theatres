@@ -69,10 +69,11 @@ class UserService
     public function getUserDataForEdit($editUserDTO): array
     {
         $user = $this->userRepository->getUserByIdOrFail($editUserDTO->getUserId());
-        $userRole = $editUserDTO->getAuthUser()->roles->first();
+        $userCinemasList = $user->cinemas;
+        $userRole = $editUserDTO->getProducer()->roles->first();
         $cinemas = $this->cinemaRepository->getCinemasPaginateList();
 
-        return compact('user', 'userRole', 'cinemas');
+        return compact('user', 'userRole', 'cinemas', 'userCinemasList');
     }
 
     /**
@@ -80,19 +81,19 @@ class UserService
      *
      * @param UpdateUserInfoDTO $requestDTO
      * @return string
+     * @throws \Exception
      */
     public function updateInfoByUser(UpdateUserInfoDTO $requestDTO): string
     {
         $user = $this->userRepository->getUserByIdOrFail($requestDTO->getUserId());
 
-        try {
-            $this->checkAdminEditingPermission($user, $requestDTO->getAuthUser());
-            $this->userRepository->updateInfoByUser($requestDTO, $user);
-
-            return 'Информация о пользователе успешно обновлена.';
-        } catch (\Throwable $e) {
-            return $e->getMessage();
+        if ($requestDTO->isShouldRunPermissionCheck()) {
+            $this->checkAdminEditingPermission($user, $requestDTO->getProducer());
         }
+
+        $this->userRepository->updateInfoByUser($requestDTO, $user);
+
+        return $user;
     }
 
     /**
@@ -106,8 +107,8 @@ class UserService
     {
         $user = $this->userRepository->getUserByIdOrFail($requestDTO->getUserId());
 
-        if ($requestDTO->getShouldSkipPermissionCheck()) {
-            $this->checkAdminEditingPermission($user, $requestDTO->getAuthUser());
+        if ($requestDTO->isShouldRunPermissionCheck()) {
+            $this->checkAdminEditingPermission($user, $requestDTO->getProducer());
         }
 
         if ($requestDTO->getCurrentPassword() && !Hash::check($requestDTO->getCurrentPassword(), $user->password)) {
@@ -123,13 +124,13 @@ class UserService
      * Checking that the administrator does not change data for another administrator
      *
      * @param User $user
-     * @param User $authUser
+     * @param User $producer
      * @return void
      * @throws \Exception
      */
-    private function checkAdminEditingPermission(User $user, User $authUser): void
+    private function checkAdminEditingPermission(User $user, User $producer): void
     {
-        $hasCinemaAdminRole = $authUser->hasRole(RolesUsersEnum::CINEMA_ADMIN->value);
+        $hasCinemaAdminRole = $producer->hasRole(RolesUsersEnum::CINEMA_ADMIN->value);
         $currentUserHasCinemaAdminRole = $user->hasRole(RolesUsersEnum::CINEMA_ADMIN->value);
 
         if ($hasCinemaAdminRole && $currentUserHasCinemaAdminRole) {
@@ -141,20 +142,14 @@ class UserService
      * Deleting a user
      *
      * @param DeleteUserDTO $deleteUserDTO
-     * @return string
+     * @throws \Exception
      */
-    public function deleteUser(DeleteUserDTO $deleteUserDTO): string
+    public function deleteUser(DeleteUserDTO $deleteUserDTO): void
     {
         $user = $this->userRepository->getUserByIdOrFail($deleteUserDTO->getUserId());
+        $this->checkAdminEditingPermission($user, $deleteUserDTO->getProducer());
 
-        try {
-            $this->checkAdminEditingPermission($user, $deleteUserDTO->getAuthUser());
-            $user->delete();
-
-            return 'Пользователь успешно удален.';
-        } catch (\Throwable $e) {
-            return $e->getMessage();
-        }
+        $user->delete();
     }
 
     /**
@@ -167,10 +162,10 @@ class UserService
     public function updateUserRole(UpdateUserRoleDTO $requestDTO): User
     {
         $user = $this->userRepository->getUserByIdWithRolesOrFail($requestDTO->getUserId());
-        $role = RolesUsersEnum::tryFrom($requestDTO->getRole());
-        $hasCinemaAdminRole = $requestDTO->getAuthUser()->hasRole(RolesUsersEnum::CINEMA_ADMIN);
+        $role = RolesUsersEnum::tryFrom($requestDTO->getRoleName());
+        $hasCinemaAdminRole = $requestDTO->getProducer()->hasRole(RolesUsersEnum::CINEMA_ADMIN);
 
-        $this->checkAdminEditingPermission($user, $requestDTO->getAuthUser());
+        $this->checkAdminEditingPermission($user, $requestDTO->getProducer());
 
         if ($role === null) {
             $user->syncRoles([]);;

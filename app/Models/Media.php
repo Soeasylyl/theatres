@@ -41,6 +41,7 @@ class Media extends Model
 
     protected $fillable = [
         'path',
+        'collection',
         'model_type',
         'model_id',
     ];

@@ -31,11 +31,13 @@ class MovieFactory extends Factory
     public function configure(): static
     {
         return $this->afterCreating(function (Movie $movie) {
-            $mediaCount = rand(1, 3);
+            $mediaCount = rand(2, 5);
 
             for ($i = 0; $i < $mediaCount; $i++) {
+                $collection = $i ===0 ? 'poster' : 'frames';
                 $movie->medias()->create([
                     'path' => $this->faker->imageUrl(),
+                    'collection' => $collection,
                 ]);
             }
 

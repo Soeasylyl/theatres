@@ -35,18 +35,21 @@ class UserRepository implements UserRepositoryInterface
     /**
      * Receiving all users from one cinema, except the authorized one
      *
-     * @param Collection $cinemaId
+     * @param Collection $cinemaIds
      * @param int $authUserId
      * @return LengthAwarePaginator
      */
-    public function getUsersByCinemaPaginatedList(Collection $cinemaId, int $authUserId): LengthAwarePaginator
+    public function getUsersByCinemaPaginatedList(Collection $cinemaIds, int $authUserId): LengthAwarePaginator
     {
-        return User::query()
-            ->whereHas('cinemas', function ($query) use ($cinemaId) {
-                $query->where('cinema_id', $cinemaId);
-            })
-            ->where('id', '!=', $authUserId)
-            ->paginate(config('app.pagination_limit'));
+        $query = User::query()->where('id', '!=', $authUserId);
+
+        if ($cinemaIds->isNotEmpty()) {
+            $query->whereHas('cinemas', function ($query) use ($cinemaIds) {
+                $query->whereIn('cinema_id', $cinemaIds->toArray());
+            });
+        }
+
+        return $query->paginate(config('app.pagination_limit'));
     }
 
     /**
@@ -86,7 +89,8 @@ class UserRepository implements UserRepositoryInterface
             'email' => $requestDTO->getEmail(),
             'phone' => $requestDTO->getPhone(),
         ]);
-        return $user->refresh();
+
+        return $user;
     }
 
     /**

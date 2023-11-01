@@ -4,7 +4,7 @@
     <section>
         <div class="container">
             <div class="movie-header">
-                <div class="movie-header__btn">Кнопка "назпд"</div>
+                <div class="movie-header__btn">Кнопка "назад"</div>
                 <div class="movie-header__name">Название фильма по центру</div>
             </div>
             <div class="movie-body">

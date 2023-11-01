@@ -7,15 +7,15 @@ use App\Models\User;
 class DeleteUserDTO
 {
     public function __construct(
-        private readonly User     $authUser,
+        private readonly User     $producer,
         private readonly int     $userId,
     )
     {
     }
 
-    public function getAuthUser(): User
+    public function getProducer(): User
     {
-        return $this->authUser;
+        return $this->producer;
     }
 
     public function getUserId(): int

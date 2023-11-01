@@ -48,9 +48,9 @@ class UserController extends BaseAdminController
      *
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Foundation\Application
      */
-    public function showAddForm()
+    public function show()
     {
-        $cinemas = $this->cinemaService->getCinemasPaginateList();
+        $cinemas = $this->cinemaService->getPaginatedCinemasList();
 
         return view('admin.pages.users.add', compact('cinemas'));
     }
@@ -73,7 +73,7 @@ class UserController extends BaseAdminController
 
         $this->userService->createUser($requestDTO);
 
-        return redirect()->route('users')->with('success_create_user', 'Пользователь успешно создан');
+        return redirect()->route('users')->with('successMessages', 'Пользователь успешно создан');
     }
 
     /**
@@ -87,16 +87,17 @@ class UserController extends BaseAdminController
         $authUser = auth()->user();
 
         $editUserDTO = new EditUserDTO(
-            authUser: $authUser,
+            producer: $authUser,
             userId: $userId
         );
 
         $userData = $this->userService->getUserDataForEdit($editUserDTO);
 
-        return view('admin.pages.users.edit',compact('authUser'), [
+        return view('admin.pages.users.edit', compact('authUser'), [
             'user' => $userData['user'],
             'cinemas' => $userData['cinemas'],
             'userRole' => $userData['userRole'],
+            'userCinemasList' => $userData['userCinemasList'],
         ]);
     }
 
@@ -112,39 +113,49 @@ class UserController extends BaseAdminController
         $authUser = auth()->user();
 
         $requestDTO = new UpdateUserInfoDTO(
-            authUser: $authUser,
+            producer: $authUser,
             userId: $userId,
             name: $request->input('name'),
             email: $request->input('email'),
             phone: $request->input('phone'),
         );
 
-        $message = $this->userService->updateInfoByUser($requestDTO);
+        try {
+            $this->userService->updateInfoByUser($requestDTO);
 
-        return redirect()->route('user.edit', $userId)->with('message', $message);
+            return redirect()->route('user.edit', $userId)->with('message', 'Информация успешно обновлена');
+        } catch (\Throwable $e) {
+            return redirect()->back()->with('error', $e->getMessage());
+        }
     }
 
     /**
      * Updating information for the selected user
      *
      * @param UpdateProfileRequest $request
+     * @param int $userId
      * @return RedirectResponse
      */
-    public function updateProfile(UpdateProfileRequest $request)
+    public function updateProfile(UpdateProfileRequest $request, int $userId)
     {
         $authUser = auth()->user();
 
         $requestDTO = new UpdateUserInfoDTO(
-            authUser: $authUser,
-            userId: $request->input('id'),
+            producer: $authUser,
+            userId: $userId,
             name: $request->input('name'),
             email: $request->input('email'),
             phone: $request->input('phone'),
+            shouldRunPermissionCheck: false,
         );
 
-        $message = $this->userService->updateInfoByUser($requestDTO);
+        try {
+            $this->userService->updateInfoByUser($requestDTO);
 
-        return redirect()->route('user.edit')->with('message', $message);
+            return redirect()->route('user.edit', $userId)->with('message', 'Информация успешно обновлена');
+        } catch (\Throwable $e) {
+            return redirect()->back()->with('error', $e->getMessage());
+        }
     }
 
     /**
@@ -160,7 +171,7 @@ class UserController extends BaseAdminController
         $authUser = auth()->user();
 
         $requestDTO = new UpdateUserPasswordDTO(
-            authUser: $authUser,
+            producer: $authUser,
             userId: $userId,
             password: $request->input('new_password'),
             currentPassword: $request->input('current_password'),
@@ -171,7 +182,7 @@ class UserController extends BaseAdminController
 
             return redirect()->route('user.edit', $userId)->with('success_update_user_password', 'Пароль успешно изменен.');
         } catch (\Throwable $e) {
-            return redirect()->back()->with('error', $e->getMessage());
+            return redirect()->back()->with('password_error', $e->getMessage());
         }
     }
 
@@ -188,11 +199,11 @@ class UserController extends BaseAdminController
         $authUser = auth()->user();
 
         $requestDTO = new UpdateUserPasswordDTO(
-            authUser: $authUser,
+            producer: $authUser,
             userId: $userId,
             password: $request->input('new_password'),
             currentPassword: $request->input('current_password'),
-            shouldSkipPermissionCheck: false,
+            shouldRunPermissionCheck: false,
         );
 
         try {
@@ -200,7 +211,7 @@ class UserController extends BaseAdminController
 
             return redirect()->route('user.edit', $userId)->with('success_update_user_password', 'Пароль успешно изменен.');
         } catch (\Throwable $e) {
-            return redirect()->back()->with('error', $e->getMessage());
+            return redirect()->back()->with('password_error', $e->getMessage());
         }
     }
 
@@ -215,13 +226,17 @@ class UserController extends BaseAdminController
         $authUser = auth()->user();
 
         $deleteUserDTO = new DeleteUserDTO(
-            authUser: $authUser,
+            producer: $authUser,
             userId: $userId,
         );
 
-        $message = $this->userService->deleteUser($deleteUserDTO);
+        try {
+            $this->userService->deleteUser($deleteUserDTO);
 
-        return redirect()->route('users')->with('message', $message);
+            return redirect()->route('users')->with('successMessages', 'Пользователь успешно удален.');
+        } catch (\Throwable $e) {
+            return redirect()->route('users')->with('error_delete_user', $e->getMessage());
+        }
     }
 
     /**
@@ -235,16 +250,17 @@ class UserController extends BaseAdminController
         $authUser = auth()->user();
 
         $requestDTO = new UpdateUserRoleDTO(
-            authUser: $authUser,
+            producer: $authUser,
             userId: $request->input('user_id'),
-            role: $request->input('role'),
+            roleName: $request->input('role'),
         );
+
         try {
             $this->userService->updateUserRole($requestDTO);
 
             return redirect()->back()->with('success_update_role', 'Роль у пользователя успешно изменена.');
         } catch (\Throwable $e) {
-            return redirect()->back()->with('error', $e->getMessage());
+            return redirect()->back()->with('error_role', $e->getMessage());
         }
     }
 }

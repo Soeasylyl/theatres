@@ -17,7 +17,7 @@ class CinemaService
      *
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
-    public function getCinemasPaginateList(): LengthAwarePaginator
+    public function getPaginatedCinemasList(): LengthAwarePaginator
     {
         return $this->cinemaRepository->getCinemasPaginateList();
     }

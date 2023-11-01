@@ -8,11 +8,11 @@ use phpDocumentor\Reflection\Types\Boolean;
 class UpdateUserPasswordDTO
 {
     public function __construct(
-        private readonly User    $authUser,
+        private readonly User    $producer,
         private readonly int     $userId,
         private readonly ?string $password,
         private readonly ?string $currentPassword,
-        private readonly bool    $shouldSkipPermissionCheck = true,
+        private readonly bool    $shouldRunPermissionCheck = true,
     )
     {
     }
@@ -20,15 +20,15 @@ class UpdateUserPasswordDTO
     /**
      * @return bool
      */
-    public function getShouldSkipPermissionCheck(): bool
+    public function isShouldRunPermissionCheck(): bool
     {
-        return $this->shouldSkipPermissionCheck;
+        return $this->shouldRunPermissionCheck;
     }
 
 
-    public function getAuthUser(): User
+    public function getProducer(): User
     {
-        return $this->authUser;
+        return $this->producer;
     }
 
     public function getUserId(): int

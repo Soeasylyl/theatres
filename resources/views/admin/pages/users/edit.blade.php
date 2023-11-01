@@ -6,9 +6,6 @@
 
 @section('content')
     <div class="admin-container">
-        @php
-            //FIXME: Сделать через роли, а не по ID
-        @endphp
         @if($authUser->id === $user->id)
             <div class="admin-container__form">
                 <div class="admin-container__items">
@@ -26,19 +23,16 @@
                 <div class="admin-container__items">
                     <label for="current_password">{{ __('Кинотеатры к которым относится пользователь:') }}</label>
                     <label class="admin-container__label">
-                        @if($user->cinemas->isNotEmpty())
-                            {{ $user->cinemas->pluck('name')->implode(', ') }}
+                        @if($userCinemasList->isNotEmpty())
+                            {{ $userCinemasList->pluck('name')->implode(', ') }}
                         @else
                             {{ __('Нет кинотеатра') }}
                         @endif
                     </label>
                 </div>
-
             </div>
 
-
             @if(!($authUser->id === $user->id))
-
                 <div class="admin-container">
                     <div class="admin-container__form">
                         <div class="admin-container__form-header">
@@ -76,6 +70,7 @@
                                         </div>
                                     @endif
                                 </div>
+
                                 <div class="admin-container__items">
                                     <label>{{ __('Выберите новую роль:') }}</label>
                                     <div class="login-container__card-item">
@@ -100,8 +95,7 @@
                         </div>
                     </div>
 
-                    @endif
-
+            @endif
 
                     <div class="admin-container__form">
                         <div class="admin-container__grid">
@@ -117,7 +111,13 @@
 
                                 <div class="admin-container__form-body">
                                     <form method="POST"
-                                          action="{{ $authUser->can(\App\Enums\PermissionsUsersEnum::MANAGE_USERS->value) ? route('user.update', $user->id) : route('user.updateProfile', $user->id)   }}">
+                                          @if($user->id === $authUser->id)
+                                              action="{{ route('user.updateProfile', $user->id) }}"
+                                          @else
+                                              action="{{ !$authUser->hasRole(\App\Enums\RolesUsersEnum::CINEMA_MANAGER->value) ?
+                                                     route('user.update', $user->id) : route('user.updateProfile', $user->id)   }}"
+                                        @endif>
+
                                         @csrf
                                         @method('PUT')
 
@@ -190,8 +190,8 @@
                                               action="{{ route('user.updatePasswordProfile', $user->id) }}"
                                           @else
                                               action="{{
-                                                            $authUser->can(\App\Enums\PermissionsUsersEnum::MANAGE_USERS->value) ?
-                                                            route('user.updatePassword', $user->id) : route('user.updatePasswordProfile', $user->id)
+                                                        !$authUser->hasRole(\App\Enums\RolesUsersEnum::CINEMA_MANAGER->value) ?
+                                                        route('user.updatePassword', $user->id) : route('user.updatePasswordProfile', $user->id)
                                               }}"
                                         @endif>
                                         @csrf

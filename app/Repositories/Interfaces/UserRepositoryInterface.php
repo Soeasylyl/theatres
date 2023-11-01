@@ -23,11 +23,11 @@ interface UserRepositoryInterface
     /**
      * Receiving all users from one cinema, except the authorized one
      *
-     * @param Collection $cinemaId
+     * @param Collection $cinemaIds
      * @param int $authUserId
      * @return LengthAwarePaginator
      */
-    public function getUsersByCinemaPaginatedList(Collection $cinemaId, int $authUserId): LengthAwarePaginator;
+    public function getUsersByCinemaPaginatedList(Collection $cinemaIds, int $authUserId): LengthAwarePaginator;
 
     /**
      * Searching for a user by ID

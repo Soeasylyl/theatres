@@ -7,15 +7,15 @@ use App\Models\User;
 class EditUserDTO
 {
     public function __construct(
-        private readonly User     $authUser,
-        private readonly int     $userId,
+        private readonly User $producer,
+        private readonly int  $userId,
     )
     {
     }
 
-    public function getAuthUser(): User
+    public function getProducer(): User
     {
-        return $this->authUser;
+        return $this->producer;
     }
 
     public function getUserId(): int

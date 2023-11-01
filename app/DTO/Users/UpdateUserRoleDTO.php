@@ -7,9 +7,9 @@ use App\Models\User;
 class UpdateUserRoleDTO
 {
     public function __construct(
-        private readonly User    $authUser,
+        private readonly User    $producer,
         private readonly int     $userId,
-        private readonly ?string $role,
+        private readonly ?string $roleName,
         private readonly bool    $shouldSkipPermissionCheck = true,
     )
     {
@@ -20,9 +20,9 @@ class UpdateUserRoleDTO
         return $this->shouldSkipPermissionCheck;
     }
 
-    public function getAuthUser(): User
+    public function getProducer(): User
     {
-        return $this->authUser;
+        return $this->producer;
     }
 
     public function getUserId(): int
@@ -30,8 +30,8 @@ class UpdateUserRoleDTO
         return $this->userId;
     }
 
-    public function getRole(): ?string
+    public function getRoleName(): ?string
     {
-        return $this->role;
+        return $this->roleName;
     }
 }

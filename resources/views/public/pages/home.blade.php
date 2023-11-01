@@ -7,21 +7,27 @@
             <!-- Additional required wrapper -->
             <div class="swiper-container mySwiper">
                 <div class="swiper-wrapper">
-                    @foreach ($movies as $movie)
+                    @forelse ($movies as $movie)
                         <div class="swiper-slide">
                             <div class="container">
                                 <div class="swiper-slide-items">
                                     <div class="swiper-slide-item">
                                         <div class="h7">{{ $movie->name }}</div>
                                     </div>
-                                    <a href="{{ route('user.show.movie', $movie->slug) }}" class="btn-by-ticket">{{ __('Купить билет') }}</a>
+                                    <a href="{{ route('user.show.movie', $movie->slug) }}"
+                                       class="btn-by-ticket">{{ __('Купить билет') }}</a>
                                 </div>
                                 <div class="swiper-slide-img">
-                                    <img src="{{ asset($movie->medias->first()->path) }}" alt="{{ $movie->name }}">
+                                    <img src="{{ asset($movie->medias->where('collection', 'frames')->first()->path) }}"
+                                         alt="{{ $movie->name }}">
                                 </div>
                             </div>
                         </div>
-                    @endforeach
+                    @empty
+                        <div class="text-center">
+                            <h2>{{ __('Извините, фильмы в настоящее время недоступны.') }}</h2>
+                        </div>
+                    @endforelse
                 </div>
                 <div class="swiper-button-next"></div>
                 <div class="swiper-button-prev"></div>
@@ -56,22 +62,37 @@
         <div class="swiper now-in-cinema-slider">
             <div class="swiper-container mySwiper-nowInCinema">
                 <div class="swiper-wrapper swiper-wrapper-posters">
-                    @foreach ($movies as $movie)
+                    @forelse($movies as $movie)
                         <div class="swiper-slide swiper-slide-posters">
                             <div class="swiper-slide-poster-img">
-                                <img src="{{ asset($movie->medias->first()->path) }}" alt="{{ $movie->name }}">
+                                @if ($media = optional($movie->medias->where('collection', 'poster')->first()))
+                                    <img src="{{ asset($media->path) }}" alt="{{ $movie->name }}">
+                                @endif
+                                {{--                                    <img src="{{ asset($movie->medias->where('collection', 'poster')->first()->path) }}" alt="{{ $movie->name }}">--}}
                             </div>
                             <div class="swiper-slide-poster-age"> {{ $movie->age_limit }}</div>
                             <div class="swiper-slide-poster-name">
                                 <div class="h7">{{ $movie->name }}</div>
                             </div>
-                            <div
-                                class="swiper-slide-poster-genres">{{$movie->genres()->pluck('name')->implode(', ')}}</div>
+                            <div class="swiper-slide-poster-genres">
+                                @forelse ($movie->genres as $genre)
+                                    {{ $genre->name }}@if (!$loop->last)
+                                        ,
+                                    @endif
+                                @empty
+                                    {{ __('Жарны отсутствуют') }}
+                                @endforelse
+                            </div>
                             <div>
-                                <a href="{{ route('user.show.movie', $movie->slug) }}" class="btn-by-ticket">{{ __('Купить билет') }}</a>
+                                <a href="{{ route('user.show.movie', $movie->slug) }}"
+                                   class="btn-by-ticket">{{ __('Купить билет') }}</a>
                             </div>
                         </div>
-                    @endforeach
+                    @empty
+                        <div class="text-center">
+                            <h2>{{ __('Извините, фильмы в настоящее время недоступны.') }}</h2>
+                        </div>
+                    @endforelse
                 </div>
                 <div class="swiper-button-next swiper-custom-button-next"></div>
                 <div class="swiper-button-prev swiper-custom-button-prev"></div>
@@ -82,22 +103,38 @@
         <div class="swiper coming-soon-slider swiper-hidden">
             <div class="swiper-container mySwiper-ComingSoon">
                 <div class="swiper-wrapper">
-                    @foreach ($movies as $movie)
+                    @forelse($movies as $movie)
                         <div class="swiper-slide swiper-slide-posters">
                             <div class="swiper-slide-poster-img">
-                                <img src="{{ asset($movie->medias->first()->path) }}" alt="{{ $movie->name }}">
+                                @if ($media = optional($movie->medias->where('collection', 'poster')->first()))
+                                    <img src="{{ asset($media->path) }}" alt="{{ $movie->name }}">
+                                @endif
+
+                                {{--                                <img src="{{ asset($movie->medias->where('collection', 'poster')->first()->path) }}" alt="{{ $movie->name }}">--}}
                             </div>
                             <div class="swiper-slide-poster-age"> {{ $movie->age_limit }}</div>
                             <div class="swiper-slide-poster-name">
                                 <div class="h7">{{ $movie->name }}</div>
                             </div>
-                            <div
-                                class="swiper-slide-poster-genres">{{$movie->genres()->pluck('name')->implode(', ')}}</div>
+                            <div class="swiper-slide-poster-genres">
+                                @forelse ($movie->genres as $genre)
+                                    {{ $genre->name }}@if (!$loop->last)
+                                        ,
+                                    @endif
+                                @empty
+                                    {{ __('Жарны отсутствуют') }}
+                                @endforelse
+                            </div>
                             <div>
-                                <a href="{{ route('user.show.movie', $movie->slug) }}" class="btn-by-ticket">{{ __('Купить билет') }}</a>
+                                <a href="{{ route('user.show.movie', $movie->slug) }}"
+                                   class="btn-by-ticket">{{ __('Купить билет') }}</a>
                             </div>
                         </div>
-                    @endforeach
+                    @empty
+                        <div class="text-center">
+                            <h2>{{ __('Извините, фильмы в настоящее время недоступны.') }}</h2>
+                        </div>
+                    @endforelse
                 </div>
                 <div class="swiper-button-next swiper-custom-button-next"></div>
                 <div class="swiper-button-prev swiper-custom-button-prev"></div>

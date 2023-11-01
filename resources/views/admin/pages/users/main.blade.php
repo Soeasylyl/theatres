@@ -15,16 +15,12 @@
                     </div>
                 @endif
                 <div class="success-messages-wrapper">
-                    @php
-                        $successMessages = ['success_delete_user', 'success_create_user'];
-                    @endphp
-                    @foreach($successMessages as $message)
-                        @if(session($message))
-                            <div class="success-messages">
-                                {{ session($message) }}
-                            </div>
-                        @endif
-                    @endforeach
+
+                    @if(session('successMessages'))
+                        <div class="success-messages">
+                            {{ session('successMessages') }}
+                        </div>
+                    @endif
 
                 </div>
             </div>
@@ -45,7 +41,7 @@
                     <th>{{ __(' ') }}</th>
                     </thead>
                     <tbody>
-                    @foreach($users as $user)
+                    @forelse($users as $user)
                         <tr>
                             <td>{{ $user->name }}</td>
                             <td>{{ $user->email }}</td>
@@ -80,12 +76,14 @@
                                 </div>
                             </td>
                         </tr>
-                    @endforeach
-
+                    @empty
+                        <tr>
+                            <td colspan="6" class="text-center">{{ __('Нет доступных пользователей') }}</td>
+                        </tr>
+                    @endforelse
                     </tbody>
-
                 </table>
-                {{ $users->links() }}
+                {{ $users->links('admin.partials.pagination') }}
             </div>
         </div>
     </div>

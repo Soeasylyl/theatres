@@ -28,21 +28,20 @@ class MovieRepository implements MovieRepositoryInterface
      */
     public function getRandomMoviesWithScreenings(Carbon $currentDateTime, int $limit = null): Collection
     {
-        $query = Movie::query()
-            ->with(['screenings' => function (HasMany $query) use ($currentDateTime) {
+        return Movie::with(['medias' => function ($query) {
+            $query->where(function ($q) {
+                $q->where('collection', 'frames')
+                    ->orWhere('collection', 'poster');
+            });
+        }])
+            ->has('screenings')
+            ->with(['screenings' => function ($query) use ($currentDateTime) {
                 $query->where('start_at', '>=', $currentDateTime)
-                      ->orderBy('start_at', 'asc')
-                      ->limit(1);
+                    ->orderBy('start_at', 'asc')
+                    ->limit(1);
             }])
-            ->whereHas('screenings', function (Builder $query) use ($currentDateTime) {
-                $query->where('start_at', '>=', $currentDateTime);
-            })
-            ->inRandomOrder();
-
-        if ($limit !== null) {
-            $query->limit($limit);
-        }
-
-        return $query->get();
+            ->inRandomOrder()
+            ->when($limit !== null, fn($query) => $query->limit($limit))
+            ->get();
     }
 }

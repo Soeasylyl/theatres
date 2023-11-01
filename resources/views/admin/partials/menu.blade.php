@@ -10,11 +10,11 @@
             <a href="{{ route('admin.movies') }}">{{ __('Фильмы') }}</a>
         </li>
 
-        @can(\App\Enums\PermissionsUsersEnum::MANAGE_USERS->value)
-                <li class="admin-menu__item {{ Route::currentRouteName() === 'users' ? 'active' : '' }}">
-                    <a href="{{ route('users') }}">{{ __('Пользователи') }}</a>
-                </li>
-        @endcan
+        @hasrole(\App\Enums\RolesUsersEnum::SUPER_ADMIN->value . '|' . App\Enums\RolesUsersEnum::CINEMA_ADMIN->value)
+            <li class="admin-menu__item {{ Route::currentRouteName() === 'users' ? 'active' : '' }}">
+                <a href="{{ route('users') }}">{{ __('Пользователи') }}</a>
+            </li>
+        @endhasrole
 
     </ul>
 </nav>

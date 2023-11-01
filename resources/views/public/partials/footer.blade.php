@@ -17,20 +17,6 @@
 
                 <div class="content-footer__items">
                     <div class="content-footer__item">
-                        <div class="content-footer__header">{{ __('Кинотеатры') }}</div>
-                    </div>
-                    @foreach($cinemas as $cinema)
-                        <div class="content-footer__item">
-                            <a href="#"> {{ $cinema->name }}</a>
-                        </div>
-                    @endforeach
-                    <div class="content-footer__item">
-                        <a href="#"> {{ __('Контакты') }}</a>
-                    </div>
-                </div>
-
-                <div class="content-footer__items">
-                    <div class="content-footer__item">
                         <div class="content-footer__header">{{ __('Еда и напитки') }}</div>
                     </div>
                     <div class="content-footer__item">
@@ -66,17 +52,17 @@
                 <div class="content-footer__links-wrapper">
                     <a href="#">
                         <button>
-                        {!! file_get_contents(public_path('/images/svg/social/vk.svg')) !!}
+                            {!! file_get_contents(public_path('/images/svg/social/vk.svg')) !!}
                         </button>
                     </a>
                     <a href="#">
                         <button>
-                        {!! file_get_contents(public_path('/images/svg/social/facebook.svg')) !!}
+                            {!! file_get_contents(public_path('/images/svg/social/facebook.svg')) !!}
                         </button>
                     </a>
                     <a href="#">
                         <button>
-                        {!! file_get_contents(public_path('/images/svg/social/instagram.svg')) !!}
+                            {!! file_get_contents(public_path('/images/svg/social/instagram.svg')) !!}
                         </button>
                     </a>
                 </div>
