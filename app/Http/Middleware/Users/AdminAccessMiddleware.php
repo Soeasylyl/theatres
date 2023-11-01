@@ -18,7 +18,7 @@ class AdminAccessMiddleware
     public function handle(Request $request, Closure $next): Response
     {
         $authUser = Auth::user();
-        if (!$authUser && !$authUser->hasRole(RolesUsersEnum::toArray())) {
+        if (!$authUser->hasRole(RolesUsersEnum::toArray())) {
             abort(404);
         }
 

@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\DTO\Users\CreateUserDTO;
 use App\Http\Controllers\Admin\BaseAdminController;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
+use App\Services\UserService;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Validator;
 
@@ -24,8 +26,6 @@ class RegisterController extends BaseAdminController
     use RegistersUsers;
 
     /**
-     * Where to redirect users after registration.
-     *
      * @var string
      */
     protected $redirectTo = RouteServiceProvider::ADMIN;
@@ -35,7 +35,7 @@ class RegisterController extends BaseAdminController
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(private readonly UserService $userService)
     {
         $this->middleware('guest');
     }
@@ -43,7 +43,7 @@ class RegisterController extends BaseAdminController
     /**
      * Get a validator for an incoming registration request.
      *
-     * @param  array  $data
+     * @param array $data
      * @return \Illuminate\Contracts\Validation\Validator
      */
     protected function validator(array $data)
@@ -74,16 +74,18 @@ class RegisterController extends BaseAdminController
     /**
      * Create a new user instance after a valid registration.
      *
-     * @param  array  $data
-     * @return \App\Models\User
+     * @param array $data
+     * @return User
      */
     protected function create(array $data)
     {
-        return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'phone' => $data['phone'],
-            'password' =>  $data['password'],
-        ]);
+        $dataDTO = new CreateUserDTO(
+            name: $data['name'],
+            email: $data['email'],
+            phone: $data['phone'],
+            password: $data['password'],
+        );
+
+        return $this->userService->createUser($dataDTO);
     }
 }
