@@ -10,6 +10,7 @@ use App\Enums\RolesUsersEnum;
 use app\Models\User;
 use App\Repositories\Interfaces\UserRepositoryInterface;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 
@@ -44,7 +45,7 @@ class UserRepository implements UserRepositoryInterface
         $query = User::query()->where('id', '!=', $authUserId);
 
         if ($cinemaIds->isNotEmpty()) {
-            $query->whereHas('cinemas', function ($query) use ($cinemaIds) {
+            $query->whereHas('cinemas', function (Builder $query) use ($cinemaIds) {
                 $query->whereIn('cinema_id', $cinemaIds->toArray());
             });
         }
@@ -106,7 +107,7 @@ class UserRepository implements UserRepositoryInterface
             'password' => $requestDTO->getPassword()
         ]);
 
-        return $user->refresh();
+        return $user;
     }
 
     /**
