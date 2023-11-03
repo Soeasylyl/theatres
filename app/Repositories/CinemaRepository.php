@@ -23,16 +23,6 @@ class CinemaRepository implements CinemaRepositoryInterface
     }
 
     /**
-     * Receives information about cinemas with halls and seats.
-     *
-     * @return Collection
-     */
-    public function getCinemasWithHallsAndSeats(): Collection
-    {
-        return Cinema::with('halls.seats')->get();
-    }
-
-    /**
      * Returns a paginated list of cinemas with screens.
      *
      * @return LengthAwarePaginator

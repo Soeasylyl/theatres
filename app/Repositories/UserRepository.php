@@ -26,23 +26,10 @@ class UserRepository implements UserRepositoryInterface
     {
         return User::with('roles')
             ->whereDoesntHave('roles', function (Builder $query) {
-                $query->where('name', RolesUsersEnum::SUPER_ADMIN);
+                $query->where('name', RolesUsersEnum::SUPER_ADMIN->value);
             })
             ->whereNot('id', $authUserId)
             ->paginate(config('app.pagination_limit'));
-    }
-
-    /**
-     * Gets the number of users who do not have the specified role.
-     *
-     * @param string $roleName Search role name
-     * @return int Number of users without the specified role
-     */
-    public function getCountUsersWithoutRole(string $roleName): int
-    {
-        return User::whereDoesntHave('roles', function ( $query) {
-            $query->where('name', '$roleName');
-        })->count();
     }
 
     /**

@@ -23,14 +23,6 @@ class AdminController extends BaseAdminController
      */
     public function index()
     {
-        $data = $this->cinemaService->loadAdminDashboardData();
-
-        return view('admin.pages.dashboard', [
-                'countUsers' => $data['countUsers'],
-                'countCinemas' => $data['countCinemas'],
-                'cinemas' => $data['cinemas'],
-                'totalCountSeats' => $data['totalCountSeats'],
-            ]
-        );
+        return view('admin.pages.dashboard');
     }
 }

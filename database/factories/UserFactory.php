@@ -14,11 +14,11 @@ class UserFactory extends Factory
     public function definition(): array
     {
         return [
-                'name' =>  fake()->name,
-                'email' => fake()->unique()->safeEmail(),
-                'email_verified_at' => now(),
-                'password' => fake()->password,
-                'phone' => fake()->phoneNumber(),
+            'name' => fake()->name,
+            'email' => fake()->unique()->safeEmail(),
+            'email_verified_at' => now(),
+            'password' => fake()->password,
+            'phone' => fake()->phoneNumber(),
         ];
     }
 
@@ -26,8 +26,8 @@ class UserFactory extends Factory
     {
         return $this->afterCreating(function (User $user) {
             $randomNumber = rand(1, 10);
-            if ($randomNumber > 7) {
-                $roles = [RolesUsersEnum::CINEMA_ADMIN->value, RolesUsersEnum::CINEMA_MANAGER->value];
+            $roles = [RolesUsersEnum::CINEMA_ADMIN->value, RolesUsersEnum::CINEMA_MANAGER->value];
+            if ($randomNumber > 6) {
                 $role = fake()->randomElement($roles);
                 $user->assignRole($role);
             }

@@ -16,13 +16,6 @@ interface CinemaRepositoryInterface
     public function getCinemasPaginateList(): LengthAwarePaginator;
 
     /**
-     * Receives information about cinemas with halls and seats.
-     *
-     * @return Collection
-     */
-    public function getCinemasWithHallsAndSeats(): Collection;
-
-    /**
      * Returns a paginated list of cinemas with screens.
      *
      * @return LengthAwarePaginator

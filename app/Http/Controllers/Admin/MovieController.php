@@ -25,7 +25,7 @@ class MovieController extends BaseAdminController
      */
     public function index()
     {
-        $movies = $this->movieService->getAllCinemasWithHalls();
+        $movies = $this->movieService->getAllMovies();
 
         return view('admin.pages.movies.movies-information', compact('movies'));
     }

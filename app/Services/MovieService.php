@@ -31,7 +31,7 @@ class MovieService
      *
      * @return LengthAwarePaginator
      */
-    public function getAllCinemasWithHalls():  LengthAwarePaginator
+    public function getAllMovies():  LengthAwarePaginator
     {
         return $this->movieRepository->getMoviesPaginatedList();
     }

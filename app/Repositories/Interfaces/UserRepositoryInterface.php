@@ -20,13 +20,6 @@ interface UserRepositoryInterface
     public function getUsersWithoutAdminRolePaginatedList(int $authUserId): LengthAwarePaginator;
 
     /**
-     * Gets the number of users who do not have the specified role.
-     *
-     * @param string $roleName Search role name
-     * @return int Number of users without the specified role
-     */
-    public function getCountUsersWithoutRole(string $roleName): int;
-    /**
      * Receiving all users from one cinema, except the authorized one
      *
      * @param Collection $cinemaIds
