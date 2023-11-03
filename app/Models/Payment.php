@@ -39,16 +39,25 @@ class Payment extends Model
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+    /**
+     * @var string[]
+     */
     protected $fillable = [
         'status',
         'amount',
         'booking_id',
     ];
 
+    /**
+     * @var string[]
+     */
     protected $casts = [
         'status' => StatusPaymentsEnum::class,
     ];
 
+    /**
+     * @return BelongsTo
+     */
     public function booking(): BelongsTo
     {
         return $this->belongsTo(Booking::class);

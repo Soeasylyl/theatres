@@ -35,10 +35,16 @@ class Genre extends Model
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+    /**
+     * @var string[]
+     */
     protected $fillable = [
         'name',
     ];
 
+    /**
+     * @return BelongsToMany
+     */
     public function movies(): BelongsToMany
     {
         return $this->belongsToMany(

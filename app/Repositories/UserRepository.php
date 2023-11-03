@@ -10,7 +10,6 @@ use App\Enums\RolesUsersEnum;
 use App\Models\User;
 use App\Repositories\Interfaces\UserRepositoryInterface;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 
@@ -25,12 +24,25 @@ class UserRepository implements UserRepositoryInterface
      */
     public function getUsersWithoutAdminRolePaginatedList(int $authUserId): LengthAwarePaginator
     {
-        return User::query()
+        return User::with('roles')
             ->whereDoesntHave('roles', function (Builder $query) {
                 $query->where('name', RolesUsersEnum::SUPER_ADMIN);
             })
             ->whereNot('id', $authUserId)
             ->paginate(config('app.pagination_limit'));
+    }
+
+    /**
+     * Gets the number of users who do not have the specified role.
+     *
+     * @param string $roleName Search role name
+     * @return int Number of users without the specified role
+     */
+    public function getCountUsersWithoutRole(string $roleName): int
+    {
+        return User::whereDoesntHave('roles', function ( $query) {
+            $query->where('name', '$roleName');
+        })->count();
     }
 
     /**
@@ -69,9 +81,9 @@ class UserRepository implements UserRepositoryInterface
      * Searching for a user by ID with roles
      *
      * @param int $userId
-     * @return mixed
+     * @return User
      */
-    public function getUserByIdWithRolesOrFail(int $userId): mixed
+    public function getUserByIdWithRolesOrFail(int $userId): User
     {
         return User::with('roles')->findOrFail($userId);
     }
@@ -111,10 +123,12 @@ class UserRepository implements UserRepositoryInterface
     }
 
     /**
+     * Create a new user based on the provided CreateUserDTO.
+     *
      * @param CreateUserDTO $requestDTO
-     * @return mixed
+     * @return User
      */
-    public function createUser(CreateUserDTO $requestDTO): mixed
+    public function createUser(CreateUserDTO $requestDTO): User
     {
         return User::create([
             'name' => $requestDTO->getName(),
@@ -125,6 +139,8 @@ class UserRepository implements UserRepositoryInterface
     }
 
     /**
+     * Attach a user to a cinema.
+     *
      * @param User $user
      * @param int $cinemaId
      * @return void

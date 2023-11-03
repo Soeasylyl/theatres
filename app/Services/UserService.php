@@ -14,9 +14,12 @@ use App\Repositories\Interfaces\UserRepositoryInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Hash;
 
-
 class UserService
 {
+    /**
+     * @param UserRepositoryInterface $userRepository
+     * @param CinemaRepositoryInterface $cinemaRepository
+     */
     public function __construct(
         private readonly UserRepositoryInterface   $userRepository,
         private readonly CinemaRepositoryInterface $cinemaRepository,
@@ -25,18 +28,19 @@ class UserService
     }
 
     /**
+     * Retrieve a paginated list of users based on the authenticated user's role.
+     *
      * @return \Illuminate\Pagination\LengthAwarePaginator
      */
     public function getUsersByRole(): LengthAwarePaginator
     {
         $authUser = auth()->user();
-        $authUserId = $authUser->id;
 
         if ($authUser->hasRole(RolesUsersEnum::SUPER_ADMIN->value)) {
-            return $this->userRepository->getUsersWithoutAdminRolePaginatedList($authUserId);
+            return $this->userRepository->getUsersWithoutAdminRolePaginatedList($authUser->id);
         }
 
-        return $this->userRepository->getUsersByCinemaPaginatedList($authUser->cinemas->pluck('id'), $authUserId);
+        return $this->userRepository->getUsersByCinemaPaginatedList($authUser->cinemas->pluck('id'), $authUser->id);
     }
 
     /**

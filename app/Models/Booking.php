@@ -50,6 +50,9 @@ class Booking extends Model
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+    /**
+     * @var string[]
+     */
     protected $fillable = [
         'status',
         'screening_id',
@@ -58,25 +61,40 @@ class Booking extends Model
         'slug',
     ];
 
+    /**
+     * @var string[]
+     */
     protected $casts = [
         'status' => StatusBookingsEnum::class,
     ];
 
+    /**
+     * @return BelongsTo
+     */
     public function screening(): BelongsTo
     {
         return $this->belongsTo(Screening::class);
     }
 
+    /**
+     * @return BelongsTo
+     */
     public function seat(): BelongsTo
     {
         return $this->belongsTo(Seat::class);
     }
 
+    /**
+     * @return HasMany
+     */
     public function payments(): hasMany
     {
         return $this->hasMany(Payment::class);
     }
 
+    /**
+     * @return BelongsTo
+     */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);

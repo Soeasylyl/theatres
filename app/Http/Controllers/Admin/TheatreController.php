@@ -2,24 +2,23 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\Cinema;
+use App\Services\CinemaService;
+use Illuminate\Contracts\Support\Renderable;
 
 class TheatreController extends BaseAdminController
 {
-    public function __construct()
+    public function __construct( private readonly CinemaService $cinemaService)
     {
     }
 
     /**
      * Show the application dashboard.
      *
-     * @return \Illuminate\Contracts\Support\Renderable
+     * @return Renderable
      */
-    // Displaying information about all cinemas
     public function index()
     {
-        // TODO: обратить внимание на withCount, для чего мне оно???
-        $theatres = Cinema::withCount('halls')->get();
+        $theatres = $this->cinemaService->getCinemasWithHallsPaginated();
 
         return view('admin.pages.theatres.theatres', compact('theatres'));
     }

@@ -2,47 +2,35 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Enums\RolesUsersEnum;
-use App\Http\Controllers\Controller;
-use App\Models\Cinema;
-use App\Models\Hall;
-use App\Models\User;
+use App\Services\CinemaService;
+use Illuminate\Contracts\Support\Renderable;
 
 class AdminController extends BaseAdminController
 {
     /**
      * Create a new controller instance.
      *
-     * @return void
+     * @param CinemaService $cinemaService
      */
-    public function __construct()
+    public function __construct(private readonly CinemaService $cinemaService)
     {
     }
 
     /**
      * Show the application dashboard.
      *
-     * @return \Illuminate\Contracts\Support\Renderable
+     * @return Renderable
      */
     public function index()
     {
-        $countUsers = User::whereDoesntHave('roles', function ( $query) {
-            $query->where('name', RolesUsersEnum::SUPER_ADMIN->value);
-        })->count();
+        $data = $this->cinemaService->loadAdminDashboardData();
 
-        $cinemas = Cinema::with('halls.seats')->get();
-        $countCinemas = $cinemas->count();
-        $totalCountSeats = 0;
-
-        foreach ($cinemas as $cinema) {
-            $totalCountSeats += $cinema->halls->sum(function ($hall) {
-                return $hall->seats->count();
-            });
-        }
-
-        return view('admin.pages.dashboard',
-            compact('countUsers'),
-            compact('countCinemas','cinemas', 'totalCountSeats'),
+        return view('admin.pages.dashboard', [
+                'countUsers' => $data['countUsers'],
+                'countCinemas' => $data['countCinemas'],
+                'cinemas' => $data['cinemas'],
+                'totalCountSeats' => $data['totalCountSeats'],
+            ]
         );
     }
 }

@@ -47,22 +47,34 @@ class Cinema extends Model
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+    /**
+     * @var string[]
+     */
     protected $fillable = [
         'name',
         'description',
         'address',
     ];
 
+    /**
+     * @return HasMany
+     */
     public function seatTypes(): HasMany
     {
         return $this->hasMany(SeatType::class);
     }
 
+    /**
+     * @return HasMany
+     */
     public function halls(): HasMany
     {
         return $this->hasMany(Hall::class);
     }
 
+    /**
+     * @return MorphMany
+     */
     public function medias(): MorphMany
     {
         return $this->morphMany(
@@ -73,6 +85,9 @@ class Cinema extends Model
         );
     }
 
+    /**
+     * @return BelongsToMany
+     */
     public function users(): BelongsToMany
     {
         return $this->belongsToMany(

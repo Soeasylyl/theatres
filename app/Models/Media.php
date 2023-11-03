@@ -39,6 +39,9 @@ class Media extends Model
 {
     use HasApiTokens, Notifiable;
 
+    /**
+     * @var string[]
+     */
     protected $fillable = [
         'path',
         'collection',
@@ -46,6 +49,9 @@ class Media extends Model
         'model_id',
     ];
 
+    /**
+     * @return MorphTo
+     */
     public function mediable(): MorphTo
     {
         return $this->morphTo();

@@ -17,13 +17,15 @@
                     <th>{{ __(' ') }}</th>
                     </thead>
                     <tbody>
-                    @foreach($theatres as $theatre)
+                    @forelse($theatres as $theatre)
                         <tr>
                             <td>{{ $theatre->name }}</td>
                             <td>{{ $theatre->address }}</td>
                             <td>{{ $theatre->halls_count }}</td>
                         </tr>
-                    @endforeach
+                    @empty
+                       <h2> {{ __('Кинотеатры не найдены.') }} </h2>
+                    @endforelse
                     </tbody>
                 </table>
             </div>

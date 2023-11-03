@@ -5,7 +5,6 @@ namespace App\Repositories\Interfaces;
 use App\DTO\Users\CreateUserDTO;
 use App\DTO\Users\UpdateUserInfoDTO;
 use App\DTO\Users\UpdateUserPasswordDTO;
-use App\Enums\RolesUsersEnum;
 use app\Models\User;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
@@ -21,6 +20,13 @@ interface UserRepositoryInterface
     public function getUsersWithoutAdminRolePaginatedList(int $authUserId): LengthAwarePaginator;
 
     /**
+     * Gets the number of users who do not have the specified role.
+     *
+     * @param string $roleName Search role name
+     * @return int Number of users without the specified role
+     */
+    public function getCountUsersWithoutRole(string $roleName): int;
+    /**
      * Receiving all users from one cinema, except the authorized one
      *
      * @param Collection $cinemaIds
@@ -34,24 +40,24 @@ interface UserRepositoryInterface
      *
      * @param int $userId
      * @param array|null $relations
-     * @return mixed
+     * @return User
      */
-    public function getUserByIdOrFail(int $userId, ?array $relations = []): mixed;
+    public function getUserByIdOrFail(int $userId, ?array $relations = []): User;
 
     /**
      * Searching for a user by ID with roles
      *
      * @param int $userId
-     * @return mixed
+     * @return User
      */
-    public function getUserByIdWithRolesOrFail(int $userId): mixed;
+    public function getUserByIdWithRolesOrFail(int $userId): User;
 
     /**
      * Changing user information
      *
      * @param UpdateUserInfoDTO $requestDTO
      * @param User $user
-     * @return mixed
+     * @return User
      */
     public function updateInfoByUser(UpdateUserInfoDTO $requestDTO, User $user): User;
 
@@ -60,15 +66,15 @@ interface UserRepositoryInterface
      *
      * @param UpdateUserPasswordDTO $requestDTO
      * @param User $user
-     * @return mixed
+     * @return User
      */
     public function updatePasswordByUser(UpdateUserPasswordDTO $requestDTO, User $user): User;
 
     /**
      * @param CreateUserDTO $requestDTO
-     * @return mixed
+     * @return User
      */
-    public function createUser(CreateUserDTO $requestDTO): mixed;
+    public function createUser(CreateUserDTO $requestDTO): User;
 
     /**
      * @param User $user

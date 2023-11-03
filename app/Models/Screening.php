@@ -44,6 +44,9 @@ class Screening extends Model
 {
     use HasApiTokens, Notifiable;
 
+    /**
+     * @var string[]
+     */
     protected $fillable = [
         'start_at',
         'price',
@@ -51,20 +54,32 @@ class Screening extends Model
         'hall_id',
     ];
 
+    /**
+     * @var string[]
+     */
     protected $casts = [
         'start_at' => 'datetime',
     ];
 
+    /**
+     * @return BelongsTo
+     */
     public function movie(): BelongsTo
     {
         return $this->belongsTo(Movie::class);
     }
 
+    /**
+     * @return BelongsTo
+     */
     public function hall(): BelongsTo
     {
         return $this->belongsTo(Hall::class);
     }
 
+    /**
+     * @return HasMany
+     */
     public function bookings(): HasMany
     {
         return $this->hasMany(Booking::class);

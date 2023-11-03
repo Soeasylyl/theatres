@@ -15,6 +15,8 @@ use Illuminate\Support\Carbon;
 class MovieRepository implements MovieRepositoryInterface
 {
     /**
+     * Get a paginated list of movies.
+     *
      * @return LengthAwarePaginator
      */
     public function getMoviesPaginatedList(): LengthAwarePaginator
@@ -23,24 +25,28 @@ class MovieRepository implements MovieRepositoryInterface
     }
 
     /**
+     *Get a collection of random movies along with their screenings and related media.
+     *
      * @param Carbon $currentDateTime
      * @param int|null $limit
      * @return Collection
      */
     public function getRandomMoviesWithScreenings(Carbon $currentDateTime, int $limit = null): Collection
     {
-        return Movie::with(['medias' => function (MorphMany $query) {
-            $query->where(function (Builder $q) {
-                $q->where('collection', 'frames')
-                    ->orWhere('collection', 'poster');
-            });
-        }])
+        return Movie::with([
+                'genres',
+                'medias' => function (MorphMany $query) {
+                    $query->where(function (Builder $q) {
+                        $q->whereIn('collection', ['frames', 'poster']);
+                    });
+                },
+                'screenings' => function (HasMany $query) use ($currentDateTime) {
+                    $query->whereDate('start_at', '>=', $currentDateTime)
+                          ->orderBy('start_at')
+                          ->limit(1);
+                },
+            ])
             ->has('screenings')
-            ->with(['screenings' => function (HasMany $query) use ($currentDateTime) {
-                $query->where('start_at', '>=', $currentDateTime)
-                    ->orderBy('start_at', 'asc')
-                    ->limit(1);
-            }])
             ->inRandomOrder()
             ->when($limit !== null, fn(Builder $query) => $query->limit($limit))
             ->get();

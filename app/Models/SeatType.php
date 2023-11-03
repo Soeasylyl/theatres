@@ -43,6 +43,9 @@ class SeatType extends Model
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+    /**
+     * @var string[]
+     */
     protected $fillable = [
         'name',
         'description',
@@ -50,11 +53,17 @@ class SeatType extends Model
         'cinema_id',
     ];
 
+    /**
+     * @return BelongsTo
+     */
     public function cinema() : BelongsTo
     {
         return $this->belongsTo(Cinema::class);
     }
 
+    /**
+     * @return HasMany
+     */
     public function seats(): HasMany
     {
         return $this->hasMany(Seat::class);

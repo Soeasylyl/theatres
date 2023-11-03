@@ -3,10 +3,8 @@
 namespace App\Http\Controllers\public;
 
 
-use App\Repositories\Interfaces\CinemaRepositoryInterface;
-use App\Repositories\Interfaces\MovieRepositoryInterface;
 use App\Services\MovieService;
-use Illuminate\Support\Carbon;
+use Illuminate\Contracts\Support\Renderable;
 
 class HomeController extends BasePublicController
 {
@@ -19,7 +17,7 @@ class HomeController extends BasePublicController
     /**
      * Show the application dashboard.
      *
-     * @return \Illuminate\Contracts\Support\Renderable
+     * @return Renderable
      */
     public function index()
     {

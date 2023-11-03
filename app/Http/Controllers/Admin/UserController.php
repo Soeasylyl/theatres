@@ -15,11 +15,19 @@ use App\Http\Requests\Admin\Users\UpdateProfileRequest;
 use App\Http\Requests\Admin\Users\UpdateRoleRequest;
 use App\Services\CinemaService;
 use App\Services\UserService;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 
 
 class UserController extends BaseAdminController
 {
+    /**
+     * @param UserService $userService
+     * @param CinemaService $cinemaService
+     */
     public function __construct(
         private readonly UserService   $userService,
         private readonly CinemaService $cinemaService,
@@ -30,11 +38,11 @@ class UserController extends BaseAdminController
     /**
      * Show the application dashboard.
      *
-     * @return \Illuminate\Contracts\Support\Renderable
+     * @return Renderable
      */
 
     /**
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Foundation\Application
+     * @return Application|Factory|View|\Illuminate\Foundation\Application
      */
     public function index()
     {
@@ -46,7 +54,7 @@ class UserController extends BaseAdminController
     /**
      * Getting all cinemas PaginateList
      *
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Foundation\Application
+     * @return Application|Factory|View|\Illuminate\Foundation\Application
      */
     public function show()
     {
@@ -80,7 +88,7 @@ class UserController extends BaseAdminController
      * Retrieving information to display on the selected user's page
      *
      * @param int $userId
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Foundation\Application
+     * @return Application|Factory|View|\Illuminate\Foundation\Application
      */
     public function edit(int $userId)
     {

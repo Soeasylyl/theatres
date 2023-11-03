@@ -12,19 +12,25 @@ use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
+    /**
+     * Run the database seeds.
+     *
+     * @return void
+     */
     public function run(): void
     {
         $this->call([
             PermissionsSeeder::class,
+            SuperAdminSeeder::class,
         ]);
 
+        User::factory(100)->create();
         Cinema::factory(rand(2, 5))->create();
         Genre::factory(20)->create();
         Movie::factory(30)->create();
 
         $this->call([
             ScreeningSeeder::class,
-            UserSeeder::class,
         ]);
 
         Booking::factory(10)->create();

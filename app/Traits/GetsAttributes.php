@@ -9,6 +9,8 @@ use ReflectionClassConstant;
 trait GetsAttributes
 {
     /**
+     * Get the description for the specified enum value, if available.
+     *
      * @param self $enum
      */
     public static function getDescription(self $enum): string
@@ -24,6 +26,8 @@ trait GetsAttributes
     }
 
     /**
+     * Get the enum values as an array suitable for use in a select field.
+     *
      * @return array<string,string>
      */
     public static function asSelectArray(): array
@@ -40,6 +44,11 @@ trait GetsAttributes
         return $values;
     }
 
+    /**
+     * Convert the enum values into an array.
+     *
+     * @return string[]
+     */
     public static function toArray(): array
     {
         /** @var array<string,string> $values */

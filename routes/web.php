@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\RolesUsersEnum;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\MovieController;
 use App\Http\Controllers\Admin\TheatreController;
@@ -29,7 +30,7 @@ Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->na
 Route::post('/register', [RegisterController::class, 'register']);
 
 Route::prefix('afisha')->group(function () {
-    Route::get('/{movie:slug}', [MovieController::class, 'show'])->name('user.show.movie');
+    Route::get('/{movie}', [MovieController::class, 'show'])->name('user.show.movie');
 });
 
 Route::prefix('admin')->middleware(['auth', 'AdminAccess'])->group(function () {
@@ -43,7 +44,7 @@ Route::prefix('admin')->middleware(['auth', 'AdminAccess'])->group(function () {
         Route::get('/', [TheatreController::class, 'index'])->name('admin.theatres');
     });
 
-    Route::prefix('users')->middleware(['role:' . \App\Enums\RolesUsersEnum::SUPER_ADMIN->value . '|' . \App\Enums\RolesUsersEnum::CINEMA_ADMIN->value])->group(function () {
+    Route::prefix('users')->middleware(['role:' . RolesUsersEnum::SUPER_ADMIN->value . '|' . RolesUsersEnum::CINEMA_ADMIN->value])->group(function () {
         Route::get('/', [UserController::class, 'index'])
             ->name('users');
 
@@ -54,7 +55,7 @@ Route::prefix('admin')->middleware(['auth', 'AdminAccess'])->group(function () {
 
         Route::prefix('/')->middleware('CheckUserAccessMiddleware')->group(function () {
             Route::get('/{user}/edit', [UserController::class, 'edit'])
-                ->withoutMiddleware(['role:' . \App\Enums\RolesUsersEnum::SUPER_ADMIN->value . '|' . \App\Enums\RolesUsersEnum::CINEMA_ADMIN->value])
+                ->withoutMiddleware(['role:' . RolesUsersEnum::SUPER_ADMIN->value . '|' . RolesUsersEnum::CINEMA_ADMIN->value])
                 ->name('user.edit');
 
             Route::put('/{user}/update', [UserController::class, 'update'])
@@ -64,11 +65,11 @@ Route::prefix('admin')->middleware(['auth', 'AdminAccess'])->group(function () {
                 ->name('user.updatePassword');
 
             Route::put('/{user}/update-profile', [UserController::class, 'updateProfile'])
-                ->withoutMiddleware(['role:' . \App\Enums\RolesUsersEnum::SUPER_ADMIN->value . '|' . \App\Enums\RolesUsersEnum::CINEMA_ADMIN->value])
+                ->withoutMiddleware(['role:' . RolesUsersEnum::SUPER_ADMIN->value . '|' . RolesUsersEnum::CINEMA_ADMIN->value])
                 ->name('user.updateProfile');
 
             Route::put('/{user}/update-password-profile', [UserController::class, 'updatePasswordProfile'])
-                ->withoutMiddleware(['role:' . \App\Enums\RolesUsersEnum::SUPER_ADMIN->value . '|' . \App\Enums\RolesUsersEnum::CINEMA_ADMIN->value])
+                ->withoutMiddleware(['role:' . RolesUsersEnum::SUPER_ADMIN->value . '|' . RolesUsersEnum::CINEMA_ADMIN->value])
                 ->name('user.updatePasswordProfile');
 
             Route::put('/{user}/update-role', [UserController::class, 'updateRole'])

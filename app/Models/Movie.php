@@ -53,6 +53,9 @@ class Movie extends Model
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+    /**
+     * @var string[]
+     */
     protected $fillable = [
         'name',
         'description',
@@ -63,10 +66,16 @@ class Movie extends Model
         'slug',
     ];
 
+    /**
+     * @var string[]
+     */
     protected $casts = [
         'date_start' => 'date',
     ];
 
+    /**
+     * @return BelongsToMany
+     */
     public function genres(): BelongsToMany
     {
         return $this->belongsToMany(
@@ -77,11 +86,17 @@ class Movie extends Model
         );
     }
 
+    /**
+     * @return HasMany
+     */
     public function screenings(): HasMany
     {
         return $this->hasMany(Screening::class);
     }
 
+    /**
+     * @return MorphMany
+     */
     public function medias(): MorphMany
     {
         return $this->morphMany(

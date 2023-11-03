@@ -8,10 +8,15 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Movie>
+ * @extends Factory<Movie>
  */
 class MovieFactory extends Factory
 {
+    /**
+     * Define the model's default state.
+     *
+     * @return array The model's default state.
+     */
     public function definition(): array
     {
         $name = $this->faker->unique()->sentence(3);
@@ -28,6 +33,11 @@ class MovieFactory extends Factory
         ];
     }
 
+    /**
+     * Configure the model factory.
+     *
+     * @return static The configured model factory.
+     */
     public function configure(): static
     {
         return $this->afterCreating(function (Movie $movie) {
