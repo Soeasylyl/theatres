@@ -17,13 +17,20 @@ class MovieService
     /**
      * Retrieve a list of random movies with upcoming screenings.
      *
-     * @return Collection
+     * @return array
      */
-    public function getRandomMoviesWithScreenings(): Collection
+    public function getRandomMoviesWithScreenings(): array
     {
         $currentDateTime = Carbon::now();
 
-        return $this->movieRepository->getRandomMoviesWithScreenings($currentDateTime, 10);
+        $movies = $this->movieRepository->getRandomMoviesWithScreenings($currentDateTime, 10);
+
+        $posterPaths = [];
+        foreach ($movies as $movie) {
+            $posterPaths[$movie->id] = $movie->medias->where('collection', 'poster')->first()->path;
+        }
+
+        return compact('movies', 'posterPaths');
     }
 
     /**

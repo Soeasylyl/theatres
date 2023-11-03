@@ -52,7 +52,8 @@
                     </div>
                     <div class="posters__menu-items">
                         <div class="posters__menu-calendar">
-                            <svg id="svg-icon-calendar" viewBox="0 0 32 32" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <svg id="svg-icon-calendar" viewBox="0 0 32 32" fill="currentColor"
+                                 xmlns="http://www.w3.org/2000/svg">
                                 <text text-anchor="middle" x="47%" dy="22" fill="currentColor"
                                       font-family="Ubuntu, Roboto, Arial, Helvetica, sans-serif" font-size="16">
                                     <script>
@@ -86,8 +87,9 @@
                                 @if ($media = optional($movie->medias->where('collection', 'poster')->first()))
                                     <img src="{{ asset($media->path) }}" alt="{{ $movie->name }}">
                                 @endif
-                                <img src="{{ asset($movie->medias->where('collection', 'poster')->first()->path) }}"
-                                     alt="{{ $movie->name }}">
+                                @if (isset($posterPaths[$movie->id]))
+                                    <img src="{{ asset($posterPaths[$movie->id]) }}" alt="{{ $movie->name }}">
+                                @endif
                             </div>
                             <div class="swiper-slide-poster-age"> {{ $movie->age_limit }}</div>
                             <div class="swiper-slide-poster-name">
@@ -128,9 +130,9 @@
                                 @if ($media = optional($movie->medias->where('collection', 'poster')->first()))
                                     <img src="{{ asset($media->path) }}" alt="{{ $movie->name }}">
                                 @endif
-
-                                <img src="{{ asset($movie->medias->where('collection', 'poster')->first()->path) }}"
-                                     alt="{{ $movie->name }}">
+                                @if (isset($posterPaths[$movie->id]))
+                                    <img src="{{ asset($posterPaths[$movie->id]) }}" alt="{{ $movie->name }}">
+                                @endif
                             </div>
                             <div class="swiper-slide-poster-age"> {{ $movie->age_limit }}</div>
                             <div class="swiper-slide-poster-name">

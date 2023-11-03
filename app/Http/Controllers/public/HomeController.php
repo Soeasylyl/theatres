@@ -21,8 +21,8 @@ class HomeController extends BasePublicController
      */
     public function index()
     {
-        $movies = $this->movieService->getRandomMoviesWithScreenings();
+        $data = $this->movieService->getRandomMoviesWithScreenings();
 
-        return view('public.pages.home', compact('movies'));
+        return view('public.pages.home', $data);
     }
 }
