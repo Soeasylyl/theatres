@@ -3,8 +3,12 @@
 namespace App\Http\Controllers\public;
 
 
+use App\Enums\RolesUsersEnum;
+use App\Models\User;
 use App\Services\MovieService;
 use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class HomeController extends BasePublicController
 {

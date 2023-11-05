@@ -37,13 +37,16 @@ class CinemaFactory extends Factory
             $mediaCount = rand(1, 3);
 
             for ($i = 0; $i < 3; $i++) {
+                $roleValues = [RolesUsersEnum::CINEMA_MANAGER->value, RolesUsersEnum::CINEMA_ADMIN->value];
+                $randomRoleValue = array_rand(array_flip($roleValues), 1);
+
                 $user = User::query()
                     ->whereDoesntHave('cinemas')
                     ->whereDoesntHave('roles', function (Builder $query) {
                         $query->where('name', RolesUsersEnum::SUPER_ADMIN->value);
                     })
-                    ->whereHas('roles', function (Builder|HasMany $builder) {
-                        $builder->whereIn('name', collect([RolesUsersEnum::CINEMA_MANAGER, RolesUsersEnum::CINEMA_ADMIN])->random(1));
+                    ->whereHas('roles', function (Builder $builder) use ($randomRoleValue) {
+                        $builder->where('name', $randomRoleValue);
                     })
                     ->inRandomOrder()
                     ->first();

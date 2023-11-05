@@ -20,7 +20,7 @@ return new class extends Migration
             $table->foreign('user_id')
                 ->references('id')
                 ->on('users')
-                ->cascadeOnDelete();;
+                ->cascadeOnDelete();
 
             $table->foreign('cinema_id')
                 ->references('id')
