@@ -31,6 +31,7 @@
                     <input class="admin-container__search-bar" type="text"
                            placeholder="{{ __('Поиск пользователей') }}">
                 </div>
+
                 <table class="admin-container__table">
                     <thead>
                     <th>{{ __('Имя') }}</th>
@@ -42,7 +43,7 @@
                     </thead>
                     <tbody>
                     @forelse($users as $user)
-                        <tr>
+                        <tr class="{{ $user->blocked_until ? 'ban' : '' }}">
                             <td>{{ $user->name }}</td>
                             <td>{{ $user->email }}</td>
                             <td>{{ $user->phone }}</td>
@@ -80,6 +81,16 @@
                                             </svg>
                                         </div>
                                     </form>
+
+                                        <div class="admin-container__table_last_cell_block"
+                                             data-id="{{ $user->id }}"
+                                             title="{{ __('Заблокировать') }}">
+                                            <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="20" height="23"
+                                                 viewBox="0 0 32 32">
+                                                <path
+                                                    d="M27.314 4.686c-3.022-3.022-7.040-4.686-11.314-4.686s-8.292 1.664-11.314 4.686c-3.022 3.022-4.686 7.040-4.686 11.314s1.664 8.292 4.686 11.314c3.022 3.022 7.040 4.686 11.314 4.686s8.292-1.664 11.314-4.686c3.022-3.022 4.686-7.040 4.686-11.314s-1.664-8.292-4.686-11.314zM28 16c0 2.588-0.824 4.987-2.222 6.949l-16.727-16.727c1.962-1.399 4.361-2.222 6.949-2.222 6.617 0 12 5.383 12 12zM4 16c0-2.588 0.824-4.987 2.222-6.949l16.727 16.727c-1.962 1.399-4.361 2.222-6.949 2.222-6.617 0-12-5.383-12-12z"></path>
+                                            </svg>
+                                        </div>
                                 </div>
                             </td>
                         </tr>

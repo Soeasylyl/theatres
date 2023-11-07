@@ -3,12 +3,14 @@
 namespace App\Http\Controllers\Admin;
 
 
+use App\DTO\Users\BlockUserDTO;
 use App\DTO\Users\CreateUserDTO;
 use App\DTO\Users\DeleteUserDTO;
 use App\DTO\Users\EditUserDTO;
 use App\DTO\Users\UpdateUserInfoDTO;
 use App\DTO\Users\UpdateUserPasswordDTO;
 use App\DTO\Users\UpdateUserRoleDTO;
+use App\Http\Requests\Admin\Users\BlockRequest;
 use App\Http\Requests\Admin\Users\UserRequest;
 use App\Http\Requests\Admin\Users\UpdatePasswordRequest;
 use App\Http\Requests\Admin\Users\UpdateProfileRequest;
@@ -270,5 +272,23 @@ class UserController extends BaseAdminController
         } catch (\Throwable $e) {
             return redirect()->back()->with('error_role', $e->getMessage());
         }
+    }
+
+    /**
+     * Method for blocking a user.
+     *
+     * @param BlockRequest $request
+     * @return null
+     */
+    public function block(BlockRequest $request)
+    {
+        $blockUserDTO = new BlockUserDTO(
+            userId: $request->input('userId'),
+            date: $request->input('dateTime'),
+        );
+
+        $this->userService->blockUser($blockUserDTO);
+
+        return redirect()->route('users')->with('successMessages', 'Пользователь успешно заблокирован.');
     }
 }

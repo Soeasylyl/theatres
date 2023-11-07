@@ -33,7 +33,7 @@ Route::prefix('afisha')->group(function () {
     Route::get('/{movie}', [MovieController::class, 'show'])->name('user.show.movie');
 });
 
-Route::prefix('admin')->middleware(['auth', 'AdminAccess'])->group(function () {
+Route::prefix('admin')->middleware(['auth', 'isBlock', 'AdminAccess'])->group(function () {
     Route::get('/', [AdminController::class, 'index'])->name('admin');
 
     Route::prefix('movies')->group(function () {
@@ -52,6 +52,10 @@ Route::prefix('admin')->middleware(['auth', 'AdminAccess'])->group(function () {
             ->name('users.create');
 
         Route::post('/create', [UserController::class, 'create']);
+
+
+        Route::put('/block-user', [UserController::class, 'block'])
+            ->name('user.block');
 
         Route::prefix('/')->middleware('CheckUserAccessMiddleware')->group(function () {
             Route::get('/{user}/edit', [UserController::class, 'edit'])

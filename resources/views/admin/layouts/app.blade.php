@@ -27,6 +27,7 @@
             @yield('content')
         </section>
 
+        @include('admin.partials.footer')
 </div>
 </body>
 </html>

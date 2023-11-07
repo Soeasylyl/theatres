@@ -1,5 +1,5 @@
 .header {
-    position: fixed;
+    position: absolute;
     top: 0;
     left: 0;
     right: 0;
@@ -86,7 +86,6 @@
 
     &__menu-container {
         display: flex;
-        align-items: flex-end;
     }
 
     &__menu-item {

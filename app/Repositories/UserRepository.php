@@ -9,6 +9,7 @@ use App\DTO\Users\UpdateUserPasswordDTO;
 use App\Enums\RolesUsersEnum;
 use App\Models\User;
 use App\Repositories\Interfaces\UserRepositoryInterface;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
@@ -135,5 +136,21 @@ class UserRepository implements UserRepositoryInterface
     public function attachUserToCinema(User $user, int $cinemaId): void
     {
         $user->cinemas()->attach($cinemaId);
+    }
+
+    /**
+     * Blocks the user for a certain amount of time.
+     *
+     * @param User $user
+     * @param Carbon $date
+     * @return User
+     */
+    public function blockUser(User $user, Carbon $date): User
+    {
+        $user->update([
+            'blocked_until' => $date
+        ]);
+
+        return $user;
     }
 }

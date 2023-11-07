@@ -87,7 +87,13 @@
     "Возрастной рейтинг": "Age rating",
     "Поиск пользователей": "Search for users",
     "Зарегистрировано решением Городского исполнительного комитета от 13.11.2014\n                года в Реестре предприятий и организаций под номером 123456789. УНП 123456789,\n                юридический адрес: 123456, г. Нью-Йорк, ул. Петрова, д.11, офис 5,\n                Интернет-магазин example.com. Режим работы: ежедневно круглосуточно.\n                Дата регистрации в Торговом реестре: 01.12.2020 год": "Registered by decision of the City Executive Committee dated November 13, 2014\n                 year in the Register of Enterprises and Organizations under number 123456789. UNP 123456789,\n                 legal address: 123456, New York, st. Petrova, 11, office 5,\n                 Online store example.com. Opening hours: every day around the clock.\n                 Date of registration in the Trade Register: 01.12.2020",
-    "Добавить пользователя": "Add user"
+    "Добавить пользователя": "Add user",
+    "Аккаунт заблокирован.": "This account is blocked.",
+    "ЗАБЛОКИРОВАТЬ ДО:": "BLOCK IT OUT:",
+    "Заблокировать": "Blocking",
+    "Отмена": "Cancellation",
+    "Пользователь успешно заблокирован.": "The user has been successfully blocked.",
+    "Не верный формат даты.": "Incorrect date format."
 }
 
 

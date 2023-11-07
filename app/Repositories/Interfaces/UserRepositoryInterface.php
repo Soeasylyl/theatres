@@ -6,6 +6,7 @@ use App\DTO\Users\CreateUserDTO;
 use App\DTO\Users\UpdateUserInfoDTO;
 use App\DTO\Users\UpdateUserPasswordDTO;
 use app\Models\User;
+use Carbon\Carbon;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 
@@ -64,15 +65,28 @@ interface UserRepositoryInterface
     public function updatePasswordByUser(UpdateUserPasswordDTO $requestDTO, User $user): User;
 
     /**
+     * Create a new user based on the provided CreateUserDTO.
+     *
      * @param CreateUserDTO $requestDTO
      * @return User
      */
     public function createUser(CreateUserDTO $requestDTO): User;
 
     /**
+     * Attach a user to a cinema.
+     *
      * @param User $user
      * @param int $cinemaId
      * @return void
      */
     public function attachUserToCinema(User $user, int $cinemaId): void;
+
+    /**
+     * Blocks the user for a certain amount of time.
+     *
+     * @param User $user
+     * @param Carbon $date
+     * @return User
+     */
+    public function blockUser(User $user, Carbon $date): User;
 }

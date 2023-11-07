@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\DTO\Users\BlockUserDTO;
 use App\DTO\Users\CreateUserDTO;
 use App\DTO\Users\DeleteUserDTO;
 use App\DTO\Users\UpdateUserInfoDTO;
@@ -186,6 +187,20 @@ class UserService
         }
 
         $user->assignRole($role->value);
+
+        return $user;
+    }
+
+    /**
+     * Blocks a user based on the provided BlockUserDTO object and returns the user object after blocking.
+     *
+     * @param BlockUserDTO $blockUserDTO
+     * @return User
+     */
+    public function blockUser(BlockUserDTO $blockUserDTO): User
+    {
+        $user = $this->userRepository->getUserByIdOrFail($blockUserDTO->getUserId());
+        $this->userRepository->blockUser($user, $blockUserDTO->getDate());
 
         return $user;
     }
