@@ -80,8 +80,6 @@ class Cinema extends Model
         return $this->morphMany(
             related: Media::class,
             name: 'model',
-            type: 'model_type',
-            id: 'model_id',
         );
     }
 
