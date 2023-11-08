@@ -53,10 +53,6 @@ Route::prefix('admin')->middleware(['auth', 'isBlock', 'AdminAccess'])->group(fu
 
         Route::post('/create', [UserController::class, 'create']);
 
-
-        Route::put('/block-user', [UserController::class, 'block'])
-            ->name('user.block');
-
         Route::prefix('/')->middleware('CheckUserAccessMiddleware')->group(function () {
             Route::get('/{user}/edit', [UserController::class, 'edit'])
                 ->withoutMiddleware(['role:' . RolesUsersEnum::SUPER_ADMIN->value . '|' . RolesUsersEnum::CINEMA_ADMIN->value])
@@ -84,6 +80,9 @@ Route::prefix('admin')->middleware(['auth', 'isBlock', 'AdminAccess'])->group(fu
 
             Route::delete('/{user}', [UserController::class, 'delete'])
                 ->name('user.delete');
+
+            Route::put('/{user}/block-user', [UserController::class, 'block'])
+                ->name('user.block');
         });
     });
 });

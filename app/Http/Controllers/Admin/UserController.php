@@ -278,17 +278,25 @@ class UserController extends BaseAdminController
      * Method for blocking a user.
      *
      * @param BlockRequest $request
+     * @param int $userId
      * @return null
      */
-    public function block(BlockRequest $request)
+    public function block(BlockRequest $request, int $userId)
     {
+        $authUser = auth()->user();
+
         $blockUserDTO = new BlockUserDTO(
-            userId: $request->input('userId'),
-            date: $request->input('dateTime'),
+            producer: $authUser,
+            userId: $userId,
+            expirationDate: $request->input('dateTime'),
         );
 
+        try {
         $this->userService->blockUser($blockUserDTO);
 
         return redirect()->route('users')->with('successMessages', 'Пользователь успешно заблокирован.');
+        } catch (\Throwable $e) {
+            return redirect()->route('users')->with('error_delete_user', $e->getMessage());
+        }
     }
 }

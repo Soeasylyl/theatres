@@ -25,7 +25,6 @@ class BlockRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'userId' => 'required|exists:users,id',
             'dateTime' => 'required|date_format:Y-m-d\TH:i',
         ];
     }

@@ -84,12 +84,11 @@
                     @forelse($movies as $movie)
                         <div class="swiper-slide swiper-slide-posters">
                             <div class="swiper-slide-poster-img">
-                                @if ($media = optional($movie->medias->where('collection', 'poster')->first()))
+
+                                @if ($media = optional($movie->poster ))
                                     <img src="{{ asset($media->path) }}" alt="{{ $movie->name }}">
                                 @endif
-                                @if (isset($posterPaths[$movie->id]))
-                                    <img src="{{ asset($posterPaths[$movie->id]) }}" alt="{{ $movie->name }}">
-                                @endif
+
                             </div>
                             <div class="swiper-slide-poster-age"> {{ $movie->age_limit }}</div>
                             <div class="swiper-slide-poster-name">
@@ -127,12 +126,16 @@
                     @forelse($movies as $movie)
                         <div class="swiper-slide swiper-slide-posters">
                             <div class="swiper-slide-poster-img">
-                                @if ($media = optional($movie->medias->where('collection', 'poster')->first()))
+
+                                @if ($media = optional($movie->poster ))
                                     <img src="{{ asset($media->path) }}" alt="{{ $movie->name }}">
                                 @endif
-                                @if (isset($posterPaths[$movie->id]))
-                                    <img src="{{ asset($posterPaths[$movie->id]) }}" alt="{{ $movie->name }}">
-                                @endif
+{{--                                @if ($media = optional($movie->medias->where('collection', 'poster')->first()))--}}
+{{--                                    <img src="{{ asset($media->path) }}" alt="{{ $movie->name }}">--}}
+{{--                                @endif--}}
+{{--                                @if (isset($posterPaths[$movie->id]))--}}
+{{--                                    <img src="{{ asset($posterPaths[$movie->id]) }}" alt="{{ $movie->name }}">--}}
+{{--                                @endif--}}
                             </div>
                             <div class="swiper-slide-poster-age"> {{ $movie->age_limit }}</div>
                             <div class="swiper-slide-poster-name">

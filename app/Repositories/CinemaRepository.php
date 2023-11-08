@@ -2,12 +2,9 @@
 
 namespace App\Repositories;
 
-
-
 use App\Models\Cinema;
 use App\Repositories\Interfaces\CinemaRepositoryInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
-use Illuminate\Database\Eloquent\Collection;
 
 
 class CinemaRepository implements CinemaRepositoryInterface
@@ -25,10 +22,11 @@ class CinemaRepository implements CinemaRepositoryInterface
     /**
      * Returns a paginated list of cinemas with screens.
      *
+     * @param array|null $relations
      * @return LengthAwarePaginator
      */
-    public function getCinemasWithHallsPaginated(): LengthAwarePaginator
+    public function getCinemasWithHallsPaginated(?array $relations = []): LengthAwarePaginator
     {
-        return Cinema::with('halls')->paginate(config('app.pagination_limit'));
+        return Cinema::with($relations)->paginate(config('app.pagination_limit'));
     }
 }

@@ -46,6 +46,28 @@
         }
     }
 
+    &__block-wrapper {
+        margin-left: 30px;
+        align-content: center;
+        cursor: pointer;
+        display: flex;
+        align-items: center; /* Центрирует элементы по вертикали внутри контейнера */
+        justify-content: center;
+
+        svg {
+            overflow: visible;
+            width: 25px;
+            height: 25px;
+            transform: rotate(0deg) scale(1.2);
+            transition: transform 0.5s ease;
+
+            &:hover {
+                transform: rotate(-15deg) scale(1.7);
+            }
+        }
+    }
+
+
     &__panel-btn-wrapper {
         display: flex;
         justify-content: center;

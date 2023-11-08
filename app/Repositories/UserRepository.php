@@ -21,11 +21,12 @@ class UserRepository implements UserRepositoryInterface
      * Obtaining information about all users except authorized and super administrator
      *
      * @param int $authUserId
+     * @param array|null $relations
      * @return LengthAwarePaginator
      */
-    public function getUsersWithoutAdminRolePaginatedList(int $authUserId): LengthAwarePaginator
+    public function getUsersWithoutAdminRolePaginatedList(int $authUserId, ?array $relations = []): LengthAwarePaginator
     {
-        return User::with('roles')
+        return User::with($relations)
             ->whereDoesntHave('roles', function (Builder $query) {
                 $query->where('name', RolesUsersEnum::SUPER_ADMIN->value);
             })
@@ -63,17 +64,6 @@ class UserRepository implements UserRepositoryInterface
     public function getUserByIdOrFail(int $userId, ?array $relations = []): User
     {
         return User::with($relations)->findOrFail($userId);
-    }
-
-    /**
-     * Searching for a user by ID with roles
-     *
-     * @param int $userId
-     * @return User
-     */
-    public function getUserByIdWithRolesOrFail(int $userId): User
-    {
-        return User::with('roles')->findOrFail($userId);
     }
 
     /**

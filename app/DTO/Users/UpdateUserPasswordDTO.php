@@ -3,7 +3,6 @@
 namespace App\DTO\Users;
 
 use App\Models\User;
-use phpDocumentor\Reflection\Types\Boolean;
 
 class UpdateUserPasswordDTO
 {

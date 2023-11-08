@@ -18,7 +18,7 @@ class ForbidBannedUserCustom
     {
         $blockedUntil = auth()->user()->blocked_until;
 
-        if ($blockedUntil !== null && Carbon::parse($blockedUntil)->isFuture()) {
+        if ($blockedUntil !== null) {
             \Session::flush();
             return redirect('login')->withInput()->withErrors([
                 'email' => __('Аккаунт заблокирован.'),

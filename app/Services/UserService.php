@@ -38,7 +38,7 @@ class UserService
         $authUser = auth()->user();
 
         if ($authUser->hasRole(RolesUsersEnum::SUPER_ADMIN->value)) {
-            return $this->userRepository->getUsersWithoutAdminRolePaginatedList($authUser->id);
+            return $this->userRepository->getUsersWithoutAdminRolePaginatedList($authUser->id, ['roles']);
         }
 
         return $this->userRepository->getUsersByCinemaPaginatedList($authUser->cinemas->pluck('id'), $authUser->id);
@@ -166,7 +166,7 @@ class UserService
      */
     public function updateUserRole(UpdateUserRoleDTO $requestDTO): User
     {
-        $user = $this->userRepository->getUserByIdWithRolesOrFail($requestDTO->getUserId());
+        $user = $this->userRepository->getUserByIdOrFail($requestDTO->getUserId(), ['roles']);
         $role = RolesUsersEnum::tryFrom($requestDTO->getRoleName());
         $hasCinemaAdminRole = $requestDTO->getProducer()->hasRole(RolesUsersEnum::CINEMA_ADMIN);
 
@@ -196,11 +196,13 @@ class UserService
      *
      * @param BlockUserDTO $blockUserDTO
      * @return User
+     * @throws \Exception
      */
     public function blockUser(BlockUserDTO $blockUserDTO): User
     {
         $user = $this->userRepository->getUserByIdOrFail($blockUserDTO->getUserId());
-        $this->userRepository->blockUser($user, $blockUserDTO->getDate());
+        $this->checkAdminEditingPermission($user, $blockUserDTO->getProducer());
+        $this->userRepository->blockUser($user, $blockUserDTO->getExpirationDate());
 
         return $user;
     }

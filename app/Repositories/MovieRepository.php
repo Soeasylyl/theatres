@@ -11,7 +11,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Support\Carbon;
 
-
 class MovieRepository implements MovieRepositoryInterface
 {
     /**
@@ -29,24 +28,22 @@ class MovieRepository implements MovieRepositoryInterface
      *
      * @param Carbon $currentDateTime
      * @param int|null $limit
+     * @param array|null $values
      * @return Collection
      */
-    public function getRandomMoviesWithScreenings(Carbon $currentDateTime, int $limit = null): Collection
+    public function getRandomMoviesWithScreenings(Carbon $currentDateTime, int $limit = null, ?array $values = []): Collection
     {
         return Movie::with([
                 'genres',
-                'medias' => function (MorphMany $query) {
-                    $query->where(function (Builder $q) {
-                        $q->whereIn('collection', ['frames', 'poster']);
+                'medias' => function (MorphMany $query) use ($values) {
+                    $query->where(function (Builder $q) use ($values) {
+                        $q->whereIn('collection', $values);
                     });
                 },
-                'screenings' => function (HasMany $query) use ($currentDateTime) {
-                    $query->whereDate('start_at', '>=', $currentDateTime)
-                          ->orderBy('start_at')
-                          ->limit(1);
-                },
             ])
-            ->has('screenings')
+            ->withWhereHas('screenings', function (Builder|HasMany $query) use ($currentDateTime) {
+                $query->whereDate('start_at', '>=', $currentDateTime);
+            })
             ->inRandomOrder()
             ->when($limit !== null, fn(Builder $query) => $query->limit($limit))
             ->get();

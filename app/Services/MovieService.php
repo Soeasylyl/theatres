@@ -23,7 +23,7 @@ class MovieService
     {
         $currentDateTime = Carbon::now();
 
-        $movies = $this->movieRepository->getRandomMoviesWithScreenings($currentDateTime, 10);
+        $movies = $this->movieRepository->getRandomMoviesWithScreenings($currentDateTime, 10, ['frames', 'poster']);
 
         $posterPaths = [];
         foreach ($movies as $movie) {

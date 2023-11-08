@@ -16,9 +16,10 @@ interface UserRepositoryInterface
      * Obtaining information about all users except authorized and super administrator
      *
      * @param int $authUserId
+     * @param array|null $relations
      * @return LengthAwarePaginator
      */
-    public function getUsersWithoutAdminRolePaginatedList(int $authUserId): LengthAwarePaginator;
+    public function getUsersWithoutAdminRolePaginatedList(int $authUserId, ?array $relations = []):  LengthAwarePaginator;
 
     /**
      * Receiving all users from one cinema, except the authorized one
@@ -37,14 +38,6 @@ interface UserRepositoryInterface
      * @return User
      */
     public function getUserByIdOrFail(int $userId, ?array $relations = []): User;
-
-    /**
-     * Searching for a user by ID with roles
-     *
-     * @param int $userId
-     * @return User
-     */
-    public function getUserByIdWithRolesOrFail(int $userId): User;
 
     /**
      * Changing user information
