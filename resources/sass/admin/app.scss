@@ -3,6 +3,9 @@
 @import 'global/variables';
 @import 'global/global';
 
+// admin-errors
+@import "errors/error-404";
+
 @import "partials/menu";
 @import "partials/login";
 @import "partials/header";
@@ -11,5 +14,3 @@
 
 @import "pages/pages";
 @import "pages/container";
-
-
