@@ -10,7 +10,7 @@ RUN apt-get update \
     && apt-get install nginx -y
 
 RUN apt-get update \
-    && apt-get install -y libpq-dev curl zip unzip gosu git supervisor cron \
+    && apt-get install -y libpq-dev curl zip unzip gosu git supervisor cron nodejs npm \
     && docker-php-ext-install pdo pdo_pgsql pgsql
 
 RUN pecl install -o -f redis \

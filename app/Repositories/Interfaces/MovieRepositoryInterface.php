@@ -19,8 +19,8 @@ interface MovieRepositoryInterface
     /**
      * @param Carbon $currentDateTime
      * @param int|null $limit
-     * @param array $values
+     * @param array $relations
      * @return Collection
      */
-    public function getRandomMoviesWithScreenings(Carbon $currentDateTime, int $limit = null, array $values = []): Collection;
+    public function getRandomMoviesWithScreenings(Carbon $currentDateTime, int $limit = null, array $relations = []): Collection;
 }

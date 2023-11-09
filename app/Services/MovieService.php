@@ -3,7 +3,9 @@
 namespace App\Services;
 
 use App\Repositories\Interfaces\MovieRepositoryInterface;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Carbon;
 
@@ -23,7 +25,17 @@ class MovieService
     {
         $currentDateTime = Carbon::now();
 
-        $movies = $this->movieRepository->getRandomMoviesWithScreenings($currentDateTime, 10, ['frames', 'poster']);
+        $movies = $this->movieRepository->getRandomMoviesWithScreenings(
+            currentDateTime: $currentDateTime,
+            limit: 10,
+            relations: [
+                'genres',
+                'medias' => function (MorphMany $query) {
+                    $query->where(function (Builder $q) {
+                        $q->whereIn('collection', ['frames', 'poster']);
+                    });
+                }
+            ]);
 
         $posterPaths = [];
         foreach ($movies as $movie) {
