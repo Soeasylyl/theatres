@@ -112,6 +112,17 @@ class Movie extends Model
     }
 
     /**
+     * Get the frames media associated with the model.
+     *
+     * @return MorphMany
+     */
+    public function frames(): MorphMany
+    {
+        return $this->morphMany(Media::class, 'model')
+            ->where('collection', 'frames');
+    }
+
+    /**
      * @return MorphMany
      */
     public function medias(): MorphMany

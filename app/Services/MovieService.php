@@ -30,6 +30,8 @@ class MovieService
             limit: 10,
             relations: [
                 'genres',
+                'poster',
+                'frames',
                 'medias' => function (MorphMany $query) {
                     $query->where(function (Builder $q) {
                         $q->whereIn('collection', ['frames', 'poster']);
