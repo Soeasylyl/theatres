@@ -3,7 +3,9 @@
 namespace App\Services;
 
 use App\Repositories\Interfaces\MovieRepositoryInterface;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Carbon;
 
@@ -23,14 +25,17 @@ class MovieService
     {
         $currentDateTime = Carbon::now();
 
-        $movies = $this->movieRepository->getRandomMoviesWithScreenings($currentDateTime, 10);
+        $movies = $this->movieRepository->getRandomMoviesWithScreenings(
+            currentDateTime: $currentDateTime,
+            limit: 10,
+            relations: [
+                'genres',
+                'poster',
+                'frames',
+                'medias',
+            ]);
 
-        $posterPaths = [];
-        foreach ($movies as $movie) {
-            $posterPaths[$movie->id] = $movie->medias->where('collection', 'poster')->first()->path;
-        }
-
-        return compact('movies', 'posterPaths');
+        return compact('movies');
     }
 
     /**
@@ -38,7 +43,7 @@ class MovieService
      *
      * @return LengthAwarePaginator
      */
-    public function getAllMovies():  LengthAwarePaginator
+    public function getAllMovies(): LengthAwarePaginator
     {
         return $this->movieRepository->getMoviesPaginatedList();
     }

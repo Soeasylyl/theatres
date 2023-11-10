@@ -53,37 +53,36 @@ Route::prefix('admin')->middleware(['auth', 'isBlock', 'AdminAccess'])->group(fu
 
         Route::post('/create', [UserController::class, 'create']);
 
-
-        Route::put('/block-user', [UserController::class, 'block'])
-            ->name('user.block');
-
         Route::prefix('/')->middleware('CheckUserAccessMiddleware')->group(function () {
             Route::get('/{user}/edit', [UserController::class, 'edit'])
                 ->withoutMiddleware(['role:' . RolesUsersEnum::SUPER_ADMIN->value . '|' . RolesUsersEnum::CINEMA_ADMIN->value])
                 ->name('user.edit');
 
-            Route::put('/{user}/update', [UserController::class, 'update'])
+            Route::patch('/{user}/update', [UserController::class, 'update'])
                 ->name('user.update');
 
-            Route::put('/{user}/update-password', [UserController::class, 'updatePassword'])
+            Route::patch('/{user}/update-password', [UserController::class, 'updatePassword'])
                 ->name('user.updatePassword');
 
-            Route::put('/{user}/update-profile', [UserController::class, 'updateProfile'])
+            Route::patch('/{user}/update-profile', [UserController::class, 'updateProfile'])
                 ->withoutMiddleware(['role:' . RolesUsersEnum::SUPER_ADMIN->value . '|' . RolesUsersEnum::CINEMA_ADMIN->value])
                 ->name('user.updateProfile');
 
-            Route::put('/{user}/update-password-profile', [UserController::class, 'updatePasswordProfile'])
+            Route::patch('/{user}/update-password-profile', [UserController::class, 'updatePasswordProfile'])
                 ->withoutMiddleware(['role:' . RolesUsersEnum::SUPER_ADMIN->value . '|' . RolesUsersEnum::CINEMA_ADMIN->value])
                 ->name('user.updatePasswordProfile');
 
-            Route::put('/{user}/update-role', [UserController::class, 'updateRole'])
+            Route::patch('/{user}/update-role', [UserController::class, 'updateRole'])
                 ->name('user.updateRole');
 
-            Route::put('/{user}/update-cinema', [UserController::class, 'updateCinemaAction'])
+            Route::patch('/{user}/update-cinema', [UserController::class, 'updateCinemaAction'])
                 ->name('user.updateCinemaAction');
 
             Route::delete('/{user}', [UserController::class, 'delete'])
                 ->name('user.delete');
+
+            Route::patch('/{user}/block-user', [UserController::class, 'block'])
+                ->name('user.block');
         });
     });
 });

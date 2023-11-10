@@ -61,7 +61,7 @@
 
                             <form method="POST" action="{{ route('user.updateRole', ['user' => $user->id]) }}">
                                 @csrf
-                                @method('PUT')
+                                @method('PATCH')
                                 <input type="hidden" name="user_id" value="{{ $user->id }}">
                                 <div class="error-messages__wrapper">
                                     @if(session('error_role'))
@@ -119,7 +119,7 @@
                                         @endif>
 
                                         @csrf
-                                        @method('PUT')
+                                        @method('PATCH')
 
                                         <div class="success-messages-wrapper">
                                             @if(session('message'))
@@ -195,7 +195,7 @@
                                               }}"
                                         @endif>
                                         @csrf
-                                        @method('PUT')
+                                        @method('PATCH')
 
                                         <div class="success-messages-wrapper">
                                             @if(session('success_update_user_password'))
@@ -264,7 +264,7 @@
                 @if(!($authUser->id === $user->id))
                     <div class="admin-container__form grid-center-item">
                         <div class="admin-container__form-header">
-                            {{ __('Удаление пользователя') }}
+                            {{ __('Удаление/Блокировка пользователя') }}
                         </div>
 
                         <div class="admin-container__form-body">
@@ -275,10 +275,38 @@
                                 <div class="page-wrapper__panel-btn-wrapper">
                                     <button type="submit" class="page-wrapper__panel-btn"
                                             onclick="return confirm('Вы уверены, что хотите удалить пользователя {{ $user->name }}?')">{{ __('Удалить пользователя?') }}</button>
+                                    <div class="page-wrapper__block-wrapper"
+                                         data-id="{{ $user->id }}"
+                                         title="{{ __('Заблокировать') }}">
+                                        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="20" height="23"
+                                             viewBox="0 0 32 32">
+                                            <path
+                                                d="M27.314 4.686c-3.022-3.022-7.040-4.686-11.314-4.686s-8.292 1.664-11.314 4.686c-3.022 3.022-4.686 7.040-4.686 11.314s1.664 8.292 4.686 11.314c3.022 3.022 7.040 4.686 11.314 4.686s8.292-1.664 11.314-4.686c3.022-3.022 4.686-7.040 4.686-11.314s-1.664-8.292-4.686-11.314zM28 16c0 2.588-0.824 4.987-2.222 6.949l-16.727-16.727c1.962-1.399 4.361-2.222 6.949-2.222 6.617 0 12 5.383 12 12zM4 16c0-2.588 0.824-4.987 2.222-6.949l16.727 16.727c-1.962 1.399-4.361 2.222-6.949 2.222-6.617 0-12-5.383-12-12z"></path>
+                                        </svg>
+                                    </div>
                                 </div>
+
                             </form>
+
                         </div>
                     </div>
                 @endif
+    </div>
+
+    <div class="modal" id="blockModal">
+        <div class="modal__container">
+            <div class="modal__title">{{ __('ЗАБЛОКИРОВАТЬ ДО:') }}</div>
+            <form method="POST" action="{{ route('user.block', $user->id )}}">
+                @csrf
+                @method('PATCH')
+
+                <input type="datetime-local" name="dateTime" required/>
+
+                <div class="modal__button-wrapper">
+                    <button type="submit" class="modal__button modal__block-btn">{{ __('Заблокировать') }}</button>
+                    <div class="modal__button modal__close-btn">{{ __('Отмена') }}</div>
+                </div>
+            </form>
+        </div>
     </div>
 @endsection

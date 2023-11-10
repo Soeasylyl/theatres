@@ -1,0 +1,114 @@
+.error-page {
+    color: hsla(0,0%,100%,.8);
+    font: 400 16px/26px Ubuntu,Roboto,Arial,Helvetica,sans-serif;
+
+    &__background-wrapper {
+        position: absolute;
+        inset: 0;
+        z-index: 0;
+        pointer-events: none;
+        background: rgb(39, 39, 42);
+
+        :before {
+            display: block;
+            background: linear-gradient(78deg, rgba(9, 9, 10, 0.15) 0px, rgba(9, 9, 10, 0.15) 20%, rgba(9, 9, 10, 0));
+            content: "";
+            position: absolute;
+            inset: 0;
+            z-index: 2;
+        }
+
+        :after {
+            background: linear-gradient(rgb(0, 0, 0) 0px, rgba(9, 9, 10, 0.78) 72px, rgba(9, 9, 10, 0) 170px, rgba(9, 9, 10, 0));
+            content: "";
+            position: absolute;
+            inset: 0;
+            z-index: 2;
+        }
+    }
+
+
+    &__background {
+        background: url("../../../../public/images/errors_bg/404-bg.jpg");
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        overflow: hidden;
+        width: 100%;
+        opacity: 0.6;
+        z-index: 2;
+        background-size: cover; /* Позволяет изображению занимать всю площадь элемента */
+        background-position: center;
+
+        :before {
+            box-sizing: border-box;
+        }
+    }
+
+    &__body {
+        min-height: 100vh;
+        padding-top: 180px;
+        padding-bottom: 90px;
+        display: flex;
+        flex-direction: column;
+        -webkit-box-pack: center;
+        justify-content: center;
+    }
+
+    &__container {
+        flex: 0 0 auto;
+        width: 100%;
+        padding-left: 30px;
+        padding-right: 30px;
+        margin-left: auto;
+        margin-right: auto;
+        max-width: 1300px;
+    }
+
+    &__body-wrapper {
+        max-width: 605px;
+    }
+
+    &__title {
+        position: relative;
+        text-size-adjust: 100%;
+        white-space: pre-line;
+        font: 700 3.125em / 60px Ubuntu, Roboto, Arial, Helvetica, sans-serif;
+        margin: 0;
+    }
+
+    &__description {
+        font-size: 1.25em;
+        line-height: 1.5em;
+        display: block;
+        margin: 25px 0px;
+        padding: 0px 0px 0px 35px;
+        position: relative;
+
+        :before {
+            content: "«";
+            color: rgba(212, 7, 84, 0.35);
+            position: absolute;
+            left: 0px;
+            font-size: 50px;
+            line-height: 20px;
+        }
+
+        :after {
+            content: "»";
+            color: rgba(212, 7, 84, 0.35);
+            font-size: 50px;
+            display: inline;
+            line-height: 20px;
+            vertical-align: top;
+            margin-top: -15px;
+            padding-left: 8px;
+        }
+    }
+
+    &__reference {
+        position: relative;
+        margin: 18px 0 0 35px;
+    }
+}

@@ -7,7 +7,6 @@ class homeSwiper {
         this.swiperHero();
         this.swiperNowInCinema();
         this.swiperComingSoonCinema();
-
     }
 
     //Hero swiper

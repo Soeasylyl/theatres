@@ -113,7 +113,6 @@
 
     &__form-body {
         padding-top: 16px;
-        overflow-x: auto;
     }
 
     &__menu {
@@ -207,7 +206,7 @@
         justify-content: space-around;
     }
 
-    &__table_last_cell_edit, &__table_last_cell_trash, &__table_last_cell_block {
+    &__table_last_cell_edit, &__table_last_cell_trash{
         cursor: pointer;
         width: 22px;
 

@@ -18,7 +18,8 @@ interface CinemaRepositoryInterface
     /**
      * Returns a paginated list of cinemas with screens.
      *
+     * @param array|null $relations
      * @return LengthAwarePaginator
      */
-    public function getCinemasWithHallsPaginated(): LengthAwarePaginator;
+    public function getCinemasPaginated(?array $relations = []): LengthAwarePaginator;
 }

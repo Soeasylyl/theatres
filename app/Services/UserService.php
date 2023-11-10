@@ -5,6 +5,7 @@ namespace App\Services;
 use App\DTO\Users\BlockUserDTO;
 use App\DTO\Users\CreateUserDTO;
 use App\DTO\Users\DeleteUserDTO;
+use App\DTO\Users\SearchUserDTO;
 use App\DTO\Users\UpdateUserInfoDTO;
 use App\DTO\Users\UpdateUserPasswordDTO;
 use App\DTO\Users\UpdateUserRoleDTO;
@@ -38,7 +39,7 @@ class UserService
         $authUser = auth()->user();
 
         if ($authUser->hasRole(RolesUsersEnum::SUPER_ADMIN->value)) {
-            return $this->userRepository->getUsersWithoutAdminRolePaginatedList($authUser->id);
+            return $this->userRepository->getUsersWithoutAdminRolePaginatedList($authUser->id, ['roles']);
         }
 
         return $this->userRepository->getUsersByCinemaPaginatedList($authUser->cinemas->pluck('id'), $authUser->id);
@@ -166,7 +167,7 @@ class UserService
      */
     public function updateUserRole(UpdateUserRoleDTO $requestDTO): User
     {
-        $user = $this->userRepository->getUserByIdWithRolesOrFail($requestDTO->getUserId());
+        $user = $this->userRepository->getUserByIdOrFail($requestDTO->getUserId(), ['roles']);
         $role = RolesUsersEnum::tryFrom($requestDTO->getRoleName());
         $hasCinemaAdminRole = $requestDTO->getProducer()->hasRole(RolesUsersEnum::CINEMA_ADMIN);
 
@@ -196,12 +197,25 @@ class UserService
      *
      * @param BlockUserDTO $blockUserDTO
      * @return User
+     * @throws \Exception
      */
     public function blockUser(BlockUserDTO $blockUserDTO): User
     {
         $user = $this->userRepository->getUserByIdOrFail($blockUserDTO->getUserId());
-        $this->userRepository->blockUser($user, $blockUserDTO->getDate());
+        $this->checkAdminEditingPermission($user, $blockUserDTO->getProducer());
+        $this->userRepository->blockUser($user, $blockUserDTO->getExpirationDate());
 
         return $user;
+    }
+
+    public function searchUser(SearchUserDTO $searchUserDTO)
+    {
+        $searchTerm = $searchUserDTO->getSearchTerm();
+
+        $users = User::where('name', 'ilike', "%$searchTerm%")
+            ->orderBy('created_at', 'desc')
+            ->paginate(config('app.pagination_limit'));
+
+        return $users;
     }
 }

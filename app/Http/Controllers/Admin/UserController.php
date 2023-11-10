@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Admin;
 
-
 use App\DTO\Users\BlockUserDTO;
 use App\DTO\Users\CreateUserDTO;
 use App\DTO\Users\DeleteUserDTO;
@@ -15,14 +14,15 @@ use App\Http\Requests\Admin\Users\UserRequest;
 use App\Http\Requests\Admin\Users\UpdatePasswordRequest;
 use App\Http\Requests\Admin\Users\UpdateProfileRequest;
 use App\Http\Requests\Admin\Users\UpdateRoleRequest;
+use App\Models\User;
 use App\Services\CinemaService;
 use App\Services\UserService;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
-
 
 class UserController extends BaseAdminController
 {
@@ -278,17 +278,25 @@ class UserController extends BaseAdminController
      * Method for blocking a user.
      *
      * @param BlockRequest $request
+     * @param int $userId
      * @return null
      */
-    public function block(BlockRequest $request)
+    public function block(BlockRequest $request, int $userId)
     {
+        $authUser = auth()->user();
+
         $blockUserDTO = new BlockUserDTO(
-            userId: $request->input('userId'),
-            date: $request->input('dateTime'),
+            producer: $authUser,
+            userId: $userId,
+            expirationDate: $request->input('dateTime'),
         );
 
-        $this->userService->blockUser($blockUserDTO);
+        try {
+            $this->userService->blockUser($blockUserDTO);
 
-        return redirect()->route('users')->with('successMessages', 'Пользователь успешно заблокирован.');
+            return redirect()->route('users')->with('successMessages', 'Пользователь успешно заблокирован.');
+        } catch (\Throwable $e) {
+            return redirect()->route('users')->with('error_delete_user', $e->getMessage());
+        }
     }
 }

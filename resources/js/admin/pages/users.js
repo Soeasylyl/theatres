@@ -2,10 +2,9 @@ class Users {
     constructor() {
         this.deleteUserButton = document.querySelectorAll('.admin-container__table_last_cell_trash');
         this.deleteProfileButton = document.getElementById('deleteProfileButton');
+        this.blockUserButton = document.querySelectorAll('.page-wrapper__block-wrapper');
         this.blockModal = document.getElementById('blockModal');
-        this.blockUserButton = document.querySelectorAll('.admin-container__table_last_cell_block');
         this.blockUserCloseBtn = document.querySelector('.modal__close-btn');
-        this.inputUserId = document.getElementById('userBlockId');
 
         this.init();
     }
@@ -43,11 +42,6 @@ class Users {
     openBlockUserModal() {
         this.blockUserButton && this.blockUserButton.forEach(item => {
             item.addEventListener('click', (event) => {
-                const userId = item.getAttribute('data-id');
-                if (this.inputUserId) {
-                    this.inputUserId.value = userId;
-                }
-
                 this.blockModal && this.blockModal.classList.add('modal__active');
             });
         });

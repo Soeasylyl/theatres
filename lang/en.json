@@ -26,7 +26,7 @@
     "Выберите роль": "Select a role:",
     "Список ролей": "List of roles",
     "Сохранить роль": "Save role",
-    "Удаление пользователя": "Deleting a user",
+    "Удаление/Блокировка пользователя": "Deleting/Locking a user",
     "Удалить пользователя?": "Delete user?",
     "Список пользователей": "A list of users",
     "Телефон": "Phone",
@@ -93,7 +93,11 @@
     "Заблокировать": "Blocking",
     "Отмена": "Cancellation",
     "Пользователь успешно заблокирован.": "The user has been successfully blocked.",
-    "Не верный формат даты.": "Incorrect date format."
+    "Не верный формат даты.": "Incorrect date format.",
+    "Не найдена страница твоя (404)": "Your page was not found (404)",
+    "Страница не найдена": "Page not found",
+    "Звездные войны: Эпизод 3 — Месть Ситхов": "Star Wars Episode 3 - Revenge of the Sith",
+    "Тенью жадности привязанность является. Должен научиться отказываться ты от того, что боишься потерять. Из головы страх выкинь, и потеря не причинит вреда тебе": "The shadow of greed is attachment. You must learn to give up what you fear to lose. Put fear out of your mind, and loss will not harm you"
 }
 
 
