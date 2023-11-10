@@ -34,15 +34,21 @@ class UserService
      *
      * @return \Illuminate\Pagination\LengthAwarePaginator
      */
-    public function getUsersByRole(): LengthAwarePaginator
+    public function getUsersByRole(SearchUserDTO $searchUserDTO): LengthAwarePaginator
     {
-        $authUser = auth()->user();
-
-        if ($authUser->hasRole(RolesUsersEnum::SUPER_ADMIN->value)) {
-            return $this->userRepository->getUsersWithoutAdminRolePaginatedList($authUser->id, ['roles']);
+        if ($searchUserDTO->getProducer()->hasRole(RolesUsersEnum::SUPER_ADMIN->value)) {
+            return $this->userRepository->getUsersWithoutAdminRolePaginatedList(
+                $searchUserDTO->getProducer()->id,
+                $searchUserDTO->getSearchTerm(),
+                ['roles']
+            );
         }
 
-        return $this->userRepository->getUsersByCinemaPaginatedList($authUser->cinemas->pluck('id'), $authUser->id);
+        return $this->userRepository->getUsersByCinemaPaginatedList(
+            $searchUserDTO->getProducer()->cinemas->pluck('id'),
+            $searchUserDTO->getProducer()->id,
+            $searchUserDTO->getSearchTerm()
+        );
     }
 
     /**

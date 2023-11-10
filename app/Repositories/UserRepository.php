@@ -21,16 +21,18 @@ class UserRepository implements UserRepositoryInterface
      * Obtaining information about all users except authorized and super administrator
      *
      * @param int $authUserId
+     * @param string $searchTerm
      * @param array|null $relations
      * @return LengthAwarePaginator
      */
-    public function getUsersWithoutAdminRolePaginatedList(int $authUserId, ?array $relations = []): LengthAwarePaginator
+    public function getUsersWithoutAdminRolePaginatedList(int $authUserId, string $searchTerm, ?array $relations = []): LengthAwarePaginator
     {
         return User::with($relations)
             ->whereDoesntHave('roles', function (Builder $query) {
                 $query->where('name', RolesUsersEnum::SUPER_ADMIN->value);
             })
             ->whereNot('id', $authUserId)
+            ->where('name', 'ilike', "%$searchTerm%")
             ->paginate(config('app.pagination_limit'));
     }
 
@@ -39,9 +41,10 @@ class UserRepository implements UserRepositoryInterface
      *
      * @param Collection $cinemaIds
      * @param int $authUserId
+     * @param string $searchTerm
      * @return LengthAwarePaginator
      */
-    public function getUsersByCinemaPaginatedList(Collection $cinemaIds, int $authUserId): LengthAwarePaginator
+    public function getUsersByCinemaPaginatedList(Collection $cinemaIds, int $authUserId, string $searchTerm): LengthAwarePaginator
     {
         $query = User::query()->where('id', '!=', $authUserId);
 
@@ -51,7 +54,8 @@ class UserRepository implements UserRepositoryInterface
             });
         }
 
-        return $query->paginate(config('app.pagination_limit'));
+        return $query->where('name', 'ilike', "%$searchTerm%")
+                     ->paginate(config('app.pagination_limit'));
     }
 
     /**

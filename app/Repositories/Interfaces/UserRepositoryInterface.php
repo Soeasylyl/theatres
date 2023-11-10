@@ -16,19 +16,21 @@ interface UserRepositoryInterface
      * Obtaining information about all users except authorized and super administrator
      *
      * @param int $authUserId
+     * @param string $searchTerm
      * @param array|null $relations
      * @return LengthAwarePaginator
      */
-    public function getUsersWithoutAdminRolePaginatedList(int $authUserId, ?array $relations = []):  LengthAwarePaginator;
+    public function getUsersWithoutAdminRolePaginatedList(int $authUserId, string $searchTerm, ?array $relations = []):  LengthAwarePaginator;
 
     /**
      * Receiving all users from one cinema, except the authorized one
      *
      * @param Collection $cinemaIds
      * @param int $authUserId
+     * @param string $searchTerm
      * @return LengthAwarePaginator
      */
-    public function getUsersByCinemaPaginatedList(Collection $cinemaIds, int $authUserId): LengthAwarePaginator;
+    public function getUsersByCinemaPaginatedList(Collection $cinemaIds, int $authUserId, string $searchTerm): LengthAwarePaginator;
 
     /**
      * Searching for a user by ID
