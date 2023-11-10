@@ -5,6 +5,8 @@ class Users {
         this.blockUserButton = document.querySelectorAll('.page-wrapper__block-wrapper');
         this.blockModal = document.getElementById('blockModal');
         this.blockUserCloseBtn = document.querySelector('.modal__close-btn');
+        this.searchUsersInput = document.querySelector('.admin-container__search-bar');
+        this.searchUsersContainer = document.querySelector('.admin-container__table-search');
 
         this.init();
     }
@@ -14,6 +16,7 @@ class Users {
         this.deleteUser();
         this.openBlockUserModal();
         this.closeBlockUserModal();
+        this.searchUsers();
     }
 
     deleteUser() {
@@ -60,6 +63,18 @@ class Users {
             }
             }
         )
+    }
+
+    searchUsers() {
+        this.searchUsersInput && this.searchUsersInput.addEventListener('input', async () =>{
+            const searchTerm = this.searchUsersInput.value.trim();
+            const response = await fetch('/admin/users/search?search=&{searchTerm}', {
+                method: 'GET',
+            })
+
+            const resp = await response.json();
+         this.searchUsersContainer.innerHTML = resp.htmlUsers;
+        })
     }
 }
 

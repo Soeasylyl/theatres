@@ -292,9 +292,9 @@ class UserController extends BaseAdminController
         );
 
         try {
-        $this->userService->blockUser($blockUserDTO);
+            $this->userService->blockUser($blockUserDTO);
 
-        return redirect()->route('users')->with('successMessages', 'Пользователь успешно заблокирован.');
+            return redirect()->route('users')->with('successMessages', 'Пользователь успешно заблокирован.');
         } catch (\Throwable $e) {
             return redirect()->route('users')->with('error_delete_user', $e->getMessage());
         }

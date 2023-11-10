@@ -32,11 +32,7 @@ class MovieService
                 'genres',
                 'poster',
                 'frames',
-                'medias' => function (MorphMany $query) {
-                    $query->where(function (Builder $q) {
-                        $q->whereIn('collection', ['frames', 'poster']);
-                    });
-                }
+                'medias',
             ]);
 
         $posterPaths = [];
@@ -52,7 +48,7 @@ class MovieService
      *
      * @return LengthAwarePaginator
      */
-    public function getAllMovies():  LengthAwarePaginator
+    public function getAllMovies(): LengthAwarePaginator
     {
         return $this->movieRepository->getMoviesPaginatedList();
     }

@@ -9,5 +9,3 @@ printf "\n\nCreating storage symlink\n\n"
 /usr/local/bin/php artisan storage:link --relative
 
 /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf
-
-npm run build
