@@ -14,10 +14,8 @@
     @vite(['resources/sass/admin/app.scss', 'resources/js/public/app.js'])
 </head>
 <body>
-<div id="app">
 
     @yield('message')
 
-</div>
 </body>
 </html>

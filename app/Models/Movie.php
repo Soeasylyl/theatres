@@ -119,7 +119,7 @@ class Movie extends Model
     public function frames(): MorphMany
     {
         return $this->morphMany(Media::class, 'model')
-            ->where('collection', 'frames');
+                    ->where('collection', 'frames');
     }
 
     /**

@@ -35,6 +35,6 @@ class CinemaService
      */
     public function getCinemasWithHallsPaginated(): LengthAwarePaginator
     {
-        return $this->cinemaRepository->getCinemasWithHallsPaginated(['halls']);
+        return $this->cinemaRepository->getCinemasWithRelationsPaginated(['halls']);
     }
 }

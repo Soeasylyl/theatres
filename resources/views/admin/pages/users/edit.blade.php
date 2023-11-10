@@ -61,7 +61,7 @@
 
                             <form method="POST" action="{{ route('user.updateRole', ['user' => $user->id]) }}">
                                 @csrf
-                                @method('PUT')
+                                @method('PATCH')
                                 <input type="hidden" name="user_id" value="{{ $user->id }}">
                                 <div class="error-messages__wrapper">
                                     @if(session('error_role'))
@@ -195,7 +195,7 @@
                                               }}"
                                         @endif>
                                         @csrf
-                                        @method('PUT')
+                                        @method('PATCH')
 
                                         <div class="success-messages-wrapper">
                                             @if(session('success_update_user_password'))
@@ -298,7 +298,7 @@
             <div class="modal__title">{{ __('ЗАБЛОКИРОВАТЬ ДО:') }}</div>
             <form method="POST" action="{{ route('user.block', $user->id )}}">
                 @csrf
-                @method('PUT')
+                @method('PATCH')
 
                 <input type="datetime-local" name="dateTime" required/>
 

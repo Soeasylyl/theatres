@@ -25,7 +25,7 @@ class CinemaRepository implements CinemaRepositoryInterface
      * @param array|null $relations
      * @return LengthAwarePaginator
      */
-    public function getCinemasWithHallsPaginated(?array $relations = []): LengthAwarePaginator
+    public function getCinemasWithRelationsPaginated(?array $relations = []): LengthAwarePaginator
     {
         return Cinema::with($relations)->paginate(config('app.pagination_limit'));
     }

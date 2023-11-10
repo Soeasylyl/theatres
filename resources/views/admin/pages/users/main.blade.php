@@ -41,7 +41,7 @@
                     <th>{{ __('Роль') }}</th>
                     <th>{{ __(' ') }}</th>
                     </thead>
-                    <tbody>
+                    <tbodyc class="admin-container__table-search">
                     @forelse($users as $user)
                         <tr class="{{ $user->blocked_until ? 'ban' : '' }}">
                             <td>{{ $user->name }}</td>
@@ -89,7 +89,7 @@
                             <td colspan="6" class="text-center">{{ __('Нет доступных пользователей') }}</td>
                         </tr>
                     @endforelse
-                    </tbody>
+                    </tbodyc>
                 </table>
                 {{ $users->links('admin.partials.pagination') }}
             </div>
