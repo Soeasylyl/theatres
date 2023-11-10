@@ -306,27 +306,4 @@ class UserController extends BaseAdminController
             return redirect()->route('users')->with('error_delete_user', $e->getMessage());
         }
     }
-
-
-//    /**
-//     * Search users based on the provided search term.
-//     *
-//     * @param SearchRequest $request
-//     * @return JsonResponse
-//     */
-//    public function search(SearchRequest $request)
-//    {
-//        $authUser = auth()->user();
-//
-//        $searchUserDTO = new searchUserDTO(
-//            producer: $authUser,
-//            searchTerm: $request->input('search')
-//        );
-//
-//        $users = $this->userService->searchUser($searchUserDTO);
-//
-//        return response()->json([
-//            'htmlUsers' => view('admin.partials.search-users', compact('users'))->render(),
-//        ]);
-//    }
 }
