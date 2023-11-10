@@ -17,7 +17,7 @@ use Laravel\Sanctum\HasApiTokens;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property string $amount
- * @property string $status
+ * @property StatusPaymentsEnum $status
  * @property-read \App\Models\Booking $booking
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
  * @property-read int|null $notifications_count
@@ -39,16 +39,25 @@ class Payment extends Model
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+    /**
+     * @var string[]
+     */
     protected $fillable = [
         'status',
         'amount',
         'booking_id',
     ];
 
+    /**
+     * @var string[]
+     */
     protected $casts = [
         'status' => StatusPaymentsEnum::class,
     ];
 
+    /**
+     * @return BelongsTo
+     */
     public function booking(): BelongsTo
     {
         return $this->belongsTo(Booking::class);

@@ -1,0 +1,95 @@
+// Typography
+$font-family-sans-serif: 'Nunito', sans-serif;
+$font-size-base: 0.9rem;
+$line-height-base: 1.6;
+
+$font-size-adp: 30px;
+
+@mixin font-light() {
+    font-family: "Graphik LC Light Web";
+    font-weight: 300;
+}
+
+@mixin font-regular() {
+    font-family: "Graphik LC Regular Web";
+    font-weight: 400;
+}
+
+@mixin font-regular-italic() {
+    font-family: "Graphik LC Regular Italic Web";
+    font-weight: 400;
+}
+
+@mixin font-medium() {
+    font-family: "Graphik LC Medium Web";
+    font-weight: 500;
+}
+
+@mixin font-semibold() {
+    font-family: "Graphik LC Semibold Web";
+    font-weight: 600;
+}
+
+@mixin font-bold() {
+    font-family: "Graphik LC Bold Web";
+    font-weight: 800;
+}
+
+
+@mixin font-type-1() {
+    font-size: 16px;
+    line-height: 24px;
+}
+
+@mixin font-type-2() {
+    font-size: 14px;
+    line-height: 18px;
+}
+
+@mixin font-type-3() {
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 36px;
+    font-style: italic;
+
+    @include mobile() {
+        font-size: 16px;
+        line-height: 24px;
+    }
+}
+
+@mixin font-type-4() {
+    font-size: 36px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 30px;
+
+    @include mobile() {
+        font-size: 20px;
+        line-height: 24px;
+    }
+}
+
+@mixin font-type-5() {
+    font-size: 40px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 64px;
+
+    @include mobile() {
+        font-size: 24px;
+        line-height: 32px;
+    }
+}
+
+@mixin font-type-6() {
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 30px;
+
+    @include mobile() {
+        font-size: 16px;
+        line-height: 24px;
+    }
+}

@@ -35,17 +35,23 @@ class Genre extends Model
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+    /**
+     * @var string[]
+     */
     protected $fillable = [
         'name',
     ];
 
+    /**
+     * @return BelongsToMany
+     */
     public function movies(): BelongsToMany
     {
         return $this->belongsToMany(
-            Movie::class,
-            'movie_genre',
-            'genre_id',
-            'movie_id',
+            related: Movie::class,
+            table: 'movie_genre',
+            foreignPivotKey: 'genre_id',
+            relatedPivotKey: 'movie_id',
         );
     }
 }

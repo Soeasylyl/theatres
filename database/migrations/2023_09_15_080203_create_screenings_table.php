@@ -21,11 +21,13 @@ return new class extends Migration
 
             $table->foreign('movie_id')
                   ->references('id')
-                  ->on('movies');
+                  ->on('movies')
+                  ->cascadeOnDelete();
 
             $table->foreign('hall_id')
                   ->references('id')
-                  ->on('halls');
+                  ->on('halls')
+                  ->cascadeOnDelete();
         });
 
         DB::statement('ALTER TABLE screenings ALTER COLUMN price TYPE money USING price::money');

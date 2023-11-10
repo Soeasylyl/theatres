@@ -3,18 +3,22 @@
 namespace Database\Factories;
 
 use App\Models\Genre;
-use App\Models\Movie;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Genre>
+ * @extends Factory<Genre>
  */
 class GenreFactory extends Factory
 {
+    /**
+     * Define the default attributes for the factory's model.
+     *
+     * @return array The default attributes for the factory's model.
+     */
     public function definition(): array
     {
         return [
-            'name' => $this->faker->sentence(3),
+            'name' => $this->faker->word(),
         ];
     }
 }

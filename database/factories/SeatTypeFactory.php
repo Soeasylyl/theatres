@@ -2,16 +2,25 @@
 
 namespace Database\Factories;
 
+use App\Models\SeatType;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\SeatType>
+ * @extends Factory<SeatType>
  */
 class SeatTypeFactory extends Factory
 {
-    private static $currentIndex = 0;
+    /**
+     * @var int
+     */
+    private static int $currentIndex = 0;
 
+    /**
+     * Define the model's default state.
+     *
+     * @return array The model's default state.
+     */
     public function definition(): array
     {
         $types = [

@@ -46,33 +46,46 @@ class Hall extends Model
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+    /**
+     * @var string[]
+     */
     protected $fillable = [
         'name',
         'description',
     ];
 
-    public function cinema() : BelongsTo
+    /**
+     * @return BelongsTo
+     */
+    public function cinema(): BelongsTo
     {
         return $this->belongsTo(Cinema::class);
     }
 
+    /**
+     * @return HasMany
+     */
     public function seats(): HasMany
     {
         return $this->hasMany(Seat::class);
     }
 
+    /**
+     * @return HasMany
+     */
     public function screenings(): HasMany
     {
         return $this->hasMany(Screening::class);
     }
 
+    /**
+     * @return MorphMany
+     */
     public function medias(): MorphMany
     {
         return $this->morphMany(
-            Media::class,
-            'model',
-            'model_type',
-            'model_id',
+            related: Media::class,
+            name: 'model',
         );
     }
 }

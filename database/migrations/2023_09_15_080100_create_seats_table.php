@@ -23,11 +23,13 @@ return new class extends Migration
 
             $table->foreign('seat_type_id')
                   ->references('id')
-                  ->on('seat_types');
+                  ->on('seat_types')
+                  ->nullOnDelete();
 
             $table->foreign('hall_id')
                   ->references('id')
-                  ->on('halls');
+                  ->on('halls')
+                  ->cascadeOnDelete();
         });
     }
 

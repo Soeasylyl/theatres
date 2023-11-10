@@ -12,10 +12,15 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Booking>
+ * @extends Factory<Booking>
  */
 class BookingFactory extends Factory
 {
+    /**
+     * Define the model's default state for a booking.
+     *
+     * @return array|mixed[]
+     */
     public function definition(): array
     {
         $screening = Screening::select('id')->inRandomOrder()->first();
@@ -36,6 +41,11 @@ class BookingFactory extends Factory
         ];
     }
 
+    /**
+     * Configure the model factory for booking.
+     *
+     * @return $this
+     */
     public function configure(): static
     {
         return $this->afterCreating(function (Booking $booking) {

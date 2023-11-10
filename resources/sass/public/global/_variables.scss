@@ -1,0 +1,84 @@
+//header
+$c-bg: #27272a;
+$c-header-menu: #b2b1b1;
+$c-header-logo-hover: rgba(255, 0, 0, 0.63);
+
+$c-home-text: #d8d6d6;
+$c-home-text-light-gray: rgba(255, 255, 255, 0.8);;
+$c-home-text-gray: #8e8e8e;
+
+$c-white: #fff;
+
+$c-adp-header-border: rgba(0, 0, 0, 0.125);
+$c-adp-header-bcg: #fafbfc;
+$c-adp-input: #495057;
+
+$c-adp-bg: #2a3542;
+$c-adp-f: #dddd;
+$c-adp-hov: #e0f3ff;
+$c-adp-bord: rgba(21, 21, 21, 0.73);
+$c-adp-logout: rgba(255, 92, 92, 0.76);
+$c-adp-account: rgb(47, 79, 79);
+
+$c-adp-btn: #545cd8;
+$c-adp-btn-hover: #474eb8;
+
+
+
+$transition-header: all 0.1s;
+$transition-link: 150ms ease-in-out;
+
+
+@mixin _1440 {
+    @media (max-width: 1440px) {
+        @content;
+    }
+}
+
+@mixin _1280 {
+    @media (max-width: 1280px) {
+        @content;
+    }
+}
+
+@mixin _992 {
+    @media (max-width: 992px) {
+        @content;
+    }
+}
+
+@mixin _768 {
+    @media (max-width: 768px) {
+        @content;
+    }
+}
+
+@mixin _650 {
+    @media (max-width: 650px) {
+        @content;
+    }
+}
+
+@mixin _480 {
+    @media (max-width: 480px) {
+        @content;
+    }
+}
+
+@mixin _375 {
+    @media (max-width: 375px) {
+        @content;
+    }
+}
+
+@mixin mobile {
+    @media (max-width: 768px) {
+        @content;
+    }
+}
+
+@mixin tablet {
+    @media (max-width: 992px) {
+        @content;
+    }
+}

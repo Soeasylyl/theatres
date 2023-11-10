@@ -3,13 +3,19 @@
 namespace Database\Factories;
 
 use App\Enums\StatusPaymentsEnum;
+use App\Models\Payment;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Payment>
+ * @extends Factory<Payment>
  */
 class PaymentFactory extends Factory
 {
+    /**
+     * Define the model's default state.
+     *
+     * @return array The model's default state.
+     */
     public function definition(): array
     {
         return [

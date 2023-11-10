@@ -8,13 +8,19 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Movie>
+ * @extends Factory<Movie>
  */
 class MovieFactory extends Factory
 {
+    /**
+     * Define the model's default state.
+     *
+     * @return array The model's default state.
+     */
     public function definition(): array
     {
-        $name = $this->faker->sentence(3);
+        $name = $this->faker->unique()->sentence(3);
+        $slug = Str::slug($name);
 
         return [
             'name' => $name,
@@ -23,18 +29,25 @@ class MovieFactory extends Factory
             'date_start' => $this->faker->dateTimeBetween('now','+7 months'),
             'rating' => rand(10,100)/10,
             'age_limit' => rand(6, 21),
-            'slug' => Str::slug($name),
+            'slug' => $slug,
         ];
     }
 
+    /**
+     * Configure the model factory.
+     *
+     * @return static The configured model factory.
+     */
     public function configure(): static
     {
         return $this->afterCreating(function (Movie $movie) {
-            $mediaCount = rand(1, 3);
+            $mediaCount = rand(2, 5);
 
             for ($i = 0; $i < $mediaCount; $i++) {
+                $collection = $i ===0 ? 'poster' : 'frames';
                 $movie->medias()->create([
-                    'path' => $this->faker->filePath(),
+                    'path' => $this->faker->imageUrl(),
+                    'collection' => $collection,
                 ]);
             }
 

@@ -46,6 +46,9 @@ class Seat extends Model
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+    /**
+     * @var string[]
+     */
     protected $fillable = [
         'row',
         'hall_id',
@@ -54,16 +57,25 @@ class Seat extends Model
         'position_y',
     ];
 
+    /**
+     * @return BelongsTo
+     */
     public function hall(): BelongsTo
     {
         return $this->belongsTo(Hall::class);
     }
 
+    /**
+     * @return HasMany
+     */
     public function bookings(): HasMany
     {
         return $this->hasMany(Booking::class);
     }
 
+    /**
+     * @return BelongsTo
+     */
     public function seatType(): BelongsTo
     {
         return $this->belongsTo(SeatType::class);

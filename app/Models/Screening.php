@@ -28,7 +28,6 @@ use Laravel\Sanctum\HasApiTokens;
  * @property-read int|null $notifications_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Laravel\Sanctum\PersonalAccessToken> $tokens
  * @property-read int|null $tokens_count
- * @method static \Database\Factories\ScreeningFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Screening newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Screening newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Screening query()
@@ -45,6 +44,9 @@ class Screening extends Model
 {
     use HasApiTokens, Notifiable;
 
+    /**
+     * @var string[]
+     */
     protected $fillable = [
         'start_at',
         'price',
@@ -52,20 +54,32 @@ class Screening extends Model
         'hall_id',
     ];
 
+    /**
+     * @var string[]
+     */
     protected $casts = [
         'start_at' => 'datetime',
     ];
 
+    /**
+     * @return BelongsTo
+     */
     public function movie(): BelongsTo
     {
         return $this->belongsTo(Movie::class);
     }
 
+    /**
+     * @return BelongsTo
+     */
     public function hall(): BelongsTo
     {
         return $this->belongsTo(Hall::class);
     }
 
+    /**
+     * @return HasMany
+     */
     public function bookings(): HasMany
     {
         return $this->hasMany(Booking::class);

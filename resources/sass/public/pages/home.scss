@@ -1,0 +1,397 @@
+body {
+    background: #27272a;
+}
+
+.btn-by-ticket {
+    display: inline-block;
+    vertical-align: middle;
+    border: none;
+    border-radius: 22px;
+    height: 44px;
+    padding: 9px 30px;
+    position: relative;
+    background: rgba(255, 255, 255, 0);
+    font-size: 1em;
+    line-height: 1.625em;
+    font-family: Ubuntu, Roboto, Arial, Helvetica, sans-serif;
+    text-overflow: ellipsis;
+    text-align: center;
+    text-decoration: none;
+    outline: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    width: 180px;
+    transition: all 0.2s ease 0s;
+    cursor: pointer;
+    user-select: none;
+    box-shadow: rgb(212, 7, 84) 0 0 0 2px inset;
+    color: $c-home-text;
+    z-index: 10;
+
+    &:hover {
+        background: rgb(212, 7, 84);
+        color: $c-white;
+    }
+}
+
+.home-container {
+    padding: 0 30px 0 30px;
+    margin: 0 auto;
+    max-width: 1300px;
+    position: relative;
+}
+
+;
+/////////////
+.swiper-custom-button-next,
+.swiper-custom-button-prev {
+    width: 70px;
+    height: 200px !important;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 25px;
+    top: 33% !important;
+
+    &:hover {
+        transform: none !important;
+    }
+}
+
+//
+.swiper-custom-button-next {
+    right: 5% !important;
+}
+
+.swiper-custom-button-prev {
+    left: 5% !important;
+}
+
+.swiper-custom-button-next::before,
+.swiper-custom-button-prev::before {
+    font-size: 24px;
+}
+
+.swiper-slide-posters {
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    background: none !important;
+    width: 220px;
+    margin-top: 20px;
+    justify-content: space-between !important;
+    padding-bottom: 30px;
+
+    &::before {
+        background: none !important;
+    }
+}
+
+.swiper-slide-poster-img {
+    border: solid;
+    border-radius: 10%;
+    overflow: hidden;
+    width: 220px;
+    height: 330px;
+    margin: 0 auto;
+}
+
+.swiper-slide-poster-age {
+    margin: 24px 0 8px 0;
+    color: $c-home-text-gray;
+}
+
+.swiper-slide-poster-name {
+    @include font-type-3;
+    color: $c-home-text;
+}
+
+.swiper-slide-poster-genres {
+    margin-bottom: 24px;
+    color: $c-home-text-gray;
+}
+
+////////////
+.swiper {
+    width: 100%;
+    height: 670px;
+    position: relative;
+}
+
+.swiper-hidden {
+    display: none;
+}
+
+
+.swiper-pagination-bullet {
+    opacity: 0.9;
+    background: $c-header-menu;
+    border: $c-header-menu solid 1px;
+}
+
+.swiper-pagination-bullet-active {
+    background: black;
+}
+
+.swiper-button-next,
+.swiper-button-prev {
+    color: $c-header-menu;
+    transition: transform 0.2s;
+    height: 100%;
+    top: 0;
+
+    &:hover {
+        transform: scale(1.2);
+    }
+}
+
+.swiper-button-next {
+    transform: translateX(-5px);
+}
+
+.swiper-button-prev {
+    transform: translateX(5px);
+}
+
+.swiper-container {
+    width: 100%;
+    height: 100%;
+}
+
+.swiper-slide {
+    text-align: center;
+    font-size: 18px;
+    background: black;
+
+    background: linear-gradient(to right, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0)) no-repeat;
+    background-size: 100% 100%;
+    z-index: 55;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    position: relative;
+
+
+    &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0.9;
+        background: linear-gradient(90deg, rgb(0, 0, 1) 20%, rgba(0, 0, 0, 0)) no-repeat,
+        linear-gradient(to bottom, rgba(0, 0, 1, 0.6) 5%, rgba(0, 0, 0, 0));
+        background-size: 100% 100%;
+        z-index: 2; /* Установите более высокий z-index */
+    }
+}
+
+.swiper-slide-items {
+    width: 600px;
+    color: rgba(255, 255, 255, 0.8);
+    position: relative;
+    padding: 0 60px;
+    z-index: 4;
+    margin-bottom: 10%;
+    text-align: left;
+}
+
+.swiper-slide-item {
+    margin: 19px 0;
+
+    .h7 {
+        text-size-adjust: 100%;
+        white-space: pre-line;
+        font: 600 2.75em / 60px Ubuntu, Roboto, Arial, Helvetica, sans-serif;
+        margin: 0;
+    }
+}
+
+.swiper-slide-img {
+    object-fit: cover;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: -1;
+    pointer-events: none;
+
+    img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        z-index: 1; /* Установите более низкий z-index */
+    }
+}
+
+
+.swiper-slide img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.posters {
+    background: url(../../../../public/images/home/posters-bg.svg) center top / 100% no-repeat, linear-gradient(rgba(24, 24, 24, 0.8), rgb(24, 24, 24));
+    padding-bottom: 30px;
+
+    &__header {
+        display: block;
+        padding: 20px 30px 35px;
+        max-width: 1300px;
+        margin-left: auto;
+        margin-right: auto;
+
+        span {
+            text-size-adjust: 100%;
+            white-space: pre-line;
+            font: 700 3.125em / 60px Ubuntu, Roboto, Arial, Helvetica, sans-serif;
+            margin: 0;
+            color: $c-home-text;
+        }
+    }
+
+    &__menu {
+        margin-left: 20px;
+        display: flex;
+        justify-content: space-between;
+        //border-bottom: rgba(195, 195, 195, 0.44) solid 1px;
+        color: $c-home-text;
+    }
+
+    &__menu-items {
+        display: flex;
+        gap: 40px;
+
+    }
+
+    &__menu-active {
+        padding-bottom: 20px;
+        border-bottom: white solid 1px;
+        color: $c-white;
+
+    }
+
+    &__menu-item {
+        color: $c-home-text;
+        text-decoration: none;
+        cursor: pointer;
+
+        &:hover {
+            color: $c-white;
+        }
+    }
+
+    &__menu-calendar {
+        cursor: pointer;
+
+        svg {
+            width: 30px;
+            margin-right: 10px;
+        }
+
+        a {
+            color: $c-home-text;
+            text-decoration: none;
+        }
+
+        &:hover {
+            color: $c-white;
+
+            a {
+                color: $c-white;
+            }
+        }
+    }
+}
+
+.services {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.58);
+    position: relative;
+
+    &__wrapper {
+        padding: 45px 20px;
+        position: relative;
+        z-index: 1;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    &__left-content {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 30px;
+    }
+
+    &__left-content-title {
+        text-size-adjust: 100%;
+        white-space: pre-line;
+        font: 600 2.35em / 60px Ubuntu, Roboto, Arial, Helvetica, sans-serif;
+        margin: 0;
+        color: $c-home-text;
+    }
+
+    &__left-content-description {
+        color: $c-home-text;
+    }
+
+    &__right-content {
+        max-width: 100%;
+        padding-left: 40px;
+        box-sizing: border-box;
+
+        img {
+            max-height: 450px;
+        }
+    }
+}
+
+.services__background {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    filter: blur(50px);
+    background-image: url(../../../../public/images/home/servicesImage.jpg);
+    background-position: center top;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+
+    z-index: 0;
+    pointer-events: none;
+}
+
+.services__background::before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+.visa {
+   // border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+    position: relative;
+
+    &__left-content {
+        max-width: 100%;
+        box-sizing: border-box;
+
+        img {
+            max-height: 400px;
+        }
+    }
+
+    &__right-content {
+        display: flex;
+        padding-left: 40px;
+        flex-direction: column;
+        justify-content: center;
+        gap: 30px;
+    }
+}
+
+

@@ -1,0 +1,122 @@
+{
+    "Админ-панель": "Admin panel",
+    "Название": "Name",
+    "Старт показа": "Start of the film screening",
+    "Длительность фильма": "Movie duration",
+    "Рейтинг": "Rating",
+    "Список Фильмов": "List of Movies",
+    "Имя": "Name",
+    "Список Кинотеатров": "List of Cinemas",
+    "Выберите кинотеатр": "Select a cinema",
+    "Адрес": "Address",
+    "Сохранить": "Save",
+    "Без кинотеатра": "No cinema",
+    "Количество залов": "Number of halls",
+    "Создание нового пользователя": "Creating a new user",
+    "Общая вместимость": "Total capacity",
+    "Редактирование информации": "Editing of information",
+    "Имя пользователя:": "Username:",
+    "Email адрес:": "Email address:",
+    "Номер телефона:": "Phone number:",
+    "Сохранить информацию": "Save information",
+    "Изменение роли": "Role change",
+    "Текущая роль пользователя:": "Current user role:",
+    "Без роли": "No role",
+    "Выберите новую роль:": "Select a new role:",
+    "Выберите роль": "Select a role:",
+    "Список ролей": "List of roles",
+    "Сохранить роль": "Save role",
+    "Удаление/Блокировка пользователя": "Deleting/Locking a user",
+    "Удалить пользователя?": "Delete user?",
+    "Список пользователей": "A list of users",
+    "Телефон": "Phone",
+    "Дата регистрации": "Registration date",
+    "Роль": "Role",
+    "Выберите новый кинотеатр:": "Select a new cinema:",
+    "Нет кинотеатра": "No cinema",
+    "Текущие кинотеатры пользователя:": "User's current cinemas:",
+    "Изменение кинотеатра": "Cinema change",
+    "Не верифицирован": "Not verified",
+    "Редактировать": "Edit",
+    "Удалить": "Delete",
+    "Текущая роль пользователя:": "Current user role:",
+    "Роль не определена": "Role not defined",
+    "Редактирование информации": "Editing of information",
+    "Изменение пароля": "Change password",
+    "Введите старый пароль:": "Enter old password:",
+    "Введите новый пароль:": "Enter a new password:",
+    "Повторите новый пароль:": "Repeat new password:",
+    "Новый пароль": "New password",
+    "Текущий пароль": "Current Password",
+    "Изменить пароль": "Change password",
+    "Мой профиль": "My profile",
+    "Выход": "Exit",
+    "Главная страница": "Home page",
+    "Кинотеатры": "Cinemas",
+    "Фильмы": "Movies",
+    "Пользователи": "Users",
+    "Сброс пароля": "Password reset",
+    "Отправить ссылку для сброса пароля": "Send password reset link",
+    "Войти в личный кабинет": "Login to your personal account",
+    "Вход": "Entrance",
+    "Пароль": "Password",
+    "Запомнить меня": "Remember me",
+    "Забыли свой пароль?": "Forgot your password?",
+    "Регистрация": "Registration",
+    "Подтверждение пароля": "Password confirmation",
+    "КиноБронь": "CinemaReserv",
+    "Купить билет": "Buy ticket",
+    "Афиша": "Poster",
+    "Сейчас в кино": "Now at the cinema",
+    "Скоро": "Soon",
+    "Расписание сеансов": "Session schedule",
+    "Бронируйте кинозалы, Media room и Party room или арендуйте кинопространство целиком – смотрите, празднуйте, обучайтесь с удовольствием!": "Book the cinema halls, media room and party room or rent the entire cinema area - watch, celebrate, learn with pleasure!",
+    "Услуги": "Services",
+    "Подробнее": "More details",
+    "Мир привилегий VISA": "World of VISA privileges",
+    "При оплате билетов в кинопространствах mooon и Silver Screen платежными карточками Visa вы получаете скидку!": "When you pay for tickets at mooon and Silver Screen cinemas using Visa payment cards, you get a discount!",
+    "Контакты": "Contacts",
+    "Еда и напитки": "Food and drink",
+    "Комбо-блюда": "Combo-dishes",
+    "Попкорн": "Popcorn",
+    "Снеки": "Snacks",
+    "Информация": "Information",
+    "Возврат билетов": "Return of tickets",
+    "Акции": "Stock",
+    "Новости": "News",
+    "Возрастной рейтинг": "Age rating",
+    "Поиск пользователей": "Search for users",
+    "Зарегистрировано решением Городского исполнительного комитета от 13.11.2014\n                года в Реестре предприятий и организаций под номером 123456789. УНП 123456789,\n                юридический адрес: 123456, г. Нью-Йорк, ул. Петрова, д.11, офис 5,\n                Интернет-магазин example.com. Режим работы: ежедневно круглосуточно.\n                Дата регистрации в Торговом реестре: 01.12.2020 год": "Registered by decision of the City Executive Committee dated November 13, 2014\n                 year in the Register of Enterprises and Organizations under number 123456789. UNP 123456789,\n                 legal address: 123456, New York, st. Petrova, 11, office 5,\n                 Online store example.com. Opening hours: every day around the clock.\n                 Date of registration in the Trade Register: 01.12.2020",
+    "Добавить пользователя": "Add user",
+    "Аккаунт заблокирован.": "This account is blocked.",
+    "ЗАБЛОКИРОВАТЬ ДО:": "BLOCK IT OUT:",
+    "Заблокировать": "Blocking",
+    "Отмена": "Cancellation",
+    "Пользователь успешно заблокирован.": "The user has been successfully blocked.",
+    "Не верный формат даты.": "Incorrect date format.",
+    "Не найдена страница твоя (404)": "Your page was not found (404)",
+    "Страница не найдена": "Page not found",
+    "Звездные войны: Эпизод 3 — Месть Ситхов": "Star Wars Episode 3 - Revenge of the Sith",
+    "Тенью жадности привязанность является. Должен научиться отказываться ты от того, что боишься потерять. Из головы страх выкинь, и потеря не причинит вреда тебе": "The shadow of greed is attachment. You must learn to give up what you fear to lose. Put fear out of your mind, and loss will not harm you"
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

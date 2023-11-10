@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Notifications\Notifiable;
@@ -28,6 +29,8 @@ use Laravel\Sanctum\HasApiTokens;
  * @property-read int|null $seat_types_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Laravel\Sanctum\PersonalAccessToken> $tokens
  * @property-read int|null $tokens_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $users
+ * @property-read int|null $users_count
  * @method static \Database\Factories\CinemaFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Cinema newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Cinema newQuery()
@@ -44,29 +47,52 @@ class Cinema extends Model
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+    /**
+     * @var string[]
+     */
     protected $fillable = [
         'name',
         'description',
         'address',
     ];
 
+    /**
+     * @return HasMany
+     */
     public function seatTypes(): HasMany
     {
         return $this->hasMany(SeatType::class);
     }
 
+    /**
+     * @return HasMany
+     */
     public function halls(): HasMany
     {
         return $this->hasMany(Hall::class);
     }
 
+    /**
+     * @return MorphMany
+     */
     public function medias(): MorphMany
     {
         return $this->morphMany(
-            Media::class,
-            'model',
-            'model_type',
-            'model_id',
+            related: Media::class,
+            name: 'model',
+        );
+    }
+
+    /**
+     * @return BelongsToMany
+     */
+    public function users(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            related: User::class,
+            table: 'user_cinema',
+            foreignPivotKey: 'cinema_id',
+            relatedPivotKey: 'user_id',
         );
     }
 }

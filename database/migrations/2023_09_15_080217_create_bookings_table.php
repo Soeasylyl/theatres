@@ -18,21 +18,24 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id')->index();
             $table->unsignedBigInteger('screening_id');
             $table->unsignedBigInteger('seat_id');
-            $table->string('slug');
+            $table->string('slug')->unique();
             $table->string('status')->default(StatusBookingsEnum::ACTIVE->value);
             $table->timestamps();
 
             $table->foreign('user_id')
                   ->references('id')
-                  ->on('users');
+                  ->on('users')
+                  ->nullOnDelete();
 
             $table->foreign('screening_id')
                   ->references('id')
-                  ->on('screenings');
+                  ->on('screenings')
+                  ->nullOnDelete();
 
             $table->foreign('seat_id')
                   ->references('id')
-                  ->on('seats');
+                  ->on('seats')
+                  ->nullOnDelete();
         });
     }
 

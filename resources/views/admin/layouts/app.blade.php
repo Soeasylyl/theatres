@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- CSRF Token -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
+    <title>{{ __('Админ-панель')}}</title>
+
+    <!-- Fonts -->
+    <link rel="dns-prefetch" href="//fonts.bunny.net">
+    <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
+
+    <!-- Scripts -->
+    @vite(['resources/sass/admin/app.scss', 'resources/js/admin/app.js'])
+</head>
+<body>
+<div id="app">
+
+        @include('admin.partials.header')
+
+        @include('admin.partials.menu')
+
+        <section class="admin-main">
+            @yield('content')
+        </section>
+
+        @include('admin.partials.footer')
+</div>
+</body>
+</html>
