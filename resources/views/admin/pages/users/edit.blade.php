@@ -119,7 +119,7 @@
                                         @endif>
 
                                         @csrf
-                                        @method('PUT')
+                                        @method('PATCH')
 
                                         <div class="success-messages-wrapper">
                                             @if(session('message'))

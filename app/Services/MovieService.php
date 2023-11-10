@@ -35,12 +35,7 @@ class MovieService
                 'medias',
             ]);
 
-        $posterPaths = [];
-        foreach ($movies as $movie) {
-            $posterPaths[$movie->id] = $movie->medias->where('collection', 'poster')->first()->path;
-        }
-
-        return compact('movies', 'posterPaths');
+        return compact('movies');
     }
 
     /**

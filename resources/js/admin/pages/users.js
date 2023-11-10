@@ -68,7 +68,7 @@ class Users {
     searchUsers() {
         this.searchUsersInput && this.searchUsersInput.addEventListener('input', async () =>{
             const searchTerm = this.searchUsersInput.value.trim();
-            const response = await fetch('/admin/users/search?search=&{searchTerm}', {
+            const response = await fetch(`/admin/users/search?search=${searchTerm}`, {
                 method: 'GET',
             })
 

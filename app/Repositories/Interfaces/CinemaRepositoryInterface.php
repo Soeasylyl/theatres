@@ -21,5 +21,5 @@ interface CinemaRepositoryInterface
      * @param array|null $relations
      * @return LengthAwarePaginator
      */
-    public function getCinemasWithRelationsPaginated(?array $relations = []): LengthAwarePaginator;
+    public function getCinemasPaginated(?array $relations = []): LengthAwarePaginator;
 }

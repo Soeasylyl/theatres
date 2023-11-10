@@ -44,17 +44,7 @@ $ ./vendor/bin/sail artisan db:wipe && ./vendor/bin/sail artisan migrate --seed
 ```
 
 # Working with application
-### * View All Docker Containers:
-```bash 
-$ docker ps -a 
-```
-
 ### * Down application:
 ```shell
 $ ./vendor/bin/sail down
-```
-
-### * Check Node.js Version (MIN 16.17.0):
-```shell
-$ node -v
 ```
