@@ -51,9 +51,6 @@ Route::prefix('admin')->middleware(['auth', 'isBlock', 'AdminAccess'])->group(fu
         Route::get('/create', [UserController::class, 'show'])
             ->name('users.create');
 
-        Route::get('/search', [UserController::class, 'search'])
-            ->name('users.search');
-
         Route::post('/create', [UserController::class, 'create']);
 
         Route::prefix('/')->middleware('CheckUserAccessMiddleware')->group(function () {

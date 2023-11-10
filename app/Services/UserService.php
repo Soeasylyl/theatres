@@ -5,6 +5,7 @@ namespace App\Services;
 use App\DTO\Users\BlockUserDTO;
 use App\DTO\Users\CreateUserDTO;
 use App\DTO\Users\DeleteUserDTO;
+use App\DTO\Users\SearchUserDTO;
 use App\DTO\Users\UpdateUserInfoDTO;
 use App\DTO\Users\UpdateUserPasswordDTO;
 use App\DTO\Users\UpdateUserRoleDTO;
@@ -205,5 +206,16 @@ class UserService
         $this->userRepository->blockUser($user, $blockUserDTO->getExpirationDate());
 
         return $user;
+    }
+
+    public function searchUser(SearchUserDTO $searchUserDTO)
+    {
+        $searchTerm = $searchUserDTO->getSearchTerm();
+
+        $users = User::where('name', 'ilike', "%$searchTerm%")
+            ->orderBy('created_at', 'desc')
+            ->paginate(config('app.pagination_limit'));
+
+        return $users;
     }
 }

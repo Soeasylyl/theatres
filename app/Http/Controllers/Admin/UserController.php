@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Admin;
 
-
 use App\DTO\Users\BlockUserDTO;
 use App\DTO\Users\CreateUserDTO;
 use App\DTO\Users\DeleteUserDTO;
@@ -22,9 +21,8 @@ use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
-
 
 class UserController extends BaseAdminController
 {
@@ -300,18 +298,5 @@ class UserController extends BaseAdminController
         } catch (\Throwable $e) {
             return redirect()->route('users')->with('error_delete_user', $e->getMessage());
         }
-    }
-
-    public function search(Request $request)
-    {
-        $searchTerm = $request->input('search');
-
-        $users = User::where('name', 'like', "%$searchTerm%")
-            ->orderBy('created_at', 'desc')
-            ->paginate(config('app.pagination_limit'));
-
-        return response()->json([
-            'htmlUsers' => view('admin.partials.search-users', compact('users'))->render(),
-        ]);
     }
 }
