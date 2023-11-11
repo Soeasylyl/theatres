@@ -26,7 +26,7 @@ class RemoveBan extends Command
      */
     public function handle(): void
     {
-        User::query()->where( 'blocked_until', '>', now())
+        User::query()->where( 'blocked_until', '<', now())
                      ->update(['blocked_until' => null]);
     }
 }
