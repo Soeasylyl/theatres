@@ -31,13 +31,19 @@ class BlockUserDTO
     }
 
     /**
+     * Get the expiration date adjusted for the specified timezone.
+     *
+     * This method parses the expiration date from its original format, shifts its timezone
+     * to the specified timezone, and then sets the timezone to the current application timezone.
+     * The resulting Carbon instance represents the expiration date in the application's timezone.
+     *
      * @return Carbon
      */
     public function getExpirationDate(): Carbon
     {
-        return Carbon::parse($this->expirationDate)
-            ->shiftTimezone($this->timeZone)
-            ->setTimezone(now()->timezone->getName());
+        return Carbon::parse(time: $this->expirationDate)
+            ->shiftTimezone(value: $this->timeZone)
+            ->setTimezone(value: now()->timezone->getName());
     }
 
     /**
