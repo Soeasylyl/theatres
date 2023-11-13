@@ -26,10 +26,10 @@ class SearchUserDTO
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getSearchTerm(): string
+    public function getSearchTerm(): ?string
     {
-        return $this->searchTerm ?? '';
+        return $this->searchTerm;
     }
 }

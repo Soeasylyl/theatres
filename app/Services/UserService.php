@@ -45,9 +45,9 @@ class UserService
         }
 
         return $this->userRepository->getUsersByCinemaPaginatedList(
-            $searchUserDTO->getProducer()->cinemas->pluck('id'),
-            $searchUserDTO->getProducer()->id,
-            $searchUserDTO->getSearchTerm()
+            cinemaIds: $searchUserDTO->getProducer()->cinemas->pluck('id'),
+            authUserId: $searchUserDTO->getProducer()->id,
+            searchTerm: $searchUserDTO->getSearchTerm()
         );
     }
 
