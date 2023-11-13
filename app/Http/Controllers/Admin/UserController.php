@@ -14,14 +14,13 @@ use App\Http\Requests\Admin\Users\UserRequest;
 use App\Http\Requests\Admin\Users\UpdatePasswordRequest;
 use App\Http\Requests\Admin\Users\UpdateProfileRequest;
 use App\Http\Requests\Admin\Users\UpdateRoleRequest;
-use App\Models\User;
 use App\Services\CinemaService;
 use App\Services\UserService;
+use Carbon\Carbon;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 
 class UserController extends BaseAdminController
@@ -288,7 +287,8 @@ class UserController extends BaseAdminController
         $blockUserDTO = new BlockUserDTO(
             producer: $authUser,
             userId: $userId,
-            expirationDate: $request->input('dateTime'),
+            expirationDate: Carbon::parse($request->input('dateTime')),
+            timeZone: $request->input('timeZone'),
         );
 
         try {

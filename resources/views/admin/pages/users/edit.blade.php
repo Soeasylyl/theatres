@@ -300,6 +300,7 @@
                 @csrf
                 @method('PATCH')
 
+                <input type="hidden" name="timeZone" id="timezone">
                 <input type="datetime-local" name="dateTime" required/>
 
                 <div class="modal__button-wrapper">

@@ -11,11 +11,13 @@ class BlockUserDTO
      * @param User $producer
      * @param int $userId
      * @param string $expirationDate
+     * @param string|null $timeZone
      */
     public function __construct(
-        private readonly User   $producer,
-        private readonly int    $userId,
-        private readonly string $expirationDate,
+        private readonly User    $producer,
+        private readonly int     $userId,
+        private readonly string  $expirationDate,
+        private readonly ?string $timeZone = 'UTC',
     )
     {
     }
@@ -33,7 +35,9 @@ class BlockUserDTO
      */
     public function getExpirationDate(): Carbon
     {
-        return Carbon::parse($this->expirationDate);
+        return Carbon::parse($this->expirationDate)
+            ->shiftTimezone($this->timeZone)
+            ->setTimezone(now()->timezone->getName());
     }
 
     /**

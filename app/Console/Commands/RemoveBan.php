@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Jobs\SendUnblockedNotification;
 use App\Models\User;
 use Illuminate\Console\Command;
 
@@ -26,7 +27,11 @@ class RemoveBan extends Command
      */
     public function handle(): void
     {
-        User::query()->where( 'blocked_until', '<', now())
-                     ->update(['blocked_until' => null]);
+        $usersToUnblock = User::where('blocked_until', '<=', now())->get();
+
+        foreach ($usersToUnblock as $user) {
+            $user->update(['blocked_until' => null]);
+            SendUnblockedNotification::dispatch($user);
+        }
     }
 }

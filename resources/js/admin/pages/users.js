@@ -5,6 +5,7 @@ class Users {
         this.blockUserButton = document.querySelectorAll('.page-wrapper__block-wrapper');
         this.blockModal = document.getElementById('blockModal');
         this.blockUserCloseBtn = document.querySelector('.modal__close-btn');
+        this.timeZoneInput = document.getElementById('timezone');
 
         this.init();
     }
@@ -14,6 +15,7 @@ class Users {
         this.deleteUser();
         this.openBlockUserModal();
         this.closeBlockUserModal();
+        this.setTimeZone();
     }
 
     deleteUser() {
@@ -51,15 +53,21 @@ class Users {
         this.deleteProfileButton && this.deleteProfileButton.addEventListener('click', (event) => {
                 event.preventDefault();
 
-            if (confirm(`Вы уверены, что хотите удалить свой профиль?`)) {
+                if (confirm(`Вы уверены, что хотите удалить свой профиль?`)) {
 
-                const form = event.currentTarget.closest('form');
-                if (form) {
-                    form.submit();
+                    const form = event.currentTarget.closest('form');
+                    if (form) {
+                        form.submit();
+                    }
                 }
             }
-            }
         )
+    }
+
+    setTimeZone() {
+        if (this.timeZoneInput) {
+            this.timeZoneInput.value = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        }
     }
 }
 
