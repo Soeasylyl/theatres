@@ -5,11 +5,11 @@ namespace App\Services;
 use App\DTO\Users\BlockUserDTO;
 use App\DTO\Users\CreateUserDTO;
 use App\DTO\Users\DeleteUserDTO;
-use App\DTO\Users\SearchUserDTO;
 use App\DTO\Users\UpdateUserInfoDTO;
 use App\DTO\Users\UpdateUserPasswordDTO;
 use App\DTO\Users\UpdateUserRoleDTO;
 use App\Enums\RolesUsersEnum;
+use App\Jobs\SendBlockedNotification;
 use App\Models\User;
 use App\Repositories\Interfaces\CinemaRepositoryInterface;
 use App\Repositories\Interfaces\UserRepositoryInterface;
@@ -205,17 +205,8 @@ class UserService
         $this->checkAdminEditingPermission($user, $blockUserDTO->getProducer());
         $this->userRepository->blockUser($user, $blockUserDTO->getExpirationDate());
 
+        SendBlockedNotification::dispatch($user);
+
         return $user;
-    }
-
-    public function searchUser(SearchUserDTO $searchUserDTO)
-    {
-        $searchTerm = $searchUserDTO->getSearchTerm();
-
-        $users = User::where('name', 'ilike', "%$searchTerm%")
-            ->orderBy('created_at', 'desc')
-            ->paginate(config('app.pagination_limit'));
-
-        return $users;
     }
 }
