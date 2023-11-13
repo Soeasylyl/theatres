@@ -38,9 +38,9 @@ class UserService
     {
         if ($searchUserDTO->getProducer()->hasRole(RolesUsersEnum::SUPER_ADMIN->value)) {
             return $this->userRepository->getUsersWithoutAdminRolePaginatedList(
-                $searchUserDTO->getProducer()->id,
-                $searchUserDTO->getSearchTerm(),
-                ['roles']
+                authUserId: $searchUserDTO->getProducer()->id,
+                searchTerm: $searchUserDTO->getSearchTerm(),
+                relations: ['roles']
             );
         }
 
@@ -62,7 +62,10 @@ class UserService
         $user = $this->userRepository->createUser($requestDTO);
 
         if ($requestDTO->getCinemaId()) {
-            $this->userRepository->attachUserToCinema($user, $requestDTO->getCinemaId());
+            $this->userRepository->attachUserToCinema(
+                user: $user,
+                cinemaId: $requestDTO->getCinemaId()
+            );
         }
 
         if ($roleName = $requestDTO->getRoleName()) {

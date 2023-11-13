@@ -26,8 +26,6 @@
                     <a class="page-wrapper__panel-btn"
                        href="{{ route('users.create') }}"> {{ __('Добавить пользователя') }}</a>
                     <form method="get" action="{{ route('users') }}" class="admin-container__search-wrapper" >
-                        @csrf
-                        @method('GET')
 
                         <div class="admin-container__search-element-wrapper">
                             <input name="search" type="text"
