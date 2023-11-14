@@ -30,11 +30,11 @@ class UserService
     }
 
     /**
-     * Retrieve a paginated list of users based on the authenticated user's role.
+     * Retrieve a paginated list of users based on the authenticated user's role and other criteria.
      *
      * @return \Illuminate\Pagination\LengthAwarePaginator
      */
-    public function getUsersByRole(SearchUserDTO $searchUserDTO): LengthAwarePaginator
+    public function fetchUsersForRole(SearchUserDTO $searchUserDTO): LengthAwarePaginator
     {
         if ($searchUserDTO->getProducer()->hasRole(RolesUsersEnum::SUPER_ADMIN->value)) {
             return $this->userRepository->getUsersWithoutAdminRolePaginatedList(

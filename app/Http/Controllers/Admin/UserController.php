@@ -55,7 +55,7 @@ class UserController extends BaseAdminController
             searchTerm: $request->input('search')
         );
 
-        $users = $this->userService->getUsersByRole($searchUserDTO);
+        $users = $this->userService->fetchUsersForRole($searchUserDTO);
 
         return view('admin.pages.users.main', compact('users', 'searchUserDTO' ));
     }

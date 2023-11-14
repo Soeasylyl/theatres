@@ -56,8 +56,8 @@ class UserRepository implements UserRepositoryInterface
             });
         }
 
-        return $query->when($searchTerm, function ($q) use ($searchTerm) {
-            return $q->where('name', 'ilike', "%$searchTerm%");
+        return $query->when($searchTerm, function (Builder $q) use ($searchTerm) {
+            $q->where('name', 'ilike', "%$searchTerm%");
         })
             ->paginate(config('app.pagination_limit'));
     }
