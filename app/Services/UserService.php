@@ -220,8 +220,6 @@ class UserService
         $this->checkAdminEditingPermission(user: $user, producer: $banUserTDO->getProducer());
         $this->userRepository->blockUser(user: $user, date: $banUserTDO->getExpirationDate());
 
-        SendBanNotificationMail::dispatch($user)->onQueue(queue: 'emails');
-
         return $user;
     }
 }

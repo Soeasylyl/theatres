@@ -31,6 +31,7 @@ class RemoveBan extends Command
             ->chunk(50, function ($users) {
                 foreach ($users as $user) {
                     $user->update(['blocked_until' => null]);
+                    SendUnbanNotificationMail::dispatch($user);
                 }
             });
     }

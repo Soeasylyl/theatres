@@ -9,16 +9,17 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class BanNotificationMail extends Mailable
+class BanNotificationMail extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
+    public $queue;
     /**
      * Create a new message instance.
      */
     public function __construct()
     {
-        //
+        $this->queue = 'emails';
     }
 
     /**
