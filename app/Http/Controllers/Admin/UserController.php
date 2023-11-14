@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\DTO\Users\BlockUserDTO;
+
+use App\DTO\Users\BanUserTDO;
 use App\DTO\Users\CreateUserDTO;
 use App\DTO\Users\DeleteUserDTO;
 use App\DTO\Users\EditUserDTO;
@@ -284,7 +285,7 @@ class UserController extends BaseAdminController
     {
         $authUser = auth()->user();
 
-        $blockUserDTO = new BlockUserDTO(
+        $BanUserTDO = new BanUserTDO(
             producer: $authUser,
             userId: $userId,
             expirationDate: Carbon::parse($request->input('dateTime')),
@@ -292,7 +293,7 @@ class UserController extends BaseAdminController
         );
 
         try {
-            $this->userService->blockUser($blockUserDTO);
+            $this->userService->blockUser($BanUserTDO);
 
             return redirect()->route('users')->with('successMessages', 'Пользователь успешно заблокирован.');
         } catch (\Throwable $e) {

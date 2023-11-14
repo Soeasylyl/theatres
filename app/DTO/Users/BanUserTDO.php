@@ -5,7 +5,7 @@ namespace App\DTO\Users;
 use App\Models\User;
 use Carbon\Carbon;
 
-class BlockUserDTO
+class BanUserTDO
 {
     /**
      * @param User $producer

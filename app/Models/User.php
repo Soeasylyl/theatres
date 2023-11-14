@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Jobs\SendUnbanNotificationMail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -131,5 +132,22 @@ class User extends Authenticatable
     public function setPasswordAttribute(string $value)
     {
         $this->attributes['password'] = Hash::make($value);
+    }
+
+    /**
+     * Checking for the update event of the “blocked_until” field;
+     * If it is set to zero, then a task is sent to send a letter with notification of unlocking.
+     *
+     * @return void
+     */
+    protected static function boot(): void
+    {
+        parent::boot();
+
+        static::updating(function ($user) {
+            if ($user->isDirty('blocked_until') && $user->blocked_until === null) {
+                SendUnbanNotificationMail::dispatch($user)->onQueue(queue: 'emails');
+            }
+        });
     }
 }

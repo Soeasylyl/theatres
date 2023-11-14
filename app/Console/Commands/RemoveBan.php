@@ -27,11 +27,11 @@ class RemoveBan extends Command
      */
     public function handle(): void
     {
-        $usersToUnblock = User::where('blocked_until', '<=', now())->get();
-
-        foreach ($usersToUnblock as $user) {
-            $user->update(['blocked_until' => null]);
-            SendUnbanNotificationMail::dispatch($user);
-        }
+        User::where('blocked_until', '<=', now())
+            ->chunk(50, function ($users) {
+                foreach ($users as $user) {
+                    $user->update(['blocked_until' => null]);
+                }
+            });
     }
 }

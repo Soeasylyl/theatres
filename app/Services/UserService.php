@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use App\DTO\Users\BlockUserDTO;
+use App\DTO\Users\BanUserTDO;
 use App\DTO\Users\CreateUserDTO;
 use App\DTO\Users\DeleteUserDTO;
 use App\DTO\Users\UpdateUserInfoDTO;
@@ -208,19 +208,19 @@ class UserService
     }
 
     /**
-     * Blocks a user based on the provided BlockUserDTO object and returns the user object after blocking.
+     * Ban a user based on the provided BanUserDTO object and returns the user object after blocking.
      *
-     * @param BlockUserDTO $blockUserDTO
+     * @param BanUserTDO $banUserTDO
      * @return User
      * @throws \Exception
      */
-    public function blockUser(BlockUserDTO $blockUserDTO): User
+    public function blockUser(BanUserTDO $banUserTDO): User
     {
-        $user = $this->userRepository->getUserByIdOrFail(userId: $blockUserDTO->getUserId());
-        $this->checkAdminEditingPermission(user: $user, producer: $blockUserDTO->getProducer());
-        $this->userRepository->blockUser(user: $user, date: $blockUserDTO->getExpirationDate());
+        $user = $this->userRepository->getUserByIdOrFail(userId: $banUserTDO->getUserId());
+        $this->checkAdminEditingPermission(user: $user, producer: $banUserTDO->getProducer());
+        $this->userRepository->blockUser(user: $user, date: $banUserTDO->getExpirationDate());
 
-        SendBanNotificationMail::dispatch($user);
+        SendBanNotificationMail::dispatch($user)->onQueue(queue: 'emails');
 
         return $user;
     }
