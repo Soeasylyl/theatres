@@ -50,14 +50,16 @@ class UserController extends BaseAdminController
     public function index(SearchRequest $request)
     {
         $authUser = auth()->user();
+        $searchTern = $request->input('search');
+
         $searchUserDTO = new searchUserDTO(
             producer: $authUser,
-            searchTerm: $request->input('search')
+            searchTerm: $searchTern
         );
 
         $users = $this->userService->fetchUsersForRole($searchUserDTO);
 
-        return view('admin.pages.users.main', compact('users', 'searchUserDTO' ));
+        return view('admin.pages.users.main', compact('users', 'searchTern' ));
     }
 
     /**

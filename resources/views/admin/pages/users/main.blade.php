@@ -103,7 +103,7 @@
                     </tbody>
                 </table>
 
-                {{ $users->appends(['search' => $searchUserDTO->getSearchTerm()])->links('admin.partials.pagination') }}
+                {{ $users->appends(['search' => $searchTern])->links('admin.partials.pagination') }}
             </div>
         </div>
     </div>
