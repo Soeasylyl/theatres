@@ -2,7 +2,7 @@
 
 namespace App\Jobs;
 
-use App\Mail\BlockNotification;
+use App\Mail\BanNotificationMail;
 use App\Models\User;
 use App\Services\UserService;
 use GuzzleHttp\Promise\Create;
@@ -14,7 +14,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Mail;
 
-class SendBlockedNotification implements ShouldQueue
+class SendBanNotificationMail implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -33,6 +33,6 @@ class SendBlockedNotification implements ShouldQueue
     public function handle(): void
     {
         //
-        Mail::to($this->user->email)->send(new BlockNotification());
+        Mail::to($this->user->email)->send(new BanNotificationMail());
     }
 }

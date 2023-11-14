@@ -2,7 +2,7 @@
 
 namespace App\Jobs;
 
-use App\Mail\UnblockNotification;
+use App\Mail\UnbanNotificationMail;
 use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -11,7 +11,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Mail;
 
-class SendUnblockedNotification implements ShouldQueue
+class SendUnbanNotificationMail implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -30,6 +30,6 @@ class SendUnblockedNotification implements ShouldQueue
      */
     public function handle(): void
     {
-        Mail::to($this->user->email)->send(new UnblockNotification());
+        Mail::to($this->user->email)->send(new UnbanNotificationMail());
     }
 }

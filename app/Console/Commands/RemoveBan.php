@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Jobs\SendUnblockedNotification;
+use App\Jobs\SendUnbanNotificationMail;
 use App\Models\User;
 use Illuminate\Console\Command;
 
@@ -31,7 +31,7 @@ class RemoveBan extends Command
 
         foreach ($usersToUnblock as $user) {
             $user->update(['blocked_until' => null]);
-            SendUnblockedNotification::dispatch($user);
+            SendUnbanNotificationMail::dispatch($user);
         }
     }
 }

@@ -9,7 +9,7 @@ use App\DTO\Users\UpdateUserInfoDTO;
 use App\DTO\Users\UpdateUserPasswordDTO;
 use App\DTO\Users\UpdateUserRoleDTO;
 use App\Enums\RolesUsersEnum;
-use App\Jobs\SendBlockedNotification;
+use App\Jobs\SendBanNotificationMail;
 use App\Models\User;
 use App\Repositories\Interfaces\CinemaRepositoryInterface;
 use App\Repositories\Interfaces\UserRepositoryInterface;
@@ -220,7 +220,7 @@ class UserService
         $this->checkAdminEditingPermission(user: $user, producer: $blockUserDTO->getProducer());
         $this->userRepository->blockUser(user: $user, date: $blockUserDTO->getExpirationDate());
 
-        SendBlockedNotification::dispatch(arguments: $user);
+        SendBanNotificationMail::dispatch($user);
 
         return $user;
     }

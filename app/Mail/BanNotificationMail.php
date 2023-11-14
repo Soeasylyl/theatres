@@ -9,7 +9,7 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class UnblockNotification extends Mailable
+class BanNotificationMail extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -27,7 +27,7 @@ class UnblockNotification extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Unblock Notification',
+            subject: 'Block Notification',
         );
     }
 
@@ -37,7 +37,7 @@ class UnblockNotification extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'emails.pages.unblock-notification',
+            view: 'emails.pages.block-notification',
         );
     }
 
