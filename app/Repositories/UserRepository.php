@@ -2,7 +2,6 @@
 
 namespace App\Repositories;
 
-
 use App\DTO\Users\CreateUserDTO;
 use App\DTO\Users\UpdateUserInfoDTO;
 use App\DTO\Users\UpdateUserPasswordDTO;
