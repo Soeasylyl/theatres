@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Mail;
 class UserBannedListener
 {
     /**
+     *
      * Handles the UserUpdateEvent by checking if the "blocked_until" attribute has been modified and set to a non-null value.
      * If true, sends a BanNotificationMail to notify the user about the newly applied ban.
      */

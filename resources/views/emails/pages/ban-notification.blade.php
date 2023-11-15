@@ -17,7 +17,6 @@
                 @endif
             </td>
         </tr>
-
         </thead>
         <tbody>
         <tr>
@@ -39,7 +38,6 @@
         <tr>
             <td style=" padding-top: 60px;
                         padding-bottom: 45px;">
-
             </td>
         </tr>
         </thead>

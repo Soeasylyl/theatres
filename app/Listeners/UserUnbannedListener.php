@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Mail;
 class UserUnbannedListener
 {
     /**
+     *
      * Handles the UserUpdateEvent by checking if the "blocked_until" attribute has been modified to null,
      *  and if so, sends an UnbanNotificationMail to the user's email address.
      */

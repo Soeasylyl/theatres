@@ -17,7 +17,6 @@
                 @endif
             </td>`
         </tr>
-
         </thead>
         <tbody>
         <tr>
