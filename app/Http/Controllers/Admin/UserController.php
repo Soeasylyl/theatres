@@ -7,10 +7,12 @@ use App\DTO\Users\BanUserDTO;
 use App\DTO\Users\CreateUserDTO;
 use App\DTO\Users\DeleteUserDTO;
 use App\DTO\Users\EditUserDTO;
+use App\DTO\Users\SearchUserDTO;
 use App\DTO\Users\UpdateUserInfoDTO;
 use App\DTO\Users\UpdateUserPasswordDTO;
 use App\DTO\Users\UpdateUserRoleDTO;
 use App\Http\Requests\Admin\Users\BlockRequest;
+use App\Http\Requests\Admin\Users\SearchRequest;
 use App\Http\Requests\Admin\Users\UserRequest;
 use App\Http\Requests\Admin\Users\UpdatePasswordRequest;
 use App\Http\Requests\Admin\Users\UpdateProfileRequest;
@@ -23,6 +25,7 @@ use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 
 class UserController extends BaseAdminController
 {
@@ -46,11 +49,19 @@ class UserController extends BaseAdminController
     /**
      * @return Application|Factory|View|\Illuminate\Foundation\Application
      */
-    public function index()
+    public function index(SearchRequest $request)
     {
-        $users = $this->userService->getUsersByRole();
+        $authUser = auth()->user();
+        $searchTern = $request->input('search');
 
-        return view('admin.pages.users.main', compact('users'));
+        $searchUserDTO = new searchUserDTO(
+            producer: $authUser,
+            searchTerm: $searchTern
+        );
+
+        $users = $this->userService->fetchUsersForRole($searchUserDTO);
+
+        return view('admin.pages.users.main', compact('users', 'searchTern' ));
     }
 
     /**

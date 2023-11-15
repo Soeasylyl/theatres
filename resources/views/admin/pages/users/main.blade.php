@@ -21,11 +21,26 @@
                 </div>
             </div>
             <div class="admin-container__form-body">
+
                 <div class="admin-container__menu">
                     <a class="page-wrapper__panel-btn"
                        href="{{ route('users.create') }}"> {{ __('Добавить пользователя') }}</a>
-                    <input class="admin-container__search-bar" type="text"
-                           placeholder="{{ __('Поиск пользователей') }}">
+                    <form method="get" action="{{ route('users') }}" class="admin-container__search-wrapper" >
+
+                        <div class="admin-container__search-element-wrapper">
+                            <input name="search" type="text"
+                                   class="admin-container__search-bar"
+                                   placeholder="{{ __('Поиск пользователей') }}">
+                            @error('search')
+                            <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                            @enderror
+                        </div>
+                        <button type="submit" class="page-wrapper__panel-btn">
+                            {{ __('Поиск') }}
+                        </button>
+                    </form>
                 </div>
 
                 <table class="admin-container__table">
@@ -87,7 +102,8 @@
                     @endforelse
                     </tbody>
                 </table>
-                {{ $users->links('admin.partials.pagination') }}
+
+                {{ $users->appends(['search' => $searchTern])->links('admin.partials.pagination') }}
             </div>
         </div>
     </div>
