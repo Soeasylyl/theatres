@@ -3,7 +3,6 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
-use App\Events\UserUpdateEvent;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -79,15 +78,6 @@ class User extends Authenticatable
         'password',
         'phone',
         'blocked_until',
-    ];
-
-    /**
-     * Defines the events that should be sent, indicating that the "updated" event fires the UserUpdateEvent class.
-     *
-     * @var string[]
-     */
-    protected $dispatchesEvents = [
-        'updated' => UserUpdateEvent::class,
     ];
 
     /**
