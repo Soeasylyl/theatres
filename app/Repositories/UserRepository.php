@@ -50,8 +50,8 @@ class UserRepository implements UserRepositoryInterface
     {
         return User::query()
             ->where('id', '!=', $authUserId)
-            ->when($cinemaIds->isNotEmpty(), function (Builder $builder) use ($cinemaIds) {
-                $builder->whereHas('cinemas', function (Builder $query) use ($cinemaIds) {
+            ->when($cinemaIds->isNotEmpty(), function (Builder $query) use ($cinemaIds) {
+                $query->whereHas('cinemas', function (Builder $query) use ($cinemaIds) {
                     $query->whereIn('cinema_id', $cinemaIds->toArray());
                 });
             })
