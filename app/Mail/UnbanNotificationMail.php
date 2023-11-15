@@ -13,8 +13,7 @@ use Illuminate\Queue\SerializesModels;
 class UnbanNotificationMail extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
-
-    public $queue;
+    
     /**
      * Create a new message instance.
      */
@@ -22,7 +21,7 @@ class UnbanNotificationMail extends Mailable implements ShouldQueue
         public readonly User $user
     )
     {
-        $this->queue = 'emails';
+        $this->onQueue('emails');
     }
 
     /**
@@ -41,7 +40,7 @@ class UnbanNotificationMail extends Mailable implements ShouldQueue
     public function content(): Content
     {
         return new Content(
-            view: 'emails.pages.unblock-notification',
+            view: 'emails.pages.unban-notification',
         );
     }
 

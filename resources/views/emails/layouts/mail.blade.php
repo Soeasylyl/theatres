@@ -9,9 +9,6 @@
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.bunny.net">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Scripts -->
-    @vite(['resources/sass/admin/app.scss', 'resources/js/public/app.js'])
 </head>
 <body>
 

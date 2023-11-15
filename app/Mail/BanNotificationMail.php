@@ -14,8 +14,6 @@ class BanNotificationMail extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
-    public $queue;
-
     /**
      * Create a new message instance.
      */
@@ -23,7 +21,7 @@ class BanNotificationMail extends Mailable implements ShouldQueue
         public readonly User $user,
     )
     {
-        $this->queue = 'emails';
+        $this->onQueue('emails');
     }
 
     /**
@@ -42,7 +40,7 @@ class BanNotificationMail extends Mailable implements ShouldQueue
     public function content(): Content
     {
         return new Content(
-            view: 'emails.pages.block-notification',
+            view: 'emails.pages.ban-notification',
         );
     }
 
