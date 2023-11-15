@@ -82,7 +82,7 @@ class User extends Authenticatable
     ];
 
     /**
-     * Defines the events that should be sent, indicating that the "updated" event fires the UserUpdateEvent class
+     * Defines the events that should be sent, indicating that the "updated" event fires the UserUpdateEvent class.
      *
      * @var string[]
      */
