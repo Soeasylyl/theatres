@@ -7,7 +7,6 @@ use App\DTO\Users\CreateUserDTO;
 use App\DTO\Users\UpdateUserInfoDTO;
 use App\DTO\Users\UpdateUserPasswordDTO;
 use App\Enums\RolesUsersEnum;
-use App\Events\UserBanned;
 use App\Models\User;
 use App\Repositories\Interfaces\UserRepositoryInterface;
 use Carbon\Carbon;
@@ -141,8 +140,6 @@ class UserRepository implements UserRepositoryInterface
         $user->update([
             'blocked_until' => $date
         ]);
-
-        event(new UserBanned($user));
 
         return $user;
     }

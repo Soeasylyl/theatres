@@ -2,29 +2,20 @@
 
 namespace App\Listeners;
 
-use App\Events\UserBanned;
+use App\Events\UserUpdateEvent;
 use App\Mail\BanNotificationMail;
-use App\Models\User;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Mail;
 
 class UserBannedListener
 {
-    protected $user;
     /**
-     * Create a new job instance.
+     * Handles the UserUpdateEvent by checking if the "blocked_until" attribute has been modified and set to a non-null value.
+     * If true, sends a BanNotificationMail to notify the user about the newly applied ban.
      */
-
-    public function __construct(User $user)
+    public function handle(UserUpdateEvent $event): void
     {
-        $this->user = $user;
-    }
-
-    /**
-     * Handle the event.
-     */
-    public function handle(UserBanned $event): void
-    {
-        Mail::to($event->user->email)->send(new BanNotificationMail());
+        if ($event->user->isDirty('blocked_until') && $event->user->blocked_until !== null) {
+            Mail::to($event->user->email)->send(new BanNotificationMail($event->user));
+        }
     }
 }

@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use App\DTO\Users\BanUserTDO;
+use App\DTO\Users\BanUserDTO;
 use App\DTO\Users\CreateUserDTO;
 use App\DTO\Users\DeleteUserDTO;
 use App\DTO\Users\UpdateUserInfoDTO;
@@ -210,15 +210,15 @@ class UserService
     /**
      * Ban a user based on the provided BanUserDTO object and returns the user object after blocking.
      *
-     * @param BanUserTDO $banUserTDO
+     * @param BanUserDTO $banUserDTO
      * @return User
      * @throws \Exception
      */
-    public function blockUser(BanUserTDO $banUserTDO): User
+    public function blockUser(BanUserDTO $banUserDTO): User
     {
-        $user = $this->userRepository->getUserByIdOrFail(userId: $banUserTDO->getUserId());
-        $this->checkAdminEditingPermission(user: $user, producer: $banUserTDO->getProducer());
-        $this->userRepository->blockUser(user: $user, date: $banUserTDO->getExpirationDate());
+        $user = $this->userRepository->getUserByIdOrFail(userId: $banUserDTO->getUserId());
+        $this->checkAdminEditingPermission(user: $user, producer: $banUserDTO->getProducer());
+        $this->userRepository->blockUser(user: $user, date: $banUserDTO->getExpirationDate());
 
         return $user;
     }

@@ -4,6 +4,10 @@
 
 @section('mail')
     <section class="email-page">
-        <h1>Поздравляем, срок блокироки истёк, вы разблокированны!</h1>
+        @if ($user)
+            <h1>Здравствуйте {{$user->name}}!
+                <br> Поздравляем, ваша блокировка истекла!
+            </h1>
+        @endif
     </section>
 @endsection

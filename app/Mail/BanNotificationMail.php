@@ -2,6 +2,7 @@
 
 namespace App\Mail;
 
+use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
@@ -14,10 +15,13 @@ class BanNotificationMail extends Mailable implements ShouldQueue
     use Queueable, SerializesModels;
 
     public $queue;
+
     /**
      * Create a new message instance.
      */
-    public function __construct()
+    public function __construct(
+        public readonly User $user,
+    )
     {
         $this->queue = 'emails';
     }

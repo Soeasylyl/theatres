@@ -2,22 +2,27 @@
 
 namespace App\Mail;
 
+use App\Models\User;
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class UnbanNotificationMail extends Mailable
+class UnbanNotificationMail extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
+    public $queue;
     /**
      * Create a new message instance.
      */
-    public function __construct()
+    public function __construct(
+        public readonly User $user
+    )
     {
-        //
+        $this->queue = 'emails';
     }
 
     /**

@@ -2,8 +2,9 @@
 
 namespace App\Providers;
 
-use App\Events\UserBanned;
+use App\Events\UserUpdateEvent;
 use App\Listeners\UserBannedListener;
+use App\Listeners\UserUnbannedListener;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -20,8 +21,9 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
-        UserBanned::class =>[
+        UserUpdateEvent::class =>[
             UserBannedListener::class,
+            UserUnbannedListener::class,
         ]
     ];
 
@@ -38,6 +40,6 @@ class EventServiceProvider extends ServiceProvider
      */
     public function shouldDiscoverEvents(): bool
     {
-        return true;
+        return false;
     }
 }
