@@ -29,19 +29,25 @@ class UserService
     }
 
     /**
-     * Retrieve a paginated list of users based on the authenticated user's role.
+     * Retrieve a paginated list of users based on the authenticated user's role and other criteria.
      *
      * @return \Illuminate\Pagination\LengthAwarePaginator
      */
-    public function getUsersByRole(): LengthAwarePaginator
+    public function fetchUsersForRole(SearchUserDTO $searchUserDTO): LengthAwarePaginator
     {
-        $authUser = auth()->user();
-
-        if ($authUser->hasRole(RolesUsersEnum::SUPER_ADMIN->value)) {
-            return $this->userRepository->getUsersWithoutAdminRolePaginatedList($authUser->id, ['roles']);
+        if ($searchUserDTO->getProducer()->hasRole(RolesUsersEnum::SUPER_ADMIN->value)) {
+            return $this->userRepository->getUsersWithoutAdminRolePaginatedList(
+                authUserId: $searchUserDTO->getProducer()->id,
+                searchTerm: $searchUserDTO->getSearchTerm(),
+                relations: ['roles']
+            );
         }
 
-        return $this->userRepository->getUsersByCinemaPaginatedList($authUser->cinemas->pluck('id'), $authUser->id);
+        return $this->userRepository->getUsersByCinemaPaginatedList(
+            cinemaIds: $searchUserDTO->getProducer()->cinemas->pluck('id'),
+            authUserId: $searchUserDTO->getProducer()->id,
+            searchTerm: $searchUserDTO->getSearchTerm()
+        );
     }
 
     /**
@@ -55,7 +61,10 @@ class UserService
         $user = $this->userRepository->createUser($requestDTO);
 
         if ($requestDTO->getCinemaId()) {
-            $this->userRepository->attachUserToCinema($user, $requestDTO->getCinemaId());
+            $this->userRepository->attachUserToCinema(
+                user: $user,
+                cinemaId: $requestDTO->getCinemaId()
+            );
         }
 
         if ($roleName = $requestDTO->getRoleName()) {

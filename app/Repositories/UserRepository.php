@@ -21,16 +21,20 @@ class UserRepository implements UserRepositoryInterface
      * Obtaining information about all users except authorized and super administrator
      *
      * @param int $authUserId
+     * @param string|null $searchTerm
      * @param array|null $relations
      * @return LengthAwarePaginator
      */
-    public function getUsersWithoutAdminRolePaginatedList(int $authUserId, ?array $relations = []): LengthAwarePaginator
+    public function getUsersWithoutAdminRolePaginatedList(int $authUserId, ?string $searchTerm, ?array $relations = []): LengthAwarePaginator
     {
         return User::with($relations)
             ->whereDoesntHave('roles', function (Builder $query) {
                 $query->where('name', RolesUsersEnum::SUPER_ADMIN->value);
             })
             ->whereNot('id', $authUserId)
+            ->when($searchTerm, function (Builder $query) use ($searchTerm) {
+                $query->where('name', 'ilike', "%$searchTerm%");
+            })
             ->paginate(config('app.pagination_limit'));
     }
 
@@ -39,19 +43,22 @@ class UserRepository implements UserRepositoryInterface
      *
      * @param Collection $cinemaIds
      * @param int $authUserId
+     * @param string|null $searchTerm
      * @return LengthAwarePaginator
      */
-    public function getUsersByCinemaPaginatedList(Collection $cinemaIds, int $authUserId): LengthAwarePaginator
+    public function getUsersByCinemaPaginatedList(Collection $cinemaIds, int $authUserId, ?string $searchTerm): LengthAwarePaginator
     {
-        $query = User::query()->where('id', '!=', $authUserId);
-
-        if ($cinemaIds->isNotEmpty()) {
-            $query->whereHas('cinemas', function (Builder $query) use ($cinemaIds) {
-                $query->whereIn('cinema_id', $cinemaIds->toArray());
-            });
-        }
-
-        return $query->paginate(config('app.pagination_limit'));
+        return User::query()
+            ->where('id', '!=', $authUserId)
+            ->when($cinemaIds->isNotEmpty(), function (Builder $query) use ($cinemaIds) {
+                $query->whereHas('cinemas', function (Builder $query) use ($cinemaIds) {
+                    $query->whereIn('cinema_id', $cinemaIds->toArray());
+                });
+            })
+            ->when($searchTerm, function (Builder $query) use ($searchTerm) {
+                $query->where('name', 'ilike', "%$searchTerm%");
+            })
+            ->paginate(config('app.pagination_limit'));
     }
 
     /**
