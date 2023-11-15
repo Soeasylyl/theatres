@@ -32,8 +32,8 @@ class UserRepository implements UserRepositoryInterface
                 $query->where('name', RolesUsersEnum::SUPER_ADMIN->value);
             })
             ->whereNot('id', $authUserId)
-            ->when($searchTerm, function ($q) use ($searchTerm) {
-                return $q->where('name', 'ilike', "%$searchTerm%");
+            ->when($searchTerm, function (Builder $query) use ($searchTerm) {
+                $query->where('name', 'ilike', "%$searchTerm%");
             })
             ->paginate(config('app.pagination_limit'));
     }
@@ -56,8 +56,8 @@ class UserRepository implements UserRepositoryInterface
             });
         }
 
-        return $query->when($searchTerm, function (Builder $q) use ($searchTerm) {
-            $q->where('name', 'ilike', "%$searchTerm%");
+        return $query->when($searchTerm, function (Builder $query) use ($searchTerm) {
+            $query->where('name', 'ilike', "%$searchTerm%");
         })
             ->paginate(config('app.pagination_limit'));
     }
