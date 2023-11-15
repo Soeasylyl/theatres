@@ -48,17 +48,16 @@ class UserRepository implements UserRepositoryInterface
      */
     public function getUsersByCinemaPaginatedList(Collection $cinemaIds, int $authUserId, ?string $searchTerm): LengthAwarePaginator
     {
-        $query = User::query()->where('id', '!=', $authUserId);
-
-        if ($cinemaIds->isNotEmpty()) {
-            $query->whereHas('cinemas', function (Builder $query) use ($cinemaIds) {
-                $query->whereIn('cinema_id', $cinemaIds->toArray());
-            });
-        }
-
-        return $query->when($searchTerm, function (Builder $query) use ($searchTerm) {
-            $query->where('name', 'ilike', "%$searchTerm%");
-        })
+        return User::query()
+            ->where('id', '!=', $authUserId)
+            ->when($cinemaIds->isNotEmpty(), function (Builder $builder) use ($cinemaIds) {
+                $builder->whereHas('cinemas', function (Builder $query) use ($cinemaIds) {
+                    $query->whereIn('cinema_id', $cinemaIds->toArray());
+                });
+            })
+            ->when($searchTerm, function (Builder $query) use ($searchTerm) {
+                $query->where('name', 'ilike', "%$searchTerm%");
+            })
             ->paginate(config('app.pagination_limit'));
     }
 
