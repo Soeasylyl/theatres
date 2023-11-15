@@ -15,7 +15,7 @@
                 @if ($user)
                     <h1>Здравствуйте {{$user->name}}!
                 @endif
-            </td>
+            </td>`
         </tr>
 
         </thead>
@@ -39,7 +39,6 @@
         <tr>
             <td style=" padding-top: 60px;
                         padding-bottom: 45px;">
-
             </td>
         </tr>
         </thead>

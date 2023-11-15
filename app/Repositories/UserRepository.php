@@ -13,7 +13,6 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 
-
 class UserRepository implements UserRepositoryInterface
 {
     /**
@@ -42,15 +41,14 @@ class UserRepository implements UserRepositoryInterface
      */
     public function getUsersByCinemaPaginatedList(Collection $cinemaIds, int $authUserId): LengthAwarePaginator
     {
-        $query = User::query()->where('id', '!=', $authUserId);
-
-        if ($cinemaIds->isNotEmpty()) {
-            $query->whereHas('cinemas', function (Builder $query) use ($cinemaIds) {
-                $query->whereIn('cinema_id', $cinemaIds->toArray());
-            });
-        }
-
-        return $query->paginate(config('app.pagination_limit'));
+        return User::query()
+            ->where('id', '!=', $authUserId)
+            ->when($cinemaIds->isNotEmpty(), function (Builder $query) use ($cinemaIds) {
+                $query->whereHas('cinemas', function (Builder $query) use ($cinemaIds) {
+                    $query->whereIn('cinema_id', $cinemaIds->toArray());
+                });
+            })
+            ->paginate(config('app.pagination_limit'));
     }
 
     /**
