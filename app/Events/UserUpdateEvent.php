@@ -11,6 +11,7 @@ class UserUpdateEvent
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
+    public bool $blockedIsDirty;
     /**
      *
      * Create a new event instance.
@@ -19,5 +20,6 @@ class UserUpdateEvent
         public readonly User $user,
     )
     {
+        $this->blockedIsDirty = $user->isDirty('blocked_until');
     }
 }

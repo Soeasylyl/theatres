@@ -22,7 +22,7 @@
         <tr>
             <td>
                 @if ($user)
-                    Вы заблокированны до {{ $user->blocked_until->format('d-m-Y H:i') }}
+                    Вы заблокированны до {{ optional($user->blocked_until)->format('d-m-Y H:i') }}
                 @endif
             </td>
         </tr>
