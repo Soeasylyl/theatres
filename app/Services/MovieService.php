@@ -9,7 +9,6 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Carbon;
 
-
 class MovieService
 {
     public function __construct(private readonly MovieRepositoryInterface $movieRepository)
