@@ -43,7 +43,7 @@ class CheckUserAccessMiddleware
             ! $currentUser ||
             (! $currentUser->hasRole(RolesUsersEnum::SUPER_ADMIN->value) && $currentUser->cinemas->isEmpty())
         ) {
-            Log::warning('Access denied for user ' . ($currentUser ? $currentUser->id : 'Guest') . ' to user ' . $requestedUser->id);
+            Log::channel('check_user_access')->warning('Access denied for user ' . ($currentUser ? $currentUser->id : 'Guest') . ' to user ' . $requestedUser->id . ' ip address ' . $request->ip());
             abort(404);
         }
 

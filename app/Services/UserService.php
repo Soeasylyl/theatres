@@ -60,7 +60,11 @@ class UserService
      */
     public function createUser(CreateUserDTO $requestDTO): User
     {
-        $user = $this->userRepository->createUser(requestDTO: $requestDTO);
+        try {
+            $user = $this->userRepository->createUser(requestDTO: $requestDTO);
+        } catch (\Exception $e) {
+            Log::error("Failed to create user: {$e->getMessage()}");
+        }
 
         if ($requestDTO->getCinemaId()) {
             $this->userRepository->attachUserToCinema(
@@ -72,8 +76,6 @@ class UserService
         if ($roleName = $requestDTO->getRoleName()) {
             $user->assignRole(roles: $roleName);
         }
-
-        Log::info('User created: ' . $user->id);
 
         return $user;
     }
@@ -109,9 +111,11 @@ class UserService
             $this->checkAdminEditingPermission(user: $user, producer: $requestDTO->getProducer());
         }
 
-        $this->userRepository->updateInfoByUser(requestDTO: $requestDTO, user: $user);
-
-        Log::info('User info updated: ' . $user->id);
+        try {
+            $this->userRepository->updateInfoByUser(requestDTO: $requestDTO, user: $user);
+        } catch (\Exception $e) {
+            Log::error("Failed to update user info: {$e->getMessage()} user id: {$user->id}");
+        }
 
         return $user;
     }
@@ -138,7 +142,11 @@ class UserService
             throw new \Exception('Текущий пароль неверен.');
         }
 
-        $this->userRepository->updatePasswordByUser(requestDTO: $requestDTO, user: $user);
+        try {
+            $this->userRepository->updatePasswordByUser(requestDTO: $requestDTO, user: $user);
+        } catch (\Exception $e) {
+            Log::error("Failed to update user password: {$e->getMessage()} user id: {$user->id}");
+        }
 
         return $user;
     }
@@ -172,9 +180,11 @@ class UserService
         $user = $this->userRepository->getUserByIdOrFail(userId: $deleteUserDTO->getUserId());
         $this->checkAdminEditingPermission(user: $user, producer: $deleteUserDTO->getProducer());
 
-        Log::info('User deleted: ' . $user->id);
-
-        $user->delete();
+        try {
+            $user->delete();
+        } catch (\Exception $e) {
+            Log::error('Failed to delete user: ' . $e->getMessage());
+        }
     }
 
     /**
@@ -208,11 +218,15 @@ class UserService
             throw new \Exception('Администратор не может давать роль администратора.');
         }
 
-        if ($user->roles->first() !== null) {
-            $user->removeRole(role: $user->roles->first()->name);        //deleting the current user role
-        }
+        try {
+            if ($user->roles->first() !== null) {
+                $user->removeRole(role: $user->roles->first()->name);        //deleting the current user role
+            }
 
-        $user->assignRole(roles: $role->value);
+            $user->assignRole(roles: $role->value);
+        } catch (\Exception $e) {
+            Log::error("Failed to update user role: {$e->getMessage()} user id: {$user->id}");
+        }
 
         return $user;
     }
@@ -228,9 +242,12 @@ class UserService
     {
         $user = $this->userRepository->getUserByIdOrFail(userId: $banUserDTO->getUserId());
         $this->checkAdminEditingPermission(user: $user, producer: $banUserDTO->getProducer());
-        $this->userRepository->blockUser(user: $user, date: $banUserDTO->getExpirationDate());
 
-        Log::info('User blocked: ' . $user->id);
+        try {
+            $this->userRepository->blockUser(user: $user, date: $banUserDTO->getExpirationDate());
+        } catch (\Exception $e) {
+            Log::error("Failed to block user: {$e->getMessage()} user id: {$user->id}");
+        }
 
         return $user;
     }

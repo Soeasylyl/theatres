@@ -17,8 +17,11 @@ class UserUnbannedListener implements ShouldQueue
     public function handle(UserUpdateEvent $event): void
     {
         if ($event->blockedIsDirty && $event->user->blocked_until === null) {
-            Log::info('Sending unban notification email to ' . $event->user->email);
-            Mail::to($event->user->email)->send(new UnbanNotificationMail($event->user));
+            try {
+                Mail::to($event->user->email)->send(new UnbanNotificationMail($event->user));
+            } catch (\Exception $e) {
+                Log::error('Failed to send unban notification email to ' . $event->user->email . ': ' . $e->getMessage());
+            }
         }
     }
 }
