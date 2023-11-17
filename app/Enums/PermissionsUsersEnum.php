@@ -20,6 +20,8 @@ enum PermissionsUsersEnum: string
     case MANAGE_SEATS = 'manage-seats';
     #[Description('Управление пользователями')]
     case MANAGE_USERS = 'manage-users';
+    #[Description('Управление фильмами')]
+    case MANAGE_MOVIES = 'manage_movies';
     #[Description('Управление администраторами')]
     case MANAGE_ADMINS = 'manage-admins';
     #[Description('Просмотр административной панели')]

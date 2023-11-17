@@ -16,7 +16,7 @@
                 </div>
                 @endif
 
-                @if(!($user->hasRole(App\Enums\RolesUsersEnum::SUPER_ADMIN->value)))
+                @if(!($user->hasRole(App\Enums\RolesUsersEnum::SUPER_ADMIN->value)) && !($user->hasRole(App\Enums\RolesUsersEnum::MODERATOR->value)))
                     <div class="admin-container__items">
                         <label for="current_password">{{ __('Кинотеатры к которым относится пользователь:') }}</label>
                         <label class="admin-container__label">

@@ -133,5 +133,4 @@ return [
             'level' => 'warning',
         ],
     ],
-
 ];
