@@ -19,7 +19,7 @@ use function PHPUnit\Framework\isTrue;
 class CheckUserAccessMiddleware
 {
 
-    public function __construct(private readonly UserRepositoryInterface   $userRepository)
+    public function __construct(private readonly UserRepositoryInterface $userRepository)
     {
     }
 
@@ -41,9 +41,20 @@ class CheckUserAccessMiddleware
 
         if (
             ! $currentUser ||
-            (! $currentUser->hasRole(RolesUsersEnum::SUPER_ADMIN->value) && $currentUser->cinemas->isEmpty())
+            (
+                $currentUser->id != $requestedUser->id &&
+                ! $currentUser->hasRole(RolesUsersEnum::SUPER_ADMIN->value) &&
+                (
+                    ! $currentUser->hasRole(RolesUsersEnum::CINEMA_ADMIN->value) ||
+                    (
+                        $currentUser->hasRole(RolesUsersEnum::CINEMA_ADMIN->value) &&
+                        ! $currentUser->cinemas->contains($requestedUser->cinemas->first())
+                    )
+                )
+            )
         ) {
             Log::channel('check_user_access')->warning('Access denied for user ' . ($currentUser ? $currentUser->id : 'Guest') . ' to user ' . $requestedUser->id . ' ip address ' . $request->ip());
+
             abort(404);
         }
 

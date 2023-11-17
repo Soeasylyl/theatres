@@ -27,7 +27,7 @@ class MovieController extends BaseAdminController
     {
         $movies = $this->movieService->getAllMovies();
 
-        return view('admin.pages.movies.movies-information', compact('movies'));
+        return view('admin.pages.movies.movies', compact('movies'));
     }
 
     /**
@@ -36,8 +36,13 @@ class MovieController extends BaseAdminController
      * @param Movie $movie
      * @return Application|Factory|View|\Illuminate\Foundation\Application
      */
-    public function show(Movie $movie)
+    public function edit(Movie $movie)
     {
-        return view('public.pages.movie', compact('movie'));
+        return view('admin.pages.movies.edit', compact('movie'));
+    }
+
+    public function show()
+    {
+        return view('admin.pages.movies.add');
     }
 }

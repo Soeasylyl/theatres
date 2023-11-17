@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers\Public;
 
+use App\Models\Movie;
 use App\Services\MovieService;
+use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
 
 class HomeController extends BasePublicController
 {
@@ -23,5 +27,16 @@ class HomeController extends BasePublicController
         $data = $this->movieService->getRandomMoviesWithScreenings();
 
         return view('public.pages.home', $data);
+    }
+
+    /**
+     * Displays the movie information page.
+     *
+     * @param Movie $movie
+     * @return Application|Factory|View|\Illuminate\Foundation\Application
+     */
+    public function show(Movie $movie)
+    {
+        return view('admin.pages.users.edit', compact('movie'));
     }
 }
