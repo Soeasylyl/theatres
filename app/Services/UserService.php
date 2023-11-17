@@ -15,6 +15,7 @@ use App\Repositories\Interfaces\CinemaRepositoryInterface;
 use App\Repositories\Interfaces\UserRepositoryInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 
 class UserService
 {
@@ -72,6 +73,8 @@ class UserService
             $user->assignRole(roles: $roleName);
         }
 
+        Log::info('User created: ' . $user->id);
+
         return $user;
     }
 
@@ -107,6 +110,8 @@ class UserService
         }
 
         $this->userRepository->updateInfoByUser(requestDTO: $requestDTO, user: $user);
+
+        Log::info('User info updated: ' . $user->id);
 
         return $user;
     }
@@ -167,6 +172,8 @@ class UserService
         $user = $this->userRepository->getUserByIdOrFail(userId: $deleteUserDTO->getUserId());
         $this->checkAdminEditingPermission(user: $user, producer: $deleteUserDTO->getProducer());
 
+        Log::info('User deleted: ' . $user->id);
+
         $user->delete();
     }
 
@@ -222,6 +229,8 @@ class UserService
         $user = $this->userRepository->getUserByIdOrFail(userId: $banUserDTO->getUserId());
         $this->checkAdminEditingPermission(user: $user, producer: $banUserDTO->getProducer());
         $this->userRepository->blockUser(user: $user, date: $banUserDTO->getExpirationDate());
+
+        Log::info('User blocked: ' . $user->id);
 
         return $user;
     }

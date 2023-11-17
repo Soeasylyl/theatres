@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpFoundation\Response;
 use function PHPUnit\Framework\isTrue;
 
@@ -42,6 +43,7 @@ class CheckUserAccessMiddleware
             ! $currentUser ||
             (! $currentUser->hasRole(RolesUsersEnum::SUPER_ADMIN->value) && $currentUser->cinemas->isEmpty())
         ) {
+            Log::warning('Access denied for user ' . ($currentUser ? $currentUser->id : 'Guest') . ' to user ' . $requestedUser->id);
             abort(404);
         }
 

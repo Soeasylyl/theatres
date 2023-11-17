@@ -5,6 +5,7 @@ namespace App\Listeners;
 use App\Events\UserUpdateEvent;
 use App\Mail\UnbanNotificationMail;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
 class UserUnbannedListener implements ShouldQueue
@@ -16,7 +17,8 @@ class UserUnbannedListener implements ShouldQueue
     public function handle(UserUpdateEvent $event): void
     {
         if ($event->blockedIsDirty && $event->user->blocked_until === null) {
-                 Mail::to($event->user->email)->send(new UnbanNotificationMail($event->user));
-            }
+            Log::info('Sending unban notification email to ' . $event->user->email);
+            Mail::to($event->user->email)->send(new UnbanNotificationMail($event->user));
+        }
     }
 }
