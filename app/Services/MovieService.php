@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\DTO\Movies\SearchMovieDTO;
 use App\Repositories\Interfaces\MovieRepositoryInterface;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -40,10 +41,11 @@ class MovieService
     /**
      * Returns a paginated list of all cinemas with auditoriums.
      *
+     * @param SearchMovieDTO $SearchMovieDTO
      * @return LengthAwarePaginator
      */
-    public function getAllMovies(): LengthAwarePaginator
+    public function getAllMovies(SearchMovieDTO $SearchMovieDTO): LengthAwarePaginator
     {
-        return $this->movieRepository->getMoviesPaginatedList();
+        return $this->movieRepository->getMoviesPaginatedList(searchTern: $SearchMovieDTO->getSearchTerm());
     }
 }

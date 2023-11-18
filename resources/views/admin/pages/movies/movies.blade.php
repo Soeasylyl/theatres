@@ -22,12 +22,9 @@
                 @hasrole(\App\Enums\RolesUsersEnum::SUPER_ADMIN->value . '|' . App\Enums\RolesUsersEnum::MODERATOR->value)
                 <div class="admin-container__menu">
                     <a class="page-wrapper__panel-btn"
-                       @php
-                           // TODO: Вставить роут для перехода на страницу добавления фильма!
-                       @endphp
                        href="{{ route('movie.create') }}"> {{ __('Добавить фильм') }}</a>
 
-                    <form method="get" action="#" class="admin-container__search-wrapper" >
+                    <form method="get" action="{{ route('movies') }}" class="admin-container__search-wrapper" >
 
                         <div class="admin-container__search-element-wrapper">
                             <input name="search" type="text"
@@ -86,7 +83,7 @@
                     @endforelse
                     </tbody>
                 </table>
-                {{ $movies->links('admin.partials.pagination') }}
+                {{ $movies->appends(['search' => $searchTern])->links('admin.partials.pagination') }}
             </div>
         </div>
     </div>
