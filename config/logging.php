@@ -127,7 +127,7 @@ return [
             'path' => storage_path('logs/laravel.log'),
         ],
 
-        'check_user_access' => [
+        'unpermitted-access' => [
             'driver' => 'single',
             'path' => storage_path('logs/check_user_access.log'),
             'level' => 'warning',

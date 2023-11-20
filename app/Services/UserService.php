@@ -57,6 +57,7 @@ class UserService
      *
      * @param CreateUserDTO $requestDTO
      * @return User
+     * @throws \Exception
      */
     public function createUser(CreateUserDTO $requestDTO): User
     {
@@ -64,6 +65,7 @@ class UserService
             $user = $this->userRepository->createUser(requestDTO: $requestDTO);
         } catch (\Exception $e) {
             Log::error("Failed to create user: {$e->getMessage()}");
+            throw new \Exception('Не удалось создать пользователя.');
         }
 
         if ($requestDTO->getCinemaId()) {
@@ -115,6 +117,7 @@ class UserService
             $this->userRepository->updateInfoByUser(requestDTO: $requestDTO, user: $user);
         } catch (\Exception $e) {
             Log::error("Failed to update user info: {$e->getMessage()} user id: {$user->id}");
+            throw new \Exception('Не удалось обновить информацию.');
         }
 
         return $user;
@@ -146,6 +149,7 @@ class UserService
             $this->userRepository->updatePasswordByUser(requestDTO: $requestDTO, user: $user);
         } catch (\Exception $e) {
             Log::error("Failed to update user password: {$e->getMessage()} user id: {$user->id}");
+            throw new \Exception('Не удалось изменить пароль.');
         }
 
         return $user;
@@ -184,6 +188,7 @@ class UserService
             $user->delete();
         } catch (\Exception $e) {
             Log::error('Failed to delete user: ' . $e->getMessage());
+            throw new \Exception('Не удалось удалить пользователя.');
         }
     }
 
@@ -247,6 +252,7 @@ class UserService
             $this->userRepository->blockUser(user: $user, date: $banUserDTO->getExpirationDate());
         } catch (\Exception $e) {
             Log::error("Failed to block user: {$e->getMessage()} user id: {$user->id}");
+            throw new \Exception('Не удалось заблокировать пользователя.');
         }
 
         return $user;
