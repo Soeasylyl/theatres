@@ -63,8 +63,9 @@ class UserService
     {
         try {
             $user = $this->userRepository->createUser(requestDTO: $requestDTO);
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             Log::error("Failed to create user: {$e->getMessage()}");
+
             throw new \Exception('Не удалось создать пользователя.');
         }
 
@@ -115,8 +116,9 @@ class UserService
 
         try {
             $this->userRepository->updateInfoByUser(requestDTO: $requestDTO, user: $user);
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             Log::error("Failed to update user info: {$e->getMessage()} user id: {$user->id}");
+
             throw new \Exception('Не удалось обновить информацию.');
         }
 
@@ -147,8 +149,9 @@ class UserService
 
         try {
             $this->userRepository->updatePasswordByUser(requestDTO: $requestDTO, user: $user);
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             Log::error("Failed to update user password: {$e->getMessage()} user id: {$user->id}");
+
             throw new \Exception('Не удалось изменить пароль.');
         }
 
@@ -186,8 +189,9 @@ class UserService
 
         try {
             $user->delete();
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             Log::error('Failed to delete user: ' . $e->getMessage());
+
             throw new \Exception('Не удалось удалить пользователя.');
         }
     }
@@ -207,6 +211,8 @@ class UserService
         );
         $role = RolesUsersEnum::tryFrom(value: $requestDTO->getRoleName());
         $hasCinemaAdminRole = $requestDTO->getProducer()->hasRole(roles: RolesUsersEnum::CINEMA_ADMIN);
+        $userRole = $user->roles->first();
+
 
         $this->checkAdminEditingPermission(
             user: $user,
@@ -224,13 +230,15 @@ class UserService
         }
 
         try {
-            if ($user->roles->first() !== null) {
-                $user->removeRole(role: $user->roles->first()->name);        //deleting the current user role
+            if ($userRole !== null) {
+                $user->removeRole(role: $userRole->name);        //deleting the current user role
             }
 
             $user->assignRole(roles: $role->value);
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             Log::error("Failed to update user role: {$e->getMessage()} user id: {$user->id}");
+
+            throw new \Exception('Не удалось изменить роль.');
         }
 
         return $user;
@@ -250,8 +258,9 @@ class UserService
 
         try {
             $this->userRepository->blockUser(user: $user, date: $banUserDTO->getExpirationDate());
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             Log::error("Failed to block user: {$e->getMessage()} user id: {$user->id}");
+
             throw new \Exception('Не удалось заблокировать пользователя.');
         }
 
