@@ -1,0 +1,33 @@
+.admin-movies {
+
+    &__header {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    &__form {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: repeat(5, 1fr) 1fr;
+        gap: 20px;
+    }
+
+    &__admin-movies__grid-items{
+        grid-row: 1/5;
+    }
+
+    &__item-body {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        box-sizing: border-box;
+
+        textarea {
+
+            width: 100%;
+            min-height: 100px;
+            resize: none;
+        }
+    }
+}
