@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\DTO\Movies\SearchMovieDTO;
 use App\Models\Movie;
 use App\Repositories\Interfaces\MovieRepositoryInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
@@ -16,11 +17,16 @@ class MovieRepository implements MovieRepositoryInterface
     /**
      * Get a paginated list of movies.
      *
+     * @param string|null $searchTern
      * @return LengthAwarePaginator
      */
-    public function getMoviesPaginatedList(): LengthAwarePaginator
+    public function getMoviesPaginatedList(?string $searchTern): LengthAwarePaginator
     {
-        return Movie::paginate(config('app.pagination_limit'));
+        return Movie::query()
+            ->when($searchTern, function (Builder $query) use ($searchTern) {
+                $query->where('name', 'ilike', "%$searchTern%");
+            })
+            ->paginate(config('app.pagination_limit'));
     }
 
     /**

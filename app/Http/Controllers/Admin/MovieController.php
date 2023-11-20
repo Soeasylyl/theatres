@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\DTO\Movies\SearchMovieDTO;
+use App\Http\Requests\Admin\Movies\SearchRequest;
 use App\Models\Movie;
 use App\Services\MovieService;
 use Illuminate\Contracts\Foundation\Application;
@@ -23,11 +25,17 @@ class MovieController extends BaseAdminController
      *
      * @return Renderable
      */
-    public function index()
+    public function index(SearchRequest $request)
     {
-        $movies = $this->movieService->getAllMovies();
+        $searchTern = $request->input('search');
 
-        return view('admin.pages.movies.movies', compact('movies'));
+        $SearchMovieDTO = new SearchMovieDTO(
+          searchTerm: $searchTern,
+        );
+
+        $movies = $this->movieService->getAllMovies(SearchMovieDTO: $SearchMovieDTO);
+
+        return view('admin.pages.movies.movies', compact('movies', 'searchTern'));
     }
 
     /**
