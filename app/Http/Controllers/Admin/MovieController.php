@@ -29,11 +29,11 @@ class MovieController extends BaseAdminController
     {
         $searchTern = $request->input('search');
 
-        $SearchMovieDTO = new SearchMovieDTO(
+        $searchMovieDTO = new SearchMovieDTO(
           searchTerm: $searchTern,
         );
 
-        $movies = $this->movieService->getAllMovies(SearchMovieDTO: $SearchMovieDTO);
+        $movies = $this->movieService->getAllMovies(dto: $searchMovieDTO);
 
         return view('admin.pages.movies.movies', compact('movies', 'searchTern'));
     }

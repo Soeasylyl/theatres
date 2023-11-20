@@ -41,11 +41,11 @@ class MovieService
     /**
      * Returns a paginated list of all cinemas with auditoriums.
      *
-     * @param SearchMovieDTO $SearchMovieDTO
+     * @param SearchMovieDTO $dto
      * @return LengthAwarePaginator
      */
-    public function getAllMovies(SearchMovieDTO $SearchMovieDTO): LengthAwarePaginator
+    public function getAllMovies(SearchMovieDTO $dto): LengthAwarePaginator
     {
-        return $this->movieRepository->getMoviesPaginatedList(searchTern: $SearchMovieDTO->getSearchTerm());
+        return $this->movieRepository->getMoviesPaginatedList(searchTern: $dto->getSearchTerm());
     }
 }
