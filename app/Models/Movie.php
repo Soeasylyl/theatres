@@ -132,12 +132,4 @@ class Movie extends Model
             name: 'model',
         );
     }
-
-    /**
-     * @return string
-     */
-    public function getRouteKeyName(): string
-    {
-        return 'slug';
-    }
 }

@@ -37,6 +37,6 @@ class HomeController extends BasePublicController
      */
     public function show(Movie $movie)
     {
-        return view('admin.pages.users.edit', compact('movie'));
+        return view('public.pages.movie', compact('movie'));
     }
 }

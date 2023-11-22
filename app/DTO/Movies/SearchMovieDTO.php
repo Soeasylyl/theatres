@@ -2,8 +2,6 @@
 
 namespace App\DTO\Movies;
 
-use App\Models\User;
-
 class SearchMovieDTO
 {
     /**

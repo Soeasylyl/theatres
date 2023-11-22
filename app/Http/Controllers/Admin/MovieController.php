@@ -4,12 +4,14 @@ namespace App\Http\Controllers\Admin;
 
 use App\DTO\Movies\SearchMovieDTO;
 use App\Http\Requests\Admin\Movies\SearchRequest;
+use App\Http\Requests\Admin\Movies\UpdateMovieRequest;
 use App\Models\Movie;
 use App\Services\MovieService;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 
 class MovieController extends BaseAdminController
 {
@@ -47,6 +49,19 @@ class MovieController extends BaseAdminController
     public function edit(Movie $movie)
     {
         return view('admin.pages.movies.edit', compact('movie'));
+    }
+
+    /**
+     * Updating information for the selected Movie
+     *
+     * @param UpdateMovieRequest $request
+     * @return RedirectResponse
+     */
+    public function update(UpdateMovieRequest $request)
+    {
+
+
+        return redirect()->route('admin.pages.movies.edit')->with('message', 'Информация успешно обновлена');
     }
 
     public function show()
