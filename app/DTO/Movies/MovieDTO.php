@@ -3,30 +3,38 @@
 namespace App\DTO\Movies;
 
 use Carbon\Carbon;
+use Illuminate\Http\UploadedFile;
 
-class EditMovieDTO
+class MovieDTO
 {
     /**
+     * @param int $movieId
      * @param string $name
      * @param string $dateStart
      * @param string $sessionDuration
      * @param string $rating
      * @param int $ageLimit
      * @param string $description
-     * @param string|null $moviePoster
-     * @param string|null $movieFrames
+     * @param UploadedFile|null $moviePoster
+     * @param array|null $movieFrames
      */
     public function __construct(
+        private readonly int $movieId,
         private readonly string $name,
         private readonly string $dateStart,
         private readonly string $sessionDuration,
         private readonly string $rating,
         private readonly int $ageLimit,
         private readonly string $description,
-        private readonly ?string $moviePoster,
-        private readonly ?string $movieFrames,
+        private readonly ?UploadedFile $moviePoster,
+        private readonly ?array $movieFrames,
     )
     {
+    }
+
+    public function getMovieId(): int
+    {
+        return $this->movieId;
     }
 
     /**
@@ -78,17 +86,17 @@ class EditMovieDTO
     }
 
     /**
-     * @return string|null
+     * @return UploadedFile|null
      */
-    public function getMoviePoster(): ?string
+    public function getMoviePoster(): ?UploadedFile
     {
         return $this->moviePoster;
     }
 
     /**
-     * @return string|null
+     * @return array|null
      */
-    public function getMovieFrames(): ?string
+    public function getMovieFrames(): ?array
     {
         return $this->movieFrames;
     }

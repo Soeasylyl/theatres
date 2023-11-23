@@ -7,6 +7,11 @@
                 <div class="admin-container__form-header">
                     {{ __('Редактирование информации') }}
                 </div>
+                @error('error')
+                <div class="error-messages">
+                    {{$message}}
+                </div>
+                @enderror
                 <div class="admin-movies__body">
                     <form method="POST"
                           action="{{ route('movie.update',  ['movie' => $movie->id]) }}"

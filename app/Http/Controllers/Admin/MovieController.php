@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\DTO\Movies\MovieDTO;
 use App\DTO\Movies\SearchMovieDTO;
 use App\Http\Requests\Admin\Movies\SearchRequest;
 use App\Http\Requests\Admin\Movies\UpdateMovieRequest;
@@ -32,7 +33,7 @@ class MovieController extends BaseAdminController
         $searchTern = $request->input('search');
 
         $searchMovieDTO = new SearchMovieDTO(
-          searchTerm: $searchTern,
+            searchTerm: $searchTern,
         );
 
         $movies = $this->movieService->getAllMovies(dto: $searchMovieDTO);
@@ -55,13 +56,32 @@ class MovieController extends BaseAdminController
      * Updating information for the selected Movie
      *
      * @param UpdateMovieRequest $request
+     * @param int $movieId
      * @return RedirectResponse
      */
-    public function update(UpdateMovieRequest $request)
+    public function update(UpdateMovieRequest $request, int $movieId)
     {
+        $updateMovieDTO = new MovieDTO(
+            movieId: $movieId,
+            name: $request->input('name'),
+            dateStart: $request->input('date_start'),
+            sessionDuration: $request->input('session_duration'),
+            rating: $request->input('rating'),
+            ageLimit: $request->input('age_limit'),
+            description: $request->input('description'),
+            moviePoster: $request->file('poster'),
+            movieFrames: $request->file('frames'),
+        );
 
+        try {
+            $this->movieService->updateMovie(dto: $updateMovieDTO);
 
-        return redirect()->route('admin.pages.movies.edit')->with('message', 'Информация успешно обновлена');
+            return redirect()
+                ->route('movies')
+                ->with('successMessages', 'Информация о фильме ' . $updateMovieDTO->getName() . ' успешно обновлена');
+        } catch (\Throwable $e) {
+            return redirect()->back()->with('error', $e->getMessage());
+        }
     }
 
     public function show()
