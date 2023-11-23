@@ -37,7 +37,7 @@ interface MovieRepositoryInterface
      * @return Movie The retrieved movie with specified relationships.
      * @throws ModelNotFoundException If the movie with the given ID is not found.
      */
-    public function getMovieWithRelationsFindOrFail(?array $relations, int $movieId): Movie;
+    public function getMovieByIdOrFail(int $movieId, ?array $relations = []): Movie;
 
     /**
      * Update the information of a movie with the provided data.

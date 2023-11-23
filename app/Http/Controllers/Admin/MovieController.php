@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\DTO\Movies\CreateMovieDTO;
+use App\DTO\Movies\DeleteMovieDTO;
 use App\DTO\Movies\UpdateMovieDTO;
 use App\DTO\Movies\SearchMovieDTO;
 use App\Http\Requests\Admin\Movies\SearchRequest;
@@ -118,6 +119,28 @@ class MovieController extends BaseAdminController
             return redirect()
                 ->route('movies')
                 ->with('successMessages', 'Фильм ' . $createMovieDTO->getName() . ' успешно добавлен');
+        } catch (\Throwable $e) {
+            return redirect()->back()->with('error', $e->getMessage());
+        }
+    }
+
+    /**
+     * Delete Movie
+     * Attempts to delete a movie based on the provided movie ID.
+     *
+     * @param int $id
+     * @return RedirectResponse
+     */
+    public function delete(int $id)
+    {
+        $deleteMovieDto = new DeleteMovieDTO(
+            movieId: $id,
+        );
+
+        try {
+            $this->movieService->deleteMovie(movieId: $deleteMovieDto->getMovieId());
+
+            return redirect()->route('movies')->with('successMessages', 'Фильм успешно удален.');
         } catch (\Throwable $e) {
             return redirect()->back()->with('error', $e->getMessage());
         }

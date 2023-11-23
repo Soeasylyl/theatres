@@ -64,9 +64,9 @@ class MovieService
     public function updateMovie(UpdateMovieDTO $dto): Movie
     {
         $slug = $this->generateUniqueSlug($dto->getName(), $dto->getMovieId());
-        $movie = $this->movieRepository->getMovieWithRelationsFindOrFail(
-            relations: ['medias'],
+        $movie = $this->movieRepository->getMovieByIdOrFail(
             movieId: $dto->getMovieId(),
+            relations: ['medias'],
         );
 
         try {
@@ -170,9 +170,30 @@ class MovieService
         if ($count > 0) {
             $slug = $slug . '-' . $attempt;
             // Recursive call to the function with a new attempt identifier
-            return $this->generateUniqueSlug($name, $id, $attempt + 1);
+            return $this->generateUniqueSlug(
+                name: $name,
+                id: $id,
+                attempt: $attempt + 1,
+            );
         }
 
         return $slug;
+    }
+
+    /**
+     * Delete a movie
+     *
+     * @param int $movieId
+     * @return void
+     */
+    public function deleteMovie(int $movieId): void
+    {
+        $movie = $this->movieRepository->getMovieByIdOrFail(movieId: $movieId);
+
+        try {
+            $movie->delete();
+        } catch (\Exception $e) {
+            Log::error("Failed to delete movie: {$e->getMessage()} movie id: {$movie->id}");
+        }
     }
 }

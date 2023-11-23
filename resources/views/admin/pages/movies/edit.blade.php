@@ -7,11 +7,21 @@
                 <div class="admin-container__form-header">
                     {{ __('Редактирование информации') }}
                 </div>
-                @error('error')
-                <div class="error-messages">
-                    {{$message}}
+
+                @if (session('error'))
+                    <div class="error-messages">
+                        {{ session('error') }}
+                    </div>
+                @endif
+
+                <div class="success-messages-wrapper">
+                    @if(session('success_update_role'))
+                        <div class="success-messages">
+                            {{ session('success_update_role') }}
+                        </div>
+                    @endif
                 </div>
-                @enderror
+
                 <div class="admin-movies__body">
                     <form method="POST"
                           action="{{ route('movie.update',  ['movie' => $movie->id]) }}"
@@ -156,8 +166,19 @@
                             </button>
                         </div>
                     </form>
+
+                    <form method="POST" action="{{ route('movie.delete', $movie->id) }}">
+                        @csrf
+                        @method('DELETE')
+                        <div class="page-wrapper__panel-btn-wrapper grid-center-item"
+                             style="margin-left: auto; display: block; width: 20%">
+                            <button type="submit" class="page-wrapper__panel-btn "
+                                    onclick="return confirm('Вы уверены, что хотите удалить фильм {{ $movie->name }}?')">
+                                {{ __('Удалить фильм') }}
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
-    </div>
 @endsection
