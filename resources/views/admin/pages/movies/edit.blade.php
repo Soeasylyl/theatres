@@ -20,22 +20,27 @@
                         @method('PATCH')
                         <div class="admin-movies__form-left">
                             <div class="admin-movies__items">
+                                @error('name')
+                                <div class="error-messages">
+                                    {{$message}}
+                                </div>
+                                @enderror
                                 <div class="admin-movies__item-header">
                                     {{ __('Название:') }}
                                 </div>
                                 <div class="admin-movies__item-body">
                                     <input type="text" name="name"
                                            value="{{ old('name', $movie->name) }} "
-                                           autocomplete="off" required>
-                                    @error('name')
-                                    <div class="error-messages">
-                                        {{$message}}
-                                    </div>
-                                    @enderror
-
+                                           autocomplete="off" required
+                                           placeholder="{{ __('Название фильма') }}">
                                 </div>
                             </div>
                             <div class="admin-movies__items">
+                                @error('date_start')
+                                <div class="error-messages">
+                                    {{$message}}
+                                </div>
+                                @enderror
                                 <div class="admin-movies__item-header">
                                     {{ __('Дата мировой премьера:') }}
                                 </div>
@@ -43,109 +48,106 @@
                                     <input type="datetime-local" name="date_start"
                                            value="{{ old('date_start', $movie->date_start) }}"
                                            autocomplete="off" required>
-                                    @error('date_start')
-                                    <div class="error-messages">
-                                        {{$message}}
-                                    </div>
-                                    @enderror
                                 </div>
                             </div>
                             <div class="admin-movies__items">
+                                @error('session_duration')
+                                <div class="error-messages">
+                                    {{$message}}
+                                </div>
+                                @enderror
                                 <div class="admin-movies__item-header">
                                     {{ __('Длительность:') }}
                                 </div>
                                 <div class="admin-movies__item-body">
                                     <input type="text" name="session_duration"
                                            value="{{ old('session_duration', $movie->session_duration) }}"
-                                           autocomplete="off" required>
-                                    @error('session_duration')
-                                    <div class="error-messages">
-                                        {{$message}}
-                                    </div>
-                                    @enderror
+                                           autocomplete="off" required
+                                           placeholder="{{ __('Длину фильма в формате 02:12:00') }}">
                                 </div>
                             </div>
                             <div class="admin-movies__items">
+                                @error('rating')
+                                <div class="error-messages">
+                                    {{$message}}
+                                </div>
+                                @enderror
                                 <div class="admin-movies__item-header">
                                     {{ __('Рэйтинг:') }}
                                 </div>
                                 <div class="admin-movies__item-body">
                                     <input type="text" name="rating"
                                            value="{{ old('rating', $movie->rating) }}"
-                                           autocomplete="off" required>
-                                    @error('rating')
-                                    <div class="error-messages">
-                                        {{$message}}
-                                    </div>
-                                    @enderror
+                                           autocomplete="off" required
+                                           placeholder="{{ __('Рэйтинг фильма от 1.1 до 10') }}">
                                 </div>
                             </div>
                             <div class="admin-movies__items">
+                                @error('age_limit')
+                                <div class="error-messages">
+                                    {{$message}}
+                                </div>
+                                @enderror
                                 <div class="admin-movies__item-header">
                                     {{ __('Возрастное ограничение:') }}
                                 </div>
                                 <div class="admin-movies__item-body">
                                     <input type="text" name="age_limit"
                                            value="{{ old('age_limit', $movie->age_limit) }}"
-                                           autocomplete="off" required>
-                                    @error('age_limit')
-                                    <div class="error-messages">
-                                        {{$message}}
-                                    </div>
-                                    @enderror
+                                           autocomplete="off" required
+                                           placeholder="{{ __('Возрастное ограничение до 21 года') }}">
                                 </div>
                             </div>
-
                         </div>
                         <div class="admin-movies__form-right">
                             <div class="admin-movies__items">
+                                @error('description')
+                                <div class="error-messages">
+                                    {{$message}}
+                                </div>
+                                @enderror
                                 <div class="admin-movies__item-header">
                                     {{ __('Описание:') }}
                                 </div>
                                 <div class="admin-movies__item-body">
                                 <textarea type="text" name="description"
-                                          autocomplete="off"
-                                          required>{{ old('description', $movie->description) }}</textarea>
-                                    @error('description')
-                                    <div class="error-messages">
-                                        {{$message}}
-                                    </div>
-                                    @enderror
+                                          autocomplete="off" required
+                                          placeholder="{{ __('Описание сюжета фильма') }}">{{ old('description', $movie->description) }}</textarea>
                                 </div>
                             </div>
                         </div>
 
                         <div class="admin-movies__items">
+                            @error('poster')
+                            <div class="error-messages">
+                                {{$message}}
+                            </div>
+                            @enderror
                             <div class="admin-movies__item-header">
                                 {{ __('Загрузка афиши:') }}
                             </div>
                             <div class="admin-movies__item-body">
                                 <input type="file" name="poster"
                                        autocomplete="off">
-                                @error('poster')
-                                <div class="error-messages">
-                                    {{$message}}
-                                </div>
-                                @enderror
                             </div>
                         </div>
                         <div class="admin-movies__items">
+                            @error('frames')
+                            <div class="error-messages">
+                                {{$message}}
+                            </div>
+                            @enderror
+                            @error('frames.*')
+                            <div class="error-messages">
+                                {{$message}}
+                            </div>
+                            @enderror
                             <div class="admin-movies__item-header">
                                 {{ __('Загрузка медиа-файлов:') }}
                             </div>
                             <div class="admin-movies__item-body">
                                 <input type="file" name="frames[]"
                                        autocomplete="off" multiple>
-                                @error('frames')
-                                <div class="error-messages">
-                                    {{$message}}
-                                </div>
-                                @enderror
-                                @error('frames.*')
-                                <div class="error-messages">
-                                    {{$message}}
-                                </div>
-                                @enderror
                             </div>
                         </div>
                         <div class="login-container__button-wrapper" style="justify-content: center">

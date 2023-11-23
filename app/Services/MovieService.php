@@ -2,7 +2,8 @@
 
 namespace App\Services;
 
-use App\DTO\Movies\MovieDTO;
+use App\DTO\Movies\CreateMovieDTO;
+use App\DTO\Movies\UpdateMovieDTO;
 use App\DTO\Movies\SearchMovieDTO;
 use App\Models\Movie;
 use App\Repositories\Interfaces\MediaRepositoryInterface;
@@ -57,10 +58,10 @@ class MovieService
     /**
      * Update the movie information based on the provided DTO, including media files.
      *
-     * @param MovieDTO $dto The DTO containing updated movie information.
+     * @param UpdateMovieDTO $dto The DTO containing updated movie information.
      * @return Movie The updated movie model.
      */
-    public function updateMovie(MovieDTO $dto): Movie
+    public function updateMovie(UpdateMovieDTO $dto): Movie
     {
         $slug = $this->generateUniqueSlug($dto->getName(), $dto->getMovieId());
         $movie = $this->movieRepository->getMovieWithRelationsFindOrFail(
@@ -84,13 +85,34 @@ class MovieService
     }
 
     /**
+     * Create and Save Movie with Media Attachments
+     *
+     * @param CreateMovieDTO $dto The data transfer object containing movie information.
+     * @return Movie The created movie entity with associated media attachments.
+     */
+    public function createAndSaveMovieWithMedia(CreateMovieDTO $dto): Movie
+    {
+        $slug = $this->generateUniqueSlug($dto->getName());
+        $movie = $this->movieRepository->createMovie(dto: $dto, slug: $slug);
+
+        try {
+            $this->savePosterMedia(dto: $dto, movie: $movie);
+            $this->saveFramesMedia(dto: $dto, movie: $movie);
+        } catch (\Throwable $e) {
+            Log::error("Failed to save poster or frames: {$e->getMessage()} movie id: {$movie->id}");
+        }
+
+        return $movie;
+    }
+
+    /**
      * Save the poster media for the movie if provided in the DTO.
      *
-     * @param MovieDTO $dto The DTO containing movie information.
+     * @param UpdateMovieDTO|CreateMovieDTO $dto The DTO containing movie information.
      * @param Movie $movie The movie model to which the poster media will be associated.
      * @return Movie The movie model with updated poster media.
      */
-    private function savePosterMedia(MovieDTO $dto, Movie $movie): Movie
+    private function savePosterMedia(UpdateMovieDTO|CreateMovieDTO $dto, Movie $movie): Movie
     {
         if ($dto->getMoviePoster()) {
             $posterPath = $dto->getMoviePoster()->store('posters', 'public');
@@ -108,11 +130,11 @@ class MovieService
     /**
      * Save the frame media for the movie if provided in the DTO.
      *
-     * @param MovieDTO $dto The DTO containing movie information.
+     * @param UpdateMovieDTO|CreateMovieDTO $dto The DTO containing movie information.
      * @param Movie $movie The movie model to which the frame media will be associated.
      * @return Movie The movie model with updated frame media.
      */
-    private function saveFramesMedia(MovieDTO $dto, Movie $movie): Movie
+    private function saveFramesMedia(UpdateMovieDTO|CreateMovieDTO $dto, Movie $movie): Movie
     {
         if ($dto->getMovieFrames()) {
             foreach ($dto->getMovieFrames() as $frame) {
@@ -132,15 +154,15 @@ class MovieService
     /**
      * Generates a unique "slug" (URL-friendly string) for a movie based on its title.
      *
-     * @param string $title The title of the movie.
+     * @param string $name The name of the movie.
      * @param int $id The ID of the movie.
      * @param int $attempt The number of attempts to generate a unique slug (default is 1).
      *
      * @return string A unique slug for the movie.
      */
-    private function generateUniqueSlug(string $title, int $id, int $attempt = 1): string
+    private function generateUniqueSlug(string $name, int $id = 0, int $attempt = 1): string
     {
-        $transliteratedTitle = Str::slug($title);
+        $transliteratedTitle = Str::slug($name);
         $slug = strtolower(str_replace(' ', '-', $transliteratedTitle));
 
         $count = $this->movieRepository->countMoviesWithSlugExcludingId(slug: $slug, id: $id);
@@ -148,7 +170,7 @@ class MovieService
         if ($count > 0) {
             $slug = $slug . '-' . $attempt;
             // Recursive call to the function with a new attempt identifier
-            return $this->generateUniqueSlug($title, $id, $attempt + 1);
+            return $this->generateUniqueSlug($name, $id, $attempt + 1);
         }
 
         return $slug;
