@@ -8,7 +8,7 @@
 
     &__form {
         display: grid;
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(2, 50%);
         gap: 20px;
 
         :last-child {
@@ -61,6 +61,7 @@
         img {
             width: 150px;
             height: 210px;
+            object-fit: cover;
         }
     }
 

@@ -123,7 +123,7 @@ class MovieService
         if ($dto->getMoviePoster()) {
             $posterPath = $dto->getMoviePoster()->store('posters', 'public');
 
-            $movie = $this->mediaRepository->createMediaWithCollection(
+             $this->mediaRepository->createMediaWithCollection(
                 movie: $movie,
                 path: $posterPath,
                 collection: 'poster',
@@ -144,7 +144,7 @@ class MovieService
             foreach ($dto->getMovieFrames() as $frame) {
                 $framePath = $frame->store('frames', 'public');
 
-                $movie = $this->mediaRepository->createMediaWithCollection(
+                 $this->mediaRepository->createMediaWithCollection(
                     movie: $movie,
                     path: $framePath,
                     collection: 'frames',
