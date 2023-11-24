@@ -200,6 +200,12 @@ class MovieService
         }
     }
 
+    /**
+     * Deletes the media file(s) and associated Media object. Supports both a single Media object and a Media collection.
+     *
+     * @param Media|Collection|null $media
+     * @return void
+     */
     private function deleteMedia(Media|Collection|null $media): void
     {
         if ($media instanceof Media) {
