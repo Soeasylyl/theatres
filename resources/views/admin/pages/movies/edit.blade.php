@@ -133,12 +133,13 @@
                                 {{$message}}
                             </div>
                             @enderror
+                            <div id="previewMoviePoster" class="admin-movies__preview-container"></div>
                             <div class="admin-movies__item-header">
                                 {{ __('Загрузка афиши:') }}
                             </div>
                             <div class="admin-movies__item-body">
-                                <input type="file" name="poster"
-                                       autocomplete="off">
+                                <input id="posterMovieInput" type="file"
+                                       name="poster" autocomplete="off">
                             </div>
                         </div>
                         <div class="admin-movies__items">
@@ -152,11 +153,12 @@
                                 {{$message}}
                             </div>
                             @enderror
+                            <div id="previewMovieFrames" class="admin-movies__preview-container"></div>
                             <div class="admin-movies__item-header">
                                 {{ __('Загрузка медиа-файлов:') }}
                             </div>
                             <div class="admin-movies__item-body">
-                                <input type="file" name="frames[]"
+                                <input id="framesMovieInput" type="file" name="frames[]"
                                        autocomplete="off" multiple>
                             </div>
                         </div>

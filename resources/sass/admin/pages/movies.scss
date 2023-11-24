@@ -52,6 +52,18 @@
        }
    }
 
+    &__preview-container {
+        display: flex;
+        gap: 5px;
+        width: 100%;
+        overflow: auto;
+
+        img {
+            width: 150px;
+            height: 210px;
+        }
+    }
+
     &__item-body {
         display: flex;
 
