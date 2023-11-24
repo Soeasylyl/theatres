@@ -73,7 +73,8 @@ class MovieService
         );
 
         try {
-            $movie->medias()->delete();
+            $this->deleteMedia($movie->poster);
+            $this->deleteMedia($movie->frames);
 
             $this->movieRepository->updateMovieInfo(
                 movie: $movie,
