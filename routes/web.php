@@ -41,7 +41,18 @@ Route::prefix('admin')->middleware(['auth', 'isBlock', 'AdminAccess'])->group(fu
     });
 
     Route::prefix('theatres')->group(function () {
-        Route::get('/', [TheatreController::class, 'index'])->name('admin.theatres');
+        Route::get('/', [TheatreController::class, 'index'])->name('theatres');
+
+        // Theatre CRUD
+        Route::prefix('/')->middleware(['role:' . RolesUsersEnum::SUPER_ADMIN->value . '|' . RolesUsersEnum::CINEMA_ADMIN->value])->group(function () {
+           Route::get('{theatres}/edit',[TheatreController::class, 'edit'])->name('theatre.edit');
+           Route::patch('{theatres}/update', [TheatreController::class, 'update'])->name('theatre.update');
+           Route::delete('{theatres}', [TheatreController::class, 'delete'])->name('theatre.delete');
+
+           //Theatre creating
+            Route::get('/create', [TheatreController::class, 'show'])->name('theatre.show');
+            Route::post('/create',[TheatreController::class, 'create']);
+        });
     });
 
     Route::prefix('users')->middleware(['role:' . RolesUsersEnum::SUPER_ADMIN->value . '|' . RolesUsersEnum::CINEMA_ADMIN->value])->group(function () {

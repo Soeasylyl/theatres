@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\DTO\Theatres\SearchTheatreDTO;
+use App\Http\Requests\Admin\Theatres\SearchRequest;
 use App\Services\CinemaService;
 use Illuminate\Contracts\Support\Renderable;
 
@@ -16,9 +18,17 @@ class TheatreController extends BaseAdminController
      *
      * @return Renderable
      */
-    public function index()
+    public function index(SearchRequest $request)
     {
-        $theatres = $this->cinemaService->getCinemasWithHallsPaginated();
+        $authUser = auth()->user();
+        $searchTern = $request->input('search');
+
+        $searchTheatreDTO = new SearchTheatreDTO(
+            producer: $authUser,
+            searchTerm: $searchTern,
+        );
+
+        $theatres = $this->cinemaService->getCinemasWithHallsPaginated($searchTheatreDTO);
 
         return view('admin.pages.theatres.theatres-information', compact('theatres'));
     }

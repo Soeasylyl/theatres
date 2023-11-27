@@ -2,13 +2,10 @@
 
 namespace App\Services;
 
+use App\DTO\Theatres\SearchTheatreDTO;
 use App\Enums\RolesUsersEnum;
-use App\Models\Cinema;
-use App\Models\User;
 use App\Repositories\Interfaces\CinemaRepositoryInterface;
-use App\Repositories\Interfaces\UserRepositoryInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
-use Illuminate\Database\Eloquent\Collection;
 
 
 class CinemaService
@@ -31,10 +28,24 @@ class CinemaService
     /**
      * Returns a paginated list of cinemas with screens.
      *
+     * @param SearchTheatreDTO $dto
      * @return LengthAwarePaginator
      */
-    public function getCinemasWithHallsPaginated(): LengthAwarePaginator
+    public function getCinemasWithHallsPaginated(SearchTheatreDTO $dto): LengthAwarePaginator
     {
-        return $this->cinemaRepository->getCinemasPaginated(relations: ['halls']);
+        if (
+            $dto->getProducer()->hasRole(RolesUsersEnum::SUPER_ADMIN->value)
+//            || $dto->getProducer()->hasRole(RolesUsersEnum::MANAGER->value)
+        ) {
+            return $this->cinemaRepository->getTheatresPaginateList(
+                searchTerm: $dto->getSearchTerm(),
+                relations: ['halls'],
+            );
+        }
+
+        return $this->cinemaRepository->getFilteredTheatresByProducer(
+            authUser: $dto->getProducer(),
+            relations: ['halls'],
+        );
     }
 }
