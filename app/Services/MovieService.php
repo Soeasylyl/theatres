@@ -195,9 +195,11 @@ class MovieService
         try {
             $this->deleteMedia($movie->poster);
             $this->deleteMedia($movie->frames);
-            $movie->delete();
+            if (!$movie->delete()) {
+                Log::error("Failed to delete movie: Movie deletion failed. Movie ID: {$movie->id}");
+            }
         } catch (\Exception $e) {
-            Log::error("Failed to delete movie: {$e->getMessage()} movie id: {$movie->id}");
+            Log::error("Failed to delete movie: {$e->getMessage()}. Movie ID: {$movie->id}");
         }
     }
 
