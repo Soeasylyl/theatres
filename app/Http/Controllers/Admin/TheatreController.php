@@ -20,6 +20,6 @@ class TheatreController extends BaseAdminController
     {
         $theatres = $this->cinemaService->getCinemasWithHallsPaginated();
 
-        return view('admin.pages.theatres.theatres', compact('theatres'));
+        return view('admin.pages.theatres.theatres-information', compact('theatres'));
     }
 }
