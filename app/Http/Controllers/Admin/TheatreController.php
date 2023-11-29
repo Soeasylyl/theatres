@@ -6,7 +6,6 @@ use App\DTO\Theatres\CreateTheatreDTO;
 use App\DTO\Theatres\SearchTheatreDTO;
 use App\Http\Requests\Admin\Theatres\SearchRequest;
 use App\Http\Requests\Admin\Theatres\TheatreRequest;
-use App\Services\CinemaService;
 use App\Services\TheatreService;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\RedirectResponse;
@@ -14,10 +13,11 @@ use Illuminate\Http\RedirectResponse;
 class TheatreController extends BaseAdminController
 {
     public function __construct(
-        private readonly CinemaService  $cinemaService,
         private readonly TheatreService $theatreService)
     {
     }
+
+
 
     /**
      * Show the application dashboard.
@@ -34,7 +34,7 @@ class TheatreController extends BaseAdminController
             searchTerm: $searchTern,
         );
 
-        $theatres = $this->cinemaService->getCinemasWithHallsPaginated($searchTheatreDTO);
+        $theatres = $this->theatreService->getTheatresWithHallsPaginated($searchTheatreDTO);
 
         return view('admin.pages.theatres.theatres-information', compact('theatres', 'searchTern'));
     }

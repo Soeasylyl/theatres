@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Services\CinemaService;
+use App\Services\TheatreService;
 use Illuminate\Contracts\Support\Renderable;
 
 class AdminController extends BaseAdminController
@@ -10,9 +10,9 @@ class AdminController extends BaseAdminController
     /**
      * Create a new controller instance.
      *
-     * @param CinemaService $cinemaService
+     * @param TheatreService $theatreService
      */
-    public function __construct(private readonly CinemaService $cinemaService)
+    public function __construct(private readonly TheatreService $theatreService)
     {
     }
 

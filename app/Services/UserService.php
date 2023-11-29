@@ -11,7 +11,7 @@ use App\DTO\Users\UpdateUserPasswordDTO;
 use App\DTO\Users\UpdateUserRoleDTO;
 use App\Enums\RolesUsersEnum;
 use App\Models\User;
-use App\Repositories\Interfaces\CinemaRepositoryInterface;
+use App\Repositories\Interfaces\TheatreRepositoryInterface;
 use App\Repositories\Interfaces\UserRepositoryInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Hash;
@@ -20,11 +20,11 @@ class UserService
 {
     /**
      * @param UserRepositoryInterface $userRepository
-     * @param CinemaRepositoryInterface $cinemaRepository
+     * @param TheatreRepositoryInterface $theatreRepository
      */
     public function __construct(
         private readonly UserRepositoryInterface   $userRepository,
-        private readonly CinemaRepositoryInterface $cinemaRepository,
+        private readonly TheatreRepositoryInterface $theatreRepository,
     )
     {
     }
@@ -86,7 +86,7 @@ class UserService
         $user = $this->userRepository->getUserByIdOrFail(userId: $editUserDTO->getUserId());
         $userCinemasList = $user->cinemas;
         $userRole = $editUserDTO->getProducer()->roles->first();
-        $cinemas = $this->cinemaRepository->getCinemasPaginateList();
+        $cinemas = $this->theatreRepository->getCinemasPaginateList();
 
         return compact('user', 'userRole', 'cinemas', 'userCinemasList');
     }

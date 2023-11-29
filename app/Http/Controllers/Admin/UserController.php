@@ -17,7 +17,7 @@ use App\Http\Requests\Admin\Users\UpdatePasswordRequest;
 use App\Http\Requests\Admin\Users\UpdateProfileRequest;
 use App\Http\Requests\Admin\Users\UpdateRoleRequest;
 use App\Http\Requests\Admin\Users\UserRequest;
-use App\Services\CinemaService;
+use App\Services\TheatreService;
 use App\Services\UserService;
 use Carbon\Carbon;
 use Illuminate\Contracts\Foundation\Application;
@@ -30,11 +30,11 @@ class UserController extends BaseAdminController
 {
     /**
      * @param UserService $userService
-     * @param CinemaService $cinemaService
+     * @param TheatreService $theatreService
      */
     public function __construct(
         private readonly UserService   $userService,
-        private readonly CinemaService $cinemaService,
+        private readonly TheatreService $theatreService,
     )
     {
     }
@@ -70,7 +70,7 @@ class UserController extends BaseAdminController
      */
     public function show()
     {
-        $cinemas = $this->cinemaService->getPaginatedCinemasList();
+        $cinemas = $this->theatreService->getPaginatedCinemasList();
 
         return view('admin.pages.users.add', compact('cinemas'));
     }

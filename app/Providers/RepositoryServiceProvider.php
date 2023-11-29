@@ -27,11 +27,6 @@ class RepositoryServiceProvider extends ServiceProvider
         );
 
         $this->app->bind(
-            CinemaRepositoryInterface::class,
-            CinemaRepository::class
-        );
-
-        $this->app->bind(
             MovieRepositoryInterface::class,
             MovieRepository::class
         );
