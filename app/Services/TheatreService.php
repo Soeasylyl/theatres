@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\DTO\Theatres\CreateTheatreDTO;
+use App\Enums\RolesUsersEnum;
 use App\Models\Cinema;
 use App\Repositories\Interfaces\MediaRepositoryInterface;
 use App\Repositories\Interfaces\TheatreRepositoryInterface;
@@ -19,7 +20,11 @@ class TheatreService
 
     public function createAndSaveTheatreWithMedia(CreateTheatreDTO $dto): Cinema
     {
-        $theatre = $this->theatreRepository->createTheatre(dto: $dto);
+        if ($dto->getUser()->hasRole(RolesUsersEnum::CINEMA_ADMIN->value)) {
+            $theatre = $this->theatreRepository->createTheatreAndAttachUser(dto: $dto);
+        } else {
+            $theatre = $this->theatreRepository->createTheatre(dto: $dto);
+        }
 
         try {
             $this->saveMedia(dto: $dto, theatre: $theatre);

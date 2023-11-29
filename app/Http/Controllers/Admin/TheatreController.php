@@ -14,7 +14,7 @@ use Illuminate\Http\RedirectResponse;
 class TheatreController extends BaseAdminController
 {
     public function __construct(
-        private readonly CinemaService $cinemaService,
+        private readonly CinemaService  $cinemaService,
         private readonly TheatreService $theatreService)
     {
     }
@@ -52,7 +52,9 @@ class TheatreController extends BaseAdminController
      */
     public function create(TheatreRequest $request)
     {
+        $authUser = auth()->user();
         $createTheatreDTO = new CreateTheatreDTO(
+            user: $authUser,
             name: $request->input('name'),
             address: $request->input('address'),
             description: $request->input('description'),
