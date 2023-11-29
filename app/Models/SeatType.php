@@ -49,7 +49,7 @@ class SeatType extends Model
     protected $fillable = [
         'name',
         'description',
-        'price',
+        'amount',
         'cinema_id',
     ];
 

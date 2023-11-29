@@ -40,7 +40,6 @@
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-        gap: 30px;
         box-sizing: border-box;
 
         form {
@@ -68,7 +67,7 @@
         width: 100%;
         height: 80px;
         min-width: 300px;
-        max-width: 100%;
+        max-width: 800px;
         min-height: 100px;
         max-height: 230px;
         border: 1px solid rgba(0, 0, 0, 0.47);
@@ -93,13 +92,11 @@
         display: flex;
         flex-direction: column;
         gap: 20px;
-
-
     }
 
     &__seats-wrapper {
-        display: grid;
-        grid-template-columns: repeat(2, 50%);
+        display: flex;
+        flex-direction: column;
         gap: 20px;
     }
 
@@ -118,6 +115,7 @@
         justify-content: space-between;
         gap: 5px;
     }
+
     &__seats-number-left {
         flex-grow: 1;
 
@@ -125,77 +123,6 @@
     &__seats-number-right {
         display: flex;
         align-items: center;
-    }
-
-    &__add-seats-icon {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        padding-left: 5px;
-        background-color: #fff;
-        background-clip: padding-box;
-        border: 1px solid #ced4da;
-        border-radius: 5px;
-        margin: 0 auto;
-
-        svg {
-            fill: #545cd8;
-        }
-
-        &:hover {
-            cursor: pointer;
-
-            svg {
-                animation: rotateAnimation 0.2s forwards;
-                fill: #4fb847;
-            }
-
-            .modal__add-seats-icon-text {
-                color: #4fb847;
-            }
-        }
-    }
-
-    &__add-seats-icon-text {
-        font-size: 20px;
-        font-style: normal;
-        font-weight: 400;
-        line-height: 30px;
-        padding: 0.375rem 0.75rem;
-        color: #545cd8;
-    }
-
-    &__delete-seats-icon {
-        margin-right: 5px;
-
-        svg {
-            fill: #545cd8;
-            cursor: pointer;
-
-            &:hover {
-                animation: rotateAnimation 0.2s forwards;
-                fill: #f34c4c;
-                transform: rotate(10deg);
-            }
-        }
-    }
-
-    @keyframes rotateAnimation {
-        0% {
-            transform: rotate(0deg);
-        }
-        25% {
-            transform: rotate(10deg);
-        }
-        50% {
-            transform: rotate(0deg); /* Половина пути в одну сторону */
-        }
-        75% {
-            transform: rotate(-10deg);
-        }
-        100% {
-            transform: rotate(0deg); /* Возвращение на место */
-        }
     }
 
     input {

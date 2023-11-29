@@ -83,4 +83,16 @@ class TheatreRepository implements TheatreRepositoryInterface
 
         return $cinema;
     }
+
+    /**
+     * Retrieves a theater object by its ID, or throws an exception if the theater is not found.
+     *
+     * @param int $theatreId
+     * @param array|null $relations
+     * @return Cinema
+     */
+    public function getTheatreByIdOrFail(int $theatreId, ?array $relations = []): Cinema
+    {
+        return Cinema::with($relations)->findOrFail($theatreId);
+    }
 }

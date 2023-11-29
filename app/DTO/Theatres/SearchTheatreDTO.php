@@ -17,6 +17,9 @@ class SearchTheatreDTO
     {
     }
 
+    /**
+     * @return User
+     */
     public function getProducer(): User
     {
         return $this->producer;

@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\DTO\Theatres\CreateTheatreDTO;
+use App\DTO\Theatres\EditTheatreDTO;
 use App\DTO\Theatres\SearchTheatreDTO;
 use App\Enums\RolesUsersEnum;
 use App\Models\Cinema;
@@ -84,5 +85,15 @@ class TheatreService
                 );
             }
         }
+    }
+
+    public function getTheatreDataForEdit(EditTheatreDTO $dto): array
+    {
+        $theatre = $this->theatreRepository->getTheatreByIdOrFail($dto->getTheatreId(), ['halls.seats', 'medias']);
+        $seatsTypes = $theatre->seatTypes;
+        $halls = $theatre->halls;
+        $media = $theatre->medias;
+
+        return compact('theatre', 'halls', 'media', 'seatsTypes');
     }
 }

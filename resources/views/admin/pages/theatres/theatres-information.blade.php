@@ -61,7 +61,7 @@
                             @hasrole(\App\Enums\RolesUsersEnum::SUPER_ADMIN->value . '|' . App\Enums\RolesUsersEnum::CINEMA_ADMIN->value)
                             <td>
                                 <div class="admin-container__table_last_cell">
-                                    <a href="#"
+                                    <a href="{{ route('theatre.edit', $theatre) }}"
                                        class="admin-container__table_last_cell_edit"
                                        title="{{ __('Редактировать') }}">
                                         <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="20" height="23"

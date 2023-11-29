@@ -5,6 +5,7 @@ namespace App\Services;
 use App\DTO\Users\BanUserDTO;
 use App\DTO\Users\CreateUserDTO;
 use App\DTO\Users\DeleteUserDTO;
+use App\DTO\Users\EditUserDTO;
 use App\DTO\Users\SearchUserDTO;
 use App\DTO\Users\UpdateUserInfoDTO;
 use App\DTO\Users\UpdateUserPasswordDTO;
@@ -78,10 +79,10 @@ class UserService
     /**
      *Retrieves user data for the purpose of editing.
      *
-     * @param $editUserDTO
+     * @param EditUserDTO $editUserDTO
      * @return array
      */
-    public function getUserDataForEdit($editUserDTO): array
+    public function getUserDataForEdit(EditUserDTO $editUserDTO): array
     {
         $user = $this->userRepository->getUserByIdOrFail(userId: $editUserDTO->getUserId());
         $userCinemasList = $user->cinemas;

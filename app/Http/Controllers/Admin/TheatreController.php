@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\DTO\Theatres\CreateTheatreDTO;
+use App\DTO\Theatres\EditTheatreDTO;
 use App\DTO\Theatres\SearchTheatreDTO;
 use App\Http\Requests\Admin\Theatres\SearchRequest;
 use App\Http\Requests\Admin\Theatres\TheatreRequest;
@@ -70,5 +71,21 @@ class TheatreController extends BaseAdminController
         } catch (\Throwable $e) {
             return redirect()->back()->with('error', $e->getMessage());
         }
+    }
+
+    public function edit(int $theatreId)
+    {
+        $editTheatreDTO = new EditTheatreDTO(
+            theatreId: $theatreId,
+        );
+
+        $theatreData = $this->theatreService->getTheatreDataForEdit($editTheatreDTO);
+
+        return view('admin.pages.theatres.edit', [
+            'theatre'=> $theatreData['theatre'],
+            'halls' => $theatreData['halls'],
+            'media' => $theatreData['media'],
+            'seatsTypes' => $theatreData['seatsTypes'],
+        ]);
     }
 }

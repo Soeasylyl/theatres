@@ -50,4 +50,13 @@ interface TheatreRepositoryInterface
      * @return Cinema
      */
     public function createTheatreAndAttachUser(CreateTheatreDTO $dto): Cinema;
+
+    /**
+     * Retrieves a theater object by its ID, or throws an exception if the theater is not found.
+     *
+     * @param int $theatreId
+     * @param array|null $relations
+     * @return Cinema
+     */
+    public function getTheatreByIdOrFail(int $theatreId, ?array $relations = []): Cinema;
 }
