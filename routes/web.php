@@ -50,7 +50,7 @@ Route::prefix('admin')->middleware(['auth', 'isBlock', 'AdminAccess'])->group(fu
            Route::delete('{theatres}', [TheatreController::class, 'delete'])->name('theatre.delete');
 
            //Theatre creating
-            Route::get('/create', [TheatreController::class, 'show'])->name('theatre.show');
+            Route::get('/create', [TheatreController::class, 'show'])->name('theatre.create');
             Route::post('/create',[TheatreController::class, 'create']);
         });
     });

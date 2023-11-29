@@ -6,6 +6,7 @@ class Users {
         this.blockModal = document.getElementById('blockModal');
         this.blockUserCloseBtn = document.querySelector('.modal__close-btn');
         this.timeZoneInput = document.getElementById('timezone');
+        this.mainClass = document.querySelector('.admin-main');
 
         this.init();
     }
@@ -36,15 +37,17 @@ class Users {
     }
 
     closeBlockUserModal() {
-        this.blockUserCloseBtn && this.blockUserCloseBtn.addEventListener('click', () =>
-            this.blockModal && this.blockModal.classList.remove('modal__active')
-        )
+        this.blockUserCloseBtn && this.blockUserCloseBtn.addEventListener('click', () => {
+            this.blockModal && this.blockModal.classList.remove('modal__active');
+            this.mainClass && this.mainClass.classList.remove('open-modal-overflow-hidden');
+        });
     }
 
     openBlockUserModal() {
         this.blockUserButton && this.blockUserButton.forEach(item => {
             item.addEventListener('click', (event) => {
                 this.blockModal && this.blockModal.classList.add('modal__active');
+                this.mainClass && this.mainClass.classList.add('open-modal-overflow-hidden');
             });
         });
     }

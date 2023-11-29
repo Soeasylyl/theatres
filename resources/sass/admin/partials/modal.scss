@@ -1,7 +1,7 @@
 .modal {
     position: absolute;
-    top:0;
-    left:0;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
     display: none;
@@ -14,8 +14,9 @@
         width: 100%;
         height: 100%;
         background-color: rgba(131, 123, 123, 0.58);
-        z-index: 99;
+        z-index: 101;
         content: '';
+        overflow: hidden;
     }
 
     &__active {
@@ -27,11 +28,12 @@
         left: 50%;
         top: 50%;
         transform: translate(-50%, -50%);
+        max-width: 70%;
 
         background: $c-adp-header-bcg;
         padding: 1.5rem;
         margin: 24px auto;
-        z-index: 100;
+        z-index: 102;
         border: $c-adp-bord solid 1px;
         border-radius: 0.5rem;
 
@@ -40,6 +42,10 @@
         justify-content: space-between;
         gap: 30px;
         box-sizing: border-box;
+
+        form {
+            margin: 0;
+        }
     }
 
     &__title {
@@ -54,16 +60,19 @@
 
     &__button-wrapper {
         display: flex;
-       padding-top: 30px;
+        padding-top: 15px;
         justify-content: space-between;
     }
 
-    input {
+    textarea {
         width: 100%;
-        max-width: 400px;
-        height: 35px;
+        height: 80px;
+        min-width: 300px;
+        max-width: 100%;
+        min-height: 100px;
+        max-height: 230px;
         border: 1px solid rgba(0, 0, 0, 0.47);
-        padding: 0 20px 0 40px;
+        padding: 0 10px 0 15px;
         background-size: 25px;
         background-repeat: no-repeat;
         background-position: 9px 50%;
@@ -75,6 +84,140 @@
         box-sizing: border-box;
     }
 
+    textarea::placeholder {
+        color: #b4b4b4;
+    }
+
+
+    &__seats-container {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+
+
+    }
+
+    &__seats-wrapper {
+        display: grid;
+        grid-template-columns: repeat(2, 50%);
+        gap: 20px;
+    }
+
+    &__seats-left-column {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    &__items {
+        padding-bottom: 5px;
+    }
+
+    &__seats-number {
+        display: flex;
+        justify-content: space-between;
+        gap: 5px;
+    }
+    &__seats-number-left {
+        flex-grow: 1;
+
+    }
+    &__seats-number-right {
+        display: flex;
+        align-items: center;
+    }
+
+    &__add-seats-icon {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding-left: 5px;
+        background-color: #fff;
+        background-clip: padding-box;
+        border: 1px solid #ced4da;
+        border-radius: 5px;
+        margin: 0 auto;
+
+        svg {
+            fill: #545cd8;
+        }
+
+        &:hover {
+            cursor: pointer;
+
+            svg {
+                animation: rotateAnimation 0.2s forwards;
+                fill: #4fb847;
+            }
+
+            .modal__add-seats-icon-text {
+                color: #4fb847;
+            }
+        }
+    }
+
+    &__add-seats-icon-text {
+        font-size: 20px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 30px;
+        padding: 0.375rem 0.75rem;
+        color: #545cd8;
+    }
+
+    &__delete-seats-icon {
+        margin-right: 5px;
+
+        svg {
+            fill: #545cd8;
+            cursor: pointer;
+
+            &:hover {
+                animation: rotateAnimation 0.2s forwards;
+                fill: #f34c4c;
+                transform: rotate(10deg);
+            }
+        }
+    }
+
+    @keyframes rotateAnimation {
+        0% {
+            transform: rotate(0deg);
+        }
+        25% {
+            transform: rotate(10deg);
+        }
+        50% {
+            transform: rotate(0deg); /* Половина пути в одну сторону */
+        }
+        75% {
+            transform: rotate(-10deg);
+        }
+        100% {
+            transform: rotate(0deg); /* Возвращение на место */
+        }
+    }
+
+    input {
+        width: 100%;
+        height: 35px;
+        border: 1px solid rgba(0, 0, 0, 0.47);
+        padding: 0 10px 0 15px;
+        background-size: 25px;
+        background-repeat: no-repeat;
+        background-position: 9px 50%;
+        font-size: 20px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 30px;
+        color: #495057;
+        box-sizing: border-box;
+    }
+
+    input::placeholder {
+        color: #b4b4b4;
+    }
+
     &__block-btn {
         &:hover {
             transition: $transition-link;
@@ -82,7 +225,7 @@
         }
     }
 
-    &__close-btn {
+    &__close-btn, &__add-btn {
         &:hover {
             transition: $transition-link;
             background-color: #474eb8;
@@ -100,5 +243,6 @@
         cursor: pointer;
         color: #fff;
         text-decoration: none;
+        align-content: center;
     }
 }
