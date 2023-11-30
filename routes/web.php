@@ -56,7 +56,7 @@ Route::prefix('admin')->middleware(['auth', 'isBlock', 'AdminAccess'])->group(fu
             Route::prefix('{theatres}/edit')->group(function () {
                 Route::post('/create', [SeatTypeController::class, 'create'])->name('seat-type.create');
                 Route::patch('/update', [SeatTypeController::class, 'update']);
-                Route::delete('/delete', [SeatTypeController::class, 'delete']);
+                Route::delete('/delete', [SeatTypeController::class, 'delete'])->name('seat-type.delete');
             });
             //Theatre creating
 

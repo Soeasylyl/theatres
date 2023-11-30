@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\DTO\SeatTypes\CreateSeatTypeDTO;
+use App\Models\Seat;
 use App\Models\SeatType;
 use App\Repositories\Interfaces\SeatTypeRepositoryInterface;
 
@@ -22,5 +23,29 @@ class SeatTypeRepository implements SeatTypeRepositoryInterface
            'amount' => $dto->getAmount(),
            'cinema_id' => $dto->getTheatreId(),
         ]);
+    }
+
+    /**
+     * Checks whether places are bound to the specified type.
+     *
+     * @param int $seatTypeId
+     * @return bool
+     */
+    public function hasSeatsOfType(int $seatTypeId): bool
+    {
+        $count = Seat::where('seat_type_id', $seatTypeId)->count();
+
+        return $count > 0;
+    }
+
+    /**
+     * Removes a place type from the database.
+     *
+     * @param int $seatTypeId
+     * @return void
+     */
+    public function deleteSeatType(int $seatTypeId): void
+    {
+        SeatType::where('id', $seatTypeId)->delete();
     }
 }

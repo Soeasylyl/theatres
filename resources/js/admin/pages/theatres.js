@@ -1,20 +1,23 @@
 class Theatres {
     constructor() {
-        this.addHallButton = document.querySelector('.open-add-hall-btn');
-        this.addHallModal = document.getElementById('addHallModal');
-        this.addHallCloseBtn = document.querySelector('.modal__close-btn');
+        this.addSeatTypeButton = document.querySelector('.open-add-seat-type-btn');
+        this.addSeatTypeModal = document.getElementById('addSeatTypeModal');
+        this.addSeatTypelCloseBtn = document.querySelector('.modal__close-btn');
         this.mainClass = document.querySelector('.admin-main');
 
         this.theatreImageInput = document.getElementById('theatreImageInput');
         this.previewTheatreContainer = document.getElementById('previewTheatreImage');
 
+        this.deleteSeatTypeButton = document.querySelectorAll('.admin-theatres__delete-icon');
+
         this.init();
     }
 
     init() {
-        this.openAddHallModal();
+        this.openAddSeatTypeModal();
         this.closeBlockUserModal();
         this.previewTheatreImage();
+        this.deleteSeatType();
     }
 
     previewTheatreImage() {
@@ -38,17 +41,34 @@ class Theatres {
         });
     }
 
-    openAddHallModal() {
-        this.addHallButton && this.addHallButton.addEventListener('click', (event) => {
-            this.addHallModal && this.addHallModal.classList.add('modal__active');
+    openAddSeatTypeModal() {
+        this.addSeatTypeButton && this.addSeatTypeButton.addEventListener('click', (event) => {
+            this.addSeatTypeModal && this.addSeatTypeModal.classList.add('modal__active');
             this.mainClass && this.mainClass.classList.add('open-modal-overflow-hidden');
         });
     }
 
     closeBlockUserModal() {
-        this.addHallCloseBtn && this.addHallCloseBtn.addEventListener('click', () => {
-            this.addHallModal && this.addHallModal.classList.remove('modal__active');
+        this.addSeatTypelCloseBtn && this.addSeatTypelCloseBtn.addEventListener('click', () => {
+            this.addSeatTypeModal && this.addSeatTypeModal.classList.remove('modal__active');
             this.mainClass && this.mainClass.classList.remove('open-modal-overflow-hidden');
+        });
+    }
+
+    deleteSeatType() {
+        this.deleteSeatTypeButton && this.deleteSeatTypeButton.forEach(item => {
+            item.addEventListener('click', (event) => {
+                event.preventDefault(); // Preventing link from being followed
+
+                const user = event.currentTarget.getAttribute('data-seats-type-name'); // Getting the username
+                if (confirm(`Вы уверены, что хотите удалить тип места: ${user}?`)) {
+
+                    const form = event.currentTarget.closest('form');
+                    if (form) {
+                        form.submit();
+                    }
+                }
+            });
         });
     }
 }

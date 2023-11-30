@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\DTO\SeatTypes\CreateSeatTypeDTO;
+use App\DTO\SeatTypes\DeleteSeatTypeDTO;
 use App\Models\SeatType;
 use App\Repositories\Interfaces\SeatTypeRepositoryInterface;
 use Illuminate\Support\Facades\Log;
@@ -30,5 +31,20 @@ class SeatTypeService
         }
 
         return $seatType;
+    }
+
+    /**
+     * Deletes a seat type after checking whether seats of this type are associated with the hall.
+     *
+     * @param DeleteSeatTypeDTO $dto
+     * @return void
+     * @throws \Exception
+     */
+    public function deleteSeatTypeWithCheck(DeleteSeatTypeDTO $dto): void
+    {
+        $hasSeats = $this->seatTypeRepository->hasSeatsOfType(seatTypeId: $dto->getSeatTypeId());
+
+        ! $hasSeats ? $this->seatTypeRepository->deleteSeatType(seatTypeId: $dto->getSeatTypeId())
+                  : throw new \Exception('Невозможно удалить тип мест, который уже используется');
     }
 }

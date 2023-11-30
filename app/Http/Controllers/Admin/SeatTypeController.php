@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\DTO\SeatTypes\CreateSeatTypeDTO;
+use App\DTO\SeatTypes\DeleteSeatTypeDTO;
 use App\Http\Requests\Admin\SeatTypes\SeatTypeRequest;
 use App\Services\SeatTypeService;
+use Illuminate\Http\RedirectResponse;
 
 class SeatTypeController extends BaseAdminController
 {
@@ -14,6 +16,13 @@ class SeatTypeController extends BaseAdminController
     {
     }
 
+    /**
+     *  Creates a new type of movie theater location.
+     *
+     * @param SeatTypeRequest $request
+     * @param int $theatreId
+     * @return RedirectResponse
+     */
     public function create(SeatTypeRequest $request, int $theatreId)
     {
         $seatTypeDTO = new CreateSeatTypeDTO(
@@ -26,13 +35,9 @@ class SeatTypeController extends BaseAdminController
         try {
             $seatType = $this->seatTypeService->createSeatTypeByTheatre(dto: $seatTypeDTO);
 
-            return redirect()
-                ->route('theatre.edit',['theatres' => $seatTypeDTO->getTheatreId()])
-                ->with('successMessages', 'Тип места: ' . $seatType->name . ' успешно добавлен');
+            return redirect()->back()->with('successMessages', 'Тип места: ' . $seatType->name . ' успешно добавлен');
         } catch (\Throwable $e) {
-            return redirect()
-                ->route('theatre.edit',['theatres' => $seatTypeDTO->getTheatreId()])
-                ->with('error', 'Ошибка при создании типа мест ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Ошибка при создании типа мест ' . $e->getMessage());
         }
     }
 
@@ -41,8 +46,24 @@ class SeatTypeController extends BaseAdminController
 
     }
 
-    public function delete()
+    /**
+     * Processes a request to delete a place type, including checking associated places and redirecting with a message.
+     *
+     * @param int $seatTypeId
+     * @return RedirectResponse
+     */
+    public function delete(int $seatTypeId)
     {
+        $deleteSeatTypeDTO = new DeleteSeatTypeDTO(
+            seatTypeId: $seatTypeId,
+        );
 
+        try {
+            $this->seatTypeService->deleteSeatTypeWithCheck(dto: $deleteSeatTypeDTO);
+
+            return redirect()->back()->with('successMessages', 'Тип места успешно удален.');
+        } catch (\Throwable $e) {
+            return redirect()->back()->with('error', 'Ошибка при удалении типа мест ' . $e->getMessage());
+        }
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\DTO\Theatres\CreateTheatreDTO;
+use App\DTO\Theatres\UpdateTheatreDTO;
 use App\Models\Cinema;
 use App\Models\User;
 use App\Repositories\Interfaces\TheatreRepositoryInterface;
@@ -94,5 +95,23 @@ class TheatreRepository implements TheatreRepositoryInterface
     public function getTheatreByIdOrFail(int $theatreId, ?array $relations = []): Cinema
     {
         return Cinema::with($relations)->findOrFail($theatreId);
+    }
+
+    /**
+     *  Update the information of a cinema (theatre) entity based on the provided UpdateTheatreDTO.
+     *
+     * @param Cinema $theatre
+     * @param UpdateTheatreDTO $dto
+     * @return Cinema
+     */
+    public function updateTheatreInfo(Cinema $theatre, UpdateTheatreDTO $dto): Cinema
+    {
+        $theatre->update([
+            'name' => $dto->getName(),
+            'description' => $dto->getDescription(),
+            'address' => $dto->getAddress(),
+        ]);
+
+        return $theatre;
     }
 }

@@ -14,4 +14,20 @@ interface SeatTypeRepositoryInterface
      * @return SeatType
      */
     public function createSeatTypeForTheatre(CreateSeatTypeDTO $dto): SeatType;
+
+    /**
+     * Checks whether places are bound to the specified type.
+     *
+     * @param int $seatTypeId
+     * @return bool
+     */
+    public function hasSeatsOfType(int $seatTypeId): bool;
+
+    /**
+     * Removes a place type from the database.
+     *
+     * @param int $seatTypeId
+     * @return void
+     */
+    public function deleteSeatType(int $seatTypeId): void;
 }

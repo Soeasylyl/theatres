@@ -5,12 +5,16 @@ namespace App\Services;
 use App\DTO\Theatres\CreateTheatreDTO;
 use App\DTO\Theatres\EditTheatreDTO;
 use App\DTO\Theatres\SearchTheatreDTO;
+use App\DTO\Theatres\UpdateTheatreDTO;
 use App\Enums\RolesUsersEnum;
 use App\Models\Cinema;
+use App\Models\Media;
 use App\Repositories\Interfaces\MediaRepositoryInterface;
 use App\Repositories\Interfaces\TheatreRepositoryInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class TheatreService
 {
@@ -56,6 +60,13 @@ class TheatreService
         );
     }
 
+    /**
+     *  Create and save a new theatre entity along with associated media (images).
+     *  The user's role is considered to determine the appropriate actions.
+     *
+     * @param CreateTheatreDTO $dto
+     * @return Cinema
+     */
     public function createAndSaveTheatreWithMedia(CreateTheatreDTO $dto): Cinema
     {
         if ($dto->getUser()->hasRole(RolesUsersEnum::CINEMA_ADMIN->value)) {
@@ -72,7 +83,14 @@ class TheatreService
         return $theatre;
     }
 
-    public function saveMedia(CreateTheatreDTO $dto, Cinema $theatre): void
+    /**
+     *  Save media (images) associated with a theatre based on the provided DTO and theatre entity.
+     *
+     * @param UpdateTheatreDTO|CreateTheatreDTO $dto
+     * @param Cinema $theatre
+     * @return void
+     */
+    public function saveMedia(UpdateTheatreDTO|CreateTheatreDTO $dto, Cinema $theatre): void
     {
         if ($dto->getTheatreImages()) {
             foreach ($dto->getTheatreImages() as $image) {
@@ -87,6 +105,12 @@ class TheatreService
         }
     }
 
+    /**
+     *  Retrieve theatre data for editing, including information about the theatre, its halls, media, and seat types.
+     *
+     * @param EditTheatreDTO $dto
+     * @return array
+     */
     public function getTheatreDataForEdit(EditTheatreDTO $dto): array
     {
         $theatre = $this->theatreRepository->getTheatreByIdOrFail($dto->getTheatreId(), ['halls.seats', 'medias']);
@@ -95,5 +119,48 @@ class TheatreService
         $media = $theatre->medias;
 
         return compact('theatre', 'halls', 'media', 'seatsTypes');
+    }
+
+    /**
+     *  Update theatre information based on the provided UpdateTheatreDTO.
+     *  This method handles the deletion and addition of media (images) associated with the theatre.
+     *
+     * @param UpdateTheatreDTO $dto
+     * @return Cinema
+     */
+    public function updateTheatre(UpdateTheatreDTO $dto): Cinema
+    {
+        $theatre = $this->theatreRepository->getTheatreByIdOrFail($dto->getTheatreId());
+
+        try {
+            $this->deleteMedia($theatre->medias);
+            $this->theatreRepository->updateTheatreInfo(theatre: $theatre, dto: $dto);
+            $this->saveMedia(dto: $dto,theatre: $theatre);
+        } catch (\Throwable $e) {
+            Log::error("Failed to save or delete images: {$e->getMessage()}, theatre id: {$theatre->id}");
+        }
+
+        return $theatre;
+    }
+
+    /**
+     * Deletes the media file(s) and associated Media object. Supports both a single Media object and a Media collection.
+     *
+     * @param Media|Collection|null $media
+     * @return void
+     */
+    private function deleteMedia(Media|Collection|null $media): void
+    {
+        if ($media instanceof Media) {
+            $path = str_replace('storage/', '',$media->path);
+            Storage::disk('public')->delete($path);
+
+            $media->delete();
+        } elseif ($media instanceof Collection) {
+
+            foreach ($media as $singleMedia) {
+                $this->deleteMedia($singleMedia);
+            }
+        }
     }
 }

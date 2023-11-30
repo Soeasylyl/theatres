@@ -57,7 +57,7 @@
                         <tr>
                             <td>{{ $theatre->name }}</td>
                             <td>{{ $theatre->address }}</td>
-                            <td>{{ $theatre->halls_count }}</td>
+                            <td>{{ $theatre->halls->count() }}</td>
                             @hasrole(\App\Enums\RolesUsersEnum::SUPER_ADMIN->value . '|' . App\Enums\RolesUsersEnum::CINEMA_ADMIN->value)
                             <td>
                                 <div class="admin-container__table_last_cell">

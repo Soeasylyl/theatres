@@ -3,6 +3,7 @@
 namespace App\Repositories\Interfaces;
 
 use App\DTO\Theatres\CreateTheatreDTO;
+use App\DTO\Theatres\UpdateTheatreDTO;
 use App\Models\Cinema;
 use App\Models\User;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
@@ -59,4 +60,13 @@ interface TheatreRepositoryInterface
      * @return Cinema
      */
     public function getTheatreByIdOrFail(int $theatreId, ?array $relations = []): Cinema;
+
+    /**
+     *  Update the information of a cinema (theatre) entity based on the provided UpdateTheatreDTO.
+     *
+     * @param Cinema $theatre
+     * @param UpdateTheatreDTO $dto
+     * @return Cinema
+     */
+    public function updateTheatreInfo(Cinema $theatre, UpdateTheatreDTO $dto): Cinema;
 }

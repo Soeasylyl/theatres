@@ -12,11 +12,11 @@
                         {{ session('successMessages') }}
                     </div>
                 @endif
-                @error('error')
-                <div class="error-messages">
-                    {{$message}}
-                </div>
-                @enderror
+                @if (session('error'))
+                    <div class="error-messages">
+                        {{ session('error') }}
+                    </div>
+                @endif
                 @error('seat_name')
                 <div class="error-messages">
                     {{$message}}
@@ -35,10 +35,10 @@
                 <div class="admin-theatres__body">
                     <div class="admin-theatres__body-wrapper">
                         <form method="POST"
-                              action="#"
+                              action="{{ route('theatre.update', ['theatres' => $theatre->id]) }}"
                               enctype="multipart/form-data">
                             @csrf
-                            @method('POST')
+                            @method('PATCH')
                             <div class="admin-theatres__form-left">
                                 <div class="admin-theatres__items">
                                     @error('name')
@@ -141,10 +141,11 @@
                                             <td>{{ $seatsType->name }}</td>
                                             <td>{{ $seatsType->amount }}</td>
                                             <td>
-                                                <form method="POST" action="#">
+                                                <form method="POST" action="{{ route('seat-type.delete', $seatsType->id) }}">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <div class="admin-theatres__delete-icon">
+                                                    <div class="admin-theatres__delete-icon"
+                                                        data-seats-type-name="{{ $seatsType->name }}">
                                                         <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32"
                                                              height="32"
                                                              viewBox="0 0 32 32">
@@ -163,7 +164,7 @@
                                     @endforelse
                                     </tbody>
                                 </table>
-                                <a class="login-container__btn open-add-hall-btn"
+                                <a class="login-container__btn open-add-seat-type-btn"
                                    style="justify-content: center; display: flex;">{{ __('Добавить новый тип мест') }}</a>
                             </div>
                             <div class="admin-theatres__items">
@@ -225,53 +226,3 @@
         </div>
     </div>
 @endsection
-<div class="modal" id="addHallModal">
-    <div class="modal__container">
-        <form method="POST" action="{{ route('seat-type.create', ['theatres' => $theatre->id]) }}">
-            @csrf
-            @method('POST')
-
-            <div class="modal__seats-wrapper">
-                <div class="modal__title">{{ __('Добавление нового типа мест:') }}</div>
-                <div class="modal__seats-container">
-                    <div class="modal__seats-number">
-                        <div class="modal__seats-number-left">
-                            <div class="modal__items">
-                                <div class="modal__seats-title">
-                                    {{ __('Название:') }}
-                                </div>
-                                <input type="text" name="seat_name"
-                                       required placeholder="Обычное">
-                            </div>
-                            <div class="modal__items">
-                                <div class="modal__seats-title">
-                                    {{ __('Описание') }}
-                                </div>
-                                <textarea type="text" name="seat_description"
-                                          placeholder="Введите описание типа места"></textarea>
-                            </div>
-
-                            <div class="modal__items">
-                                <div class="modal__seats-title">
-                                    {{ __('Цена за место:') }}
-                                </div>
-                                <input type="text" name="seat_amount"
-                                       required placeholder="Цена в $">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="modal__button-wrapper">
-                <button type="submit" class="modal__button modal__add-btn">{{ __('Добавить') }}</button>
-                <div class="modal__button modal__close-btn">{{ __('Отмена') }}</div>
-            </div>
-        </form>
-    </div>
-</div>
-
-
-
-
-
