@@ -3,6 +3,7 @@
 namespace App\Http;
 
 use App\Http\Middleware\ForbidBannedUserCustom;
+use App\Http\Middleware\Theatres\CheckTheatreAccessMiddleware;
 use App\Http\Middleware\Users\AdminAccessMiddleware;
 use App\Http\Middleware\Users\CheckUserAccessMiddleware;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
@@ -74,6 +75,7 @@ class Kernel extends HttpKernel
 
         'AdminAccess' => AdminAccessMiddleware::class,
         'CheckUserAccessMiddleware' => CheckUserAccessMiddleware::class,
+        'CheckTheatreAccessMiddleware' => CheckTheatreAccessMiddleware::class,
         'isBlock' => ForbidBannedUserCustom::class,
     ];
 }

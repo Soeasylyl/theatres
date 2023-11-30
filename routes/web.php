@@ -48,18 +48,19 @@ Route::prefix('admin')->middleware(['auth', 'isBlock', 'AdminAccess'])->group(fu
         Route::prefix('/')->middleware(['role:' . RolesUsersEnum::SUPER_ADMIN->value . '|' . RolesUsersEnum::CINEMA_ADMIN->value])->group(function () {
             Route::get('/create', [TheatreController::class, 'show'])->name('theatre.create');
             Route::post('/create', [TheatreController::class, 'create']);
-            Route::get('{theatres}/edit', [TheatreController::class, 'edit'])->name('theatre.edit');
-            Route::patch('{theatres}/update', [TheatreController::class, 'update'])->name('theatre.update');
-            Route::delete('{theatres}', [TheatreController::class, 'delete'])->name('theatre.delete');
+            Route::prefix('/')->middleware('CheckTheatreAccessMiddleware')->group(function () {
+                Route::get('{theatres}/edit', [TheatreController::class, 'edit'])->name('theatre.edit');
+                Route::patch('{theatres}/update', [TheatreController::class, 'update'])->name('theatre.update');
+                Route::delete('{theatres}', [TheatreController::class, 'delete'])->name('theatre.delete');
 
-            //Seat Type CRUD
-            Route::prefix('{theatres}/edit')->group(function () {
-                Route::post('/create', [SeatTypeController::class, 'create'])->name('seat-type.create');
-                Route::patch('/update', [SeatTypeController::class, 'update'])->name('seat-type.update');
-                Route::delete('/delete', [SeatTypeController::class, 'delete'])->name('seat-type.delete');
+                //Seat Type CRUD
+                Route::prefix('{theatres}/edit')->group(function () {
+                    Route::post('/create', [SeatTypeController::class, 'create'])->name('seat-type.create');
+                    Route::patch('/update', [SeatTypeController::class, 'update'])->name('seat-type.update');
+                    Route::delete('/delete', [SeatTypeController::class, 'delete'])->name('seat-type.delete');
+                });
+                //Theatre creating
             });
-            //Theatre creating
-
         });
     });
 

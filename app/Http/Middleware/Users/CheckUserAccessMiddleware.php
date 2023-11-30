@@ -7,13 +7,10 @@ use App\Models\User;
 use App\Repositories\Interfaces\UserRepositoryInterface;
 use Closure;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpFoundation\Response;
-use function PHPUnit\Framework\isTrue;
 
 class CheckUserAccessMiddleware
 {
@@ -40,8 +37,20 @@ class CheckUserAccessMiddleware
 
         if (
             ! $currentUser ||
-            (! $currentUser->hasRole(RolesUsersEnum::SUPER_ADMIN->value) && $currentUser->cinemas->isEmpty())
+            (
+                $currentUser->id != $requestedUser->id &&
+                ! $currentUser->hasRole(RolesUsersEnum::SUPER_ADMIN->value) &&
+                (
+                    ! $currentUser->hasRole(RolesUsersEnum::CINEMA_ADMIN->value) ||
+                    (
+                        $currentUser->hasRole(RolesUsersEnum::CINEMA_ADMIN->value) &&
+                        ! $currentUser->cinemas->contains($requestedUser->cinemas->first())
+                    )
+                )
+            )
         ) {
+            Log::channel('check_user_access')->warning('Access denied for user ' . ($currentUser ? $currentUser->id : 'Guest') . ' to user ' . $requestedUser->id . ' ip address ' . $request->ip());
+
             abort(404);
         }
 
