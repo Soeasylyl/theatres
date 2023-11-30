@@ -45,7 +45,7 @@ class SeatTypeService
     {
         $hasSeats = $this->seatTypeRepository->hasSeatsOfType(seatTypeId: $dto->getSeatTypeId());
 
-        $hasSeats ? throw new \Exception('Невозможно удалить тип мест, который уже используется')
+        $hasSeats ? throw new \Exception('невозможно удалить тип мест, который уже используется')
                   : $this->seatTypeRepository->deleteSeatType(seatTypeId: $dto->getSeatTypeId());
     }
 

@@ -113,7 +113,7 @@
                                             <td class="admin-theatres__seat-type-description" style="display: none">{{ $seatsType->description }}</td>
                                             <td>
                                                 <form method="POST"
-                                                      action="{{ route('seat-type.delete', $seatsType->id) }}">
+                                                      action="{{ route('seat-type.delete', $theatre->id) }}">
                                                     @csrf
                                                     @method('DELETE')
                                                     <div class="admin-theatres__delete-seat-type-icon"
