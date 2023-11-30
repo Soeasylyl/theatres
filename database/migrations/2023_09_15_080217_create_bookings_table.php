@@ -16,8 +16,8 @@ return new class extends Migration
             $table->id();
             $table->uuid()->unique();
             $table->unsignedBigInteger('user_id')->index();
-            $table->unsignedBigInteger('screening_id');
-            $table->unsignedBigInteger('seat_id');
+            $table->unsignedBigInteger('screening_id')->nullable();
+            $table->unsignedBigInteger('seat_id')->nullable();
             $table->string('slug')->unique();
             $table->string('status')->default(StatusBookingsEnum::ACTIVE->value);
             $table->timestamps();

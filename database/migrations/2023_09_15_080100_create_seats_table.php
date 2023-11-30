@@ -24,7 +24,7 @@ return new class extends Migration
             $table->foreign('seat_type_id')
                   ->references('id')
                   ->on('seat_types')
-                  ->nullOnDelete();
+                  ->cascadeOnDelete();
 
             $table->foreign('hall_id')
                   ->references('id')

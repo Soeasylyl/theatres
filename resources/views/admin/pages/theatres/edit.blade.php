@@ -8,29 +8,19 @@
                     {{ __('Редактирование данных Кинотеатра') }}
                 </div>
                 @if(session('successMessages'))
-                    <div class="success-messages">
-                        {{ session('successMessages') }}
-                    </div>
+                    <div class="success-messages">{{ session('successMessages') }}</div>
                 @endif
                 @if (session('error'))
-                    <div class="error-messages">
-                        {{ session('error') }}
-                    </div>
+                    <div class="error-messages">{{ session('error') }}</div>
                 @endif
                 @error('seat_name')
-                <div class="error-messages">
-                    {{$message}}
-                </div>
+                <div class="error-messages">{{$message}}</div>
                 @enderror
                 @error('seat_description')
-                <div class="error-messages">
-                    {{$message}}
-                </div>
+                <div class="error-messages">{{$message}}</div>
                 @enderror
                 @error('seat_amount')
-                <div class="error-messages">
-                    {{$message}}
-                </div>
+                <div class="error-messages">{{$message}}</div>
                 @enderror
                 <div class="admin-theatres__body">
                     <div class="admin-theatres__body-wrapper">
@@ -42,13 +32,9 @@
                             <div class="admin-theatres__form-left">
                                 <div class="admin-theatres__items">
                                     @error('name')
-                                    <div class="error-messages">
-                                        {{$message}}
-                                    </div>
+                                    <div class="error-messages">{{$message}}</div>
                                     @enderror
-                                    <div class="admin-theatres__item-header">
-                                        {{ __('Название:') }}
-                                    </div>
+                                    <div class="admin-theatres__item-header">{{ __('Название:') }}</div>
                                     <div class="admin-theatres__item-body">
                                         <input type="text" name="name"
                                                value="{{ $theatre->name }}"
@@ -58,9 +44,7 @@
                                 </div>
                                 <div class="admin-theatres__items">
                                     @error('address')
-                                    <div class="error-messages">
-                                        {{$message}}
-                                    </div>
+                                    <div class="error-messages">{{$message}}</div>
                                     @enderror
                                     <div class="admin-theatres__item-header">
                                         {{ __('Адрес:') }}
@@ -75,9 +59,7 @@
 
                                 <div class="admin-theatres__items">
                                     @error('description')
-                                    <div class="error-messages">
-                                        {{$message}}
-                                    </div>
+                                    <div class="error-messages">{{$message}}</div>
                                     @enderror
                                     <div class="admin-theatres__item-header">
                                         {{ __('Описание:') }}
@@ -90,14 +72,10 @@
                                 </div>
                                 <div class="admin-theatres__items">
                                     @error('$theatreImages')
-                                    <div class="error-messages">
-                                        {{$message}}
-                                    </div>
+                                    <div class="error-messages">{{$message}}</div>
                                     @enderror
                                     @error('$theatreImages.*')
-                                    <div class="error-messages">
-                                        {{$message}}
-                                    </div>
+                                    <div class="error-messages">{{$message}}</div>
                                     @enderror
                                     <div id="previewTheatreImage" class="admin-theatres__preview-container"></div>
                                     <div class="admin-theatres__item-header">
@@ -122,9 +100,7 @@
                                     // TODO: Указать тип ошибки при удалении типа
                                 @endphp
                                 @error('????')
-                                <div class="error-messages">
-                                    {{$message}}
-                                </div>
+                                <div class="error-messages">{{$message}}</div>
                                 @enderror
                                 <div class="admin-theatres__item-header">
                                     {{ __('Доступные типы мест:') }}
@@ -172,13 +148,9 @@
                                     // TODO: Указать тип ошибки при удалении типа
                                 @endphp
                                 @error('????')
-                                <div class="error-messages">
-                                    {{$message}}
-                                </div>
+                                <div class="error-messages">{{$message}}</div>
                                 @enderror
-                                <div class="admin-theatres__item-header">
-                                    {{ __('Доступные залы:') }}
-                                </div>
+                                <div class="admin-theatres__item-header">{{ __('Доступные залы:') }}</div>
                                 <table class="admin-theatres__table">
                                     <thead>
                                     <th>Название зала</th>

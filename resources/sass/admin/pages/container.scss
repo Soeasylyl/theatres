@@ -219,7 +219,7 @@
         justify-content: space-around;
     }
 
-    &__table_last_cell_edit, &__table_last_cell_trash{
+    &__table_last_cell_edit, &__table_last_cell_trash,&__table_last_cell_cinema_trash {
         cursor: pointer;
         width: 22px;
 
@@ -233,5 +233,4 @@
             }
         }
     }
-
 }

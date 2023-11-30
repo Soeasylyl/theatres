@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\DTO\Theatres\CreateTheatreDTO;
+use App\DTO\Theatres\DeleteTheatreDTO;
 use App\DTO\Theatres\EditTheatreDTO;
 use App\DTO\Theatres\SearchTheatreDTO;
 use App\DTO\Theatres\UpdateTheatreDTO;
@@ -125,6 +126,27 @@ class TheatreController extends BaseAdminController
             return redirect()
                 ->route('theatres')
                 ->with('successMessages', 'Информация о кинотеатре ' . $updateTheatreDTO->getName() . ' успешно обновлена');
+        } catch (\Throwable $e) {
+            return redirect()->back()->with('error', $e->getMessage());
+        }
+    }
+
+    /**
+     *  Delete a theater based on the provided ID.
+     *
+     * @param int $theatreId
+     * @return RedirectResponse
+     */
+    public function delete (int $theatreId)
+    {
+        $deleteTheatreDTO = new DeleteTheatreDTO(
+          theatreId: $theatreId,
+        );
+
+        try {
+            $this->theatreService->deleteTheatre(theatreId: $deleteTheatreDTO->getTheatreId());
+
+            return redirect()->back()->with('successMessages', 'Кинотеатр успешно удален.');
         } catch (\Throwable $e) {
             return redirect()->back()->with('error', $e->getMessage());
         }

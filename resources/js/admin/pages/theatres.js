@@ -9,6 +9,7 @@ class Theatres {
         this.previewTheatreContainer = document.getElementById('previewTheatreImage');
 
         this.deleteSeatTypeButton = document.querySelectorAll('.admin-theatres__delete-icon');
+        this.deleteTheatreButton = document.querySelectorAll('.admin-container__table_last_cell_cinema_trash');
 
         this.init();
     }
@@ -18,6 +19,7 @@ class Theatres {
         this.closeBlockUserModal();
         this.previewTheatreImage();
         this.deleteSeatType();
+        this.deleteTheatre();
     }
 
     previewTheatreImage() {
@@ -60,8 +62,8 @@ class Theatres {
             item.addEventListener('click', (event) => {
                 event.preventDefault(); // Preventing link from being followed
 
-                const user = event.currentTarget.getAttribute('data-seats-type-name'); // Getting the username
-                if (confirm(`Вы уверены, что хотите удалить тип места: ${user}?`)) {
+                const seatTypeName = event.currentTarget.getAttribute('data-seats-type-name'); // Getting the username
+                if (confirm(`Вы уверены, что хотите удалить тип места: ${seatTypeName}?`)) {
 
                     const form = event.currentTarget.closest('form');
                     if (form) {
@@ -69,6 +71,23 @@ class Theatres {
                     }
                 }
             });
+        });
+    }
+
+    deleteTheatre() {
+        this.deleteTheatreButton && this.deleteTheatreButton.forEach(item => {
+           item.addEventListener('click', (event) => {
+               event.preventDefault(); // Preventing link from being followed
+
+               const theatreName = event.currentTarget.getAttribute('data-theatre-name');
+               if (confirm(`Вы уверены, что хотите удалить кинотеатр: ${theatreName}?`)) {
+
+                   const form = event.currentTarget.closest('form');
+                   if (form) {
+                       form.submit();
+                   }
+               }
+           }) ;
         });
     }
 }

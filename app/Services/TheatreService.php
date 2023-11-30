@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\DTO\Theatres\CreateTheatreDTO;
+use App\DTO\Theatres\DeleteTheatreDTO;
 use App\DTO\Theatres\EditTheatreDTO;
 use App\DTO\Theatres\SearchTheatreDTO;
 use App\DTO\Theatres\UpdateTheatreDTO;
@@ -161,6 +162,28 @@ class TheatreService
             foreach ($media as $singleMedia) {
                 $this->deleteMedia($singleMedia);
             }
+        }
+    }
+
+    /**
+     *  Deletes a theater along with its associated media files.
+     *
+     * @param int $theatreId
+     * @return void
+     */
+    public function deleteTheatre(int $theatreId): void
+    {
+        $theatre = $this->theatreRepository->getTheatreByIdOrFail(theatreId: $theatreId, relations: ['halls.medias', 'medias']);
+
+        try {
+            foreach ($theatre->halls as $hall) {
+                $this->deleteMedia($hall->medias);
+            }
+            $this->deleteMedia($theatre->medias);
+
+            $theatre->delete();
+        } catch (\Throwable $e) {
+            Log::error("Failed to delete theatre: {$e->getMessage()}. Theatre ID: {$theatre->id}");
         }
     }
 }
