@@ -12,7 +12,7 @@ class Theatres {
         this.theatreImageInput = document.getElementById('theatreImageInput');
         this.previewTheatreContainer = document.getElementById('previewTheatreImage');
 
-        this.deleteSeatTypeButton = document.querySelectorAll('.admin-theatres__delete-icon');
+        this.deleteSeatTypeButton = document.querySelectorAll('.admin-theatres__delete-seat-type-icon');
         this.deleteTheatreButton = document.querySelectorAll('.admin-container__table_last_cell_cinema_trash');
 
         this.init();
@@ -68,7 +68,7 @@ class Theatres {
     openEditSeatTypeModal() {
         this.editSeatTypeCell && this.editSeatTypeCell.forEach( item => {
             item.addEventListener('click', (event) => {
-                if (!event.target.closest('.admin-theatres__delete-icon')) {
+                if (!event.target.closest('.admin-theatres__delete-seat-type-icon')) {
                     event.preventDefault(); // Preventing link from being followed
 
                     const seatId = item.getAttribute('data-seat-type-id');

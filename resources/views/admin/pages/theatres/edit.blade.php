@@ -116,7 +116,7 @@
                                                       action="{{ route('seat-type.delete', $seatsType->id) }}">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <div class="admin-theatres__delete-icon"
+                                                    <div class="admin-theatres__delete-seat-type-icon"
                                                          data-seats-type-name="{{ $seatsType->name }}">
                                                         <svg version="1.1" xmlns="http://www.w3.org/2000/svg"
                                                              width="32"
@@ -140,6 +140,7 @@
                                 <a class="login-container__btn open-add-seat-type-btn"
                                    style="justify-content: center; display: flex;">{{ __('Добавить новый тип мест') }}</a>
                             </div>
+
                             <div class="admin-theatres__items">
                                 @php
                                     // TODO: Указать тип ошибки при удалении типа
@@ -163,7 +164,7 @@
                                                 <form method="POST" action="#">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <div class="admin-theatres__delete-icon">
+                                                    <div class="admin-theatres__delete-hall-icon">
                                                         <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32"
                                                              height="32"
                                                              viewBox="0 0 32 32">
