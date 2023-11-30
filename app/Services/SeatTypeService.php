@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\DTO\SeatTypes\CreateSeatTypeDTO;
 use App\DTO\SeatTypes\DeleteSeatTypeDTO;
+use App\DTO\SeatTypes\UpdateSeatTypeDTO;
 use App\Models\SeatType;
 use App\Repositories\Interfaces\SeatTypeRepositoryInterface;
 use Illuminate\Support\Facades\Log;
@@ -44,7 +45,26 @@ class SeatTypeService
     {
         $hasSeats = $this->seatTypeRepository->hasSeatsOfType(seatTypeId: $dto->getSeatTypeId());
 
-        ! $hasSeats ? $this->seatTypeRepository->deleteSeatType(seatTypeId: $dto->getSeatTypeId())
-                  : throw new \Exception('Невозможно удалить тип мест, который уже используется');
+        $hasSeats ? throw new \Exception('Невозможно удалить тип мест, который уже используется')
+                  : $this->seatTypeRepository->deleteSeatType(seatTypeId: $dto->getSeatTypeId());
+    }
+
+    /**
+     *  Update the seat type based on the provided data transfer object (DTO).
+     *
+     * @param UpdateSeatTypeDTO $dto
+     * @return SeatType
+     */
+    public function updateSeatType(UpdateSeatTypeDTO $dto): SeatType
+    {
+        $seatType = $this->seatTypeRepository->getSeatTypeByIdOrFail(seatTypeId: $dto->getSeatTypeId());
+
+        try {
+            $this->seatTypeRepository->updateInfoBySeatType(seatType: $seatType, dto: $dto);
+        } catch (\Throwable $e) {
+            Log::error("Failed to update seat type info: {$e->getMessage()} user id: {$seatType->id}");
+        }
+
+        return $seatType;
     }
 }

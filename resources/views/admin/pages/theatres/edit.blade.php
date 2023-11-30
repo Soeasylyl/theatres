@@ -96,33 +96,30 @@
                         </form>
                         <div class="admin-theatres__form-right">
                             <div class="admin-theatres__items">
-                                @php
-                                    // TODO: Указать тип ошибки при удалении типа
-                                @endphp
-                                @error('????')
-                                <div class="error-messages">{{$message}}</div>
-                                @enderror
                                 <div class="admin-theatres__item-header">
                                     {{ __('Доступные типы мест:') }}
                                 </div>
                                 <table class="admin-theatres__table">
                                     <thead>
-                                    <th>Название</th>
-                                    <th>Цена за место</th>
+                                    <th>{{ __('Название') }}</th>
+                                    <th>{{ __('Цена за место') }}</th>
                                     <th></th>
                                     </thead>
                                     <tbody>
                                     @forelse($seatsTypes as $seatsType)
-                                        <tr>
-                                            <td>{{ $seatsType->name }}</td>
-                                            <td>{{ $seatsType->amount }}</td>
+                                        <tr class="admin-theatres__edit_theatres" data-seat-type-id="{{ $seatsType->id }}">
+                                            <td class="admin-theatres__seat-type-name">{{ $seatsType->name }}</td>
+                                            <td class="admin-theatres__seat-type-amount">{{ $seatsType->amount }}</td>
+                                            <td class="admin-theatres__seat-type-description" style="display: none">{{ $seatsType->description }}</td>
                                             <td>
-                                                <form method="POST" action="{{ route('seat-type.delete', $seatsType->id) }}">
+                                                <form method="POST"
+                                                      action="{{ route('seat-type.delete', $seatsType->id) }}">
                                                     @csrf
                                                     @method('DELETE')
                                                     <div class="admin-theatres__delete-icon"
-                                                        data-seats-type-name="{{ $seatsType->name }}">
-                                                        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32"
+                                                         data-seats-type-name="{{ $seatsType->name }}">
+                                                        <svg version="1.1" xmlns="http://www.w3.org/2000/svg"
+                                                             width="32"
                                                              height="32"
                                                              viewBox="0 0 32 32">
                                                             <title>{{ __('Удалить') }}</title>
@@ -135,7 +132,7 @@
                                         </tr>
                                     @empty
                                         <tr>
-                                            <td>Типов мест не найдено</td>
+                                            <td>{{ __('Типов мест не найдено') }}</td>
                                         </tr>
                                     @endforelse
                                     </tbody>
