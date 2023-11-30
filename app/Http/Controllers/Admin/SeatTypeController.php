@@ -86,7 +86,7 @@ class SeatTypeController extends BaseAdminController
 
             return redirect()->back()->with('successMessages', 'Тип места успешно удален.');
         } catch (\Throwable $e) {
-            return redirect()->back()->with('error', 'Ошибка при удалении типа мест ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Ошибка при удалении типа мест: ' . $e->getMessage());
         }
     }
 }
