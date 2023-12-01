@@ -69,10 +69,15 @@ class MovieService
         );
 
         try {
-            $movie->medias()->delete();
+            if ($dto->getMoviePoster() !== null) {
+                $this->deleteMediaByCollection(movie: $movie, collection: 'poster');
+                $movie = $this->savePosterMedia(dto: $dto, movie: $movie);
+            }
 
-            $movie = $this->savePosterMedia(dto: $dto, movie: $movie);
-            $movie = $this->saveFramesMedia(dto: $dto, movie: $movie);
+            if ($dto->getMovieFrames() !== null) {
+                $this->deleteMediaByCollection(movie: $movie, collection: 'frames');
+                $movie = $this->saveFramesMedia(dto: $dto, movie: $movie);
+            }
         } catch (\Exception $e) {
             Log::error("Failed to save poster or frames: {$e->getMessage()} movie id: {$movie->id}");
         }
@@ -81,6 +86,20 @@ class MovieService
             dto: $dto,
             slug: $slug
         );
+    }
+
+    /**
+     *  Deletes all media files of a specific collection for a given movie.
+     *
+     * @param Movie $movie
+     * @param string $collection
+     * @return void
+     */
+    private function deleteMediaByCollection(Movie $movie, string $collection): void
+    {
+        $movie->medias()
+            ->where('collection', $collection)
+            ->delete();
     }
 
     /**
