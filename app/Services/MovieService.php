@@ -5,19 +5,18 @@ namespace App\Services;
 use App\DTO\Movies\CreateMovieDTO;
 use App\DTO\Movies\UpdateMovieDTO;
 use App\DTO\Movies\SearchMovieDTO;
-use App\Models\Media;
 use App\Models\Movie;
 use App\Repositories\Interfaces\MediaRepositoryInterface;
 use App\Repositories\Interfaces\MovieRepositoryInterface;
-use Illuminate\Database\Eloquent\Collection;
+use App\Traits\HandlesMedia;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
 
 class MovieService
 {
+    use HandlesMedia;
+
     public function __construct(
         private readonly MovieRepositoryInterface $movieRepository,
         private readonly MediaRepositoryInterface $mediaRepository,
@@ -78,13 +77,25 @@ class MovieService
             );
 
             if ($dto->getMoviePoster() !== null) {
-                $this->deleteMediaByCollection(movie: $movie, collection: 'poster');
-                $this->savePosterMedia(dto: $dto, movie: $movie);
+                $this->deleteMedia($movie->poster);
+
+                $this->saveMediaFiles(
+                    mediaFiles: $dto->getMoviePoster(),
+                    model: $movie,
+                    collectionName: 'poster',
+                    storagePath: 'posters'
+                );
             }
 
             if ($dto->getMovieFrames() !== null) {
-                $this->deleteMediaByCollection(movie: $movie, collection: 'frames');
-                $this->saveFramesMedia(dto: $dto, movie: $movie);
+                $this->deleteMedia($movie->frames);
+
+                $this->saveMediaFiles(
+                    mediaFiles: $dto->getMovieFrames(),
+                    model: $movie,
+                    collectionName: 'frames',
+                    storagePath: 'frames'
+                );
             }
         } catch (\Exception $e) {
             Log::error("Failed to save poster or frames: {$e->getMessage()} movie id: {$movie->id}");
@@ -103,69 +114,23 @@ class MovieService
         $movie = $this->movieRepository->createMovie(dto: $dto);
 
         try {
-            $this->savePosterMedia(dto: $dto, movie: $movie);
-            $this->saveFramesMedia(dto: $dto, movie: $movie);
+            $this->saveMediaFiles(
+                mediaFiles: $dto->getMoviePoster(),
+                model: $movie,
+                collectionName: 'poster',
+                storagePath: 'posters'
+            );
+            $this->saveMediaFiles(
+                mediaFiles: $dto->getMovieFrames(),
+                model: $movie,
+                collectionName: 'frames',
+                storagePath: 'frames'
+            );
         } catch (\Throwable $e) {
             Log::error("Failed to save poster or frames: {$e->getMessage()} movie id: {$movie->id}");
         }
 
         return $movie;
-    }
-
-    /**
-     *  Deletes all media files of a specific collection for a given movie.
-     *
-     * @param Movie $movie
-     * @param string $collection
-     * @return void
-     */
-    private function deleteMediaByCollection(Movie $movie, string $collection): void
-    {
-        $movie->medias()
-            ->where('collection', $collection)
-            ->delete();
-    }
-
-    /**
-     * Save the poster media for the movie if provided in the DTO.
-     *
-     * @param UpdateMovieDTO|CreateMovieDTO $dto
-     * @param Movie $movie
-     * @return void
-     */
-    private function savePosterMedia(UpdateMovieDTO|CreateMovieDTO $dto, Movie $movie): void
-    {
-        if ($dto->getMoviePoster()) {
-            $posterPath = $dto->getMoviePoster()->store('posters', 'public');
-
-             $this->mediaRepository->createMediaWithCollection(
-                movie: $movie,
-                path: $posterPath,
-                collection: 'poster',
-            );
-        }
-    }
-
-    /**
-     * Save the frame media for the movie if provided in the DTO.
-     *
-     * @param UpdateMovieDTO|CreateMovieDTO $dto
-     * @param Movie $movie
-     * @return void
-     */
-    private function saveFramesMedia(UpdateMovieDTO|CreateMovieDTO $dto, Movie $movie): void
-    {
-        if ($dto->getMovieFrames()) {
-            foreach ($dto->getMovieFrames() as $frame) {
-                $framePath = $frame->store('frames', 'public');
-
-                 $this->mediaRepository->createMediaWithCollection(
-                    movie: $movie,
-                    path: $framePath,
-                    collection: 'frames',
-                );
-            }
-        }
     }
 
     /**
@@ -186,27 +151,6 @@ class MovieService
             }
         } catch (\Exception $e) {
             Log::error("Failed to delete movie: {$e->getMessage()}. Movie ID: {$movie->id}");
-        }
-    }
-
-    /**
-     * Deletes the media file(s) and associated Media object. Supports both a single Media object and a Media collection.
-     *
-     * @param Media|Collection|null $media
-     * @return void
-     */
-    private function deleteMedia(Media|Collection|null $media): void
-    {
-        if ($media instanceof Media) {
-            $path = str_replace('storage/', '',$media->path);
-            Storage::disk('public')->delete($path);
-
-            $media->delete();
-        } elseif ($media instanceof Collection) {
-
-            foreach ($media as $singleMedia) {
-                $this->deleteMedia($singleMedia);
-            }
         }
     }
 }
