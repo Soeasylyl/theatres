@@ -49,15 +49,6 @@ interface MovieRepositoryInterface
     public function updateMovieInfo(Movie $movie, UpdateMovieDTO $dto): Movie;
 
     /**
-     * Count the number of movies with a given slug, excluding the movie with the specified ID.
-     *
-     * @param string $slug The slug to check.
-     * @param int $id The ID of the movie to exclude from the count.
-     * @return int The count of movies with the specified slug, excluding the given ID.
-     */
-    public function countMoviesWithSlugExcludingId(string $slug, int $id): int;
-
-    /**
      * Creates a new movie record in the database based on the provided CreateMovieDTO and slug.
      *
      * @param CreateMovieDTO $dto The data transfer object containing movie information.

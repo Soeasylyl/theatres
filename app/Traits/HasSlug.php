@@ -56,7 +56,7 @@ trait HasSlug
     protected function generateUniqueSlug(string $name, ?int $id = null): string
     {
         $slug = Str::slug($name);
-        $count = static::where('slug', $slug)->where('id', '!=', $id)->count();
+        $count = static::where('slug', $slug)->whereNot('id', $id)->count();
 
         return $count > 0 ? "{$slug}-" . ($count + 1) : $slug;
     }
