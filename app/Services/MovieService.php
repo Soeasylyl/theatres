@@ -63,9 +63,9 @@ class MovieService
     public function updateMovie(MovieDTO $dto): Movie
     {
         $slug = $this->generateUniqueSlug($dto->getName(), $dto->getMovieId());
-        $movie = $this->movieRepository->getMovieWithRelationsFindOrFail(
-            relations: ['medias'],
+        $movie = $this->movieRepository->getMovieWithRelationsOrFail(
             movieId: $dto->getMovieId(),
+            relations: ['medias'],
         );
 
         try {
