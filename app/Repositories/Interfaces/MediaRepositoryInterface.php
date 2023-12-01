@@ -12,8 +12,8 @@ interface MediaRepositoryInterface
      *
      * @param Movie|Cinema $model
      * @param string $path
-     * @param string $collection
+     * @param string|null $collection
      * @return Movie|Cinema
      */
-    public function createMediaWithCollection(Movie|Cinema $model, string $path, string $collection): Movie|Cinema;
+    public function createMediaWithCollection(Movie|Cinema $model, string $path, ?string $collection = 'default'): Movie|Cinema;
 }
