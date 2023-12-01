@@ -1,7 +1,3 @@
-@php
-    use App\Enums\RolesUsersEnum;
-@endphp
-
 @extends('admin.layouts.app')
 
 @section('content')
@@ -12,7 +8,7 @@
                     <label for="current_password">{{ __('Текущая роль пользователя:') }}</label>
                     <label class="admin-container__label">
                         @if ($userRole)
-                            {{ RolesUsersEnum::getDescription(RolesUsersEnum::from($userRole->name)) }}
+                            {{ App\Enums\RolesUsersEnum::getDescription(App\Enums\RolesUsersEnum::from($userRole->name)) }}
                         @else
                             {{ __('Роль не определена') }}
                         @endif
@@ -20,16 +16,18 @@
                 </div>
                 @endif
 
-                <div class="admin-container__items">
-                    <label for="current_password">{{ __('Кинотеатры к которым относится пользователь:') }}</label>
-                    <label class="admin-container__label">
-                        @if($userCinemasList->isNotEmpty())
-                            {{ $userCinemasList->pluck('name')->implode(', ') }}
-                        @else
-                            {{ __('Нет кинотеатра') }}
-                        @endif
-                    </label>
-                </div>
+                @if(!($user->hasRole(App\Enums\RolesUsersEnum::SUPER_ADMIN->value)))
+                    <div class="admin-container__items">
+                        <label for="current_password">{{ __('Кинотеатры к которым относится пользователь:') }}</label>
+                        <label class="admin-container__label">
+                            @if($userCinemasList->isNotEmpty())
+                                {{ $userCinemasList->pluck('name')->implode(', ') }}
+                            @else
+                                {{ __('Нет кинотеатра') }}
+                            @endif
+                        </label>
+                    </div>
+                @endif
             </div>
 
             @if(!($authUser->id === $user->id))
@@ -52,7 +50,7 @@
                                 <label for="current_password">{{ __('Текущая роль пользователя:') }}</label>
                                 <label class="admin-container__label">
                                     @forelse($user->roles as $role)
-                                        {{ RolesUsersEnum::getDescription(RolesUsersEnum::from($role->name)) }}
+                                        {{ App\Enums\RolesUsersEnum::getDescription(App\Enums\RolesUsersEnum::from($role->name)) }}
                                     @empty
                                         {{ __('Без роли') }}
                                     @endforelse
@@ -76,8 +74,8 @@
                                     <div class="login-container__card-item">
                                         <select name="role" class="admin-container__select">
                                             <option value="" disabled selected>{{ __('Список ролей') }}</option>
-                                            @foreach(RolesUsersEnum::asSelectArray() as $role)
-                                                @if ($role['value'] !==  RolesUsersEnum::SUPER_ADMIN->value)
+                                            @foreach(App\Enums\RolesUsersEnum::asSelectArray() as $role)
+                                                @if ($role['value'] !==  App\Enums\RolesUsersEnum::SUPER_ADMIN->value)
                                                     <option
                                                         value="{{ $role['value'] }}"> {{ $role['name'] }}</option>
                                                 @endif
@@ -95,7 +93,7 @@
                         </div>
                     </div>
 
-            @endif
+                    @endif
 
                     <div class="admin-container__form">
                         <div class="admin-container__grid">

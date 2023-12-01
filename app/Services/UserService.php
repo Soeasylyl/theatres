@@ -15,6 +15,7 @@ use App\Repositories\Interfaces\CinemaRepositoryInterface;
 use App\Repositories\Interfaces\UserRepositoryInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 
 class UserService
 {
@@ -56,10 +57,17 @@ class UserService
      *
      * @param CreateUserDTO $requestDTO
      * @return User
+     * @throws \Exception
      */
     public function createUser(CreateUserDTO $requestDTO): User
     {
-        $user = $this->userRepository->createUser(requestDTO: $requestDTO);
+        try {
+            $user = $this->userRepository->createUser(requestDTO: $requestDTO);
+        } catch (\Throwable $e) {
+            Log::error("Failed to create user: {$e->getMessage()}");
+
+            throw new \Exception('Не удалось создать пользователя.');
+        }
 
         if ($requestDTO->getCinemaId()) {
             $this->userRepository->attachUserToCinema(
@@ -106,7 +114,13 @@ class UserService
             $this->checkAdminEditingPermission(user: $user, producer: $requestDTO->getProducer());
         }
 
-        $this->userRepository->updateInfoByUser(requestDTO: $requestDTO, user: $user);
+        try {
+            $this->userRepository->updateInfoByUser(requestDTO: $requestDTO, user: $user);
+        } catch (\Throwable $e) {
+            Log::error("Failed to update user info: {$e->getMessage()} user id: {$user->id}");
+
+            throw new \Exception('Не удалось обновить информацию.');
+        }
 
         return $user;
     }
@@ -133,7 +147,13 @@ class UserService
             throw new \Exception('Текущий пароль неверен.');
         }
 
-        $this->userRepository->updatePasswordByUser(requestDTO: $requestDTO, user: $user);
+        try {
+            $this->userRepository->updatePasswordByUser(requestDTO: $requestDTO, user: $user);
+        } catch (\Throwable $e) {
+            Log::error("Failed to update user password: {$e->getMessage()} user id: {$user->id}");
+
+            throw new \Exception('Не удалось изменить пароль.');
+        }
 
         return $user;
     }
@@ -167,7 +187,13 @@ class UserService
         $user = $this->userRepository->getUserByIdOrFail(userId: $deleteUserDTO->getUserId());
         $this->checkAdminEditingPermission(user: $user, producer: $deleteUserDTO->getProducer());
 
-        $user->delete();
+        try {
+            $user->delete();
+        } catch (\Throwable $e) {
+            Log::error('Failed to delete user: ' . $e->getMessage());
+
+            throw new \Exception('Не удалось удалить пользователя.');
+        }
     }
 
     /**
@@ -185,6 +211,8 @@ class UserService
         );
         $role = RolesUsersEnum::tryFrom(value: $requestDTO->getRoleName());
         $hasCinemaAdminRole = $requestDTO->getProducer()->hasRole(roles: RolesUsersEnum::CINEMA_ADMIN);
+        $userRole = $user->roles->first();
+
 
         $this->checkAdminEditingPermission(
             user: $user,
@@ -201,11 +229,17 @@ class UserService
             throw new \Exception('Администратор не может давать роль администратора.');
         }
 
-        if ($user->roles->first() !== null) {
-            $user->removeRole(role: $user->roles->first()->name);        //deleting the current user role
-        }
+        try {
+            if ($userRole !== null) {
+                $user->removeRole(role: $userRole->name);        //deleting the current user role
+            }
 
-        $user->assignRole(roles: $role->value);
+            $user->assignRole(roles: $role->value);
+        } catch (\Throwable $e) {
+            Log::error("Failed to update user role: {$e->getMessage()} user id: {$user->id}");
+
+            throw new \Exception('Не удалось изменить роль.');
+        }
 
         return $user;
     }
@@ -221,7 +255,14 @@ class UserService
     {
         $user = $this->userRepository->getUserByIdOrFail(userId: $banUserDTO->getUserId());
         $this->checkAdminEditingPermission(user: $user, producer: $banUserDTO->getProducer());
-        $this->userRepository->blockUser(user: $user, date: $banUserDTO->getExpirationDate());
+
+        try {
+            $this->userRepository->blockUser(user: $user, date: $banUserDTO->getExpirationDate());
+        } catch (\Throwable $e) {
+            Log::error("Failed to block user: {$e->getMessage()} user id: {$user->id}");
+
+            throw new \Exception('Не удалось заблокировать пользователя.');
+        }
 
         return $user;
     }

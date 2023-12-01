@@ -126,6 +126,12 @@ return [
         'emergency' => [
             'path' => storage_path('logs/laravel.log'),
         ],
+
+        'unpermitted-access' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/check_user_access.log'),
+            'level' => 'warning',
+        ],
     ],
 
 ];
