@@ -18,8 +18,8 @@
                                        class="btn-by-ticket">{{ __('Купить билет') }}</a>
                                 </div>
                                 <div class="swiper-slide-img">
-                                    @if ($frame = optional($movie->frames))
-                                        <img src="{{ asset($frame->first()->path) }}" alt="{{ $movie->name }}">
+                                    @if ($frame = optional($movie->frames->first()))
+                                        <img src="{{ asset($frame->path) }}" alt="{{ $movie->name }}">
                                     @endif
                                 </div>
                             </div>
