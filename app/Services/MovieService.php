@@ -66,7 +66,6 @@ class MovieService
      */
     public function updateMovie(UpdateMovieDTO $dto): Movie
     {
-        $slug = $this->generateUniqueSlug($dto->getName(), $dto->getMovieId());
         $movie = $this->movieRepository->getMovieByIdOrFail(
             movieId: $dto->getMovieId(),
             relations: ['medias'],
@@ -76,7 +75,6 @@ class MovieService
             $this->movieRepository->updateMovieInfo(
                 movie: $movie,
                 dto: $dto,
-                slug: $slug,
             );
 
             if ($dto->getMoviePoster() !== null) {
@@ -102,8 +100,7 @@ class MovieService
      */
     public function createAndSaveMovieWithMedia(CreateMovieDTO $dto): Movie
     {
-        $slug = $this->generateUniqueSlug($dto->getName());
-        $movie = $this->movieRepository->createMovie(dto: $dto, slug: $slug);
+        $movie = $this->movieRepository->createMovie(dto: $dto);
 
         try {
             $this->savePosterMedia(dto: $dto, movie: $movie);
@@ -169,35 +166,6 @@ class MovieService
                 );
             }
         }
-    }
-
-    /**
-     * Generates a unique "slug" (URL-friendly string) for a movie based on its title.
-     *
-     * @param string $name
-     * @param int $id
-     * @param int $attempt
-     *
-     * @return string
-     */
-    private function generateUniqueSlug(string $name, int $id = 0, int $attempt = 1): string
-    {
-        $transliteratedTitle = Str::slug($name);
-        $slug = strtolower(str_replace(' ', '-', $transliteratedTitle));
-
-        $count = $this->movieRepository->countMoviesWithSlugExcludingId(slug: $slug, id: $id);
-
-        if ($count > 0) {
-            $slug = $slug . '-' . $attempt;
-            // Recursive call to the function with a new attempt identifier
-            return $this->generateUniqueSlug(
-                name: $name,
-                id: $id,
-                attempt: $attempt + 1,
-            );
-        }
-
-        return $slug;
     }
 
     /**

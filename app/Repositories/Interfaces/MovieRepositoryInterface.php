@@ -44,10 +44,9 @@ interface MovieRepositoryInterface
      *
      * @param Movie $movie The movie model to be updated.
      * @param UpdateMovieDTO $dto The data transfer object containing the updated movie information.
-     * @param string $slug The unique slug for the movie.
      * @return Movie The updated movie model.
      */
-    public function updateMovieInfo(Movie $movie, UpdateMovieDTO $dto, string $slug): Movie;
+    public function updateMovieInfo(Movie $movie, UpdateMovieDTO $dto): Movie;
 
     /**
      * Count the number of movies with a given slug, excluding the movie with the specified ID.
@@ -62,8 +61,7 @@ interface MovieRepositoryInterface
      * Creates a new movie record in the database based on the provided CreateMovieDTO and slug.
      *
      * @param CreateMovieDTO $dto The data transfer object containing movie information.
-     * @param string $slug The unique slug for the movie.
      * @return Movie The newly created movie instance.
      */
-    public function createMovie(CreateMovieDTO $dto, string $slug): Movie;
+    public function createMovie(CreateMovieDTO $dto): Movie;
 }
