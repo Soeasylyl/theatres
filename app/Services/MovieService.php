@@ -75,12 +75,12 @@ class MovieService
         try {
             if ($dto->getMoviePoster() !== null) {
                 $this->deleteMediaByCollection(movie: $movie, collection: 'poster');
-                $movie = $this->savePosterMedia(dto: $dto, movie: $movie);
+                $this->savePosterMedia(dto: $dto, movie: $movie);
             }
 
             if ($dto->getMovieFrames() !== null) {
                 $this->deleteMediaByCollection(movie: $movie, collection: 'frames');
-                $movie = $this->saveFramesMedia(dto: $dto, movie: $movie);
+                $this->saveFramesMedia(dto: $dto, movie: $movie);
             }
         } catch (\Exception $e) {
             Log::error("Failed to save poster or frames: {$e->getMessage()} movie id: {$movie->id}");
