@@ -41,7 +41,7 @@ trait HasSlug
      */
     protected function generateSlugOnUpdate(): void
     {
-        if (!empty($this->name)) {
+        if ($this->isDirty($this->name) && !empty($this->name)) {
             $this->slug = $this->generateUniqueSlug($this->name, $this->getKey());
         }
     }
