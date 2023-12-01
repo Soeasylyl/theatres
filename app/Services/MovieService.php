@@ -2,14 +2,18 @@
 
 namespace App\Services;
 
-use App\DTO\Movies\MovieDTO;
+use App\DTO\Movies\CreateMovieDTO;
+use App\DTO\Movies\UpdateMovieDTO;
 use App\DTO\Movies\SearchMovieDTO;
+use App\Models\Media;
 use App\Models\Movie;
 use App\Repositories\Interfaces\MediaRepositoryInterface;
 use App\Repositories\Interfaces\MovieRepositoryInterface;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class MovieService
@@ -57,13 +61,13 @@ class MovieService
     /**
      * Update the movie information based on the provided DTO, including media files.
      *
-     * @param MovieDTO $dto The DTO containing updated movie information.
-     * @return Movie The updated movie model.
+     * @param UpdateMovieDTO $dto
+     * @return Movie
      */
-    public function updateMovie(MovieDTO $dto): Movie
+    public function updateMovie(UpdateMovieDTO $dto): Movie
     {
         $slug = $this->generateUniqueSlug($dto->getName(), $dto->getMovieId());
-        $movie = $this->movieRepository->getMovieWithRelationsOrFail(
+        $movie = $this->movieRepository->getMovieByIdOrFail(
             movieId: $dto->getMovieId(),
             relations: ['medias'],
         );
@@ -81,11 +85,28 @@ class MovieService
         } catch (\Exception $e) {
             Log::error("Failed to save poster or frames: {$e->getMessage()} movie id: {$movie->id}");
         }
-        return $this->movieRepository->updateMovieInfo(
-            movie: $movie,
-            dto: $dto,
-            slug: $slug
-        );
+        return $movie;
+    }
+
+    /**
+     * Create and Save Movie with Media Attachments
+     *
+     * @param CreateMovieDTO $dto
+     * @return Movie
+     */
+    public function createAndSaveMovieWithMedia(CreateMovieDTO $dto): Movie
+    {
+        $slug = $this->generateUniqueSlug($dto->getName());
+        $movie = $this->movieRepository->createMovie(dto: $dto, slug: $slug);
+
+        try {
+            $this->savePosterMedia(dto: $dto, movie: $movie);
+            $this->saveFramesMedia(dto: $dto, movie: $movie);
+        } catch (\Throwable $e) {
+            Log::error("Failed to save poster or frames: {$e->getMessage()} movie id: {$movie->id}");
+        }
+
+        return $movie;
     }
 
     /**
@@ -105,61 +126,57 @@ class MovieService
     /**
      * Save the poster media for the movie if provided in the DTO.
      *
-     * @param MovieDTO $dto The DTO containing movie information.
-     * @param Movie $movie The movie model to which the poster media will be associated.
-     * @return Movie The movie model with updated poster media.
+     * @param UpdateMovieDTO|CreateMovieDTO $dto
+     * @param Movie $movie
+     * @return void
      */
-    private function savePosterMedia(MovieDTO $dto, Movie $movie): Movie
+    private function savePosterMedia(UpdateMovieDTO|CreateMovieDTO $dto, Movie $movie): void
     {
         if ($dto->getMoviePoster()) {
             $posterPath = $dto->getMoviePoster()->store('posters', 'public');
 
-            $movie = $this->mediaRepository->createMediaWithCollection(
+             $this->mediaRepository->createMediaWithCollection(
                 movie: $movie,
                 path: $posterPath,
                 collection: 'poster',
             );
         }
-
-        return $movie;
     }
 
     /**
      * Save the frame media for the movie if provided in the DTO.
      *
-     * @param MovieDTO $dto The DTO containing movie information.
-     * @param Movie $movie The movie model to which the frame media will be associated.
-     * @return Movie The movie model with updated frame media.
+     * @param UpdateMovieDTO|CreateMovieDTO $dto
+     * @param Movie $movie
+     * @return void
      */
-    private function saveFramesMedia(MovieDTO $dto, Movie $movie): Movie
+    private function saveFramesMedia(UpdateMovieDTO|CreateMovieDTO $dto, Movie $movie): void
     {
         if ($dto->getMovieFrames()) {
             foreach ($dto->getMovieFrames() as $frame) {
                 $framePath = $frame->store('frames', 'public');
 
-                $movie = $this->mediaRepository->createMediaWithCollection(
+                 $this->mediaRepository->createMediaWithCollection(
                     movie: $movie,
                     path: $framePath,
                     collection: 'frames',
                 );
             }
         }
-
-        return $movie;
     }
 
     /**
      * Generates a unique "slug" (URL-friendly string) for a movie based on its title.
      *
-     * @param string $title The title of the movie.
-     * @param int $id The ID of the movie.
-     * @param int $attempt The number of attempts to generate a unique slug (default is 1).
+     * @param string $name
+     * @param int $id
+     * @param int $attempt
      *
-     * @return string A unique slug for the movie.
+     * @return string
      */
-    private function generateUniqueSlug(string $title, int $id, int $attempt = 1): string
+    private function generateUniqueSlug(string $name, int $id = 0, int $attempt = 1): string
     {
-        $transliteratedTitle = Str::slug($title);
+        $transliteratedTitle = Str::slug($name);
         $slug = strtolower(str_replace(' ', '-', $transliteratedTitle));
 
         $count = $this->movieRepository->countMoviesWithSlugExcludingId(slug: $slug, id: $id);
@@ -167,9 +184,55 @@ class MovieService
         if ($count > 0) {
             $slug = $slug . '-' . $attempt;
             // Recursive call to the function with a new attempt identifier
-            return $this->generateUniqueSlug($title, $id, $attempt + 1);
+            return $this->generateUniqueSlug(
+                name: $name,
+                id: $id,
+                attempt: $attempt + 1,
+            );
         }
 
         return $slug;
+    }
+
+    /**
+     * Delete a movie
+     *
+     * @param int $movieId
+     * @return void
+     */
+    public function deleteMovie(int $movieId): void
+    {
+        $movie = $this->movieRepository->getMovieByIdOrFail(movieId: $movieId);
+
+        try {
+            $this->deleteMedia($movie->poster);
+            $this->deleteMedia($movie->frames);
+            if (!$movie->delete()) {
+                Log::error("Failed to delete movie: Movie deletion failed. Movie ID: {$movie->id}");
+            }
+        } catch (\Exception $e) {
+            Log::error("Failed to delete movie: {$e->getMessage()}. Movie ID: {$movie->id}");
+        }
+    }
+
+    /**
+     * Deletes the media file(s) and associated Media object. Supports both a single Media object and a Media collection.
+     *
+     * @param Media|Collection|null $media
+     * @return void
+     */
+    private function deleteMedia(Media|Collection|null $media): void
+    {
+        if ($media instanceof Media) {
+            $path = str_replace('storage/', '',$media->path);
+            Storage::disk('public')->delete($path);
+
+            $media->delete();
+        } elseif ($media instanceof Collection) {
+
+            foreach ($media as $singleMedia) {
+                $this->deleteMedia($singleMedia);
+            }
+        }
     }
 }

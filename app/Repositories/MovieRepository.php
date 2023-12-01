@@ -2,7 +2,8 @@
 
 namespace App\Repositories;
 
-use App\DTO\Movies\MovieDTO;
+use App\DTO\Movies\CreateMovieDTO;
+use App\DTO\Movies\UpdateMovieDTO;
 use App\Models\Movie;
 use App\Repositories\Interfaces\MovieRepositoryInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
@@ -65,11 +66,11 @@ class MovieRepository implements MovieRepositoryInterface
      * Update the information of a movie with the provided data.
      *
      * @param Movie $movie The movie model to be updated.
-     * @param MovieDTO $dto The data transfer object containing the updated movie information.
+     * @param UpdateMovieDTO $dto The data transfer object containing the updated movie information.
      * @param string $slug The unique slug for the movie.
      * @return Movie The updated movie model.
      */
-    public function updateMovieInfo(Movie $movie, MovieDTO $dto, string $slug): Movie
+    public function updateMovieInfo(Movie $movie, UpdateMovieDTO $dto, string $slug): Movie
     {
         $movie->update([
             'slug' => $slug,
@@ -94,5 +95,25 @@ class MovieRepository implements MovieRepositoryInterface
     public function countMoviesWithSlugExcludingId(string $slug, int $id): int
     {
         return Movie::where('slug', $slug)->whereNot('id', $id)->count();
+    }
+
+    /**
+     * Creates a new movie record in the database based on the provided CreateMovieDTO and slug.
+     *
+     * @param CreateMovieDTO $dto The data transfer object containing movie information.
+     * @param string $slug The unique slug for the movie.
+     * @return Movie The newly created movie instance.
+     */
+    public function createMovie(CreateMovieDTO $dto, string $slug): Movie
+    {
+        return Movie::create([
+            'slug' => $slug,
+            'name' => $dto->getName(),
+            'rating' => $dto->getRating(),
+            'age_limit' => $dto->getAgeLimit(),
+            'session_duration' => $dto->getSessionDuration(),
+            'date_start' => $dto->getDateStart(),
+            'description' => $dto->getDescription(),
+        ]);
     }
 }

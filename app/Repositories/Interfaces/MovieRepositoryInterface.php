@@ -3,7 +3,8 @@
 namespace App\Repositories\Interfaces;
 
 
-use App\DTO\Movies\MovieDTO;
+use App\DTO\Movies\CreateMovieDTO;
+use App\DTO\Movies\UpdateMovieDTO;
 use App\Models\Movie;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
@@ -36,17 +37,17 @@ interface MovieRepositoryInterface
      * @return Movie The retrieved movie with specified relationships.
      * @throws ModelNotFoundException If the movie with the given ID is not found.
      */
-    public function getMovieWithRelationsOrFail(int $movieId, ?array $relations = []): Movie;
+    public function getMovieByIdOrFail(int $movieId, ?array $relations = []): Movie;
 
     /**
      * Update the information of a movie with the provided data.
      *
      * @param Movie $movie The movie model to be updated.
-     * @param MovieDTO $dto The data transfer object containing the updated movie information.
+     * @param UpdateMovieDTO $dto The data transfer object containing the updated movie information.
      * @param string $slug The unique slug for the movie.
      * @return Movie The updated movie model.
      */
-    public function updateMovieInfo(Movie $movie, MovieDTO $dto, string $slug): Movie;
+    public function updateMovieInfo(Movie $movie, UpdateMovieDTO $dto, string $slug): Movie;
 
     /**
      * Count the number of movies with a given slug, excluding the movie with the specified ID.
@@ -56,4 +57,13 @@ interface MovieRepositoryInterface
      * @return int The count of movies with the specified slug, excluding the given ID.
      */
     public function countMoviesWithSlugExcludingId(string $slug, int $id): int;
+
+    /**
+     * Creates a new movie record in the database based on the provided CreateMovieDTO and slug.
+     *
+     * @param CreateMovieDTO $dto The data transfer object containing movie information.
+     * @param string $slug The unique slug for the movie.
+     * @return Movie The newly created movie instance.
+     */
+    public function createMovie(CreateMovieDTO $dto, string $slug): Movie;
 }

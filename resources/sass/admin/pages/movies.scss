@@ -8,7 +8,7 @@
 
     &__form {
         display: grid;
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(2, 50%);
         gap: 20px;
 
         :last-child {
@@ -51,6 +51,19 @@
            }
        }
    }
+
+    &__preview-container {
+        display: flex;
+        gap: 5px;
+        width: 100%;
+        overflow: auto;
+
+        img {
+            width: 150px;
+            height: 210px;
+            object-fit: cover;
+        }
+    }
 
     &__item-body {
         display: flex;

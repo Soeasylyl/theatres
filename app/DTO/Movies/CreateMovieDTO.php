@@ -5,10 +5,9 @@ namespace App\DTO\Movies;
 use Carbon\Carbon;
 use Illuminate\Http\UploadedFile;
 
-class MovieDTO
+class CreateMovieDTO
 {
     /**
-     * @param int $movieId
      * @param string $name
      * @param string $dateStart
      * @param string $sessionDuration
@@ -19,7 +18,6 @@ class MovieDTO
      * @param array|null $movieFrames
      */
     public function __construct(
-        private readonly int $movieId,
         private readonly string $name,
         private readonly string $dateStart,
         private readonly string $sessionDuration,
@@ -30,11 +28,6 @@ class MovieDTO
         private readonly ?array $movieFrames,
     )
     {
-    }
-
-    public function getMovieId(): int
-    {
-        return $this->movieId;
     }
 
     /**
