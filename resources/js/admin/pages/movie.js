@@ -14,6 +14,13 @@ class Movie {
         this.previewFramesImage()
         this.previewPosterImage()
         this.movieLocalStorage()
+        this.clearLocalStoragePeriodically();
+    }
+
+    clearLocalStoragePeriodically() {
+        setInterval(() => {
+            localStorage.clear();
+        }, 5 * 60 * 1000);
     }
 
     previewFramesImage() {
@@ -88,7 +95,6 @@ class Movie {
             });
         }
     }
-
 }
 
 new Movie();
