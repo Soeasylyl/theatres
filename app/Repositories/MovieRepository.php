@@ -57,7 +57,7 @@ class MovieRepository implements MovieRepositoryInterface
      * @return Movie The retrieved movie with specified relationships.
      * @throws ModelNotFoundException If the movie with the given ID is not found.
      */
-    public function getMovieWithRelationsOrFail(int $movieId, ?array $relations = []): Movie
+    public function getMovieByIdOrFail(int $movieId, ?array $relations = []): Movie
     {
         return Movie::with($relations)->findOrFail($movieId);
     }
