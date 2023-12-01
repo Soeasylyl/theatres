@@ -73,6 +73,12 @@ class MovieService
         );
 
         try {
+            $this->movieRepository->updateMovieInfo(
+                movie: $movie,
+                dto: $dto,
+                slug: $slug,
+            );
+
             if ($dto->getMoviePoster() !== null) {
                 $this->deleteMediaByCollection(movie: $movie, collection: 'poster');
                 $this->savePosterMedia(dto: $dto, movie: $movie);
