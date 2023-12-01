@@ -83,7 +83,7 @@
                                     {{ __('Загрузка медиа-файлов:') }}
                                 </div>
                                 <div class="admin-theatres__item-body">
-                                    <input id="theatreImageInput" type="file" name="$theatreImages[]"
+                                    <input id="theatreImageInput" type="file" name="theatreImages[]"
                                            autocomplete="off" multiple>
                                 </div>
                             </div>

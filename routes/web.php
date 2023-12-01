@@ -2,6 +2,7 @@
 
 use App\Enums\RolesUsersEnum;
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\HallController;
 use App\Http\Controllers\Admin\MovieController;
 use App\Http\Controllers\Admin\SeatTypeController;
 use App\Http\Controllers\Admin\TheatreController;
@@ -48,20 +49,28 @@ Route::prefix('admin')->middleware(['auth', 'isBlock', 'AdminAccess'])->group(fu
         Route::prefix('/')->middleware(['role:' . RolesUsersEnum::SUPER_ADMIN->value . '|' . RolesUsersEnum::CINEMA_ADMIN->value])->group(function () {
             Route::get('/create', [TheatreController::class, 'show'])->name('theatre.create');
             Route::post('/create', [TheatreController::class, 'create']);
+
             Route::prefix('/')->middleware('CheckTheatreAccessMiddleware')->group(function () {
                 Route::get('{theatres}/edit', [TheatreController::class, 'edit'])->name('theatre.edit');
                 Route::patch('{theatres}/update', [TheatreController::class, 'update'])->name('theatre.update');
                 Route::delete('{theatres}', [TheatreController::class, 'delete'])->name('theatre.delete');
 
                 //Seat Type CRUD
-                Route::prefix('{theatres}/edit')->group(function () {
-                    Route::post('/create', [SeatTypeController::class, 'create'])->name('seat-type.create');
-                    Route::patch('/update', [SeatTypeController::class, 'update'])->name('seat-type.update');
-                    Route::delete('/delete', [SeatTypeController::class, 'delete'])->name('seat-type.delete');
+                Route::prefix('{theatres}/')->group(function () {
+                    Route::post('/create-seat-type', [SeatTypeController::class, 'create'])->name('seat-type.create');
+                    Route::patch('/update-seat-type', [SeatTypeController::class, 'update'])->name('seat-type.update');
+                    Route::delete('/delete-seat-type', [SeatTypeController::class, 'delete'])->name('seat-type.delete');
+
+                    //Theatre creating
+                    Route::get('/hall-create',[HallController::class, 'show'])->name('hall.create');
+
                 });
-                //Theatre creating
             });
         });
+    });
+
+    Route::prefix('/ajax')->group(function () {
+        Route::get('/show-row-seats',[HallController::class, 'showRowSeats'])->name('hall.show.row-seats');
     });
 
     Route::prefix('users')->middleware(['role:' . RolesUsersEnum::SUPER_ADMIN->value . '|' . RolesUsersEnum::CINEMA_ADMIN->value])->group(function () {

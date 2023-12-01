@@ -82,7 +82,7 @@
                                         {{ __('Загрузка изображений кинотеатра:') }}
                                     </div>
                                     <div class="admin-theatres__item-body">
-                                        <input id="theatreImageInput" type="file" name="$theatreImages[]"
+                                        <input id="theatreImageInput" type="file" name="theatreImages[]"
                                                autocomplete="off" multiple>
                                     </div>
                                 </div>
@@ -185,8 +185,9 @@
                                     </tbody>
                                 </table>
 
-                                <a class="login-container__btn open-add-hall-btn"
-                                   style="justify-content: center; display: flex;">Добавить новый зал</a>
+                                <a class="login-container__btn"
+                                        style="justify-content: center; display: flex; text-decoration: none;"
+                                   href="{{ route('hall.create', $theatre->id) }}">Добавить новый зал</a>
                             </div>
 
                         </div>
