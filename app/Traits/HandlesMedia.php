@@ -19,7 +19,7 @@ trait HandlesMedia
      * @param string $storagePath
      * @return void
      */
-    protected function saveMediaFiles(UploadedFile|array $mediaFiles, string $collectionName, string $storagePath): void
+    public function saveMediaFiles(UploadedFile|array $mediaFiles, string $collectionName, string $storagePath): void
     {
         \Log::info('saveMediaFiles called');
         // Ensure that $mediaFiles is always treated as an array, even if it's a single file.
@@ -43,7 +43,7 @@ trait HandlesMedia
      * @param Collection|Media|null $media
      * @return void
      */
-    protected function deleteMedia(Media|Collection|null $media): void
+    public function deleteMedia(Media|Collection|null $media): void
     {
         \Log::info('deleteMedia called');
         if ($media instanceof Media) {
@@ -58,5 +58,8 @@ trait HandlesMedia
         }
     }
 
+    /**
+     *  Abstract function to define the relationship with the associated media records.
+     */
     abstract public function medias();
 }

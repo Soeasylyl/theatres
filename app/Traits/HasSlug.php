@@ -13,26 +13,38 @@ trait HasSlug
      */
     protected static function bootHasSlug(): void
     {
-        parent::boot();
+        static::creating(function ($model) {
+            $model->generateSlugOnCreate();
+        });
 
-        static::saving(function ($model) {
-            $model->generateSlug();
+        static::updating(function ($model) {
+            $model->generateSlugOnUpdate();
         });
     }
 
     /**
-     * Generate slug on model creation or update.
+     * Generate slug on model creation.
      *
      * @return void
      */
-    protected function generateSlug(): void
+    protected function generateSlugOnCreate(): void
     {
-        $name = $this->name ?? '';
+        if (empty($this->slug) && !empty($this->name)) {
+            $this->slug  = $this->generateUniqueSlug($this->name);
+        }
+    }
 
-        if (empty($this->slug)) {
-            $this->slug = $this->generateUniqueSlug($name);
-        } elseif ($this->isDirty('name')) {
-            $this->slug = $this->generateUniqueSlug($name, $this->getKey());
+    /**
+     * Generate slug on model update.
+     *
+     * @return void
+     */
+    protected function generateSlugOnUpdate(): void
+    {
+        if ($this->isDirty('name') && !empty($this->name)) {
+            $this->slug = $this->generateUniqueSlug($this->name, $this->getKey());
+        } else {
+            \Log::info('Slug not generated on update', ['name' => $this->name, 'isDirty' => $this->isDirty('name')]);
         }
     }
 
