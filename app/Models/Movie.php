@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\HandlesMedia;
 use App\Traits\HasSlug;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -58,7 +59,7 @@ use Laravel\Sanctum\PersonalAccessToken;
  */
 class Movie extends Model
 {
-    use HasApiTokens, HasFactory, Notifiable, HasSlug;
+    use HasApiTokens, HasFactory, Notifiable, HasSlug, HandlesMedia;
 
     /**
      * @var string[]

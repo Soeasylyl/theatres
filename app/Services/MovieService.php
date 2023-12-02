@@ -6,20 +6,15 @@ use App\DTO\Movies\CreateMovieDTO;
 use App\DTO\Movies\UpdateMovieDTO;
 use App\DTO\Movies\SearchMovieDTO;
 use App\Models\Movie;
-use App\Repositories\Interfaces\MediaRepositoryInterface;
 use App\Repositories\Interfaces\MovieRepositoryInterface;
-use App\Traits\HandlesMedia;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Log;
 
 class MovieService
 {
-    use HandlesMedia;
-
     public function __construct(
         private readonly MovieRepositoryInterface $movieRepository,
-        private readonly MediaRepositoryInterface $mediaRepository,
     )
     {
     }
@@ -77,24 +72,24 @@ class MovieService
             );
 
             if ($dto->getMoviePoster() !== null) {
-                $this->deleteMedia($movie->poster);
+                $poster = $movie->poster;
+                $movie->deleteMedia($poster);
 
-                $this->saveMediaFiles(
+                $movie->saveMediaFiles(
                     mediaFiles: $dto->getMoviePoster(),
-                    model: $movie,
                     collectionName: 'poster',
-                    storagePath: 'posters'
+                    storagePath: 'movies'
                 );
             }
 
             if ($dto->getMovieFrames() !== null) {
-                $this->deleteMedia($movie->frames);
+                $frames = $movie->frames;
+                $movie->deleteMedia($frames);
 
-                $this->saveMediaFiles(
+                $movie->saveMediaFiles(
                     mediaFiles: $dto->getMovieFrames(),
-                    model: $movie,
                     collectionName: 'frames',
-                    storagePath: 'frames'
+                    storagePath: 'movies'
                 );
             }
         } catch (\Exception $e) {
@@ -114,17 +109,15 @@ class MovieService
         $movie = $this->movieRepository->createMovie(dto: $dto);
 
         try {
-            $this->saveMediaFiles(
+            $movie->saveMediaFiles(
                 mediaFiles: $dto->getMoviePoster(),
-                model: $movie,
                 collectionName: 'poster',
-                storagePath: 'posters'
+                storagePath: 'movies'
             );
-            $this->saveMediaFiles(
+            $movie->saveMediaFiles(
                 mediaFiles: $dto->getMovieFrames(),
-                model: $movie,
                 collectionName: 'frames',
-                storagePath: 'frames'
+                storagePath: 'movies'
             );
         } catch (\Throwable $e) {
             Log::error("Failed to save poster or frames: {$e->getMessage()} movie id: {$movie->id}");
@@ -144,8 +137,8 @@ class MovieService
         $movie = $this->movieRepository->getMovieByIdOrFail(movieId: $movieId);
 
         try {
-            $this->deleteMedia($movie->poster);
-            $this->deleteMedia($movie->frames);
+            $movie->deleteMedia($movie->poster);
+            $movie->deleteMedia($movie->frames);
             if (!$movie->delete()) {
                 Log::error("Failed to delete movie: Movie deletion failed. Movie ID: {$movie->id}");
             }

@@ -11,23 +11,17 @@ use Illuminate\Http\UploadedFile;
 
 trait HandlesMedia
 {
-    public function __construct(
-        private readonly MediaRepositoryInterface $mediaRepository,
-    )
-    {
-    }
-
     /**
      * Save media files for a model in a specified collection and storage path.
      *
      * @param UploadedFile|array $mediaFiles
-     * @param Model $model
      * @param string $collectionName
      * @param string $storagePath
      * @return void
      */
-    protected function saveMediaFiles(UploadedFile|array $mediaFiles, Model $model, string $collectionName, string $storagePath): void
+    protected function saveMediaFiles(UploadedFile|array $mediaFiles, string $collectionName, string $storagePath): void
     {
+        \Log::info('saveMediaFiles called');
         // Ensure that $mediaFiles is always treated as an array, even if it's a single file.
         $mediaFiles = is_array($mediaFiles) ? $mediaFiles : [$mediaFiles];
 
@@ -35,7 +29,10 @@ trait HandlesMedia
             foreach ($mediaFiles as $file) {
                 $filePath = $file->store($storagePath, 'public');
 
-                $this->mediaRepository->createMediaWithCollection($model, $filePath, $collectionName);
+                $this->medias()->create([
+                    'path' => 'storage/' . $filePath,
+                    'collection' => $collectionName,
+                ]);
             }
         }
     }
@@ -48,6 +45,7 @@ trait HandlesMedia
      */
     protected function deleteMedia(Media|Collection|null $media): void
     {
+        \Log::info('deleteMedia called');
         if ($media instanceof Media) {
             $path = str_replace('storage/', '', $media->path);
             Storage::disk('public')->delete($path);
@@ -59,4 +57,6 @@ trait HandlesMedia
             }
         }
     }
+
+    abstract public function medias();
 }
