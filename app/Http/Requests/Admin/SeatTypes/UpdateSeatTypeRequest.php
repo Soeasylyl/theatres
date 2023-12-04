@@ -26,7 +26,7 @@ class UpdateSeatTypeRequest extends FormRequest
             'seat_id' => 'required|exists:seat_types,id',
             'seat_name' => 'required|string|max:30',
             'seat_description' => 'nullable|string|max:1000',
-            'seat_amount' => ['required', 'regex:/^(\$)?(\d+(\.\d{1,2})?)$/'],
+            'seat_amount' => 'required|regex:/^(\$)?(\d+(\.\d{1,2})?)$/',
         ];
     }
 
