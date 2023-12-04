@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Admin;
 
-
 use App\DTO\Users\BanUserDTO;
 use App\DTO\Users\CreateUserDTO;
 use App\DTO\Users\DeleteUserDTO;
@@ -21,7 +20,6 @@ use App\Services\TheatreService;
 use App\Services\UserService;
 use Carbon\Carbon;
 use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
@@ -29,26 +27,9 @@ use Illuminate\Http\RedirectResponse;
 class UserController extends BaseAdminController
 {
     /**
-     * @param UserService $userService
-     * @param TheatreService $theatreService
-     */
-    public function __construct(
-        private readonly UserService   $userService,
-        private readonly TheatreService $theatreService,
-    )
-    {
-    }
-
-    /**
-     * Show the application dashboard.
-     *
-     * @return Renderable
-     */
-
-    /**
      * @return Application|Factory|View|\Illuminate\Foundation\Application
      */
-    public function index(SearchRequest $request)
+    public function index(SearchRequest $request, UserService $userService)
     {
         $authUser = auth()->user();
         $searchTern = $request->input('search');
@@ -58,9 +39,9 @@ class UserController extends BaseAdminController
             searchTerm: $searchTern
         );
 
-        $users = $this->userService->fetchUsersForRole($searchUserDTO);
+        $users = $userService->fetchUsersForRole($searchUserDTO);
 
-        return view('admin.pages.users.main', compact('users', 'searchTern' ));
+        return view('admin.pages.users.main', compact('users', 'searchTern'));
     }
 
     /**
@@ -68,9 +49,9 @@ class UserController extends BaseAdminController
      *
      * @return Application|Factory|View|\Illuminate\Foundation\Application
      */
-    public function show()
+    public function show(TheatreService $theatreService)
     {
-        $cinemas = $this->theatreService->getPaginatedCinemasList();
+        $cinemas = $theatreService->getPaginatedCinemasList();
 
         return view('admin.pages.users.add', compact('cinemas'));
     }
@@ -80,7 +61,7 @@ class UserController extends BaseAdminController
      *
      * @return RedirectResponse
      */
-    protected function create(UserRequest $request)
+    protected function create(UserRequest $request, UserService $userService)
     {
         $requestDTO = new CreateUserDTO(
             name: $request->input('name'),
@@ -91,7 +72,7 @@ class UserController extends BaseAdminController
             roleName: $request->input('role'),
         );
 
-        $this->userService->createUser($requestDTO);
+        $userService->createUser($requestDTO);
 
         return redirect()->route('users')->with('successMessages', 'Пользователь успешно создан');
     }
@@ -100,9 +81,10 @@ class UserController extends BaseAdminController
      * Retrieving information to display on the selected user's page
      *
      * @param int $userId
+     * @param UserService $userService
      * @return Application|Factory|View|\Illuminate\Foundation\Application
      */
-    public function edit(int $userId)
+    public function edit(int $userId, UserService $userService)
     {
         $authUser = auth()->user();
 
@@ -111,7 +93,7 @@ class UserController extends BaseAdminController
             userId: $userId
         );
 
-        $userData = $this->userService->getUserDataForEdit($editUserDTO);
+        $userData = $userService->getUserDataForEdit($editUserDTO);
 
         return view('admin.pages.users.edit', compact('authUser'), [
             'user' => $userData['user'],
@@ -126,9 +108,14 @@ class UserController extends BaseAdminController
      *
      * @param UpdateProfileRequest $request
      * @param int $userId
+     * @param UserService $userService
      * @return RedirectResponse
      */
-    public function update(UpdateProfileRequest $request, int $userId)
+    public function update(
+        UpdateProfileRequest $request,
+        int                  $userId,
+        UserService          $userService,
+    )
     {
         $authUser = auth()->user();
 
@@ -141,7 +128,7 @@ class UserController extends BaseAdminController
         );
 
         try {
-            $this->userService->updateInfoByUser($requestDTO);
+            $userService->updateInfoByUser($requestDTO);
 
             return redirect()->route('user.edit', $userId)->with('message', 'Информация успешно обновлена');
         } catch (\Throwable $e) {
@@ -154,9 +141,14 @@ class UserController extends BaseAdminController
      *
      * @param UpdateProfileRequest $request
      * @param int $userId
+     * @param UserService $userService
      * @return RedirectResponse
      */
-    public function updateProfile(UpdateProfileRequest $request, int $userId)
+    public function updateProfile(
+        UpdateProfileRequest $request,
+        int                  $userId,
+        UserService          $userService,
+    )
     {
         $authUser = auth()->user();
 
@@ -170,7 +162,7 @@ class UserController extends BaseAdminController
         );
 
         try {
-            $this->userService->updateInfoByUser($requestDTO);
+            $userService->updateInfoByUser($requestDTO);
 
             return redirect()->route('user.edit', $userId)->with('message', 'Информация успешно обновлена');
         } catch (\Throwable $e) {
@@ -183,10 +175,14 @@ class UserController extends BaseAdminController
      *
      * @param UpdatePasswordRequest $request
      * @param int $userId
+     * @param UserService $userService
      * @return RedirectResponse
-     * @throws \Exception
      */
-    public function updatePassword(UpdatePasswordRequest $request, int $userId)
+    public function updatePassword(
+        UpdatePasswordRequest $request,
+        int                   $userId,
+        UserService           $userService,
+    )
     {
         $authUser = auth()->user();
 
@@ -198,7 +194,7 @@ class UserController extends BaseAdminController
         );
 
         try {
-            $this->userService->updatePasswordByUser($requestDTO);
+            $userService->updatePasswordByUser($requestDTO);
 
             return redirect()->route('user.edit', $userId)->with('success_update_user_password', 'Пароль успешно изменен.');
         } catch (\Throwable $e) {
@@ -211,10 +207,14 @@ class UserController extends BaseAdminController
      *
      * @param UpdatePasswordRequest $request
      * @param int $userId
+     * @param UserService $userService
      * @return RedirectResponse
-     * @throws \Exception
      */
-    public function updatePasswordProfile(UpdatePasswordRequest $request, int $userId)
+    public function updatePasswordProfile(
+        UpdatePasswordRequest $request,
+        int                   $userId,
+        UserService           $userService,
+    )
     {
         $authUser = auth()->user();
 
@@ -227,7 +227,7 @@ class UserController extends BaseAdminController
         );
 
         try {
-            $this->userService->updatePasswordByUser($requestDTO);
+            $userService->updatePasswordByUser($requestDTO);
 
             return redirect()->route('user.edit', $userId)->with('success_update_user_password', 'Пароль успешно изменен.');
         } catch (\Throwable $e) {
@@ -239,9 +239,10 @@ class UserController extends BaseAdminController
      * Delete a selected user
      *
      * @param int $userId
+     * @param UserService $userService
      * @return RedirectResponse
      */
-    public function delete(int $userId)
+    public function delete(int $userId, UserService $userService)
     {
         $authUser = auth()->user();
 
@@ -251,7 +252,7 @@ class UserController extends BaseAdminController
         );
 
         try {
-            $this->userService->deleteUser($deleteUserDTO);
+            $userService->deleteUser($deleteUserDTO);
 
             return redirect()->route('users')->with('successMessages', 'Пользователь успешно удален.');
         } catch (\Throwable $e) {
@@ -263,9 +264,10 @@ class UserController extends BaseAdminController
      * Change the role of the selected user
      *
      * @param UpdateRoleRequest $request
+     * @param UserService $userService
      * @return RedirectResponse
      */
-    public function updateRole(UpdateRoleRequest $request)
+    public function updateRole(UpdateRoleRequest $request, UserService $userService)
     {
         $authUser = auth()->user();
 
@@ -276,7 +278,7 @@ class UserController extends BaseAdminController
         );
 
         try {
-            $this->userService->updateUserRole($requestDTO);
+            $userService->updateUserRole($requestDTO);
 
             return redirect()->back()->with('success_update_role', 'Роль у пользователя успешно изменена.');
         } catch (\Throwable $e) {
@@ -289,9 +291,14 @@ class UserController extends BaseAdminController
      *
      * @param BlockRequest $request
      * @param int $userId
+     * @param UserService $userService
      * @return null
      */
-    public function block(BlockRequest $request, int $userId)
+    public function block(
+        BlockRequest $request,
+        int          $userId,
+        UserService  $userService
+    )
     {
         $authUser = auth()->user();
 
@@ -303,7 +310,7 @@ class UserController extends BaseAdminController
         );
 
         try {
-            $this->userService->blockUser($banUserDTO);
+            $userService->blockUser($banUserDTO);
 
             return redirect()->route('users')->with('successMessages', 'Пользователь успешно заблокирован.');
         } catch (\Throwable $e) {

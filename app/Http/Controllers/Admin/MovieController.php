@@ -12,20 +12,13 @@ use Illuminate\Contracts\View\View;
 class MovieController extends BaseAdminController
 {
     /**
-     * @param MovieService $movieService
-     */
-    public function __construct(private readonly MovieService $movieService)
-    {
-    }
-
-    /**
      * Show the application dashboard.
      *
      * @return Renderable
      */
-    public function index()
+    public function index(MovieService $movieService)
     {
-        $movies = $this->movieService->getAllMovies();
+        $movies = $movieService->getAllMovies();
 
         return view('admin.pages.movies.movies-information', compact('movies'));
     }

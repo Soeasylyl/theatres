@@ -45,19 +45,20 @@ Route::prefix('admin')->middleware(['auth', 'isBlock', 'AdminAccess'])->group(fu
         Route::get('/', [TheatreController::class, 'index'])->name('theatres');
 
         // Theatre CRUD
-        Route::prefix('/')->middleware(['role:' . RolesUsersEnum::SUPER_ADMIN->value . '|' . RolesUsersEnum::CINEMA_ADMIN->value])->group(function () {
+        Route::middleware(['role:' . RolesUsersEnum::SUPER_ADMIN->value . '|' . RolesUsersEnum::CINEMA_ADMIN->value])->group(function () {
             Route::get('/create', [TheatreController::class, 'show'])->name('theatre.create');
-            Route::post('/create', [TheatreController::class, 'create']);
-            Route::prefix('/')->middleware('CheckTheatreAccessMiddleware')->group(function () {
+            Route::post('/', [TheatreController::class, 'create']);
+
+            Route::middleware('CheckTheatreAccessMiddleware')->group(function () {
                 Route::get('{theatres}/edit', [TheatreController::class, 'edit'])->name('theatre.edit');
-                Route::patch('{theatres}/update', [TheatreController::class, 'update'])->name('theatre.update');
-                Route::delete('{theatres}', [TheatreController::class, 'delete'])->name('theatre.delete');
+                Route::patch('{theatres}/', [TheatreController::class, 'update'])->name('theatre.update');
+                Route::delete('{theatres}/', [TheatreController::class, 'delete'])->name('theatre.delete');
 
                 //Seat Type CRUD
-                Route::prefix('{theatres}/edit')->group(function () {
-                    Route::post('/create', [SeatTypeController::class, 'create'])->name('seat-type.create');
-                    Route::patch('/update', [SeatTypeController::class, 'update'])->name('seat-type.update');
-                    Route::delete('/delete', [SeatTypeController::class, 'delete'])->name('seat-type.delete');
+                Route::prefix('{theatres}/seat-type')->group(function () {
+                    Route::post('/', [SeatTypeController::class, 'create'])->name('seat-type.create');
+                    Route::patch('/', [SeatTypeController::class, 'update'])->name('seat-type.update');
+                    Route::delete('/', [SeatTypeController::class, 'delete'])->name('seat-type.delete');
                 });
                 //Theatre creating
             });

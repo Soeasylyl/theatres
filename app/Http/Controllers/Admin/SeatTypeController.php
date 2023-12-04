@@ -12,20 +12,19 @@ use Illuminate\Http\RedirectResponse;
 
 class SeatTypeController extends BaseAdminController
 {
-    public function __construct(
-        private readonly SeatTypeService $seatTypeService,
-    )
-    {
-    }
-
     /**
      *  Creates a new type of movie theater location.
      *
      * @param SeatTypeRequest $request
      * @param int $theatreId
+     * @param SeatTypeService $seatTypeService
      * @return RedirectResponse
      */
-    public function create(SeatTypeRequest $request, int $theatreId)
+    public function create(
+        SeatTypeRequest $request,
+        int $theatreId,
+        SeatTypeService $seatTypeService
+    )
     {
         $seatTypeDTO = new CreateSeatTypeDTO(
             theatreId: $theatreId,
@@ -35,7 +34,7 @@ class SeatTypeController extends BaseAdminController
         );
 
         try {
-            $seatType = $this->seatTypeService->createSeatTypeByTheatre(dto: $seatTypeDTO);
+            $seatType = $seatTypeService->createSeatTypeByTheatre(dto: $seatTypeDTO);
 
             return redirect()->back()->with('successMessages', 'Тип места: ' . $seatType->name . ' успешно добавлен');
         } catch (\Throwable $e) {
@@ -47,9 +46,10 @@ class SeatTypeController extends BaseAdminController
      *  Update a seat type based on the provided request.
      *
      * @param UpdateSeatTypeRequest $request
+     * @param SeatTypeService $seatTypeService
      * @return RedirectResponse
      */
-    public function update(UpdateSeatTypeRequest $request )
+    public function update(UpdateSeatTypeRequest $request, SeatTypeService $seatTypeService )
     {
         $updateSeatTypeDTO = new UpdateSeatTypeDTO(
             seatTypeId: $request->input('seat_id'),
@@ -59,7 +59,7 @@ class SeatTypeController extends BaseAdminController
         );
 
         try {
-            $this->seatTypeService->updateSeatType(dto: $updateSeatTypeDTO);
+            $seatTypeService->updateSeatType(dto: $updateSeatTypeDTO);
 
             return redirect()
                 ->back()
@@ -73,16 +73,17 @@ class SeatTypeController extends BaseAdminController
      * Processes a request to delete a place type, including checking associated places and redirecting with a message.
      *
      * @param int $seatTypeId
+     * @param SeatTypeService $seatTypeService
      * @return RedirectResponse
      */
-    public function delete(int $seatTypeId)
+    public function delete(int $seatTypeId, SeatTypeService $seatTypeService)
     {
         $deleteSeatTypeDTO = new DeleteSeatTypeDTO(
             seatTypeId: $seatTypeId,
         );
 
         try {
-            $this->seatTypeService->deleteSeatTypeWithCheck(dto: $deleteSeatTypeDTO);
+            $seatTypeService->deleteSeatTypeWithCheck(dto: $deleteSeatTypeDTO);
 
             return redirect()->back()->with('successMessages', 'Тип места успешно удален.');
         } catch (\Throwable $e) {

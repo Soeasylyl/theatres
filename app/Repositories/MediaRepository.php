@@ -15,9 +15,9 @@ class MediaRepository implements MediaRepositoryInterface
      * @param Movie|Cinema $model
      * @param string $path
      * @param string|null $collection
-     * @return Movie|Cinema
+     * @return Media
      */
-    public function createMediaWithCollection(Movie|Cinema $model, string $path, ?string $collection = 'default'): Movie|Cinema
+    public function createMediaWithCollection(Movie|Cinema $model, string $path, ?string $collection = 'default'): Media
     {
         $media = new Media([
             'path' => 'storage/' . $path,
@@ -26,6 +26,6 @@ class MediaRepository implements MediaRepositoryInterface
 
         $model->medias()->save($media);
 
-        return $model;
+        return $media;
     }
 }

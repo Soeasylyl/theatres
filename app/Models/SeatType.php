@@ -68,4 +68,9 @@ class SeatType extends Model
     {
         return $this->hasMany(Seat::class);
     }
+
+    public function getAmountAttribute($value): string
+    {
+        return ltrim($value, '$');
+    }
 }

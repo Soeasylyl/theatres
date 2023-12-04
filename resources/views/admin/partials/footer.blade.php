@@ -81,7 +81,7 @@
                                             {{ __('Цена за место:') }}
                                         </div>
                                         <input type="text" name="seat_amount"
-                                               required placeholder="Цена в $">
+                                               required placeholder="Цена за место">
                                     </div>
                                 </div>
                             </div>

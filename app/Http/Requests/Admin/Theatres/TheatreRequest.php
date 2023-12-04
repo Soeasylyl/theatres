@@ -40,7 +40,6 @@ class TheatreRequest extends FormRequest
     {
         return [
             'address.max' => 'Количество символов не более 255',
-            'address.unique' => 'Адрес должен быть уникальным',
             'description.max' => 'Количество символов не более 1000',
         ];
     }

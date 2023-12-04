@@ -113,13 +113,12 @@
                                             <td class="admin-theatres__seat-type-description" style="display: none">{{ $seatsType->description }}</td>
                                             <td>
                                                 <form method="POST"
-                                                      action="{{ route('seat-type.delete', $theatre->id) }}">
+                                                      action="{{ route('seat-type.delete', $seatsType->id) }}">
                                                     @csrf
                                                     @method('DELETE')
                                                     <div class="admin-theatres__delete-seat-type-icon"
                                                          data-seats-type-name="{{ $seatsType->name }}">
-                                                        <svg version="1.1" xmlns="http://www.w3.org/2000/svg"
-                                                             width="32"
+                                                        <svg width="32"
                                                              height="32"
                                                              viewBox="0 0 32 32">
                                                             <title>{{ __('Удалить') }}</title>
@@ -165,7 +164,7 @@
                                                     @csrf
                                                     @method('DELETE')
                                                     <div class="admin-theatres__delete-hall-icon">
-                                                        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32"
+                                                        <svg width="32"
                                                              height="32"
                                                              viewBox="0 0 32 32">
                                                             <title>{{ __('Удалить') }}</title>

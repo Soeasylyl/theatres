@@ -114,7 +114,10 @@ class TheatreService
      */
     public function getTheatreDataForEdit(EditTheatreDTO $dto): array
     {
-        $theatre = $this->theatreRepository->getTheatreByIdOrFail($dto->getTheatreId(), ['halls.seats', 'medias']);
+        $theatre = $this->theatreRepository->getTheatreByIdOrFail(
+            theatreId: $dto->getTheatreId(),
+            relations: ['halls.seats', 'medias']
+        );
         $seatsTypes = $theatre->seatTypes;
         $halls = $theatre->halls;
         $media = $theatre->medias;
@@ -128,6 +131,7 @@ class TheatreService
      *
      * @param UpdateTheatreDTO $dto
      * @return Cinema
+     * @throws \Exception
      */
     public function updateTheatre(UpdateTheatreDTO $dto): Cinema
     {
@@ -136,9 +140,11 @@ class TheatreService
         try {
             $this->deleteMedia($theatre->medias);
             $this->theatreRepository->updateTheatreInfo(theatre: $theatre, dto: $dto);
-            $this->saveMedia(dto: $dto,theatre: $theatre);
+            $this->saveMedia(dto: $dto, theatre: $theatre);
         } catch (\Throwable $e) {
             Log::error("Failed to save or delete images: {$e->getMessage()}, theatre id: {$theatre->id}");
+
+            throw new \Exception('Failed to update theatre information. Please try again later.');
         }
 
         return $theatre;
@@ -153,7 +159,7 @@ class TheatreService
     private function deleteMedia(Media|Collection|null $media): void
     {
         if ($media instanceof Media) {
-            $path = str_replace('storage/', '',$media->path);
+            $path = str_replace('storage/', '', $media->path);
             Storage::disk('public')->delete($path);
 
             $media->delete();
@@ -170,6 +176,7 @@ class TheatreService
      *
      * @param int $theatreId
      * @return void
+     * @throws \Exception
      */
     public function deleteTheatre(int $theatreId): void
     {
@@ -184,6 +191,8 @@ class TheatreService
             $theatre->delete();
         } catch (\Throwable $e) {
             Log::error("Failed to delete theatre: {$e->getMessage()}. Theatre ID: {$theatre->id}");
+
+            throw new \Exception('Failed to delete theatre. Please try again later.');
         }
     }
 }

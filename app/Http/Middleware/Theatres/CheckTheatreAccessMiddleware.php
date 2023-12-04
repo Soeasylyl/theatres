@@ -34,10 +34,6 @@ class CheckTheatreAccessMiddleware
                 )
             )
         ) {
-            Log::channel('check_cinema_access')->warning(
-                'Access denied for user ' . ($currentUser ? $currentUser->id : 'Guest') .
-                ' to cinema ' . $request->route('theatres') . ' ip address ' . $request->ip()
-            );
 
             abort(404);
         }

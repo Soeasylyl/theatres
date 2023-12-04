@@ -37,7 +37,7 @@ class SeatTypeRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'seat_description.max' => 'Описание цены за место должно быть не более 1000',
+            'seat_description.max' => 'Описание типа места должно быть не более 1000',
             'seat_amount.numeric' => 'Цена за место обязательно должна быть числом',
             'seat_amount.min' => 'Минимальное значчение цены за место 0.1',
             'seat_amount.max' => 'Максимальное значение цены за место 999.99',

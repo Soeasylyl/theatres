@@ -3,6 +3,7 @@
 namespace App\Repositories\Interfaces;
 
 use App\Models\Cinema;
+use App\Models\Media;
 use App\Models\Movie;
 
 interface MediaRepositoryInterface
@@ -13,7 +14,7 @@ interface MediaRepositoryInterface
      * @param Movie|Cinema $model
      * @param string $path
      * @param string|null $collection
-     * @return Movie|Cinema
+     * @return Media
      */
-    public function createMediaWithCollection(Movie|Cinema $model, string $path, ?string $collection = 'default'): Movie|Cinema;
+    public function createMediaWithCollection(Movie|Cinema $model, string $path, ?string $collection = 'default'): Media;
 }
