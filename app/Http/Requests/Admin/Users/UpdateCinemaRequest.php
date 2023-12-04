@@ -24,10 +24,7 @@ class UpdateCinemaRequest extends FormRequest
     {
         return [
             'user_id' => 'required|exists:users,id',
-            'cinema' => [
-                'nullable',
-                'exists:cinemas,id'
-            ],
+            'cinema' => 'nullable|exists:cinemas,id'
         ];
     }
 }

@@ -2,8 +2,7 @@
 
 namespace App\Traits;
 
-use App\Repositories\Interfaces\MediaRepositoryInterface;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Collection;
 use App\Models\Media;
@@ -15,22 +14,21 @@ trait HandlesMedia
      * Save media files for a model in a specified collection and storage path.
      *
      * @param UploadedFile|array $mediaFiles
-     * @param string $collectionName
+     * @param string|null $collectionName
      * @param string $storagePath
      * @return void
      */
-    public function saveMediaFiles(UploadedFile|array $mediaFiles, string $collectionName, string $storagePath): void
+    public function saveMediaFiles(UploadedFile|array $mediaFiles, string $storagePath, ?string $collectionName = 'default'): void
     {
-        \Log::info('saveMediaFiles called');
         // Ensure that $mediaFiles is always treated as an array, even if it's a single file.
         $mediaFiles = is_array($mediaFiles) ? $mediaFiles : [$mediaFiles];
 
-        if ($mediaFiles) {
+        if (!empty($mediaFiles)) {
             foreach ($mediaFiles as $file) {
                 $filePath = $file->store($storagePath, 'public');
 
                 $this->medias()->create([
-                    'path' => 'storage/' . $filePath,
+                    'path' => 'medias/' . $filePath,
                     'collection' => $collectionName,
                 ]);
             }
@@ -45,9 +43,8 @@ trait HandlesMedia
      */
     public function deleteMedia(Media|Collection|null $media): void
     {
-        \Log::info('deleteMedia called');
         if ($media instanceof Media) {
-            $path = str_replace('storage/', '', $media->path);
+            $path = str_replace('medias/', '', $media->path);
             Storage::disk('public')->delete($path);
 
             $media->delete();
@@ -59,7 +56,13 @@ trait HandlesMedia
     }
 
     /**
-     *  Abstract function to define the relationship with the associated media records.
+     * @return MorphMany
      */
-    abstract public function medias();
+    public function medias(): MorphMany
+    {
+        return $this->morphMany(
+            related: Media::class,
+            name: 'model',
+        );
+    }
 }

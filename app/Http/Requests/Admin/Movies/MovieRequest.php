@@ -23,15 +23,8 @@ class MovieRequest extends FormRequest
      */
     public function rules(): array
     {
-        $movieId = $this->route('movie');
-
         return [
-            'name' => [
-                'required',
-                'min:2',
-                'max:40',
-                Rule::unique('movies')->ignore($movieId)
-            ],
+            'name' => 'required|min:2|max:40',
             'date_start' =>'required|date_format:Y-m-d\TH:i',
             'session_duration' => 'required|date_format:H:i:s',
             'rating' => 'required|numeric|between:0,10|regex:/^\d+(\.\d{1,2})?$/',

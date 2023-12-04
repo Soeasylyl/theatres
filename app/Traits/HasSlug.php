@@ -27,7 +27,7 @@ trait HasSlug
      *
      * @return void
      */
-    protected function generateSlugOnCreate(): void
+    private function generateSlugOnCreate(): void
     {
         if (empty($this->slug) && !empty($this->name)) {
             $this->slug  = $this->generateUniqueSlug($this->name);
@@ -39,7 +39,7 @@ trait HasSlug
      *
      * @return void
      */
-    protected function generateSlugOnUpdate(): void
+    private function generateSlugOnUpdate(): void
     {
         if ($this->isDirty('name') && !empty($this->name)) {
             $this->slug = $this->generateUniqueSlug($this->name, $this->getKey());
@@ -55,11 +55,11 @@ trait HasSlug
      * @param int|null $id
      * @return string
      */
-    protected function generateUniqueSlug(string $name, ?int $id = null): string
+    private function generateUniqueSlug(string $name, ?int $id = null): string
     {
         $slug = Str::slug($name);
-        $count = static::where('slug', $slug)->whereNot('id', $id)->count();
+        $exists = $this->where('slug', $slug)->whereNot('id', $id)->exists();
 
-        return $count > 0 ? "{$slug}-" . ($count + 1) : $slug;
+        return $exists ? sprintf('%s-%s', $slug, uniqid()) : $slug;
     }
 }

@@ -77,8 +77,8 @@ class MovieService
 
                 $movie->saveMediaFiles(
                     mediaFiles: $dto->getMoviePoster(),
-                    collectionName: 'poster',
-                    storagePath: 'movies'
+                    storagePath: 'movies',
+                    collectionName: 'poster'
                 );
             }
 
@@ -88,8 +88,8 @@ class MovieService
 
                 $movie->saveMediaFiles(
                     mediaFiles: $dto->getMovieFrames(),
-                    collectionName: 'frames',
-                    storagePath: 'movies'
+                    storagePath: 'movies',
+                    collectionName: 'frames'
                 );
             }
         } catch (\Exception $e) {
@@ -111,13 +111,13 @@ class MovieService
         try {
             $movie->saveMediaFiles(
                 mediaFiles: $dto->getMoviePoster(),
-                collectionName: 'poster',
-                storagePath: 'movies'
+                storagePath: 'movies',
+                collectionName: 'poster'
             );
             $movie->saveMediaFiles(
                 mediaFiles: $dto->getMovieFrames(),
-                collectionName: 'frames',
-                storagePath: 'movies'
+                storagePath: 'movies',
+                collectionName: 'frames'
             );
         } catch (\Throwable $e) {
             Log::error("Failed to save poster or frames: {$e->getMessage()} movie id: {$movie->id}");
