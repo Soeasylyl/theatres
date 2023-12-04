@@ -63,6 +63,7 @@ Route::prefix('admin')->middleware(['auth', 'isBlock', 'AdminAccess'])->group(fu
 
                     //Theatre creating
                     Route::get('/hall-create',[HallController::class, 'show'])->name('hall.create');
+                    Route::post('/hall-create',[HallController::class, 'create']);
 
                 });
             });

@@ -10,7 +10,7 @@
 
                 <div class="admin-halls__body">
                     <form method="POST"
-                          action="#"
+                          action="{{route('hall.create', ['theatres' => $theatreId])}}"
                           enctype="multipart/form-data">
                         <div class="admin-halls__form">
                             @csrf
@@ -78,9 +78,11 @@
                             <h2 class="admin-halls__title">
                                 {{ __('Визуализация создания зала') }}
                             </h2>
-                            <div class="admin-halls__rows">
-
-                            </div>
+                            @if($numberRow>0)
+                            <ul class="admin-halls__rows">
+                                @include('admin.pages.halls.hall-row-ajax')
+                            </ul>
+                            @endif
                             <div class="admin-halls__body-wrapper">
                                 <div class="admin-halls__item">
                                     <label for="">{{ __('Введите количество мест:') }}</label>

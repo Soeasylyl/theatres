@@ -21,8 +21,22 @@
         }
     }
 
+    &__row-number {
+        font-size: 30px;
+        font-weight: 700;
+        color: #45454c;
+        margin: 0;
+    }
+
     &__row {
         display: flex;
+        align-items: center;
+        gap: 20px;
+    }
+
+    &__row-icons {
+        display: flex;
+        align-items: center;
         gap: 5px;
     }
 

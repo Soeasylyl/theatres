@@ -21,7 +21,10 @@ class Halls {
 
                 return
             }
-            fetch(`/admin/ajax/show-row-seats?seats_count=${this.inputSeatsCount.value}&seats_type=${this.selectSeatsType.value}`, {
+
+            const countRow = document.querySelectorAll('.admin-halls__row').length;
+
+            fetch(`/admin/ajax/show-row-seats?seats_count=${this.inputSeatsCount.value}&seats_type=${this.selectSeatsType.value}&count_row=${countRow+1}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',

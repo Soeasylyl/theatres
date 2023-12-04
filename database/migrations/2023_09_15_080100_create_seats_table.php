@@ -16,6 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('seat_type_id');
             $table->unsignedBigInteger('hall_id');
             $table->integer('row');
+            $table->integer('number');
             $table->float('position_x');
             $table->float('position_y');
 
