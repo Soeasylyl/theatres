@@ -4,3 +4,4 @@ import '../bootstrap';
 import './partials/admin-menu.js';
 import './pages/users.js';
 import './pages/theatres.js'
+import './pages/movie.js';

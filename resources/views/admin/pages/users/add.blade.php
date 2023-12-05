@@ -18,7 +18,6 @@
                 @csrf
                 <div class="admin-container__grid">
 
-
                     <div>
                         <div class="admin-container__items">
                             <label for="name">{{ __('Имя') }}</label>

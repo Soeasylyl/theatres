@@ -5,6 +5,7 @@ namespace App\Listeners;
 use App\Events\UserUpdateEvent;
 use App\Mail\BanNotificationMail;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
 class UserBannedListener implements ShouldQueue
@@ -16,7 +17,11 @@ class UserBannedListener implements ShouldQueue
     public function handle(UserUpdateEvent $event): void
     {
         if ($event->blockedIsDirty && $event->user->blocked_until !== null) {
-            Mail::to($event->user->email)->send(new BanNotificationMail($event->user));
+            try {
+                Mail::to($event->user->email)->send(new BanNotificationMail($event->user));
+            } catch (\Exception $e) {
+                Log::error('Failed to send ban notification email to ' . $event->user->email . ': ' . $e->getMessage());
+            }
         }
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Admin\Users;
+namespace App\Http\Requests\Admin\Movies;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
@@ -23,7 +23,7 @@ class SearchRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'search' => 'nullable|alpha|max:30',
+            'search' => 'nullable|max:30',
         ];
     }
 

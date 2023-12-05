@@ -47,6 +47,7 @@ class PermissionsSeeder extends Seeder
             RolesUsersEnum::SUPER_ADMIN->value => self::getSuperAdminPermissions(),
             RolesUsersEnum::CINEMA_MANAGER->value => self::getCinemaManagerPermissions(),
             RolesUsersEnum::CINEMA_ADMIN->value => self::getCinemaAdminPermissions(),
+            RolesUsersEnum::MODERATOR->value => self::getModeratorPermissions(),
             default => throw new \Exception('Invalid role provided. Cannot retrieve permissions for the specified role.'),
         };
     }
@@ -94,6 +95,19 @@ class PermissionsSeeder extends Seeder
         return [
             PermissionsUsersEnum::MANAGE_HALLS,
             PermissionsUsersEnum::MANAGE_SESSIONS,
+            PermissionsUsersEnum::VIEW_ADMIN_PANEL,
+        ];
+    }
+
+    /**
+     * Get permissions for the moderator role.
+     *
+     * @return array
+     */
+    private static function getModeratorPermissions(): array
+    {
+        return [
+            PermissionsUsersEnum::MANAGE_MOVIES,
             PermissionsUsersEnum::VIEW_ADMIN_PANEL,
         ];
     }

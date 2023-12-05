@@ -24,23 +24,40 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('public.pages.home');
 
+Route::prefix('afisha')->group(function () {
+    Route::get('/{movie:slug}', [HomeController::class, 'show'])->name('user.show.movie');
+});
+
+// Authentication routes
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login.admin');
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth')->name('logout');
 Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register.admin');
 Route::post('/register', [RegisterController::class, 'register']);
 
-Route::prefix('afisha')->group(function () {
-    Route::get('/{movie}', [MovieController::class, 'show'])->name('user.show.movie');
-});
-
+// Admin-panel routes
 Route::prefix('admin')->middleware(['auth', 'isBlock', 'AdminAccess'])->group(function () {
+    // Admin Dashboard
     Route::get('/', [AdminController::class, 'index'])->name('admin');
 
+    // Movies management
     Route::prefix('movies')->group(function () {
-        Route::get('/', [MovieController::class, 'index'])->name('admin.movies');
+        // List all movies
+        Route::get('/', [MovieController::class, 'index'])->name('movies');
+
+        // Movie editing and deleting
+        Route::prefix('/')->middleware(['role:' . RolesUsersEnum::SUPER_ADMIN->value . '|' . RolesUsersEnum::MODERATOR->value])->group(function () {
+            Route::get('{movie}/edit', [MovieController::class, 'edit'])->name('movie.edit');
+            Route::patch('{movie}/update', [MovieController::class, 'update'])->name('movie.update');
+            Route::delete('{movie}',[MovieController::class, 'delete'])->name('movie.delete');
+
+            // Movie creating
+            Route::get('/create',[MovieController::class, 'show'])->name('movie.create');
+            Route::post('/create',[MovieController::class, 'create']);
+        });
     });
 
+    // Theatre management
     Route::prefix('theatres')->group(function () {
         Route::get('/', [TheatreController::class, 'index'])->name('theatres');
 
@@ -65,15 +82,14 @@ Route::prefix('admin')->middleware(['auth', 'isBlock', 'AdminAccess'])->group(fu
         });
     });
 
+    // Users management
     Route::prefix('users')->middleware(['role:' . RolesUsersEnum::SUPER_ADMIN->value . '|' . RolesUsersEnum::CINEMA_ADMIN->value])->group(function () {
-        Route::get('/', [UserController::class, 'index'])
-            ->name('users');
-
-        Route::get('/create', [UserController::class, 'show'])
-            ->name('users.create');
-
+        // List all users and user creation routes
+        Route::get('/', [UserController::class, 'index'])->name('users');
+        Route::get('/create', [UserController::class, 'show'])->name('users.create');
         Route::post('/create', [UserController::class, 'create']);
 
+        // User editing routes
         Route::prefix('/')->middleware('CheckUserAccessMiddleware')->group(function () {
             Route::get('/{user}/edit', [UserController::class, 'edit'])
                 ->withoutMiddleware(['role:' . RolesUsersEnum::SUPER_ADMIN->value . '|' . RolesUsersEnum::CINEMA_ADMIN->value])

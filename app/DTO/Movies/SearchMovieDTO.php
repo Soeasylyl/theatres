@@ -1,28 +1,16 @@
 <?php
 
-namespace App\DTO\Users;
+namespace App\DTO\Movies;
 
-use App\Models\User;
-
-class SearchUserDTO
+class SearchMovieDTO
 {
     /**
-     * @param User $producer
      * @param string|null $searchTerm
      */
     public function __construct(
-        private readonly User    $producer,
         private readonly ?string $searchTerm,
     )
     {
-    }
-
-    /**
-     * @return User
-     */
-    public function getProducer(): User
-    {
-        return $this->producer;
     }
 
     /**

@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Events\ClearStoreEvent;
 use App\Events\UserUpdateEvent;
+use App\Listeners\ClearStoreEventListener;
 use App\Listeners\UserBannedListener;
 use App\Listeners\UserUnbannedListener;
 use Illuminate\Auth\Events\Registered;
@@ -24,6 +26,9 @@ class EventServiceProvider extends ServiceProvider
         UserUpdateEvent::class => [
             UserBannedListener::class,
             UserUnbannedListener::class,
+        ],
+        ClearStoreEvent::class => [
+            ClearStoreEventListener::class,
         ]
 
     ];

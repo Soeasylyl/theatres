@@ -32,6 +32,11 @@ class RepositoryServiceProvider extends ServiceProvider
         );
 
         $this->app->bind(
+            MediaRepositoryInterface::class,
+            MediaRepository::class
+        );
+
+        $this->app->bind(
             TheatreRepositoryInterface::class,
             TheatreRepository::class
         );

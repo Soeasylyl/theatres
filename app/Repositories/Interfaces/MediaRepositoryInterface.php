@@ -2,19 +2,18 @@
 
 namespace App\Repositories\Interfaces;
 
-use App\Models\Cinema;
-use App\Models\Media;
 use App\Models\Movie;
+use Illuminate\Database\Eloquent\Model;
 
 interface MediaRepositoryInterface
 {
     /**
-     * Creates a new media file for a theater or movie model and associates it with the specified collection.
+     * Create a new media record with the specified path and collection for the given movie.
      *
-     * @param Movie|Cinema $model
-     * @param string $path
-     * @param string|null $collection
-     * @return Media
+     * @param Model $model
+     * @param string $path The path to the media file.
+     * @param string|null $collection The name of the media collection.
+     * @return Movie The updated movie model.
      */
-    public function createMediaWithCollection(Movie|Cinema $model, string $path, ?string $collection = 'default'): Media;
+    public function createMediaWithCollection(Model $model, string $path, ?string $collection = 'default'): Model;
 }

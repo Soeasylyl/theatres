@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Events\ClearStoreEvent;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
@@ -47,6 +48,11 @@ class Media extends Model
         'collection',
         'model_type',
         'model_id',
+    ];
+
+
+    protected $dispatchesEvents = [
+        'deleting' => ClearStoreEvent::class,
     ];
 
     /**

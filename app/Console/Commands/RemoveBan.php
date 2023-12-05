@@ -2,7 +2,6 @@
 
 namespace App\Console\Commands;
 
-use App\Jobs\SendUnbanNotificationMail;
 use App\Models\User;
 use Illuminate\Console\Command;
 
