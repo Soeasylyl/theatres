@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Events\ClearStoreEvent;
 use App\Traits\HandlesMedia;
 use App\Traits\HasSlug;
 use Illuminate\Database\Eloquent\Collection;
@@ -79,6 +80,10 @@ class Movie extends Model
      */
     protected $casts = [
         'date_start' => 'date',
+    ];
+
+    protected $dispatchesEvents = [
+      'deleting' => ClearStoreEvent::class,
     ];
 
     /**

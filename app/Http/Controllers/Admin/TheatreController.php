@@ -11,7 +11,6 @@ use App\Http\Requests\Admin\Theatres\SearchRequest;
 use App\Http\Requests\Admin\Theatres\TheatreRequest;
 use App\Services\TheatreService;
 use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;

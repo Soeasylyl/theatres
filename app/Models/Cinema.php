@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Events\ClearStoreEvent;
 use App\Traits\HandlesMedia;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -54,6 +55,10 @@ class Cinema extends Model
         'name',
         'description',
         'address',
+    ];
+
+    protected $dispatchesEvents = [
+        'deleting' => ClearStoreEvent::class,
     ];
 
     /**
