@@ -11,6 +11,7 @@ use App\Enums\RolesUsersEnum;
 use App\Models\Cinema;
 use App\Repositories\Interfaces\TheatreRepositoryInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class TheatreService
@@ -147,11 +148,15 @@ class TheatreService
         $theatre = $this->theatreRepository->getTheatreByIdOrFail(theatreId: $theatreId, relations: ['halls.medias', 'medias']);
 
         try {
-            foreach ($theatre->halls as $hall) {
-                $hall->delete();
-            }
-                $theatre->delete();
+            DB::transaction(function () use ($theatre) {
+                foreach ($theatre->halls as $hall) {
+                    $hall->deleteMedia('theatres');
+                    $hall->delete();
+                }
 
+                $theatre->deleteMedia('theatres');
+                $theatre->delete();
+            });
         } catch (\Throwable $e) {
             Log::error("Failed to delete theatre: {$e->getMessage()}. Theatre ID: {$theatre->id}");
 
