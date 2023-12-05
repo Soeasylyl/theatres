@@ -20,8 +20,20 @@ class UserBannedListener implements ShouldQueue
             try {
                 Mail::to($event->user->email)->send(new BanNotificationMail($event->user));
             } catch (\Exception $e) {
-                Log::error('Failed to send ban notification email to ' . $event->user->email . ': ' . $e->getMessage());
+                $this->failed($e, $event->user->email);
             }
         }
+    }
+
+    /**
+     * Handle a job failure.
+     *
+     * @param  \Exception  $exception
+     * @param  string  $userEmail
+     * @return void
+     */
+    public function failed(\Exception $exception, string $userEmail): void
+    {
+        Log::error('Failed to send ban notification email to ' . $userEmail . ': ' . $exception->getMessage());
     }
 }
