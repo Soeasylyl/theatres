@@ -46,10 +46,10 @@ Route::prefix('admin')->middleware(['auth', 'isBlock', 'AdminAccess'])->group(fu
         Route::get('/', [MovieController::class, 'index'])->name('movies');
 
         // Movie editing and deleting
-        Route::prefix('/')->middleware(['role:' . RolesUsersEnum::SUPER_ADMIN->value . '|' . RolesUsersEnum::MODERATOR->value])->group(function () {
+        Route::middleware(['role:' . RolesUsersEnum::SUPER_ADMIN->value . '|' . RolesUsersEnum::MODERATOR->value])->group(function () {
             Route::get('{movie}/edit', [MovieController::class, 'edit'])->name('movie.edit');
-            Route::patch('{movie}/update', [MovieController::class, 'update'])->name('movie.update');
-            Route::delete('{movie}',[MovieController::class, 'delete'])->name('movie.delete');
+            Route::patch('{movie}/', [MovieController::class, 'update'])->name('movie.update');
+            Route::delete('{movie}/',[MovieController::class, 'delete'])->name('movie.delete');
 
             // Movie creating
             Route::get('/create',[MovieController::class, 'show'])->name('movie.create');

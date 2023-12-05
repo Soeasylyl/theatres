@@ -19,18 +19,11 @@ use Illuminate\Http\RedirectResponse;
 class MovieController extends BaseAdminController
 {
     /**
-     * @param MovieService $movieService
-     */
-    public function __construct(private readonly MovieService $movieService)
-    {
-    }
-
-    /**
      * Show the application dashboard.
      *
      * @return Renderable
      */
-    public function index(SearchRequest $request)
+    public function index(SearchRequest $request, MovieService $movieService)
     {
         $searchTern = $request->input('search');
 
@@ -38,7 +31,7 @@ class MovieController extends BaseAdminController
             searchTerm: $searchTern,
         );
 
-        $movies = $this->movieService->getAllMovies(dto: $searchMovieDTO);
+        $movies = $movieService->getAllMovies(dto: $searchMovieDTO);
 
         return view('admin.pages.movies.movies', compact('movies', 'searchTern'));
     }
@@ -59,9 +52,13 @@ class MovieController extends BaseAdminController
      *
      * @param MovieRequest $request
      * @param int $movieId
+     * @param MovieService $movieService
      * @return RedirectResponse
      */
-    public function update(MovieRequest $request, int $movieId)
+    public function update(
+        MovieRequest $request,
+        int          $movieId,
+        MovieService $movieService)
     {
         $updateMovieDTO = new UpdateMovieDTO(
             movieId: $movieId,
@@ -76,7 +73,7 @@ class MovieController extends BaseAdminController
         );
 
         try {
-            $this->movieService->updateMovie(dto: $updateMovieDTO);
+            $movieService->updateMovie(dto: $updateMovieDTO);
 
             return redirect()
                 ->route('movies')
@@ -98,9 +95,10 @@ class MovieController extends BaseAdminController
      *  Create new movie
      *
      * @param MovieRequest $request
+     * @param MovieService $movieService
      * @return RedirectResponse
      */
-    public function create(MovieRequest $request)
+    public function create(MovieRequest $request, MovieService $movieService)
     {
         $createMovieDTO = new CreateMovieDTO(
             name: $request->input('name'),
@@ -114,7 +112,7 @@ class MovieController extends BaseAdminController
         );
 
         try {
-            $this->movieService->createAndSaveMovieWithMedia(dto: $createMovieDTO);
+            $movieService->createAndSaveMovieWithMedia(dto: $createMovieDTO);
 
             return redirect()
                 ->route('movies')
@@ -129,16 +127,17 @@ class MovieController extends BaseAdminController
      * Attempts to delete a movie based on the provided movie ID.
      *
      * @param int $id
+     * @param MovieService $movieService
      * @return RedirectResponse
      */
-    public function delete(int $id)
+    public function delete(int $id, MovieService $movieService)
     {
         $deleteMovieDto = new DeleteMovieDTO(
             movieId: $id,
         );
 
         try {
-            $this->movieService->deleteMovie(movieId: $deleteMovieDto->getMovieId());
+            $movieService->deleteMovie(movieId: $deleteMovieDto->getMovieId());
 
             return redirect()->route('movies')->with('successMessages', 'Фильм успешно удален.');
         } catch (\Throwable $e) {
