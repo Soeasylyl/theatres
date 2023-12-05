@@ -78,8 +78,6 @@ class TheatreService
             );
         } catch (\Throwable $e) {
             Log::error("Failed to save images: {$e->getMessage()} theatre id: {$theatre->id}");
-
-            return $e;
         }
         return $theatre;
     }
