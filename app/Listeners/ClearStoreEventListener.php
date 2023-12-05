@@ -12,6 +12,8 @@ class ClearStoreEventListener
      */
     public function handle(ClearStoreEvent $event): void
     {
-        Storage::disk('public')->delete($event->model->path);
+        if ($event->model && $event->model->path) {
+            Storage::disk('public')->delete($event->model->path);
+        }
     }
 }

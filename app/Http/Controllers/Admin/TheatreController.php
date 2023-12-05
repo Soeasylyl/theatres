@@ -138,6 +138,7 @@ class TheatreController extends BaseAdminController
      * @param int $theatreId
      * @param TheatreService $theatreService
      * @return RedirectResponse
+     * @throws \Exception
      */
     public function delete(int $theatreId, TheatreService $theatreService)
     {

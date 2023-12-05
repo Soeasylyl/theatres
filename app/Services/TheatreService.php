@@ -144,9 +144,6 @@ class TheatreService
         $theatre = $this->theatreRepository->getTheatreByIdOrFail(theatreId: $theatreId, relations: ['halls.medias', 'medias']);
 
         try {
-            foreach ($theatre->halls as $hall) {
-                $hall->deleteMedia();
-            }
             $theatre->deleteMedia('theatres');
 
             $theatre->delete();
