@@ -3,7 +3,6 @@
 namespace App\Traits;
 
 use Illuminate\Database\Eloquent\Relations\MorphMany;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Collection;
 use App\Models\Media;
 use Illuminate\Http\UploadedFile;
@@ -11,47 +10,55 @@ use Illuminate\Http\UploadedFile;
 trait HandlesMedia
 {
     /**
-     * Save media files for a model in a specified collection and storage path.
+     * Save a single file to the specified media collection for the model.
      *
-     * @param UploadedFile|array $mediaFiles
-     * @param string|null $collectionName
-     * @param string $storagePath
+     * @param UploadedFile $file
+     * @param string $collectionName
      * @return void
      */
-    public function saveMediaFiles(UploadedFile|array $mediaFiles, string $storagePath, ?string $collectionName = 'default'): void
+    public function saveFile(UploadedFile $file, string $collectionName = 'default'): void
     {
-        // Ensure that $mediaFiles is always treated as an array, even if it's a single file.
-        $mediaFiles = is_array($mediaFiles) ? $mediaFiles : [$mediaFiles];
+        $filePath = $file->store($collectionName, 'public');
 
-        if (!empty($mediaFiles)) {
-            foreach ($mediaFiles as $file) {
-                $filePath = $file->store($storagePath, 'public');
+        $this->medias()->create([
+            'path' => $filePath,
+            'collection' => $collectionName,
+        ]);
+    }
 
-                $this->medias()->create([
-                    'path' => 'medias/' . $filePath,
-                    'collection' => $collectionName,
-                ]);
-            }
+    /**
+     * Save multiple files to the specified media collection for the model.
+     *
+     * @param array $mediaFiles
+     * @param string|null $collectionName
+     * @return void
+     */
+    public function saveMediaFiles(array $mediaFiles, ?string $collectionName): void
+    {
+        foreach ($mediaFiles as $file) {
+            $this->saveFile(
+                file: $file,
+                collectionName: $collectionName
+            );
         }
     }
 
     /**
      * Delete media files associated with a model or a collection of media records.
      *
-     * @param Collection|Media|null $media
+     * @param string ...$collectionNames
      * @return void
      */
-    public function deleteMedia(Media|Collection|null $media): void
+    public function deleteMedia(string ...$collectionNames): void
     {
-        if ($media instanceof Media) {
-            $path = str_replace('medias/', '', $media->path);
-            Storage::disk('public')->delete($path);
-
-            $media->delete();
-        } elseif ($media instanceof Collection) {
-            foreach ($media as $singleMedia) {
-                $this->deleteMedia($singleMedia);
-            }
+        foreach ($collectionNames as $collectionName) {
+            $this->medias()
+                 ->where('collection', $collectionName)
+                 ->chunk(10, function (Collection $query) {
+                    $query->each(function (Media $q) {
+                        $q->delete();
+                    });
+                });
         }
     }
 

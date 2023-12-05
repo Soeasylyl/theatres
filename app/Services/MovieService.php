@@ -72,23 +72,17 @@ class MovieService
             );
 
             if ($dto->getMoviePoster() !== null) {
-                $poster = $movie->poster;
-                $movie->deleteMedia($poster);
-
-                $movie->saveMediaFiles(
-                    mediaFiles: $dto->getMoviePoster(),
-                    storagePath: 'movies',
+                $movie->deleteMedia('poster');
+                $movie->saveFile(
+                    file: $dto->getMoviePoster(),
                     collectionName: 'poster'
                 );
             }
 
             if ($dto->getMovieFrames() !== null) {
-                $frames = $movie->frames;
-                $movie->deleteMedia($frames);
-
+                $movie->deleteMedia('frames');
                 $movie->saveMediaFiles(
                     mediaFiles: $dto->getMovieFrames(),
-                    storagePath: 'movies',
                     collectionName: 'frames'
                 );
             }
@@ -109,14 +103,12 @@ class MovieService
         $movie = $this->movieRepository->createMovie(dto: $dto);
 
         try {
-            $movie->saveMediaFiles(
-                mediaFiles: $dto->getMoviePoster(),
-                storagePath: 'movies',
+            $movie->saveFile(
+                file: $dto->getMoviePoster(),
                 collectionName: 'poster'
             );
             $movie->saveMediaFiles(
                 mediaFiles: $dto->getMovieFrames(),
-                storagePath: 'movies',
                 collectionName: 'frames'
             );
         } catch (\Throwable $e) {
@@ -130,20 +122,21 @@ class MovieService
      * Delete a movie
      *
      * @param int $movieId
-     * @return void
+     * @return \Exception|void
      */
-    public function deleteMovie(int $movieId): void
+    public function deleteMovie(int $movieId)
     {
         $movie = $this->movieRepository->getMovieByIdOrFail(movieId: $movieId);
 
         try {
-            $movie->deleteMedia($movie->poster);
-            $movie->deleteMedia($movie->frames);
+            $movie->deleteMedia('poster', 'frames');
             if (!$movie->delete()) {
                 Log::error("Failed to delete movie: Movie deletion failed. Movie ID: {$movie->id}");
             }
         } catch (\Exception $e) {
             Log::error("Failed to delete movie: {$e->getMessage()}. Movie ID: {$movie->id}");
+
+            return $e;
         }
     }
 }

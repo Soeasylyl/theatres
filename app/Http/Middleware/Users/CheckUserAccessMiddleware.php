@@ -40,15 +40,15 @@ class CheckUserAccessMiddleware
         ]);
 
         if (
-            ! $currentUser ||
+            !$currentUser ||
             (
-                $currentUser->id != $requestedUser->id &&
-                ! $currentUser->hasRole(RolesUsersEnum::SUPER_ADMIN->value) &&
+                $currentUser->isNot($requestedUser) &&
+                !$currentUser->hasRole(RolesUsersEnum::SUPER_ADMIN->value) &&
                 (
-                    ! $currentUser->hasRole(RolesUsersEnum::CINEMA_ADMIN->value) ||
+                    !$currentUser->hasRole(RolesUsersEnum::CINEMA_ADMIN->value) ||
                     (
                         $currentUser->hasRole(RolesUsersEnum::CINEMA_ADMIN->value) &&
-                        ! $currentUser->cinemas->contains($requestedUser->cinemas->first())
+                        $currentUser->cinemas->isNot($requestedUser->cinemas->first())
                     )
                 )
             )
