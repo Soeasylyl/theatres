@@ -39,10 +39,7 @@ class TheatreService
      */
     public function getTheatresWithHallsPaginated(SearchTheatreDTO $dto): LengthAwarePaginator
     {
-        if (
-            $dto->getProducer()->hasRole(RolesUsersEnum::SUPER_ADMIN->value)
-            || $dto->getProducer()->hasRole(RolesUsersEnum::MODERATOR->value)
-        ) {
+        if ($dto->getProducer()->hasAnyRole(RolesUsersEnum::SUPER_ADMIN->value, RolesUsersEnum::MODERATOR->value)) {
             return $this->theatreRepository->getTheatresPaginateList(
                 searchTerm: $dto->getSearchTerm(),
                 relations: ['halls'],
@@ -62,6 +59,7 @@ class TheatreService
      *
      * @param CreateTheatreDTO $dto
      * @return Cinema
+     * @throws \Throwable
      */
     public function createAndSaveTheatreWithMedia(CreateTheatreDTO $dto): Cinema
     {
@@ -72,13 +70,16 @@ class TheatreService
         }
 
         try {
-            $theatre->saveMediaFiles(
+            $theatre->saveMultipleFiles(
                 mediaFiles: $dto->getTheatreImages(),
                 collectionName: 'theatres'
             );
         } catch (\Throwable $e) {
             Log::error("Failed to save images: {$e->getMessage()} theatre id: {$theatre->id}");
+
+            throw $e;
         }
+
         return $theatre;
     }
 
@@ -108,6 +109,7 @@ class TheatreService
      * @param UpdateTheatreDTO $dto
      * @return Cinema
      * @throws \Exception
+     * @throws \Throwable
      */
     public function updateTheatre(UpdateTheatreDTO $dto): Cinema
     {
@@ -117,7 +119,7 @@ class TheatreService
             $this->theatreRepository->updateTheatreInfo(theatre: $theatre, dto: $dto);
             if ($dto->getTheatreImages() !== null) {
                 $theatre->deleteMedia('theatres');
-                $theatre->saveMediaFiles(
+                $theatre->saveMultipleFiles(
                     mediaFiles: $dto->getTheatreImages(),
                     collectionName: 'theatres'
                 );
@@ -126,7 +128,7 @@ class TheatreService
         } catch (\Throwable $e) {
             Log::error("Failed to save or delete images: {$e->getMessage()}, theatre id: {$theatre->id}");
 
-            throw new \Exception('Failed to update theatre information. Please try again later.');
+            throw $e;
         }
 
         return $theatre;
@@ -138,19 +140,22 @@ class TheatreService
      * @param int $theatreId
      * @return void
      * @throws \Exception
+     * @throws \Throwable
      */
     public function deleteTheatre(int $theatreId): void
     {
         $theatre = $this->theatreRepository->getTheatreByIdOrFail(theatreId: $theatreId, relations: ['halls.medias', 'medias']);
 
         try {
-            $theatre->deleteMedia('theatres');
+            foreach ($theatre->halls as $hall) {
+                $hall->delete();
+            }
+                $theatre->delete();
 
-            $theatre->delete();
         } catch (\Throwable $e) {
             Log::error("Failed to delete theatre: {$e->getMessage()}. Theatre ID: {$theatre->id}");
 
-            throw new \Exception('Failed to delete theatre. Please try again later.');
+            throw $e;
         }
     }
 }

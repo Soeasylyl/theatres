@@ -57,6 +57,7 @@ class MovieService
      *
      * @param UpdateMovieDTO $dto
      * @return Movie
+     * @throws \Exception
      */
     public function updateMovie(UpdateMovieDTO $dto): Movie
     {
@@ -81,13 +82,15 @@ class MovieService
 
             if ($dto->getMovieFrames() !== null) {
                 $movie->deleteMedia('frames');
-                $movie->saveMediaFiles(
+                $movie->saveMultipleFiles(
                     mediaFiles: $dto->getMovieFrames(),
                     collectionName: 'frames'
                 );
             }
         } catch (\Exception $e) {
             Log::error("Failed to save poster or frames: {$e->getMessage()} movie id: {$movie->id}");
+
+            throw $e;
         }
         return $movie;
     }
@@ -97,6 +100,7 @@ class MovieService
      *
      * @param CreateMovieDTO $dto
      * @return Movie
+     * @throws \Throwable
      */
     public function createAndSaveMovieWithMedia(CreateMovieDTO $dto): Movie
     {
@@ -107,12 +111,14 @@ class MovieService
                 file: $dto->getMoviePoster(),
                 collectionName: 'poster'
             );
-            $movie->saveMediaFiles(
+            $movie->saveMultipleFiles(
                 mediaFiles: $dto->getMovieFrames(),
                 collectionName: 'frames'
             );
         } catch (\Throwable $e) {
             Log::error("Failed to save poster or frames: {$e->getMessage()} movie id: {$movie->id}");
+
+            throw $e;
         }
 
         return $movie;
@@ -122,21 +128,20 @@ class MovieService
      * Delete a movie
      *
      * @param int $movieId
-     * @return \Exception|void
+     * @return void
+     * @throws \Exception
      */
-    public function deleteMovie(int $movieId)
+    public function deleteMovie(int $movieId): void
     {
         $movie = $this->movieRepository->getMovieByIdOrFail(movieId: $movieId);
 
         try {
             $movie->deleteMedia('poster', 'frames');
-            if (!$movie->delete()) {
-                Log::error("Failed to delete movie: Movie deletion failed. Movie ID: {$movie->id}");
-            }
+            $movie->delete();
         } catch (\Exception $e) {
             Log::error("Failed to delete movie: {$e->getMessage()}. Movie ID: {$movie->id}");
 
-            return $e;
+            throw $e;
         }
     }
 }

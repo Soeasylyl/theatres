@@ -39,8 +39,8 @@ class TheatreRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'address.max' => 'Количество символов не более 255',
-            'description.max' => 'Количество символов не более 1000',
+            'address.max' => 'Количество символов не более :max',
+            'description.max' => 'Количество символов не более :max',
         ];
     }
 }

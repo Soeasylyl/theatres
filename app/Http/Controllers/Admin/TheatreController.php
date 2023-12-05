@@ -42,7 +42,7 @@ class TheatreController extends BaseAdminController
      *
      * @return Application|Factory|View|\Illuminate\Foundation\Application
      */
-    public function show()
+    public function create()
     {
         return view('admin.pages.theatres.add');
     }
@@ -54,7 +54,7 @@ class TheatreController extends BaseAdminController
      * @param TheatreService $theatreService
      * @return RedirectResponse
      */
-    public function create(TheatreRequest $request, TheatreService $theatreService)
+    public function store(TheatreRequest $request, TheatreService $theatreService)
     {
         $authUser = auth()->user();
         $createTheatreDTO = new CreateTheatreDTO(
@@ -140,7 +140,7 @@ class TheatreController extends BaseAdminController
      * @return RedirectResponse
      * @throws \Exception
      */
-    public function delete(int $theatreId, TheatreService $theatreService)
+    public function destroy(int $theatreId, TheatreService $theatreService)
     {
         $deleteTheatreDTO = new DeleteTheatreDTO(
             theatreId: $theatreId,

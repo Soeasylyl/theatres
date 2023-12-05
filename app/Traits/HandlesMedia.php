@@ -33,13 +33,12 @@ trait HandlesMedia
      * @param string|null $collectionName
      * @return void
      */
-    public function saveMediaFiles(array $mediaFiles, ?string $collectionName): void
+    public function saveMultipleFiles(array $mediaFiles, ?string $collectionName): void
     {
         foreach ($mediaFiles as $file) {
-            $this->saveFile(
-                file: $file,
-                collectionName: $collectionName
-            );
+            if (is_a($file, UploadedFile::class)) {
+                $this->saveFile(file: $file, collectionName: $collectionName);
+            }
         }
     }
 
@@ -53,8 +52,8 @@ trait HandlesMedia
     {
         foreach ($collectionNames as $collectionName) {
             $this->medias()
-                 ->where('collection', $collectionName)
-                 ->chunk(10, function (Collection $query) {
+                ->where('collection', $collectionName)
+                ->chunk(10, function (Collection $query) {
                     $query->each(function (Media $q) {
                         $q->delete();
                     });

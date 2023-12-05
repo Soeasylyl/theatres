@@ -49,7 +49,7 @@ class UserController extends BaseAdminController
      *
      * @return Application|Factory|View|\Illuminate\Foundation\Application
      */
-    public function show(TheatreService $theatreService)
+    public function create(TheatreService $theatreService)
     {
         $cinemas = $theatreService->getPaginatedCinemasList();
 
@@ -61,7 +61,7 @@ class UserController extends BaseAdminController
      *
      * @return RedirectResponse
      */
-    protected function create(UserRequest $request, UserService $userService)
+    protected function store(UserRequest $request, UserService $userService)
     {
         $requestDTO = new CreateUserDTO(
             name: $request->input('name'),
@@ -242,7 +242,7 @@ class UserController extends BaseAdminController
      * @param UserService $userService
      * @return RedirectResponse
      */
-    public function delete(int $userId, UserService $userService)
+    public function destroy(int $userId, UserService $userService)
     {
         $authUser = auth()->user();
 

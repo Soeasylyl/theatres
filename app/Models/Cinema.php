@@ -58,7 +58,7 @@ class Cinema extends Model
     ];
 
     protected $dispatchesEvents = [
-        'deleting' => ClearStoreEvent::class,
+        'deleted' => ClearStoreEvent::class,
     ];
 
     /**

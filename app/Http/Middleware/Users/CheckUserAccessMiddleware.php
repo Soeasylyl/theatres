@@ -15,18 +15,19 @@ use Symfony\Component\HttpFoundation\Response;
 
 class CheckUserAccessMiddleware
 {
+    public function __construct(
+        private readonly UserRepositoryInterface $userRepository,
+    )
+    {
+    }
     /**
      * Handle an incoming request.
      *
      * @param \Closure(Request): (Response) $next
      */
-    public function handle(
-        Request                 $request,
-        Closure                 $next,
-        UserRepositoryInterface $userRepository,
-    ): Response
+    public function handle(Request $request, Closure $next): Response
     {
-        $requestedUser = $userRepository->getUserByIdOrFail(
+        $requestedUser = $this->userRepository->getUserByIdOrFail(
             userId: $request->route('user'),
             relations: ['cinemas']
         );
@@ -47,7 +48,7 @@ class CheckUserAccessMiddleware
                     !$currentUser->hasRole(RolesUsersEnum::CINEMA_ADMIN->value) ||
                     (
                         $currentUser->hasRole(RolesUsersEnum::CINEMA_ADMIN->value) &&
-                        $currentUser->cinemas->isNot($requestedUser->cinemas->first())
+                        ! $currentUser->cinemas->contains($requestedUser->cinemas->first())
                     )
                 )
             )

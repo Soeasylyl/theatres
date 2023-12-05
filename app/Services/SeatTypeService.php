@@ -7,7 +7,6 @@ use App\DTO\SeatTypes\DeleteSeatTypeDTO;
 use App\DTO\SeatTypes\UpdateSeatTypeDTO;
 use App\Models\SeatType;
 use App\Repositories\Interfaces\SeatTypeRepositoryInterface;
-use Illuminate\Support\Facades\Log;
 
 class SeatTypeService
 {
@@ -25,13 +24,7 @@ class SeatTypeService
      */
     public function createSeatTypeByTheatre(CreateSeatTypeDTO $dto): SeatType
     {
-        try {
-            $seatType = $this->seatTypeRepository->createSeatTypeForTheatre(dto: $dto);
-        } catch (\Throwable $e) {
-            Log::error("Failed to create seatType: {$e->getMessage()} theatre id: {$dto->getTheatreId()}");
-        }
-
-        return $seatType;
+        return $this->seatTypeRepository->createSeatTypeForTheatre(dto: $dto);
     }
 
     /**
@@ -55,17 +48,12 @@ class SeatTypeService
      *
      * @param UpdateSeatTypeDTO $dto
      * @return SeatType
+     * @throws \Throwable
      */
     public function updateSeatType(UpdateSeatTypeDTO $dto): SeatType
     {
         $seatType = $this->seatTypeRepository->getSeatTypeByIdOrFail(seatTypeId: $dto->getSeatTypeId());
 
-        try {
-            $this->seatTypeRepository->updateInfoBySeatType(seatType: $seatType, dto: $dto);
-        } catch (\Throwable $e) {
-            Log::error("Failed to update seat type info: {$e->getMessage()} user id: {$seatType->id}");
-        }
-
-        return $seatType;
+        return $this->seatTypeRepository->updateInfoBySeatType(seatType: $seatType, dto: $dto);
     }
 }

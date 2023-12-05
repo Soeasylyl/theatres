@@ -86,7 +86,7 @@ class MovieController extends BaseAdminController
     /**
      * @return Application|Factory|View|\Illuminate\Foundation\Application
      */
-    public function show()
+    public function create()
     {
         return view('admin.pages.movies.add');
     }
@@ -98,7 +98,7 @@ class MovieController extends BaseAdminController
      * @param MovieService $movieService
      * @return RedirectResponse
      */
-    public function create(MovieRequest $request, MovieService $movieService)
+    public function store(MovieRequest $request, MovieService $movieService)
     {
         $createMovieDTO = new CreateMovieDTO(
             name: $request->input('name'),
@@ -130,7 +130,7 @@ class MovieController extends BaseAdminController
      * @param MovieService $movieService
      * @return RedirectResponse
      */
-    public function delete(int $id, MovieService $movieService)
+    public function destroy(int $id, MovieService $movieService)
     {
         $deleteMovieDto = new DeleteMovieDTO(
             movieId: $id,

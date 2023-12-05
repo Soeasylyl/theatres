@@ -49,11 +49,11 @@ Route::prefix('admin')->middleware(['auth', 'isBlock', 'AdminAccess'])->group(fu
         Route::middleware(['role:' . RolesUsersEnum::SUPER_ADMIN->value . '|' . RolesUsersEnum::MODERATOR->value])->group(function () {
             Route::get('{movie}/edit', [MovieController::class, 'edit'])->name('movie.edit');
             Route::patch('{movie}/', [MovieController::class, 'update'])->name('movie.update');
-            Route::delete('{movie}/',[MovieController::class, 'delete'])->name('movie.delete');
+            Route::delete('{movie}/',[MovieController::class, 'destroy'])->name('movie.delete');
 
             // Movie creating
-            Route::get('/create',[MovieController::class, 'show'])->name('movie.create');
-            Route::post('/create',[MovieController::class, 'create']);
+            Route::get('/create',[MovieController::class, 'create'])->name('movie.create');
+            Route::post('/create',[MovieController::class, 'store']);
         });
     });
 
@@ -63,19 +63,19 @@ Route::prefix('admin')->middleware(['auth', 'isBlock', 'AdminAccess'])->group(fu
 
         // Theatre CRUD
         Route::middleware(['role:' . RolesUsersEnum::SUPER_ADMIN->value . '|' . RolesUsersEnum::CINEMA_ADMIN->value])->group(function () {
-            Route::get('/create', [TheatreController::class, 'show'])->name('theatre.create');
-            Route::post('/create', [TheatreController::class, 'create']);
+            Route::get('/create', [TheatreController::class, 'create'])->name('theatre.create');
+            Route::post('/create', [TheatreController::class, 'store']);
 
             Route::middleware('CheckTheatreAccessMiddleware')->group(function () {
                 Route::get('{theatres}/edit', [TheatreController::class, 'edit'])->name('theatre.edit');
                 Route::patch('{theatres}/', [TheatreController::class, 'update'])->name('theatre.update');
-                Route::delete('{theatres}/', [TheatreController::class, 'delete'])->name('theatre.delete');
+                Route::delete('{theatres}/', [TheatreController::class, 'destroy'])->name('theatre.delete');
 
                 //Seat Type CRUD
                 Route::prefix('{theatres}/seat-type')->group(function () {
-                    Route::post('/', [SeatTypeController::class, 'create'])->name('seat-type.create');
+                    Route::post('/', [SeatTypeController::class, 'store'])->name('seat-type.create');
                     Route::patch('/', [SeatTypeController::class, 'update'])->name('seat-type.update');
-                    Route::delete('/', [SeatTypeController::class, 'delete'])->name('seat-type.delete');
+                    Route::delete('/', [SeatTypeController::class, 'destroy'])->name('seat-type.delete');
                 });
                 //Theatre creating
             });
@@ -86,8 +86,8 @@ Route::prefix('admin')->middleware(['auth', 'isBlock', 'AdminAccess'])->group(fu
     Route::prefix('users')->middleware(['role:' . RolesUsersEnum::SUPER_ADMIN->value . '|' . RolesUsersEnum::CINEMA_ADMIN->value])->group(function () {
         // List all users and user creation routes
         Route::get('/', [UserController::class, 'index'])->name('users');
-        Route::get('/create', [UserController::class, 'show'])->name('users.create');
-        Route::post('/create', [UserController::class, 'create']);
+        Route::get('/create', [UserController::class, 'create'])->name('users.create');
+        Route::post('/create', [UserController::class, 'store']);
 
         // User editing routes
         Route::prefix('/')->middleware('CheckUserAccessMiddleware')->group(function () {
@@ -115,7 +115,7 @@ Route::prefix('admin')->middleware(['auth', 'isBlock', 'AdminAccess'])->group(fu
             Route::patch('/{user}/update-cinema', [UserController::class, 'updateCinemaAction'])
                 ->name('user.updateCinemaAction');
 
-            Route::delete('/{user}', [UserController::class, 'delete'])
+            Route::delete('/{user}', [UserController::class, 'destroy'])
                 ->name('user.delete');
 
             Route::patch('/{user}/block-user', [UserController::class, 'block'])

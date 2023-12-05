@@ -20,7 +20,7 @@ class SeatTypeController extends BaseAdminController
      * @param SeatTypeService $seatTypeService
      * @return RedirectResponse
      */
-    public function create(
+    public function store(
         SeatTypeRequest $request,
         int $theatreId,
         SeatTypeService $seatTypeService
@@ -76,7 +76,7 @@ class SeatTypeController extends BaseAdminController
      * @param SeatTypeService $seatTypeService
      * @return RedirectResponse
      */
-    public function delete(int $seatTypeId, SeatTypeService $seatTypeService)
+    public function destroy(int $seatTypeId, SeatTypeService $seatTypeService)
     {
         $deleteSeatTypeDTO = new DeleteSeatTypeDTO(
             seatTypeId: $seatTypeId,

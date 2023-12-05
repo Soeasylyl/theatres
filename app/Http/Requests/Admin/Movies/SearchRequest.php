@@ -36,7 +36,7 @@ class SearchRequest extends FormRequest
     {
         return [
             'search.alpha' => 'Строка должна содержать только буквы.',
-            'search.max' => 'Максимум может быть 30 символов',
+            'search.max' => 'Максимум может быть :max символов',
         ];
     }
 }
