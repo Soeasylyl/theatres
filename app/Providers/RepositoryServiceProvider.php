@@ -2,12 +2,10 @@
 
 namespace App\Providers;
 
-use App\Repositories\Interfaces\MediaRepositoryInterface;
 use App\Repositories\Interfaces\MovieRepositoryInterface;
 use App\Repositories\Interfaces\SeatTypeRepositoryInterface;
 use App\Repositories\Interfaces\TheatreRepositoryInterface;
 use App\Repositories\Interfaces\UserRepositoryInterface;
-use App\Repositories\MediaRepository;
 use App\Repositories\MovieRepository;
 use App\Repositories\SeatTypeRepository;
 use App\Repositories\TheatreRepository;
@@ -32,18 +30,8 @@ class RepositoryServiceProvider extends ServiceProvider
         );
 
         $this->app->bind(
-            MediaRepositoryInterface::class,
-            MediaRepository::class
-        );
-
-        $this->app->bind(
             TheatreRepositoryInterface::class,
             TheatreRepository::class
-        );
-
-        $this->app->bind(
-            MediaRepositoryInterface::class,
-            MediaRepository::class
         );
 
         $this->app->bind(
