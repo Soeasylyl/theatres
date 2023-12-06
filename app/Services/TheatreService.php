@@ -64,17 +64,18 @@ class TheatreService
      */
     public function createAndSaveTheatreWithMedia(CreateTheatreDTO $dto): Cinema
     {
+        $theatre = $this->theatreRepository->createTheatre(dto: $dto);
         if ($dto->getUser()->hasRole(RolesUsersEnum::CINEMA_ADMIN->value)) {
-            $theatre = $this->theatreRepository->createTheatreAndAttachUser(dto: $dto);
-        } else {
-            $theatre = $this->theatreRepository->createTheatre(dto: $dto);
+            $theatre->users()->attach($dto->getUser()->id);
         }
 
         try {
+        if ($dto->getTheatreImages() !== null) {
             $theatre->saveMultipleFiles(
                 mediaFiles: $dto->getTheatreImages(),
                 collectionName: 'theatres'
             );
+        }
         } catch (\Throwable $e) {
             Log::error("Failed to save images: {$e->getMessage()} theatre id: {$theatre->id}");
 

@@ -92,6 +92,7 @@ class MovieService
 
             throw $e;
         }
+
         return $movie;
     }
 
@@ -107,14 +108,18 @@ class MovieService
         $movie = $this->movieRepository->createMovie(dto: $dto);
 
         try {
+        if ($dto->getMoviePoster() !== null) {
             $movie->saveFile(
                 file: $dto->getMoviePoster(),
                 collectionName: 'poster'
             );
+        }
+        if ($dto->getMovieFrames() !== null) {
             $movie->saveMultipleFiles(
                 mediaFiles: $dto->getMovieFrames(),
                 collectionName: 'frames'
             );
+        }
         } catch (\Throwable $e) {
             Log::error("Failed to save poster or frames: {$e->getMessage()} movie id: {$movie->id}");
 

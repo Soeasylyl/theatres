@@ -14,7 +14,7 @@
                 </div>
             @endif
 
-            <form method="POST" action="{{ route('users.create') }}">
+            <form method="POST" action="{{ route('user.store') }}">
                 @csrf
                 <div class="admin-container__grid">
 

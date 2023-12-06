@@ -36,7 +36,7 @@ trait HandlesMedia
     public function saveMultipleFiles(array $mediaFiles, ?string $collectionName): void
     {
         foreach ($mediaFiles as $file) {
-            if (is_a($file, UploadedFile::class)) {
+            if ($file instanceof UploadedFile) {
                 $this->saveFile(file: $file, collectionName: $collectionName);
             }
         }

@@ -30,7 +30,7 @@ trait HasSlug
     private function generateSlugOnCreate(): void
     {
         if (!empty($this->name)) {
-            $this->slug  = $this->generateUniqueSlug($this->name);
+            $this->slug = $this->generateUniqueSlug();
         }
     }
 
@@ -42,24 +42,23 @@ trait HasSlug
     private function generateSlugOnUpdate(): void
     {
         if ($this->isDirty('name') && !empty($this->name)) {
-            $this->slug = $this->generateUniqueSlug($this->name, $this->getKey());
+            $this->slug = $this->generateUniqueSlug();
         }
     }
 
     /**
      * Generate a unique slug based on the given name.
      *
-     * @param string $name
-     * @param int|null $id
      * @return string
      */
-    private function generateUniqueSlug(string $name, int $id = null): string
+    private function generateUniqueSlug(): string
     {
-        $slug = Str::slug($name);
+        $slug = Str::slug($this->name);
+        $existsSlug = $this->getMorphClass()::where('slug', $slug)
+            ->whereNot('id', $this->id)
+            ->exists();
 
-        return $this->where('slug', $slug)
-                    ->whereNot('id', $id)
-                    ->exists()
+        return $existsSlug
             ? sprintf('%s-%s', $slug, uniqid())
             : $slug;
     }

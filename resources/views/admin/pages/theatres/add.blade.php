@@ -14,7 +14,7 @@
                 @enderror
                 <div class="admin-theatres__body">
                     <form method="POST"
-                          action="{{ route('theatre.create') }}"
+                          action="{{ route('theatre.store') }}"
                           class="admin-theatres__form" enctype="multipart/form-data">
                         @csrf
                         @method('POST')
@@ -34,6 +34,11 @@
                                            placeholder="{{ __('Название кинотеатра') }}">
                                 </div>
                             </div>
+
+{{--                            <x-input :inputAttributes="[ 'type'=>'text', 'name'=>'name', 'required'=>'required' ]"--}}
+{{--                                     input_required>--}}
+{{--                                {{ __('Название кинотеатра:') }}--}}
+{{--                            </x-input>--}}
 
                             <div class="admin-theatres__items">
                                 @error('description')

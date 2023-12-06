@@ -14,7 +14,7 @@
                 @enderror
                 <div class="admin-movies__body">
                     <form method="POST"
-                          action="{{ route('movie.create') }}"
+                          action="{{ route('movie.store') }}"
                           class="admin-movies__form" enctype="multipart/form-data">
                         @csrf
                         @method('POST')
