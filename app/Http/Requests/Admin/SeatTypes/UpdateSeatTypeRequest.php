@@ -26,7 +26,7 @@ class UpdateSeatTypeRequest extends FormRequest
             'seat_id' => 'required|exists:seat_types,id',
             'seat_name' => 'required|string|max:30',
             'seat_description' => 'nullable|string|max:1000',
-            'seat_amount' => ['required', 'regex:/^(\$)?(\d+(\.\d{1,2})?)$/'],
+            'seat_amount' => 'required|regex:/^\d+(\.\d{1,2})?$/',
         ];
     }
 
@@ -39,8 +39,8 @@ class UpdateSeatTypeRequest extends FormRequest
     {
         return [
             'seat_id.exists' => 'Такой записи не существует в базе данных',
-            'seat_description.max' => 'Описание цены за место должно быть не более 1000',
-            'seat_amount.regex' =>  'Не верный формат цены за место, пример: 57.34 или $57.1'
+            'seat_description.max' => 'Описание типа места должно быть не более :max',
+            'seat_amount.regex' =>  'Не верный формат цены за место, пример: 57.34 или 3.1'
         ];
     }
 }

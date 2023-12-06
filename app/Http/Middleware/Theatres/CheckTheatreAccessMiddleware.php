@@ -30,14 +30,10 @@ class CheckTheatreAccessMiddleware
                 ! $currentUser->hasRole(RolesUsersEnum::CINEMA_ADMIN->value) ||
                 (
                     $currentUser->hasRole(RolesUsersEnum::CINEMA_ADMIN->value) &&
-                    ! $currentUser->cinemas->contains($request->route('theatres'))
+                    ! $currentUser->cinemas->contains('id', $request->route('theatres'))
                 )
             )
         ) {
-            Log::channel('check_cinema_access')->warning(
-                'Access denied for user ' . ($currentUser ? $currentUser->id : 'Guest') .
-                ' to cinema ' . $request->route('theatres') . ' ip address ' . $request->ip()
-            );
 
             abort(404);
         }

@@ -14,8 +14,9 @@ use Symfony\Component\HttpFoundation\Response;
 
 class CheckUserAccessMiddleware
 {
-
-    public function __construct(private readonly UserRepositoryInterface   $userRepository)
+    public function __construct(
+        private readonly UserRepositoryInterface $userRepository,
+    )
     {
     }
 
@@ -26,7 +27,10 @@ class CheckUserAccessMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $requestedUser = $this->userRepository->getUserByIdOrFail($request->route('user'), ['cinemas']);
+        $requestedUser = $this->userRepository->getUserByIdOrFail(
+            userId: $request->route('user'),
+            relations: ['cinemas']
+        );
 
         /** @var User $currentUser */
         $currentUser = auth()?->user()?->load([
@@ -36,15 +40,15 @@ class CheckUserAccessMiddleware
         ]);
 
         if (
-            ! $currentUser ||
+            !$currentUser ||
             (
-                $currentUser->id != $requestedUser->id &&
-                ! $currentUser->hasRole(RolesUsersEnum::SUPER_ADMIN->value) &&
+                $currentUser->isNot($requestedUser) &&
+                !$currentUser->hasRole(RolesUsersEnum::SUPER_ADMIN->value) &&
                 (
-                    ! $currentUser->hasRole(RolesUsersEnum::CINEMA_ADMIN->value) ||
+                    !$currentUser->hasRole(RolesUsersEnum::CINEMA_ADMIN->value) ||
                     (
                         $currentUser->hasRole(RolesUsersEnum::CINEMA_ADMIN->value) &&
-                        ! $currentUser->cinemas->contains($requestedUser->cinemas->first())
+                        ! $currentUser->cinemas->intersect($requestedUser->cinemas)->isNotEmpty()
                     )
                 )
             )

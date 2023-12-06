@@ -1,7 +1,3 @@
-@php
-    use App\Enums\RolesUsersEnum;
-@endphp
-
 @extends('admin.layouts.app')
 
 @section('content')
@@ -12,7 +8,7 @@
                     <label for="current_password">{{ __('Текущая роль пользователя:') }}</label>
                     <label class="admin-container__label">
                         @if ($userRole)
-                            {{ RolesUsersEnum::getDescription(RolesUsersEnum::from($userRole->name)) }}
+                            {{ App\Enums\RolesUsersEnum::getDescription(App\Enums\RolesUsersEnum::from($userRole->name)) }}
                         @else
                             {{ __('Роль не определена') }}
                         @endif
@@ -20,16 +16,18 @@
                 </div>
                 @endif
 
-                <div class="admin-container__items">
-                    <label for="current_password">{{ __('Кинотеатры к которым относится пользователь:') }}</label>
-                    <label class="admin-container__label">
-                        @if($userCinemasList->isNotEmpty())
-                            {{ $userCinemasList->pluck('name')->implode(', ') }}
-                        @else
-                            {{ __('Нет кинотеатра') }}
-                        @endif
-                    </label>
-                </div>
+                @if(!($user->hasRole(App\Enums\RolesUsersEnum::SUPER_ADMIN->value)) && !($user->hasRole(App\Enums\RolesUsersEnum::MODERATOR->value)))
+                    <div class="admin-container__items">
+                        <label for="current_password">{{ __('Кинотеатры к которым относится пользователь:') }}</label>
+                        <label class="admin-container__label">
+                            @if($userCinemasList->isNotEmpty())
+                                {{ $userCinemasList->pluck('name')->implode(', ') }}
+                            @else
+                                {{ __('Нет кинотеатра') }}
+                            @endif
+                        </label>
+                    </div>
+                @endif
             </div>
 
             @if(!($authUser->id === $user->id))
@@ -52,7 +50,7 @@
                                 <label for="current_password">{{ __('Текущая роль пользователя:') }}</label>
                                 <label class="admin-container__label">
                                     @forelse($user->roles as $role)
-                                        {{ RolesUsersEnum::getDescription(RolesUsersEnum::from($role->name)) }}
+                                        {{ App\Enums\RolesUsersEnum::getDescription(App\Enums\RolesUsersEnum::from($role->name)) }}
                                     @empty
                                         {{ __('Без роли') }}
                                     @endforelse
@@ -76,8 +74,8 @@
                                     <div class="login-container__card-item">
                                         <select name="role" class="admin-container__select">
                                             <option value="" disabled selected>{{ __('Список ролей') }}</option>
-                                            @foreach(RolesUsersEnum::asSelectArray() as $role)
-                                                @if ($role['value'] !==  RolesUsersEnum::SUPER_ADMIN->value)
+                                            @foreach(App\Enums\RolesUsersEnum::asSelectArray() as $role)
+                                                @if ($role['value'] !==  App\Enums\RolesUsersEnum::SUPER_ADMIN->value)
                                                     <option
                                                         value="{{ $role['value'] }}"> {{ $role['name'] }}</option>
                                                 @endif
@@ -95,7 +93,7 @@
                         </div>
                     </div>
 
-            @endif
+                    @endif
 
                     <div class="admin-container__form">
                         <div class="admin-container__grid">
@@ -129,47 +127,39 @@
                                             @endif
                                         </div>
 
-                                        <div class="admin-container__items">
-                                            <label for="name">{{ __('Имя пользователя:') }}</label>
-                                            <div>
-                                                <input type="text" id="name" name="name"
-                                                       value="{{ old('name', $user->name) }} "
-                                                       autocomplete="off" required>
-                                                @error('name')
-                                                <div class="error-messages">
-                                                    {{$message}}
-                                                </div>
-                                                @enderror
-                                            </div>
-                                        </div>
+                                        <x-input :inputAttributes="[
+                                                'name'=>'name',
+                                                'required'=>'required',
+                                                'autocomplete' => 'off',
+                                                'value' => $user->name,
+                                                 ]"
+                                                 :errorAttribute="'name'"
+                                                 input_required>
+                                            {{ __('Имя пользователя:') }}
+                                        </x-input>
 
-                                        <div class="admin-container__items">
-                                            <label for="email">{{ __('Email адрес:') }}</label>
-                                            <div>
-                                                <input type="email" id="email" name="email"
-                                                       value="{{ old('email', $user->email) }}" required
-                                                       autocomplete="off">
-                                                @error('email')
-                                                <div class="error-messages">
-                                                    {{$message}}
-                                                </div>
-                                                @enderror
-                                            </div>
-                                        </div>
+                                        <x-input :inputAttributes="[
+                                                'name'=>'email',
+                                                'type' => 'email',
+                                                'required'=>'required',
+                                                'autocomplete' => 'off',
+                                                'value' => $user->email,
+                                                 ]"
+                                                 :errorAttribute="'email'"
+                                                 input_required>
+                                            {{ __('Email адрес:') }}
+                                        </x-input>
 
-                                        <div class="admin-container__items">
-                                            <label for="phone"> {{ __('Номер телефона:') }}</label>
-                                            <div>
-                                                <input type="text" id="phone" name="phone"
-                                                       value="{{ old('phone', $user->phone) }}"
-                                                       autocomplete="off">
-                                                @error('phone')
-                                                <div class="error-messages">
-                                                    {{$message}}
-                                                </div>
-                                                @enderror
-                                            </div>
-                                        </div>
+                                        <x-input :inputAttributes="[
+                                                    'name'=>'phone',
+                                                    'required'=>'required',
+                                                    'autocomplete' => 'off',
+                                                    'value' => $user->phone,
+                                                     ]"
+                                                 :errorAttribute="'phone'"
+                                                 input_required>
+                                            {{ __('Номер телефона:') }}
+                                        </x-input>
 
                                         <div class="page-wrapper__panel-btn-wrapper">
                                             <button type="submit"
@@ -213,42 +203,39 @@
                                         </div>
 
                                         @if($authUser->id === $user->id)
-                                            <div class="admin-container__items">
-                                                <label for="current_password">{{ __('Введите старый пароль:') }}</label>
-                                                <div>
-                                                    <input type="password" id="current_password" name="current_password"
-                                                           required placeholder="{{ __('Текущий пароль') }}">
-                                                    @error('current_password')
-                                                    <div class="error-messages">
-                                                        {{$message}}
-                                                    </div>
-                                                    @enderror
-                                                </div>
-                                            </div>
+                                            <x-input :inputAttributes="[
+                                                    'name'=>'current_password',
+                                                    'type' => 'password',
+                                                    'required'=>'required',
+                                                    'autocomplete' => 'off',
+                                                     ]"
+                                                     :errorAttribute="'current_password'"
+                                                     input_required>
+                                                {{ __('Введите старый пароль:') }}
+                                            </x-input>
                                         @endif
 
-                                        <div class="admin-container__items">
-                                            <label for="new_password">{{ __('Введите новый пароль:') }}</label>
-                                            <div>
-                                                <input type="password" id="new_password" name="new_password"
-                                                       required placeholder="{{ __('Новый пароль') }}">
-                                                @error('new_password')
-                                                <div class="error-messages">
-                                                    {{$message}}
-                                                </div>
-                                                @enderror
-                                            </div>
-                                        </div>
+                                        <x-input :inputAttributes="[
+                                                    'name'=>'new_password',
+                                                    'type' => 'password',
+                                                    'required'=>'required',
+                                                    'autocomplete' => 'off',
+                                                     ]"
+                                                 :errorAttribute="'new_password'"
+                                                 input_required>
+                                            {{ __('Введите новый пароль:') }}
+                                        </x-input>
 
-                                        <div class="admin-container__items">
-                                            <label
-                                                for="new_password_confirmation">{{ __('Повторите новый пароль:') }}</label>
-                                            <div>
-                                                <input type="password" id="new_password_confirmation"
-                                                       name="new_password_confirmation" required
-                                                       placeholder="{{ __('Новый пароль') }}">
-                                            </div>
-                                        </div>
+                                        <x-input :inputAttributes="[
+                                                    'name'=>'new_password_confirmation',
+                                                    'type' => 'password',
+                                                    'required'=>'required',
+                                                    'autocomplete' => 'off',
+                                                     ]"
+                                                 :errorAttribute="'new_password_confirmation'"
+                                                 input_required>
+                                            {{ __('Повторите новый пароль:') }}
+                                        </x-input>
 
                                         <div class="page-wrapper__panel-btn-wrapper">
                                             <button type="submit"
@@ -292,6 +279,5 @@
                     </div>
                 @endif
     </div>
-
 
 @endsection

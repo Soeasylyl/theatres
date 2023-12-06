@@ -2,6 +2,9 @@
 
 namespace App\Models;
 
+use App\Events\ClearStoreEvent;
+use App\Traits\HandlesMedia;
+use App\Traits\HasSlug;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -57,7 +60,7 @@ use Laravel\Sanctum\PersonalAccessToken;
  */
 class Movie extends Model
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, HasSlug, HandlesMedia;
 
     /**
      * @var string[]
@@ -77,6 +80,10 @@ class Movie extends Model
      */
     protected $casts = [
         'date_start' => 'date',
+    ];
+
+    protected $dispatchesEvents = [
+      'deleted' => ClearStoreEvent::class,
     ];
 
     /**
@@ -120,24 +127,5 @@ class Movie extends Model
     {
         return $this->morphMany(Media::class, 'model')
                     ->where('collection', 'frames');
-    }
-
-    /**
-     * @return MorphMany
-     */
-    public function medias(): MorphMany
-    {
-        return $this->morphMany(
-            related: Media::class,
-            name: 'model',
-        );
-    }
-
-    /**
-     * @return string
-     */
-    public function getRouteKeyName(): string
-    {
-        return 'slug';
     }
 }

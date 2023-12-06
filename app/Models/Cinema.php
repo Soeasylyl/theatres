@@ -2,11 +2,12 @@
 
 namespace App\Models;
 
+use App\Events\ClearStoreEvent;
+use App\Traits\HandlesMedia;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
@@ -45,7 +46,7 @@ use Laravel\Sanctum\HasApiTokens;
  */
 class Cinema extends Model
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, HandlesMedia;
 
     /**
      * @var string[]
@@ -54,6 +55,10 @@ class Cinema extends Model
         'name',
         'description',
         'address',
+    ];
+
+    protected $dispatchesEvents = [
+        'deleted' => ClearStoreEvent::class,
     ];
 
     /**
@@ -70,17 +75,6 @@ class Cinema extends Model
     public function halls(): HasMany
     {
         return $this->hasMany(Hall::class);
-    }
-
-    /**
-     * @return MorphMany
-     */
-    public function medias(): MorphMany
-    {
-        return $this->morphMany(
-            related: Media::class,
-            name: 'model',
-        );
     }
 
     /**

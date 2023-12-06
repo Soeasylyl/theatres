@@ -2,13 +2,15 @@
 
 namespace App\Repositories;
 
+use App\DTO\Movies\CreateMovieDTO;
+use App\DTO\Movies\UpdateMovieDTO;
 use App\Models\Movie;
 use App\Repositories\Interfaces\MovieRepositoryInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Support\Carbon;
 
 class MovieRepository implements MovieRepositoryInterface
@@ -16,11 +18,16 @@ class MovieRepository implements MovieRepositoryInterface
     /**
      * Get a paginated list of movies.
      *
+     * @param string|null $searchTern
      * @return LengthAwarePaginator
      */
-    public function getMoviesPaginatedList(): LengthAwarePaginator
+    public function getMoviesPaginatedList(?string $searchTern): LengthAwarePaginator
     {
-        return Movie::paginate(config('app.pagination_limit'));
+        return Movie::query()
+            ->when($searchTern, function (Builder $query) use ($searchTern) {
+                $query->where('name', 'ilike', "%$searchTern%");
+            })
+            ->paginate(config('app.pagination_limit'));
     }
 
     /**
@@ -40,5 +47,57 @@ class MovieRepository implements MovieRepositoryInterface
             ->inRandomOrder()
             ->when($limit !== null, fn(Builder $query) => $query->limit($limit))
             ->get();
+    }
+
+    /**
+     * Retrieve a movie with specified relationships or throw an exception if not found.
+     *
+     * @param array|null $relations The relationships to eager load.
+     * @param int $movieId The ID of the movie to retrieve.
+     * @return Movie The retrieved movie with specified relationships.
+     * @throws ModelNotFoundException If the movie with the given ID is not found.
+     */
+    public function getMovieByIdOrFail(int $movieId, ?array $relations = []): Movie
+    {
+        return Movie::with($relations)->findOrFail($movieId);
+    }
+
+    /**
+     * Update the information of a movie with the provided data.
+     *
+     * @param Movie $movie The movie model to be updated.
+     * @param UpdateMovieDTO $dto The data transfer object containing the updated movie information.
+     * @return Movie The updated movie model.
+     */
+    public function updateMovieInfo(Movie $movie, UpdateMovieDTO $dto): Movie
+    {
+        $movie->update([
+            'name' => $dto->getName(),
+            'rating' => $dto->getRating(),
+            'age_limit' => $dto->getAgeLimit(),
+            'session_duration' => $dto->getSessionDuration(),
+            'date_start' => $dto->getDateStart(),
+            'description' => $dto->getDescription(),
+        ]);
+
+        return $movie;
+    }
+
+    /**
+     * Creates a new movie record in the database based on the provided CreateMovieDTO and slug.
+     *
+     * @param CreateMovieDTO $dto The data transfer object containing movie information.
+     * @return Movie The newly created movie instance.
+     */
+    public function createMovie(CreateMovieDTO $dto): Movie
+    {
+        return Movie::create([
+            'name' => $dto->getName(),
+            'rating' => $dto->getRating(),
+            'age_limit' => $dto->getAgeLimit(),
+            'session_duration' => $dto->getSessionDuration(),
+            'date_start' => $dto->getDateStart(),
+            'description' => $dto->getDescription(),
+        ]);
     }
 }

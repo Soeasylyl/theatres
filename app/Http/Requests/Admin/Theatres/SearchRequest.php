@@ -35,7 +35,7 @@ class SearchRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'search.max' => 'Максимум может быть 40 символов',
+            'search.max' => 'Максимум может быть :max символов',
         ];
     }
 }

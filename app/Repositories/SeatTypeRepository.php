@@ -34,9 +34,7 @@ class SeatTypeRepository implements SeatTypeRepositoryInterface
      */
     public function hasSeatsOfType(int $seatTypeId): bool
     {
-        $count = Seat::where('seat_type_id', $seatTypeId)->count();
-
-        return $count > 0;
+        return Seat::where('seat_type_id', $seatTypeId)->exists();
     }
 
     /**

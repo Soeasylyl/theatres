@@ -7,7 +7,7 @@
             <a href="{{ route('theatres') }}">{{ __('Кинотеатры') }}</a>
         </li>
         <li class="admin-menu__item {{ Route::currentRouteName() === 'movies' ? 'active' : '' }}">
-            <a href="{{ route('admin.movies') }}">{{ __('Фильмы') }}</a>
+            <a href="{{ route('movies') }}">{{ __('Фильмы') }}</a>
         </li>
 
         @hasrole(\App\Enums\RolesUsersEnum::SUPER_ADMIN->value . '|' . App\Enums\RolesUsersEnum::CINEMA_ADMIN->value)

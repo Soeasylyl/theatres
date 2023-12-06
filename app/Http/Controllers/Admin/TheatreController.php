@@ -11,24 +11,18 @@ use App\Http\Requests\Admin\Theatres\SearchRequest;
 use App\Http\Requests\Admin\Theatres\TheatreRequest;
 use App\Services\TheatreService;
 use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 
 class TheatreController extends BaseAdminController
 {
-    public function __construct(
-        private readonly TheatreService $theatreService)
-    {
-    }
-
     /**
-     * Show the application dashboard.
-     *
-     * @return Renderable
+     * @param SearchRequest $request
+     * @param TheatreService $theatreService
+     * @return Application|Factory|View|\Illuminate\Foundation\Application
      */
-    public function index(SearchRequest $request)
+    public function index(SearchRequest $request, TheatreService $theatreService)
     {
         $authUser = auth()->user();
         $searchTern = $request->input('search');
@@ -38,7 +32,7 @@ class TheatreController extends BaseAdminController
             searchTerm: $searchTern,
         );
 
-        $theatres = $this->theatreService->getTheatresWithHallsPaginated($searchTheatreDTO);
+        $theatres = $theatreService->getTheatresWithHallsPaginated($searchTheatreDTO);
 
         return view('admin.pages.theatres.theatres-information', compact('theatres', 'searchTern'));
     }
@@ -48,7 +42,7 @@ class TheatreController extends BaseAdminController
      *
      * @return Application|Factory|View|\Illuminate\Foundation\Application
      */
-    public function show()
+    public function create()
     {
         return view('admin.pages.theatres.add');
     }
@@ -57,9 +51,10 @@ class TheatreController extends BaseAdminController
      * Processing a request to create a new cinema.
      *
      * @param TheatreRequest $request
+     * @param TheatreService $theatreService
      * @return RedirectResponse
      */
-    public function create(TheatreRequest $request)
+    public function store(TheatreRequest $request, TheatreService $theatreService)
     {
         $authUser = auth()->user();
         $createTheatreDTO = new CreateTheatreDTO(
@@ -71,7 +66,7 @@ class TheatreController extends BaseAdminController
         );
 
         try {
-            $this->theatreService->createAndSaveTheatreWithMedia($createTheatreDTO);
+            $theatreService->createAndSaveTheatreWithMedia($createTheatreDTO);
 
             return redirect()
                 ->route('theatres')
@@ -85,18 +80,19 @@ class TheatreController extends BaseAdminController
      *  Display the edit view for a specific theatre based on its ID.
      *
      * @param int $theatreId
+     * @param TheatreService $theatreService
      * @return Application|Factory|View|\Illuminate\Foundation\Application
      */
-    public function edit(int $theatreId)
+    public function edit(int $theatreId, TheatreService $theatreService)
     {
         $editTheatreDTO = new EditTheatreDTO(
             theatreId: $theatreId,
         );
 
-        $theatreData = $this->theatreService->getTheatreDataForEdit($editTheatreDTO);
+        $theatreData = $theatreService->getTheatreDataForEdit($editTheatreDTO);
 
         return view('admin.pages.theatres.edit', [
-            'theatre'=> $theatreData['theatre'],
+            'theatre' => $theatreData['theatre'],
             'halls' => $theatreData['halls'],
             'media' => $theatreData['media'],
             'seatsTypes' => $theatreData['seatsTypes'],
@@ -108,9 +104,14 @@ class TheatreController extends BaseAdminController
      *
      * @param TheatreRequest $request
      * @param int $theatreId
+     * @param TheatreService $theatreService
      * @return RedirectResponse
      */
-    public function update(TheatreRequest $request, int $theatreId)
+    public function update(
+        TheatreRequest $request,
+        int            $theatreId,
+        TheatreService $theatreService,
+    )
     {
         $updateTheatreDTO = new UpdateTheatreDTO(
             theatreId: $theatreId,
@@ -121,7 +122,7 @@ class TheatreController extends BaseAdminController
         );
 
         try {
-            $this->theatreService->updateTheatre(dto: $updateTheatreDTO);
+            $theatreService->updateTheatre(dto: $updateTheatreDTO);
 
             return redirect()
                 ->route('theatres')
@@ -135,16 +136,18 @@ class TheatreController extends BaseAdminController
      *  Delete a theater based on the provided ID.
      *
      * @param int $theatreId
+     * @param TheatreService $theatreService
      * @return RedirectResponse
+     * @throws \Exception
      */
-    public function delete (int $theatreId)
+    public function destroy(int $theatreId, TheatreService $theatreService)
     {
         $deleteTheatreDTO = new DeleteTheatreDTO(
-          theatreId: $theatreId,
+            theatreId: $theatreId,
         );
 
         try {
-            $this->theatreService->deleteTheatre(theatreId: $deleteTheatreDTO->getTheatreId());
+            $theatreService->deleteTheatre(theatreId: $deleteTheatreDTO->getTheatreId());
 
             return redirect()->back()->with('successMessages', 'Кинотеатр успешно удален.');
         } catch (\Throwable $e) {

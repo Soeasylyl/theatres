@@ -9,15 +9,20 @@ class UpdateSeatTypeDTO
      * @param int $seatTypeId
      * @param string $name
      * @param string|null $description
-     * @param string $amount
+     * @param float $amount
      */
     public function __construct(
         private readonly int $seatTypeId,
         private readonly string $name,
         private readonly ?string $description,
-        private readonly string $amount,
+        private readonly float $amount,
     )
     {
+    }
+
+    public function getAmount(): float
+    {
+        return $this->amount;
     }
 
     /**
@@ -44,16 +49,5 @@ class UpdateSeatTypeDTO
         return $this->description;
     }
 
-    /**
-     * Get the amount as a float, removing the '$' sign if present.
-     *
-     * @return float
-     */
-    public function getAmount(): float
-    {
-        $amount = $this->amount;
-        $amount = str_replace('$', '', $amount);
 
-        return floatval($amount);
-    }
 }
