@@ -20,8 +20,20 @@ class UserUnbannedListener implements ShouldQueue
             try {
                 Mail::to($event->user->email)->send(new UnbanNotificationMail($event->user));
             } catch (\Exception $e) {
-                Log::error('Failed to send unban notification email to ' . $event->user->email . ': ' . $e->getMessage());
+                $this->failed($e, $event->user->email);
             }
         }
+    }
+
+    /**
+     * Handle a job failure.
+     *
+     * @param  \Exception  $exception
+     * @param  string  $userEmail
+     * @return void
+     */
+    public function failed(\Exception $exception, string $userEmail): void
+    {
+        Log::error('Failed to send unban notification email to ' . $userEmail . ': ' . $exception->getMessage());
     }
 }

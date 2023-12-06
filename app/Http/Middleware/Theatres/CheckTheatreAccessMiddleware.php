@@ -30,7 +30,7 @@ class CheckTheatreAccessMiddleware
                 ! $currentUser->hasRole(RolesUsersEnum::CINEMA_ADMIN->value) ||
                 (
                     $currentUser->hasRole(RolesUsersEnum::CINEMA_ADMIN->value) &&
-                    ! $currentUser->cinemas->contains(key: $request->route('theatres'))
+                    ! $currentUser->cinemas->contains('id', $request->route('theatres'))
                 )
             )
         ) {
