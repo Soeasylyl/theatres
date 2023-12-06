@@ -17,57 +17,38 @@
             <form method="POST" action="{{ route('user.store') }}">
                 @csrf
                 <div class="admin-container__grid">
-
                     <div>
-                        <div class="admin-container__items">
-                            <label for="name">{{ __('Имя') }}</label>
+                        <x-input :inputAttributes="[
+                                        'name'=>'name',
+                                        'required'=>'required',
+                                        'autocomplete' => 'off',
+                                         ]"
+                                 :errorAttribute="'name'"
+                                 input_required>
+                            {{ __('Имя пользователя:') }}
+                        </x-input>
 
-                            <div class="login-container__card-item">
-                                <input id="name" type="text"
-                                       class="login-container__form-control @error('name') is-invalid @enderror"
-                                       name="name"
-                                       value="{{ old('name') }}" required autocomplete="name" autofocus>
+                        <x-input :inputAttributes="[
+                                        'name'=>'email',
+                                        'type' => 'email',
+                                        'required'=>'required',
+                                        'autocomplete' => 'off',
+                                         ]"
+                                 :errorAttribute="'email'"
+                                 input_required>
+                            {{ __('Email Адрес:') }}
+                        </x-input>
 
-                                @error('name')
-                                <span role="alert">
-                                        <strong class="invalid-feedback">{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="admin-container__items">
-                            <label for="email">{{ __('Email Адрес') }}</label>
-
-                            <div class="login-container__card-item">
-                                <input id="email" type="email"
-                                       class="login-container__form-control @error('email') is-invalid @enderror"
-                                       name="email"
-                                       value="{{ old('email') }}" required autocomplete="email">
-                                @error('email')
-                                <span role="alert">
-                                        <strong class="invalid-feedback">{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="admin-container__items">
-                            <label for="phone">{{ __('Телефон') }}</label>
-
-                            <div class="login-container__card-item">
-                                <input id="phone" type="phone"
-                                       class="login-container__form-control @error('phone') is-invalid @enderror"
-                                       name="phone"
-                                       value="{{ old('phone') }}" required autocomplete="phone">
-                                @error('phone')
-                                <span role="alert">
-                                        <strong class="invalid-feedback">{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-
+                        <x-input :inputAttributes="[
+                                        'name'=>'phone',
+                                        'type' => 'phone',
+                                        'required'=>'required',
+                                        'autocomplete' => 'off',
+                                         ]"
+                                 :errorAttribute="'phone'"
+                                 input_required>
+                            {{ __('Номер телефона:') }}
+                        </x-input>
 
                     </div>
                     <div>
@@ -103,30 +84,28 @@
                             </div>
                         </div>
 
-                        <div class="admin-container__items">
-                            <label for="password">{{ __('Пароль') }}</label>
-                            <div class="login-container__card-item">
-                                <input id="password" type="password"
-                                       class="login-container__form-control @error('password') is-invalid @enderror"
-                                       name="password"
-                                       required autocomplete="new-password">
+                        <x-input :inputAttributes="[
+                                        'name'=>'password',
+                                        'type' => 'password',
+                                        'required'=>'required',
+                                        'autocomplete' => 'off',
+                                         ]"
+                                 :errorAttribute="'password'"
+                                 input_required>
+                            {{ __('Введите пароль:') }}
+                        </x-input>
 
-                                @error('password')
-                                <span role="alert">
-                                        <strong class="invalid-feedback">{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
+                        <x-input :inputAttributes="[
+                                        'name'=>'password_confirmation',
+                                        'type' => 'password',
+                                        'required'=>'required',
+                                        'autocomplete' => 'off',
+                                         ]"
+                                 :errorAttribute="'password_confirmation'"
+                                 input_required>
+                            {{ __('Подтвердите пароль:') }}
+                        </x-input>
 
-                        <div class="admin-container__items">
-                            <label for="password-confirm">{{ __('Подтверждение пароля') }}</label>
-
-                            <div class="login-container__card-item">
-                                <input id="password-confirm" type="password" class="login-container__form-control"
-                                       name="password_confirmation" required autocomplete="new-password">
-                            </div>
-                        </div>
                     </div>
 
                 </div>

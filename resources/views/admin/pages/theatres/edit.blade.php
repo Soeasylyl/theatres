@@ -30,46 +30,42 @@
                             @csrf
                             @method('PATCH')
                             <div class="admin-theatres__form-left">
-                                <div class="admin-theatres__items">
-                                    @error('name')
-                                    <div class="error-messages">{{$message}}</div>
-                                    @enderror
-                                    <div class="admin-theatres__item-header">{{ __('Название:') }}</div>
-                                    <div class="admin-theatres__item-body">
-                                        <input type="text" name="name"
-                                               value="{{ $theatre->name }}"
-                                               autocomplete="off" required
-                                               placeholder="{{ __('Название кинотеатра') }}">
-                                    </div>
-                                </div>
-                                <div class="admin-theatres__items">
-                                    @error('address')
-                                    <div class="error-messages">{{$message}}</div>
-                                    @enderror
-                                    <div class="admin-theatres__item-header">
-                                        {{ __('Адрес:') }}
-                                    </div>
-                                    <div class="admin-theatres__item-body">
-                                        <input type="text" name="address"
-                                               value="{{ $theatre->address }}"
-                                               autocomplete="off" required
-                                               placeholder="{{ __('Адрес кинотеатра') }}">
-                                    </div>
-                                </div>
 
-                                <div class="admin-theatres__items">
-                                    @error('description')
-                                    <div class="error-messages">{{$message}}</div>
-                                    @enderror
-                                    <div class="admin-theatres__item-header">
-                                        {{ __('Описание:') }}
-                                    </div>
-                                    <div class="admin-theatres__item-body">
-                                <textarea type="text" name="description"
-                                          autocomplete="off" required
-                                          placeholder="{{ __('Описание информации о кинотеатре') }}">{{ $theatre->description }}</textarea>
-                                    </div>
-                                </div>
+                                <x-input :inputAttributes="[
+                                        'name'=>'name',
+                                        'pattern' => '^.{1,100}$',
+                                        'required'=>'required',
+                                        'autocomplete' => 'off',
+                                        'value' => $theatre->name,
+                                         ]"
+                                         :errorAttribute="'name'"
+                                         input_required>
+                                    {{ __('Название кинотеатра:') }}
+                                </x-input>
+
+                                <x-input :inputAttributes="[
+                                        'name'=>'address',
+                                        'pattern' => '^.{1,100}$',
+                                        'required'=>'required',
+                                        'autocomplete' => 'off',
+                                        'value' => $theatre->address,
+                                         ]"
+                                         :errorAttribute="'address'"
+                                         input_required>
+                                    {{ __('Адрес кинотеатра:') }}
+                                </x-input>
+
+                                <x-textarea :inputAttributes="[
+                                        'name'=>'description',
+                                        'pattern' => '^.{0,1000}$',
+                                        'required'=>'required',
+                                        'autocomplete' => 'off',
+                                         ]"
+                                            :errorAttribute="'description'"
+                                            :text-content="$theatre->description"
+                                            input_required
+                                >{{ __('Описание кинотеатра:') }}</x-textarea>
+
                                 <div class="admin-theatres__items">
                                     @error('$theatreImages')
                                     <div class="error-messages">{{$message}}</div>
@@ -107,10 +103,12 @@
                                     </thead>
                                     <tbody>
                                     @forelse($seatsTypes as $seatsType)
-                                        <tr class="admin-theatres__edit_theatres" data-seat-type-id="{{ $seatsType->id }}">
+                                        <tr class="admin-theatres__edit_theatres"
+                                            data-seat-type-id="{{ $seatsType->id }}">
                                             <td class="admin-theatres__seat-type-name">{{ $seatsType->name }}</td>
                                             <td class="admin-theatres__seat-type-amount">{{ $seatsType->amount }}</td>
-                                            <td class="admin-theatres__seat-type-description" style="display: none">{{ $seatsType->description }}</td>
+                                            <td class="admin-theatres__seat-type-description"
+                                                style="display: none">{{ $seatsType->description }}</td>
                                             <td>
                                                 <form method="POST"
                                                       action="{{ route('seat-type.delete', $seatsType->id) }}">

@@ -29,102 +29,78 @@
                         @csrf
                         @method('PATCH')
                         <div class="admin-movies__form-left">
-                            <div class="admin-movies__items">
-                                @error('name')
-                                <div class="error-messages">
-                                    {{$message}}
-                                </div>
-                                @enderror
-                                <div class="admin-movies__item-header">
-                                    {{ __('Название:') }}
-                                </div>
-                                <div class="admin-movies__item-body">
-                                    <input type="text" name="name"
-                                           value="{{ old('name', $movie->name) }} "
-                                           autocomplete="off" required
-                                           placeholder="{{ __('Название фильма') }}">
-                                </div>
-                            </div>
-                            <div class="admin-movies__items">
-                                @error('date_start')
-                                <div class="error-messages">
-                                    {{$message}}
-                                </div>
-                                @enderror
-                                <div class="admin-movies__item-header">
-                                    {{ __('Дата мировой премьера:') }}
-                                </div>
-                                <div class="admin-movies__item-body">
-                                    <input type="datetime-local" name="date_start"
-                                           value="{{ old('date_start', $movie->date_start) }}"
-                                           autocomplete="off" required>
-                                </div>
-                            </div>
-                            <div class="admin-movies__items">
-                                @error('session_duration')
-                                <div class="error-messages">
-                                    {{$message}}
-                                </div>
-                                @enderror
-                                <div class="admin-movies__item-header">
-                                    {{ __('Длительность:') }}
-                                </div>
-                                <div class="admin-movies__item-body">
-                                    <input type="text" name="session_duration"
-                                           value="{{ old('session_duration', $movie->session_duration) }}"
-                                           autocomplete="off" required
-                                           placeholder="{{ __('Длину фильма в формате 02:12:00') }}">
-                                </div>
-                            </div>
-                            <div class="admin-movies__items">
-                                @error('rating')
-                                <div class="error-messages">
-                                    {{$message}}
-                                </div>
-                                @enderror
-                                <div class="admin-movies__item-header">
-                                    {{ __('Рэйтинг:') }}
-                                </div>
-                                <div class="admin-movies__item-body">
-                                    <input type="text" name="rating"
-                                           value="{{ old('rating', $movie->rating) }}"
-                                           autocomplete="off" required
-                                           placeholder="{{ __('Рэйтинг фильма от 1.1 до 10') }}">
-                                </div>
-                            </div>
-                            <div class="admin-movies__items">
-                                @error('age_limit')
-                                <div class="error-messages">
-                                    {{$message}}
-                                </div>
-                                @enderror
-                                <div class="admin-movies__item-header">
-                                    {{ __('Возрастное ограничение:') }}
-                                </div>
-                                <div class="admin-movies__item-body">
-                                    <input type="text" name="age_limit"
-                                           value="{{ old('age_limit', $movie->age_limit) }}"
-                                           autocomplete="off" required
-                                           placeholder="{{ __('Возрастное ограничение до 21 года') }}">
-                                </div>
-                            </div>
+
+                            <x-input :inputAttributes="[
+                                        'name'=>'name',
+                                        'required'=>'required',
+                                        'autocomplete' => 'off',
+                                        'value' => $movie->name,
+                                         ]"
+                                     :errorAttribute="'name'"
+                                     input_required>
+                                {{ __('Название фильма:') }}
+                            </x-input>
+
+                            <x-input :inputAttributes="[
+                                        'name'=>'date_start',
+                                        'type' => 'datetime-local',
+                                        'required'=>'required',
+                                        'autocomplete' => 'off',
+                                        'value' => $movie->date_start,
+                                         ]"
+                                     :errorAttribute="'date_start'"
+                                     input_required>
+                                {{ __('Дата мировой премьеры:') }}
+                            </x-input>
+
+                            <x-input :inputAttributes="[
+                                        'name'=>'session_duration',
+                                        'required'=>'required',
+                                        'pattern' => '^(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d$',
+                                        'autocomplete' => 'off',
+                                        'value' => $movie->session_duration,
+                                         ]"
+                                     :errorAttribute="'session_duration'"
+                                     input_required>
+                                {{ __('Длина фильма в формате (02:12:00):') }}
+                            </x-input>
+
+                            <x-input :inputAttributes="[
+                                        'name'=>'rating',
+                                        'required'=>'required',
+                                        'pattern' => '^(?:10|[1-9](?:\.\d)?)$',
+                                        'autocomplete' => 'off',
+                                        'value' => $movie->rating,
+                                         ]"
+                                     :errorAttribute="'rating'"
+                                     input_required>
+                                {{ __('Рэйтинг фильма (от 1.1 до 10):') }}
+                            </x-input>
+
+                            <x-input :inputAttributes="[
+                                        'name'=>'age_limit',
+                                        'required'=>'required',
+                                        'pattern' => '^(?:[0-9]|1[0-9]|21)$',
+                                        'autocomplete' => 'off',
+                                        'value' =>  $movie->age_limit,
+                                         ]"
+                                     :errorAttribute="'age_limit'"
+                                     input_required>
+                                {{ __('Возрастное ограничение (до 21 года):') }}
+                            </x-input>
+
                         </div>
                         <div class="admin-movies__form-right">
-                            <div class="admin-movies__items">
-                                @error('description')
-                                <div class="error-messages">
-                                    {{$message}}
-                                </div>
-                                @enderror
-                                <div class="admin-movies__item-header">
-                                    {{ __('Описание:') }}
-                                </div>
-                                <div class="admin-movies__item-body">
-                                <textarea type="text" name="description"
-                                          autocomplete="off" required
-                                          placeholder="{{ __('Описание сюжета фильма') }}">{{ old('description', $movie->description) }}</textarea>
-                                </div>
-                            </div>
+                            <x-textarea :inputAttributes="[
+                                        'name'=>'description',
+                                        'pattern' => '^.{0,1000}$',
+                                        'required'=>'required',
+                                        'autocomplete' => 'off',
+                                         ]"
+                                        :errorAttribute="'description'"
+                                        :text-content="$movie->description"
+                                        input_required
+                            >{{ __('Описание сюжета фильма:') }}</x-textarea>
                         </div>
 
                         <div class="admin-movies__items">

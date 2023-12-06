@@ -1,0 +1,110 @@
+.input-container {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+
+    .input-wrapper {
+        display: flex;
+        flex-direction: column;
+        position: relative;
+    }
+
+    label {
+        position: absolute;
+        left: 20px;
+        top: 10px;
+        padding: 0 2px;
+        background-color: white;
+        pointer-events: none;
+        @include font-type-6;
+        color: #495057;
+        transition: ease-in-out .1s;
+    }
+
+    textarea {
+        min-height: 300px;
+    }
+    input, textarea {
+        max-width: 100%;
+        min-width: 100%;
+        width: 100%;
+        padding: 12px 20px;
+        background-color: white;
+        color: #495057;
+        border: solid 1px rgba(0, 0, 0, 0.29);
+        border-radius: 20px;
+        box-sizing: border-box;
+        outline: none;
+        @include font-type-6;
+
+        &:focus {
+            border: 1px solid #4d4d4d;
+            box-shadow: 0 0 0 0.1rem rgb(158 158 158 / 14%);
+        }
+    }
+
+    input:is(:focus, :valid) + label,
+    textarea:is(:focus, :valid) + label{
+        top: -17px;
+        border: none;
+        outline: 0;
+        border-radius: 20px;
+    }
+
+    input:valid + label,
+    textarea:valid + label {
+        span {
+            opacity: 0.6;
+        }
+    }
+
+    .input_required:after {
+        content: '*';
+        color: red;
+    }
+
+    input:valid + label.input_required:after,
+    textarea:valid + label.input_required:after {
+        content: '✓';
+        color: green;
+    }
+
+    input[type="submit"] {
+        transition: ease-in-out .2s;
+        cursor: pointer;
+    }
+
+    input[type="submit"]:hover {
+        background-color: #4d4d4d;
+        color: white;
+    }
+
+    .error-message {
+        color: #721c24;
+        background-color: #f8d7da;
+        border-color: #f5c6cb;
+        margin-top: 3px;
+        border-radius: 20px;
+        padding: 0.25rem !important;
+        font-size: 17px;
+        line-height: normal;
+        text-align: center;
+
+        opacity: 0;
+        transition: 250ms ease-in-out;
+        animation: errorOpacity 1s ease forwards;
+
+        &__wrapper {
+            display: flex;
+            justify-content: flex-end;
+        }
+    }
+
+    @keyframes errorOpacity {
+        to {
+           opacity: 1;
+        }
+    }
+}

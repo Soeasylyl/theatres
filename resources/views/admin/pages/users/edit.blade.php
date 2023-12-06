@@ -127,47 +127,39 @@
                                             @endif
                                         </div>
 
-                                        <div class="admin-container__items">
-                                            <label for="name">{{ __('Имя пользователя:') }}</label>
-                                            <div>
-                                                <input type="text" id="name" name="name"
-                                                       value="{{ old('name', $user->name) }} "
-                                                       autocomplete="off" required>
-                                                @error('name')
-                                                <div class="error-messages">
-                                                    {{$message}}
-                                                </div>
-                                                @enderror
-                                            </div>
-                                        </div>
+                                        <x-input :inputAttributes="[
+                                                'name'=>'name',
+                                                'required'=>'required',
+                                                'autocomplete' => 'off',
+                                                'value' => $user->name,
+                                                 ]"
+                                                 :errorAttribute="'name'"
+                                                 input_required>
+                                            {{ __('Имя пользователя:') }}
+                                        </x-input>
 
-                                        <div class="admin-container__items">
-                                            <label for="email">{{ __('Email адрес:') }}</label>
-                                            <div>
-                                                <input type="email" id="email" name="email"
-                                                       value="{{ old('email', $user->email) }}" required
-                                                       autocomplete="off">
-                                                @error('email')
-                                                <div class="error-messages">
-                                                    {{$message}}
-                                                </div>
-                                                @enderror
-                                            </div>
-                                        </div>
+                                        <x-input :inputAttributes="[
+                                                'name'=>'email',
+                                                'type' => 'email',
+                                                'required'=>'required',
+                                                'autocomplete' => 'off',
+                                                'value' => $user->email,
+                                                 ]"
+                                                 :errorAttribute="'email'"
+                                                 input_required>
+                                            {{ __('Email адрес:') }}
+                                        </x-input>
 
-                                        <div class="admin-container__items">
-                                            <label for="phone"> {{ __('Номер телефона:') }}</label>
-                                            <div>
-                                                <input type="text" id="phone" name="phone"
-                                                       value="{{ old('phone', $user->phone) }}"
-                                                       autocomplete="off">
-                                                @error('phone')
-                                                <div class="error-messages">
-                                                    {{$message}}
-                                                </div>
-                                                @enderror
-                                            </div>
-                                        </div>
+                                        <x-input :inputAttributes="[
+                                                    'name'=>'phone',
+                                                    'required'=>'required',
+                                                    'autocomplete' => 'off',
+                                                    'value' => $user->phone,
+                                                     ]"
+                                                 :errorAttribute="'phone'"
+                                                 input_required>
+                                            {{ __('Номер телефона:') }}
+                                        </x-input>
 
                                         <div class="page-wrapper__panel-btn-wrapper">
                                             <button type="submit"
@@ -211,42 +203,39 @@
                                         </div>
 
                                         @if($authUser->id === $user->id)
-                                            <div class="admin-container__items">
-                                                <label for="current_password">{{ __('Введите старый пароль:') }}</label>
-                                                <div>
-                                                    <input type="password" id="current_password" name="current_password"
-                                                           required placeholder="{{ __('Текущий пароль') }}">
-                                                    @error('current_password')
-                                                    <div class="error-messages">
-                                                        {{$message}}
-                                                    </div>
-                                                    @enderror
-                                                </div>
-                                            </div>
+                                            <x-input :inputAttributes="[
+                                                    'name'=>'current_password',
+                                                    'type' => 'password',
+                                                    'required'=>'required',
+                                                    'autocomplete' => 'off',
+                                                     ]"
+                                                     :errorAttribute="'current_password'"
+                                                     input_required>
+                                                {{ __('Введите старый пароль:') }}
+                                            </x-input>
                                         @endif
 
-                                        <div class="admin-container__items">
-                                            <label for="new_password">{{ __('Введите новый пароль:') }}</label>
-                                            <div>
-                                                <input type="password" id="new_password" name="new_password"
-                                                       required placeholder="{{ __('Новый пароль') }}">
-                                                @error('new_password')
-                                                <div class="error-messages">
-                                                    {{$message}}
-                                                </div>
-                                                @enderror
-                                            </div>
-                                        </div>
+                                        <x-input :inputAttributes="[
+                                                    'name'=>'new_password',
+                                                    'type' => 'password',
+                                                    'required'=>'required',
+                                                    'autocomplete' => 'off',
+                                                     ]"
+                                                 :errorAttribute="'new_password'"
+                                                 input_required>
+                                            {{ __('Введите новый пароль:') }}
+                                        </x-input>
 
-                                        <div class="admin-container__items">
-                                            <label
-                                                for="new_password_confirmation">{{ __('Повторите новый пароль:') }}</label>
-                                            <div>
-                                                <input type="password" id="new_password_confirmation"
-                                                       name="new_password_confirmation" required
-                                                       placeholder="{{ __('Новый пароль') }}">
-                                            </div>
-                                        </div>
+                                        <x-input :inputAttributes="[
+                                                    'name'=>'new_password_confirmation',
+                                                    'type' => 'password',
+                                                    'required'=>'required',
+                                                    'autocomplete' => 'off',
+                                                     ]"
+                                                 :errorAttribute="'new_password_confirmation'"
+                                                 input_required>
+                                            {{ __('Повторите новый пароль:') }}
+                                        </x-input>
 
                                         <div class="page-wrapper__panel-btn-wrapper">
                                             <button type="submit"
@@ -290,6 +279,5 @@
                     </div>
                 @endif
     </div>
-
 
 @endsection

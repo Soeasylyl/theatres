@@ -10,6 +10,7 @@
         display: grid;
         grid-template-columns: repeat(2, 50%);
         gap: 20px;
+        margin-right: 24px;
 
         :last-child {
             grid-column: span 2;
