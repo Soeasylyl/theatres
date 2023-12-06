@@ -12,28 +12,36 @@
                         <div class="modal__seats-container">
                             <div class="modal__seats-number">
                                 <div class="modal__seats-number-left">
-                                    <div class="modal__items">
-                                        <div class="modal__seats-title">
-                                            {{ __('Название:') }}
-                                        </div>
-                                        <input type="text" name="seat_name"
-                                               required placeholder="Обычное">
-                                    </div>
-                                    <div class="modal__items">
-                                        <div class="modal__seats-title">
-                                            {{ __('Описание') }}
-                                        </div>
-                                        <textarea type="text" name="seat_description"
-                                                  placeholder="Введите описание типа места"></textarea>
-                                    </div>
 
-                                    <div class="modal__items">
-                                        <div class="modal__seats-title">
-                                            {{ __('Цена за место:') }}
-                                        </div>
-                                        <input type="text" name="seat_amount"
-                                               required placeholder="Цена в $">
-                                    </div>
+                                    <x-input :inputAttributes="[
+                                                'name'=>'seat_name',
+                                                'required'=>'required',
+                                                'autocomplete' => 'off',
+                                                 ]"
+                                             :errorAttribute="'seat_name'"
+                                             input_required>
+                                        {{ __('Введите название типа мест:') }}
+                                    </x-input>
+
+                                    <x-textarea :inputAttributes="[
+                                                    'name'=>'seat_description',
+                                                    'required'=>'required',
+                                                    'autocomplete' => 'off',
+                                                     ]"
+                                                :errorAttribute="'seat_description'"
+                                                input_required
+                                    >{{ __('Введите описание типа места:') }}</x-textarea>
+
+                                    <x-input :inputAttributes="[
+                                                'name'=>'seat_amount',
+                                                'required'=>'required',
+                                                'autocomplete' => 'off',
+                                                 ]"
+                                             :errorAttribute="'seat_amount'"
+                                             input_required>
+                                        {{ __('Введите цену за место:') }}
+                                    </x-input>
+
                                 </div>
                             </div>
                         </div>
@@ -60,29 +68,38 @@
                         <div class="modal__seats-container">
                             <div class="modal__seats-number">
                                 <div class="modal__seats-number-left">
-                                    <div class="modal__items">
                                         <input type="text" name="seat_id" style="display: none">
-                                        <div class="modal__seats-title">
-                                            {{ __('Название:') }}
-                                        </div>
-                                        <input type="text" name="seat_name"
-                                               required placeholder="Обычное">
-                                    </div>
-                                    <div class="modal__items">
-                                        <div class="modal__seats-title">
-                                            {{ __('Описание') }}
-                                        </div>
-                                        <textarea type="text" name="seat_description"
-                                                  placeholder="Введите описание типа места"></textarea>
-                                    </div>
 
-                                    <div class="modal__items">
-                                        <div class="modal__seats-title">
-                                            {{ __('Цена за место:') }}
-                                        </div>
-                                        <input type="text" name="seat_amount"
-                                               required placeholder="Цена за место">
-                                    </div>
+                                        <x-input :inputAttributes="[
+                                        'name'=>'seat_name',
+                                        'required'=>'required',
+                                        'autocomplete' => 'off',
+                                         ]"
+                                                 :errorAttribute="'seat_name'"
+                                                 input_required>
+                                            {{ __('Введите типа места:') }}
+                                        </x-input>
+
+                                    <x-textarea :inputAttributes="[
+                                        'name'=>'seat_description',
+                                        'required'=>'required',
+                                        'autocomplete' => 'off',
+                                         ]"
+                                                :errorAttribute="'seat_description'"
+                                                input_required
+                                    >{{ __('Введите описание типа места:') }}</x-textarea>
+
+                                    <x-input :inputAttributes="[
+                                        'name'=>'seat_amount',
+                                        'pattern' => '^.{1,100}$',
+                                        'required'=>'required',
+                                        'autocomplete' => 'off',
+                                         ]"
+                                             :errorAttribute="'seat_amount'"
+                                             input_required>
+                                        {{ __('Введите цену за место:') }}
+                                    </x-input>
+
                                 </div>
                             </div>
                         </div>
@@ -106,7 +123,16 @@
                     @method('PATCH')
 
                     <input type="hidden" name="timeZone" id="timezone">
-                    <input type="datetime-local" name="dateTime" required/>
+                    <x-input :inputAttributes="[
+                                        'name'=>'dateTime',
+                                        'type'=>'datetime-local',
+                                        'required'=>'required',
+                                        'autocomplete' => 'off',
+                                         ]"
+                             :errorAttribute="'dateTime'"
+                             input_required>
+                        {{ __('Укажите время блокировки:') }}
+                    </x-input>
 
                     <div class="modal__button-wrapper">
                         <button type="submit" class="modal__button modal__block-btn">{{ __('Заблокировать') }}</button>

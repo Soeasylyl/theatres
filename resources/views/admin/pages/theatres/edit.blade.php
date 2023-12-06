@@ -114,6 +114,7 @@
                                                       action="{{ route('seat-type.delete', $theatre->id) }}">
                                                     @csrf
                                                     @method('DELETE')
+                                                    <input type="hidden" name="seat_type_id" value="{{ $seatsType->id }}">
                                                     <div class="admin-theatres__delete-seat-type-icon"
                                                          data-seats-type-name="{{ $seatsType->name }}">
                                                         <svg width="32"
@@ -148,8 +149,8 @@
                                 <div class="admin-theatres__item-header">{{ __('Доступные залы:') }}</div>
                                 <table class="admin-theatres__table">
                                     <thead>
-                                    <th>Название зала</th>
-                                    <th>Количество мест</th>
+                                    <th>{{ __('Название зала') }}</th>
+                                    <th>{{ __('Количество мест') }}</th>
                                     <th></th>
                                     </thead>
                                     <tbody>
@@ -175,7 +176,7 @@
                                         </tr>
                                     @empty
                                         <tr>
-                                            <td>Залов не найдено</td>
+                                            <td>{{ __('Залов не найдено') }}</td>
                                         </tr>
                                     @endforelse
 
@@ -184,7 +185,7 @@
 
                                 <a class="login-container__btn"
                                         style="justify-content: center; display: flex; text-decoration: none;"
-                                   href="{{ route('hall.create', $theatre->id) }}">Добавить новый зал</a>
+                                   href="{{ route('hall.create',['theatres' => $theatre->id]) }}">{{ __('Добавить новый зал') }}</a>
                             </div>
 
                         </div>

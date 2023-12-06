@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\DTO\SeatTypes\CreateSeatTypeDTO;
 use App\DTO\SeatTypes\DeleteSeatTypeDTO;
 use App\DTO\SeatTypes\UpdateSeatTypeDTO;
+use App\Http\Requests\Admin\SeatTypes\DeleteSeatTypeRequest;
 use App\Http\Requests\Admin\SeatTypes\SeatTypeRequest;
 use App\Http\Requests\Admin\SeatTypes\UpdateSeatTypeRequest;
 use App\Services\SeatTypeService;
@@ -72,14 +73,14 @@ class SeatTypeController extends BaseAdminController
     /**
      * Processes a request to delete a place type, including checking associated places and redirecting with a message.
      *
-     * @param int $seatTypeId
      * @param SeatTypeService $seatTypeService
+     * @param DeleteSeatTypeRequest $request
      * @return RedirectResponse
      */
-    public function destroy(int $seatTypeId, SeatTypeService $seatTypeService)
+    public function destroy(SeatTypeService $seatTypeService, DeleteSeatTypeRequest $request)
     {
         $deleteSeatTypeDTO = new DeleteSeatTypeDTO(
-            seatTypeId: $seatTypeId,
+            seatTypeId: $request->input('seat_type_id'),
         );
 
         try {

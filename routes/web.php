@@ -78,7 +78,14 @@ Route::prefix('admin')->middleware(['auth', 'isBlock', 'AdminAccess'])->group(fu
                     Route::patch('/', [SeatTypeController::class, 'update'])->name('seat-type.update');
                     Route::delete('/', [SeatTypeController::class, 'destroy'])->name('seat-type.delete');
                 });
-                //Theatre creating
+
+                //Hall creating
+                Route::prefix('{theatres}/hall/')->group(function () {
+                   Route::get('/', [HallController::class, 'create'])->name('hall.create');
+                   Route::post('/', [HallController::class, 'store'])->name('hall.store');
+                });
+
+
             });
         });
     });

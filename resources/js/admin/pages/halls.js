@@ -34,6 +34,8 @@ class Halls {
                 return response.json();
             })
                 .then((resp) => {
+                    console.log(this.rowContainer )
+                    console.log(resp.html)
                     this.rowContainer && this.rowContainer.insertAdjacentHTML('beforeend', resp.html);
                 });
         });

@@ -15,7 +15,7 @@ class HallController extends BaseAdminController
 
     }
 
-    public function show(int $theatreId)
+    public function create(int $theatreId)
     {
         $theatre = $this->theatreRepository->getTheatreByIdOrFail(theatreId: $theatreId, relations: ['seatTypes']);
         $seatTypes = $theatre->seatTypes;
@@ -25,7 +25,7 @@ class HallController extends BaseAdminController
         return view('admin.pages.halls.add', compact('seatTypes', 'theatreId', 'numberRow', 'seatsData'));
     }
 
-    public function create(Request $request)
+    public function store(Request $request)
     {
         dd($request->all(), json_decode($request->input('seats_data')));
     }
