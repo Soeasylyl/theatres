@@ -11,29 +11,25 @@ use Illuminate\Support\Facades\Mail;
 class UserUnbannedListener implements ShouldQueue
 {
     /**
-     * Handles the UserUpdateEvent by checking if the "blocked_until" attribute has been modified to null,
-     *  and if so, sends an UnbanNotificationMail to the user's email address.
+     *  Handles the UserUpdateEvent by checking if the "blocked_until" attribute has been modified to null,
+     *   and if so, sends an UnbanNotificationMail to the user's email address.
+     *
+     * @param UserUpdateEvent $event
+     * @return void
      */
     public function handle(UserUpdateEvent $event): void
     {
         if ($event->blockedIsDirty && $event->user->blocked_until === null) {
-            try {
-                Mail::to($event->user->email)->send(new UnbanNotificationMail($event->user));
-            } catch (\Exception $e) {
-                $this->failed($e, $event->user->email);
-            }
+            Mail::to($event->user->email)->send(new UnbanNotificationMail($event->user));
         }
     }
 
     /**
-     * Handle a job failure.
-     *
-     * @param  \Exception  $exception
-     * @param  string  $userEmail
+     * @param \Throwable $exception
      * @return void
      */
-    public function failed(\Exception $exception, string $userEmail): void
+    public function failed(\Throwable $exception): void
     {
-        Log::error('Failed to send unban notification email to ' . $userEmail . ': ' . $exception->getMessage());
+        Log::error($exception->getMessage());
     }
 }

@@ -12,28 +12,26 @@ class UserBannedListener implements ShouldQueue
 {
     /**
      * Handles the UserUpdateEvent by checking if the "blocked_until" attribute has been modified and set to a non-null value.
-     * If true, sends a BanNotificationMail to notify the user about the newly applied ban.
+     *  If true, sends a BanNotificationMail to notify the user about the newly applied ban.
+     *
+     * @param UserUpdateEvent $event
+     * @return void
      */
     public function handle(UserUpdateEvent $event): void
     {
         if ($event->blockedIsDirty && $event->user->blocked_until !== null) {
-            try {
-                Mail::to($event->user->email)->send(new BanNotificationMail($event->user));
-            } catch (\Exception $e) {
-                $this->failed($e, $event->user->email);
-            }
+            Mail::to($event->user->email)->send(new BanNotificationMail($event->user));
         }
     }
 
     /**
      * Handle a job failure.
      *
-     * @param  \Exception  $exception
-     * @param  string  $userEmail
+     * @param \Throwable $exception
      * @return void
      */
-    public function failed(\Exception $exception, string $userEmail): void
+    public function failed(\Throwable $exception): void
     {
-        Log::error('Failed to send ban notification email to ' . $userEmail . ': ' . $exception->getMessage());
+        Log::error($exception->getMessage());
     }
 }

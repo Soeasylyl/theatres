@@ -48,7 +48,7 @@ class CheckUserAccessMiddleware
                     !$currentUser->hasRole(RolesUsersEnum::CINEMA_ADMIN->value) ||
                     (
                         $currentUser->hasRole(RolesUsersEnum::CINEMA_ADMIN->value) &&
-                        ! $currentUser->cinemas->contains($requestedUser->cinemas->first())
+                        ! $currentUser->cinemas->intersect($requestedUser->cinemas)->isNotEmpty()
                     )
                 )
             )
