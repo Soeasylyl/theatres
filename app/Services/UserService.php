@@ -135,7 +135,6 @@ class UserService
         }
         $this->userRepository->updatePasswordByUser(requestDTO: $requestDTO, user: $user);
 
-
         return $user;
     }
 
