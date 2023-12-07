@@ -62,7 +62,7 @@ class TheatreController extends BaseAdminController
             name: $request->input('name'),
             address: $request->input('address'),
             description: $request->input('description'),
-            theatreImages: $request->file('$theatreImages'),
+            theatreImages: $request->file('theatreImages'),
         );
 
         try {

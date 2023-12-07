@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\HandlesMedia;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -44,7 +45,7 @@ use Laravel\Sanctum\HasApiTokens;
  */
 class Hall extends Model
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, HandlesMedia;
 
     /**
      * @var string[]
@@ -76,16 +77,5 @@ class Hall extends Model
     public function screenings(): HasMany
     {
         return $this->hasMany(Screening::class);
-    }
-
-    /**
-     * @return MorphMany
-     */
-    public function medias(): MorphMany
-    {
-        return $this->morphMany(
-            related: Media::class,
-            name: 'model',
-        );
     }
 }

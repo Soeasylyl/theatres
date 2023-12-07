@@ -151,7 +151,7 @@ class TheatreService
         try {
             DB::transaction(function () use ($theatre) {
                 foreach ($theatre->halls as $hall) {
-                    $hall->deleteMedia('theatres');
+                    $hall->deleteMedia('halls');
                     $hall->delete();
                 }
 

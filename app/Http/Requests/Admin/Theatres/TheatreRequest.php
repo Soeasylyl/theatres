@@ -26,8 +26,8 @@ class TheatreRequest extends FormRequest
             'name' => 'required|string|max:100',
             'address' => 'required|string|max:255',
             'description' => 'nullable|string|max:1000',
-            '$theatreImages' => 'nullable|array',
-            '$theatreImages.*' => 'sometimes|file|mimetypes:image/jpeg,image/png,image/jpg|max:10240',
+            'theatreImages' => 'nullable|array',
+            'theatreImages.*' => 'sometimes|file|mimetypes:image/jpeg,image/png,image/jpg|max:10240',
         ];
     }
 

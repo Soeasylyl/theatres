@@ -5,13 +5,14 @@ class Halls {
         this.inputSeatsCount = document.querySelector('.admin-halls__seats-count');
 
         this.rowContainer = document.querySelector('.admin-halls__rows')
+        this.deleteHallBtn = document.querySelectorAll('.admin-theatres__delete-hall-icon');
 
         this.init();
     }
 
     init() {
         this.ajax();
-
+        this.deleteHalls();
     }
 
     ajax() {
@@ -40,7 +41,22 @@ class Halls {
                 });
         });
     }
+    deleteHalls() {
+        this.deleteHallBtn && this.deleteHallBtn.forEach(item => {
+           item.addEventListener('click', (event) => {
+               event.preventDefault();
 
+               const hallName = event.currentTarget.getAttribute('data-hall-name');
+               if (confirm(`Вы уверены, что хотите удалить зал: ${hallName}?`)) {
+
+                   const form = event.currentTarget.closest('form');
+                   if (form) {
+                       form.submit();
+                   }
+               }
+           })
+        });
+    }
 }
 
 new Halls();

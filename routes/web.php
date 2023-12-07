@@ -83,8 +83,8 @@ Route::prefix('admin')->middleware(['auth', 'isBlock', 'AdminAccess'])->group(fu
                 Route::prefix('{theatres}/hall/')->group(function () {
                    Route::get('/', [HallController::class, 'create'])->name('hall.create');
                    Route::post('/', [HallController::class, 'store'])->name('hall.store');
+                   Route::delete('/', [HallController::class, 'destroy'])->name('hall.delete');
                 });
-
 
             });
         });

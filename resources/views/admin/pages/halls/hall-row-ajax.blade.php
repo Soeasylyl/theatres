@@ -47,16 +47,10 @@
                     </g>
                 </svg>
             </li>
-            @php
-                $seatsData[$numberRow] = [
-                    'seatsTypeId' => $seatTypeId,
-                    'seatNumber' => $i,
-            ]
-            @endphp
+            <input type="hidden" name="rows[{{$numberRow}}][{{$i}}][seatNumber]" value="{{$i}}">
+            <input type="hidden" name="rows[{{$numberRow}}][{{$i}}][seatsTypeId]" value="{{$seatTypeId}}">
         @endfor
     </ul>
 
     <p class="admin-halls__row-number">{{ $numberRow }}</p>
 </li>
-
-<input type="hidden" name="seats_data" value="{{json_encode($seatsData)}}">

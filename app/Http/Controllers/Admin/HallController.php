@@ -3,47 +3,106 @@
 namespace App\Http\Controllers\Admin;
 
 
-use App\Repositories\Interfaces\TheatreRepositoryInterface;
-use Illuminate\Http\Request;
+use App\DTO\Halls\CreateHallDTO;
+use App\DTO\Halls\DeleteHallDTO;
+use App\DTO\Halls\RenderSeatsDTO;
+use App\Http\Requests\Admin\Halls\DeleteHallRequest;
+use App\Http\Requests\Admin\Halls\HallRequest;
+use App\Http\Requests\Admin\Halls\SeatsDataRowRequest;
+use App\Services\HallService;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 
 class HallController extends BaseAdminController
 {
     public function __construct(
-        private readonly TheatreRepositoryInterface $theatreRepository,
+        private readonly HallService $hallService,
     )
     {
-
     }
 
+    /**
+     * Display the form for creating a new hall, providing necessary data for the view.
+     *
+     * @param int $theatreId
+     * @return Application|Factory|View|\Illuminate\Foundation\Application
+     */
     public function create(int $theatreId)
     {
-        $theatre = $this->theatreRepository->getTheatreByIdOrFail(theatreId: $theatreId, relations: ['seatTypes']);
-        $seatTypes = $theatre->seatTypes;
-        $numberRow = 0;
-        $seatsData = [];
+        $hallData = $this->hallService->getDataForCreate($theatreId);
 
-        return view('admin.pages.halls.add', compact('seatTypes', 'theatreId', 'numberRow', 'seatsData'));
+        return view('admin.pages.halls.add', [
+            'theatreId' => $theatreId,
+            'seatTypes' => $hallData['seatTypes'],
+            'numberRow' => $hallData['numberRow'],
+        ]);
     }
 
-    public function store(Request $request)
+    /**
+     * Store a new hall in the specified theatre based on the provided form data.
+     *
+     * @param HallRequest $request
+     * @param int $theatresId
+     * @return RedirectResponse
+     */
+    public function store(HallRequest $request, int $theatresId)
     {
-        dd($request->all(), json_decode($request->input('seats_data')));
+        $createHallDTO = new CreateHallDTO(
+            theatresId: $theatresId,
+            name: $request->input('name'),
+            description: $request->input('description'),
+            rows: $request->input('rows'),
+            hallImages: $request->file('hallImages'),
+        );
+
+
+        try {
+            $this->hallService->createHall(dto: $createHallDTO);
+
+            return redirect()
+                ->route('theatre.edit', ['theatres' => $createHallDTO->getTheatresId()])
+                ->with('successMessages', 'Зал ' . $createHallDTO->getName() . ' успешно добавлен');
+        } catch (\Throwable $exception) {
+            return redirect()->back()->with('error', $exception->getMessage());
+        }
     }
 
-    public function showRowSeats(Request $request)
+    /**
+     *  Process the request to delete a hall and redirect back with a success message.
+     *
+     * @param DeleteHallRequest $request
+     * @return RedirectResponse
+     */
+    public function destroy(DeleteHallRequest $request)
     {
-        $countSeats = $request->input('seats_count');
-        $seatTypeId = $request->get('seats_type');
-        $numberRow = $request->get('count_row');
+        $deleteHallDto = new DeleteHallDTO(
+            hallId: $request->input('hall_id'),
+        );
 
+        $this->hallService->deleteHall($deleteHallDto);
 
-        $viewPath = 'admin.pages.halls.hall-row-ajax';
+        return redirect()->back()->with('successMessages', 'Зал успешно удалён.');
+    }
 
-        $template = view($viewPath, [
-            'countSeats' => (int)$countSeats,
-            'seatTypeId' => $seatTypeId,
-            'numberRow' => $numberRow,
-        ])->render();
+    /**
+     * Display the rendered HTML template for a specific row of seats.
+     *
+     * @param SeatsDataRowRequest $request
+     * @return JsonResponse
+     */
+    public function showRowSeats(SeatsDataRowRequest $request)
+    {
+        $renderSeatsDto = new RenderSeatsDTO(
+            seatsTypeId: $request->get('seats_type'),
+            countSeats: $request->input('seats_count'),
+            numberRow: $request->get('count_row'),
+            htmlContent: 'admin.pages.halls.hall-row-ajax',
+        );
+
+        $template = $this->hallService->renderTemplate(dto: $renderSeatsDto);
 
         return response()->json(
             [

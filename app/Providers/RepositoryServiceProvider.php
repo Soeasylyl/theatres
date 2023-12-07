@@ -2,11 +2,15 @@
 
 namespace App\Providers;
 
+use App\Repositories\HallRepository;
+use App\Repositories\Interfaces\HallRepositoryInterface;
 use App\Repositories\Interfaces\MovieRepositoryInterface;
+use App\Repositories\Interfaces\SeatRepositoryInterface;
 use App\Repositories\Interfaces\SeatTypeRepositoryInterface;
 use App\Repositories\Interfaces\TheatreRepositoryInterface;
 use App\Repositories\Interfaces\UserRepositoryInterface;
 use App\Repositories\MovieRepository;
+use App\Repositories\SeatRepository;
 use App\Repositories\SeatTypeRepository;
 use App\Repositories\TheatreRepository;
 use App\Repositories\UserRepository;
@@ -37,6 +41,16 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(
             SeatTypeRepositoryInterface::class,
             SeatTypeRepository::class
+        );
+
+        $this->app->bind(
+            HallRepositoryInterface::class,
+            HallRepository::class
+        );
+
+        $this->app->bind(
+            SeatRepositoryInterface::class,
+            SeatRepository::class
         );
     }
 

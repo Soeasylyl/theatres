@@ -16,21 +16,17 @@
                             @csrf
                             @method('POST')
                             <div class="admin-halls__form-left">
-                                <div class="admin-halls__items">
-                                    @error('name')
-                                    <div class="error-messages">
-                                        {{$message}}
-                                    </div>
-                                    @enderror
-                                    <div class="admin-halls__item-header">
-                                        {{ __('Название:') }}
-                                    </div>
-                                    <div class="admin-halls__item-body">
-                                        <input type="text" name="name"
-                                               autocomplete="off" required
-                                               placeholder="{{ __('Название зала') }}">
-                                    </div>
-                                </div>
+                                <x-input :inputAttributes="[
+                                        'name'=>'name',
+                                        'pattern' => '^.{1,100}$',
+                                        'required'=>'required',
+                                        'autocomplete' => 'off',
+                                         ]"
+                                         :errorAttribute="'name'"
+                                         input_required>
+                                    {{ __('Название зала:') }}
+                                </x-input>
+
                                 <div class="admin-halls__items">
                                     @error('$hallImages')
                                     <div class="error-messages">
@@ -54,43 +50,41 @@
 
                             </div>
                             <div class="admin-halls__form-right">
-                                <div class="admin-halls__items">
-                                    @error('description')
-                                    <div class="error-messages">
-                                        {{$message}}
-                                    </div>
-                                    @enderror
-                                    <div class="admin-halls__item-header">
-                                        {{ __('Описание:') }}
-                                    </div>
-                                    <div class="admin-halls__item-body">
-                                <textarea type="text" name="description"
-                                          autocomplete="off" required
-                                          placeholder="{{ __('Описание зала') }}"></textarea>
-                                    </div>
-                                </div>
+                                <x-textarea :inputAttributes="[
+                                        'name'=>'description',
+                                        'pattern' => '^.{0,1000}$',
+                                        'required'=>'required',
+                                        'autocomplete' => 'off',
+                                         ]"
+                                            :errorAttribute="'description'"
+                                            input_required
+                                >{{ __('Описание зала:') }}</x-textarea>
 
                             </div>
                         </div>
 
                         <div class="admin-halls__seats">
-
                             <h2 class="admin-halls__title">
                                 {{ __('Визуализация создания зала') }}
                             </h2>
-
                             <ul class="admin-halls__rows">
                                 @if($numberRow>0)
-                                @include('admin.pages.halls.hall-row-ajax')
+                                    @include('admin.pages.halls.hall-row-ajax')
                                 @endif
                             </ul>
+                            <div class="admin-halls__seats-wrapper">
+                                <x-input :inputAttributes="[
+                                        'name'=>'seats_count',
+                                        'type' => 'number',
+                                        'required' => 'required',
+                                        'autocomplete' => 'off',
+                                        'class'=> 'admin-halls__seats-count'
+                                         ]"
+                                         :errorAttribute="'seats_count'"
+                                >
+                                    {{ __('Введите колчество мест для ряда:') }}
+                                </x-input>
 
-                            <div class="admin-halls__body-wrapper">
-                                <div class="admin-halls__item">
-                                    <label for="">{{ __('Введите количество мест:') }}</label>
-                                    <input class="admin-halls__seats-count" type="number" name="seats_count"
-                                           placeholder="Количество мест">
-                                </div>
                                 <div class="admin-halls__item">
                                     <label for="">{{ __('Выберите тип мест:') }}</label>
                                     <select class="admin-halls__seats-type" name="seats_type">
@@ -101,20 +95,16 @@
                                         @endforelse
                                     </select>
                                 </div>
-                                <div class="admin-halls__add-row-btn">Добавить новый ряд</div>
+                                <div class="admin-halls__add-row-btn">{{ __('Добавить новый ряд') }}</div>
                             </div>
-
                         </div>
-
-
                         <div class="login-container__button-wrapper" style="justify-content: center">
                             <button type="submit" class="login-container__btn" style="width: 50%">
                                 {{ __('Добавить зал') }}
                             </button>
+
                         </div>
                     </form>
-
-
                 </div>
             </div>
         </div>
