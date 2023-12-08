@@ -102,7 +102,6 @@
                             <button type="submit" class="login-container__btn" style="width: 50%">
                                 {{ __('Добавить зал') }}
                             </button>
-
                         </div>
                     </form>
                 </div>
