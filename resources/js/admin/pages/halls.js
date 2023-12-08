@@ -6,6 +6,7 @@ class Halls {
 
         this.rowContainer = document.querySelector('.admin-halls__rows')
         this.deleteHallBtn = document.querySelectorAll('.admin-theatres__delete-hall-icon');
+        this.editHallCell = document.querySelectorAll('.admin-theatres__edit-halls');
 
         this.init();
     }
@@ -13,6 +14,7 @@ class Halls {
     init() {
         this.ajax();
         this.deleteHalls();
+        this.openEditHallPage();
     }
 
     ajax() {
@@ -57,6 +59,23 @@ class Halls {
            })
         });
     }
+
+    openEditHallPage() {
+        this.editHallCell && this.editHallCell.forEach(item => {
+            item.addEventListener('click', (event) => {
+                if (!event.target.closest('.admin-theatres__delete-hall-icon')) {
+                    event.preventDefault(); // Preventing link from being followed
+
+                    const hallId = item.dataset.hallId;
+                    const theatreId = item.dataset.theatreId;
+                    if (hallId) {
+                        window.location.href = `/admin/theatres/${theatreId}/hall/${hallId}`;
+                    }
+                }
+            })
+        })
+    }
+
 }
 
 new Halls();

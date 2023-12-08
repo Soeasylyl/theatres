@@ -110,4 +110,11 @@ class HallController extends BaseAdminController
             ]
         );
     }
+
+    public function edit(int $theatreId, int $hallId)
+    {
+
+
+        dd($theatreId, $hallId);
+    }
 }

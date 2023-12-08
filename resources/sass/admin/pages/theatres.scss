@@ -146,6 +146,10 @@
         }
     }
 
+    &__edit-halls {
+        cursor: pointer;
+    }
+
     &__delete-seat-type-icon, &__delete-hall-icon {
         position: relative;
         margin-right: 5px;

@@ -150,7 +150,9 @@
                                     </thead>
                                     <tbody>
                                     @forelse($halls as $hall)
-                                        <tr>
+                                        <tr class="admin-theatres__edit-halls"
+                                            data-hall-id="{{$hall->id}}"
+                                            data-theatre-id="{{$theatre->id}}">
                                             <td>{{ $hall->name }}</td>
                                             <td>{{ $hall->seats->count() }}</td>
                                             <td>

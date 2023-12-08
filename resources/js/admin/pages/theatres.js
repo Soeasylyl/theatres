@@ -66,7 +66,7 @@ class Theatres {
     }
 
     openEditSeatTypeModal() {
-        this.editSeatTypeCell && this.editSeatTypeCell.forEach( item => {
+        this.editSeatTypeCell && this.editSeatTypeCell.forEach(item => {
             item.addEventListener('click', (event) => {
                 if (!event.target.closest('.admin-theatres__delete-seat-type-icon')) {
                     event.preventDefault(); // Preventing link from being followed
@@ -94,7 +94,7 @@ class Theatres {
     }
 
     closeEditSeatTypeModal() {
-        this.editSeatTypeCloseBtn && this.editSeatTypeCloseBtn.addEventListener('click',()  => {
+        this.editSeatTypeCloseBtn && this.editSeatTypeCloseBtn.addEventListener('click', () => {
             this.editSeatTypeModal && this.editSeatTypeModal.classList.remove('modal__active');
             this.mainClass && this.mainClass.classList.remove('open-modal-overflow-hidden');
         });
@@ -119,18 +119,18 @@ class Theatres {
 
     deleteTheatre() {
         this.deleteTheatreButton && this.deleteTheatreButton.forEach(item => {
-           item.addEventListener('click', (event) => {
-               event.preventDefault(); // Preventing link from being followed
+            item.addEventListener('click', (event) => {
+                event.preventDefault(); // Preventing link from being followed
 
-               const theatreName = event.currentTarget.getAttribute('data-theatre-name');
-               if (confirm(`Вы уверены, что хотите удалить кинотеатр: ${theatreName}?`)) {
+                const theatreName = event.currentTarget.getAttribute('data-theatre-name');
+                if (confirm(`Вы уверены, что хотите удалить кинотеатр: ${theatreName}?`)) {
 
-                   const form = event.currentTarget.closest('form');
-                   if (form) {
-                       form.submit();
-                   }
-               }
-           }) ;
+                    const form = event.currentTarget.closest('form');
+                    if (form) {
+                        form.submit();
+                    }
+                }
+            });
         });
     }
 }
