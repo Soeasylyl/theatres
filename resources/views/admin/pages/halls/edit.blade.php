@@ -5,22 +5,23 @@
         <div class="admin-container__form">
             <div class="admin-halls">
                 <div class="admin-container__form-header">
-                    {{ __('Добавление нового Зала') }}
+                    {{ __('Редактирование информации о зале') }}
                 </div>
 
                 <div class="admin-halls__body">
                     <form method="POST"
-                          action="{{route('hall.store', ['theatres' => $theatreId])}}"
+                          action="{{ route('hall.update', [$theatres, $hall->id]) }}"
                           enctype="multipart/form-data">
                         <div class="admin-halls__form">
                             @csrf
-                            @method('POST')
+                            @method('patch')
                             <div class="admin-halls__form-left">
                                 <x-input :inputAttributes="[
                                         'name'=>'name',
                                         'pattern' => '^.{1,100}$',
                                         'required'=>'required',
                                         'autocomplete' => 'off',
+                                        'value' => $hall->name,
                                          ]"
                                          :errorAttribute="'name'"
                                          input_required>
@@ -57,6 +58,7 @@
                                         'autocomplete' => 'off',
                                          ]"
                                             :errorAttribute="'description'"
+                                            :text-content="$hall->description"
                                             input_required
                                 >{{ __('Описание зала:') }}</x-textarea>
 
@@ -68,9 +70,13 @@
                                 {{ __('Визуализация создания зала') }}
                             </h2>
                             <ul class="admin-halls__rows">
-                                @if($numberRow>0)
-                                    @include('admin.pages.halls.hall-row-ajax')
-                                @endif
+
+                                @foreach($dataHall as $numberRow => $row)
+                                    @if($numberRow>0)
+                                        @include('admin.pages.halls.edit-hall-row-ajax')
+                                    @endif
+                                @endforeach
+
                             </ul>
                             <div class="admin-halls__seats-wrapper">
                                 <x-input :inputAttributes="[
@@ -100,7 +106,7 @@
                         </div>
                         <div class="login-container__button-wrapper" style="justify-content: center">
                             <button type="submit" class="login-container__btn" style="width: 50%">
-                                {{ __('Добавить зал') }}
+                                {{ __('Сохранить зал') }}
                             </button>
                         </div>
                     </form>

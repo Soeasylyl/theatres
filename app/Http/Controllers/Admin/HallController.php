@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\DTO\Halls\CreateHallDTO;
 use App\DTO\Halls\DeleteHallDTO;
+use App\DTO\Halls\EditHallDTO;
 use App\DTO\Halls\RenderSeatsDTO;
+use App\DTO\Halls\UpdateHallDTO;
 use App\Http\Requests\Admin\Halls\DeleteHallRequest;
 use App\Http\Requests\Admin\Halls\HallRequest;
 use App\Http\Requests\Admin\Halls\SeatsDataRowRequest;
@@ -50,7 +52,7 @@ class HallController extends BaseAdminController
      */
     public function store(HallRequest $request, int $theatresId)
     {
-        $createHallDTO = new CreateHallDTO(
+        $createHallDto = new CreateHallDTO(
             theatresId: $theatresId,
             name: $request->input('name'),
             description: $request->input('description'),
@@ -58,13 +60,12 @@ class HallController extends BaseAdminController
             hallImages: $request->file('hallImages'),
         );
 
-
         try {
-            $this->hallService->createHall(dto: $createHallDTO);
+            $this->hallService->createHall(dto: $createHallDto);
 
             return redirect()
-                ->route('theatre.edit', ['theatres' => $createHallDTO->getTheatresId()])
-                ->with('successMessages', 'Зал ' . $createHallDTO->getName() . ' успешно добавлен');
+                ->route('theatre.edit', ['theatres' => $createHallDto->getTheatresId()])
+                ->with('successMessages', 'Зал ' . $createHallDto->getName() . ' успешно добавлен');
         } catch (\Throwable $exception) {
             return redirect()->back()->with('error', $exception->getMessage());
         }
@@ -111,10 +112,50 @@ class HallController extends BaseAdminController
         );
     }
 
+    /**
+     * Displays the hall editing page
+     *
+     * @param int $theatreId
+     * @param int $hallId
+     * @return Application|Factory|View|\Illuminate\Foundation\Application
+     */
     public function edit(int $theatreId, int $hallId)
     {
+        $editHallDto = new EditHallDTO(
+            theatresId: $theatreId,
+            hallId: $hallId,
+        );
 
+        $dataHall = $this->hallService->getDataHall($editHallDto);
 
-        dd($theatreId, $hallId);
+        return view('admin.pages.halls.edit', [
+            'theatres' => $theatreId,
+            'halls' => $hallId,
+            'dataHall' => $dataHall['dataSeats'],
+            'seatTypes' => $dataHall['seatsTypes'],
+            'hall' => $dataHall['hall'],
+        ]);
+    }
+
+    public function update(HallRequest $request, int $theatresId, int $hallId)
+    {
+        $updateHallDto = new UpdateHallDTO(
+            theatresId: $theatresId,
+            hallId: $hallId,
+            name: $request->input('name'),
+            description: $request->input('description'),
+            rows: $request->get('rows'),
+            hallImages: $request->file('hallImages'),
+        );
+
+        try {
+            $this->hallService->updateHall(dto: $updateHallDto);
+
+            return redirect()
+                ->route('theatre.edit', ['theatres' => $updateHallDto->getTheatresId()])
+                ->with('successMessages', 'Информация о зале ' . $updateHallDto->getName() . ' изменена');
+        } catch (\Throwable $exception) {
+            return redirect()->back()->with('error', $exception->getMessage());
+        }
     }
 }

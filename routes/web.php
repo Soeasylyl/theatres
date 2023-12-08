@@ -85,6 +85,8 @@ Route::prefix('admin')->middleware(['auth', 'isBlock', 'AdminAccess'])->group(fu
                    Route::post('/', [HallController::class, 'store'])->name('hall.store');
                    Route::delete('/', [HallController::class, 'destroy'])->name('hall.delete');
                    Route::get('{halls}/', [HallController::class, 'edit'])->name('hall.edit');
+                   Route::patch('{halls}/', [HallController::class, 'update'])->name('hall.update');
+
                 });
 
             });

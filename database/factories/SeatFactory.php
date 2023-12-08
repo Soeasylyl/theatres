@@ -22,7 +22,7 @@ class SeatFactory extends Factory
         return [
             'seat_type_id' => SeatType::inRandomOrder()->first()->id,
             'row' => rand(1,10),
-            'number' =>rand(1,100),
+            'number' =>rand(1,30),
             'position_x' => rand(-50,50),
             'position_y' => rand(-50,50),
         ];

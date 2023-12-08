@@ -38,7 +38,7 @@ class HallFactory extends Factory
             $mediaCount = rand(1, 3);
 
             Seat::factory()
-                ->count(rand(20, 80))
+                ->count(rand(10, 30))
                 ->create(['hall_id' => $hall->id]);
 
             for ($i = 0; $i < $mediaCount; $i++) {

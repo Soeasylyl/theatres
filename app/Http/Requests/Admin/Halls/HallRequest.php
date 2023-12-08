@@ -23,7 +23,6 @@ class HallRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'theatresId' => 'int|same:theatres',
             'name' => 'required|string|max:50',
             'description' => 'required|string|max:1000',
             'rows' => 'array',
