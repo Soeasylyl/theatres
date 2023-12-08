@@ -27,11 +27,14 @@ class UserBannedListener implements ShouldQueue
     /**
      * Handle a job failure.
      *
+     * @param UserUpdateEvent $event
      * @param \Throwable $exception
      * @return void
      */
-    public function failed(\Throwable $exception): void
+    public function failed(UserUpdateEvent $event, \Throwable $exception): void
     {
-        Log::error($exception->getMessage());
+        Log::error('Failed to send ban notification email for User ID: ' . $event->user->id
+            . 'Message:' . $exception->getMessage()
+        );
     }
 }
