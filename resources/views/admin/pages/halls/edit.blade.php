@@ -88,7 +88,7 @@
                                          ]"
                                          :errorAttribute="'seats_count'"
                                 >
-                                    {{ __('Введите колчество мест для ряда:') }}
+                                    {{ __('Введите количество мест для ряда:') }}
                                 </x-input>
 
                                 <div class="admin-halls__item">

@@ -144,29 +144,19 @@ class HallService
                 );
             }
 
+            $hall->seats()->delete();
+
             foreach ($dto->getRows() as $rowNumber => $row) {
                 foreach ($row as $place) {
                     $seatNumber = $place['seatNumber'];
                     $seatTypeId = $place['seatsTypeId'];
 
-                    if (!empty($place['seatId'])) {
-                        $seatId = $place['seatId'];
-                        $seat = $seatRepository->getSeatById($seatId);
-
-                        $seatRepository->updateSeat(
-                            seat: $seat,
-                            seatsTypeId: $seatTypeId,
-                            rowNumber: $rowNumber,
-                            seatNumber: $seatNumber,
-                        );
-                    } else {
-                        $seatRepository->createSeat(
-                            hall: $hall,
-                            seatsTypeId: $seatTypeId,
-                            rowNumber: $rowNumber,
-                            seatNumber: $seatNumber
-                        );
-                    }
+                    $seatRepository->createSeat(
+                        hall: $hall,
+                        seatsTypeId: $seatTypeId,
+                        rowNumber: $rowNumber,
+                        seatNumber: $seatNumber
+                    );
                 }
             }
             DB::commit();
