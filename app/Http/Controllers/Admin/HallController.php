@@ -128,6 +128,7 @@ class HallController extends BaseAdminController
 
         $dataHall = $this->hallService->getDataHall($editHallDto);
 
+
         return view('admin.pages.halls.edit', [
             'theatres' => $theatreId,
             'halls' => $hallId,

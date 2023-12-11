@@ -114,7 +114,7 @@ class HallService
         $dataSeats = [];
 
         foreach ($seats as $seat) {
-            $dataSeats[$seat->row][$seat->id] = [$seat->number => $seat->seatType->id];
+            $dataSeats[$seat->row][$seat->id] = [$seat->number => $seat->seatType];
         }
 
         $theatre = $theatreRepository->getTheatreByIdOrFail($dto->getTheatresId(), ['seatTypes']);

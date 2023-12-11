@@ -1,9 +1,9 @@
-<li class="admin-halls__row" title="Test">
+<li class="admin-halls__row">
     <p class="admin-halls__row-number">{{ $numberRow }}</p>
 
     <ul class="admin-halls__row-icons">
         @foreach( $row as $seatId => $dataSeat)
-            <li class="admin-halls__row-icon">
+            <li class="admin-halls__row-icon" title="{{reset($dataSeat)->name}}">
                 <svg x="915" y="700" width="80" height="86" class="sc-idjmjb kXPQqn" type="recliner">
                     <g transform="rotate(0, 40, 43)" class="sc-fHlXLc bXVYGC" height="86" width="80">
                         <svg width="100%" height="100%" fill="currentColor" id="Слой_1" data-name="Слой 1"
@@ -47,9 +47,10 @@
                     </g>
                 </svg>
             </li>
+
             <input type="hidden" name="rows[{{$numberRow}}][{{key($dataSeat)}}][seatNumber]" value="{{key($dataSeat)}}">
             <input type="hidden" name="rows[{{$numberRow}}][{{key($dataSeat)}}][seatsTypeId]"
-                   value="{{reset($dataSeat)}}">
+                   value="{{reset($dataSeat)->id}}">
             <input type="hidden" name="rows[{{$numberRow}}][{{key($dataSeat)}}][seatId]" value="{{$seatId}}">
 
         @endforeach
