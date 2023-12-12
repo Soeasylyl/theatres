@@ -5,7 +5,6 @@ namespace App\Services;
 use App\DTO\Halls\CreateHallDTO;
 use App\DTO\Halls\DeleteHallDTO;
 use App\DTO\Halls\EditHallDTO;
-use App\DTO\Halls\RenderSeatsDTO;
 use App\DTO\Halls\UpdateHallDTO;
 use App\Models\Hall;
 use App\Repositories\Interfaces\HallRepositoryInterface;
@@ -17,6 +16,14 @@ use Illuminate\Support\Facades\Log;
 
 class HallService
 {
+    public function __construct(
+        private readonly TheatreRepositoryInterface $theatreRepository,
+        private readonly HallRepositoryInterface $hallRepository,
+        private readonly SeatRepository $seatRepository,
+    )
+    {
+    }
+
     /**
      * Retrieve data needed for creating a new hall within the specified theatre.
      *
@@ -25,9 +32,7 @@ class HallService
      */
     public function getDataForCreate(int $theatreId): array
     {
-        $theatreRepository = app(TheatreRepositoryInterface::class);
-
-        $theatre = $theatreRepository->getTheatreByIdOrFail(theatreId: $theatreId, relations: ['seatTypes']);
+        $theatre = $this->theatreRepository->getTheatreByIdOrFail(theatreId: $theatreId, relations: ['seatTypes']);
         $seatTypes = $theatre->seatTypes;
         $numberRow = 0;
 
@@ -43,14 +48,12 @@ class HallService
      */
     public function createHall(CreateHallDTO $dto): Hall
     {
-        $theatreRepository = app(TheatreRepositoryInterface::class);
-        $hallRepository = app(HallRepositoryInterface::class);
-        $seatRepository = app(SeatRepository::class);
+        $theatre = $this->theatreRepository->getTheatreByIdOrFail(theatreId: $dto->getTheatreId());
 
         try {
             DB::beginTransaction();
-            $theatre = $theatreRepository->getTheatreByIdOrFail(theatreId: $dto->getTheatreId());
-            $hall = $hallRepository->createHall(theatre: $theatre, dto: $dto);
+
+            $hall = $this->hallRepository->createHall(theatre: $theatre, dto: $dto);
 
             if ($dto->getHallImages() !== null) {
                 $hall->saveMultipleFiles(
@@ -64,7 +67,7 @@ class HallService
                     $seatNumber = $place['seatNumber'];
                     $seatTypeId = $place['seatsTypeId'];
 
-                    $seatRepository->createSeat(
+                    $this->seatRepository->createSeat(
                         hall: $hall,
                         seatsTypeId: $seatTypeId,
                         rowNumber: $rowNumber,
@@ -72,9 +75,11 @@ class HallService
                     );
                 }
             }
+
             DB::commit();
         } catch (\Throwable $exception) {
             DB::rollBack();
+
             Log::error("Failed to create hall: {$exception->getMessage()}");
 
             throw $exception;
@@ -91,9 +96,7 @@ class HallService
      */
     public function deleteHall(DeleteHallDTO $dto): void
     {
-        $hallRepository = app(HallRepositoryInterface::class);
-
-        $hall = $hallRepository->getHallByIdOrFail($dto->getHallId());
+        $hall = $this->hallRepository->getHallByIdOrFail($dto->getHallId());
         $hall->deleteMedia('halls');
         $hall->delete();
     }
@@ -106,10 +109,7 @@ class HallService
      */
     public function getDataHall(EditHallDTO $dto): array
     {
-        $hallRepository = app(HallRepositoryInterface::class);
-        $theatreRepository = app(TheatreRepositoryInterface::class);
-
-        $hall = $hallRepository->getHallByIdOrFail($dto->getHallId(), ['seats.seatType']);
+        $hall = $this->hallRepository->getHallByIdOrFail($dto->getHallId(), ['seats.seatType']);
         $seats = $hall->seats;
         $dataSeats = [];
 
@@ -117,7 +117,7 @@ class HallService
             $dataSeats[$seat->row][$seat->id] = [$seat->number => $seat->seatType];
         }
 
-        $theatre = $theatreRepository->getTheatreByIdOrFail($dto->getTheatreId(), ['seatTypes']);
+        $theatre = $this->theatreRepository->getTheatreByIdOrFail($dto->getTheatreId(), ['seatTypes']);
         $seatsTypes = $theatre->seatTypes;
 
         return compact('dataSeats', 'seatsTypes', 'hall');
@@ -130,12 +130,10 @@ class HallService
      */
     public function updateHall(UpdateHallDTO $dto): Hall
     {
-        $hallRepository = app(HallRepositoryInterface::class);
-        $seatRepository = app(SeatRepository::class);
+        $hall = $this->hallRepository->getHallByIdOrFail($dto->getHallId());
 
         try {
             DB::beginTransaction();
-            $hall = $hallRepository->getHallByIdOrFail($dto->getHallId());
 
             if ($dto->getHallImages() !== null) {
                 $hall->saveMultipleFiles(
@@ -151,7 +149,7 @@ class HallService
                     $seatNumber = $place['seatNumber'];
                     $seatTypeId = $place['seatsTypeId'];
 
-                    $seatRepository->createSeat(
+                    $this->seatRepository->createSeat(
                         hall: $hall,
                         seatsTypeId: $seatTypeId,
                         rowNumber: $rowNumber,
@@ -159,29 +157,16 @@ class HallService
                     );
                 }
             }
+
             DB::commit();
         } catch (\Throwable $exception) {
             DB::rollBack();
+
             Log::error("Failed to create hall: {$exception->getMessage()}");
 
             throw $exception;
         }
 
         return $hall;
-    }
-
-    /**
-     * Render the HTML template for seats based on the provided data.
-     *
-     * @param RenderSeatsDTO $dto
-     * @return string
-     */
-    public function renderTemplate(RenderSeatsDTO $dto): string
-    {
-        return view($dto->getHtmlContent(), [
-            'seatTypeId' => $dto->getSeatTypeId(),
-            'countSeats' => $dto->getCountSeats(),
-            'numberRow' => $dto->getNumberRow(),
-        ])->render();
     }
 }
