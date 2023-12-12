@@ -47,7 +47,7 @@ class UserService
         }
 
         return $this->userRepository->getUsersByCinemaPaginatedList(
-            cinemaIds: $searchUserDTO->getProducer()->cinemas->pluck('id'),
+            cinemaIds: $searchUserDTO->getProducer()->theatres->pluck('id'),
             authUserId: $searchUserDTO->getProducer()->id,
             searchTerm: $searchUserDTO->getSearchTerm()
         );
@@ -86,7 +86,7 @@ class UserService
     public function getUserDataForEdit(EditUserDTO $editUserDTO): array
     {
         $user = $this->userRepository->getUserByIdOrFail(userId: $editUserDTO->getUserId());
-        $userCinemasList = $user->cinemas;
+        $userCinemasList = $user->theatres;
         $userRole = $editUserDTO->getProducer()->roles->first();
         $cinemas = $this->theatreRepository->getCinemasPaginateList();
 

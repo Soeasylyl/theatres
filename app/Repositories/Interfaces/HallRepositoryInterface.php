@@ -3,7 +3,7 @@
 namespace App\Repositories\Interfaces;
 
 use App\DTO\Halls\CreateHallDTO;
-use App\Models\Cinema;
+use App\Models\Theatre;
 use App\Models\Hall;
 
 interface HallRepositoryInterface
@@ -11,11 +11,11 @@ interface HallRepositoryInterface
     /**
      * Create a new hall within the specified cinema (theatre) based on the provided DTO.
      *
-     * @param Cinema $theatre
+     * @param Theatre $theatre
      * @param CreateHallDTO $dto
      * @return Hall
      */
-    public function createHall(Cinema $theatre, CreateHallDTO $dto): Hall;
+    public function createHall(Theatre $theatre, CreateHallDTO $dto): Hall;
 
     /**
      * Retrieve a hall by its ID, eager loading specified relationships if provided, or fail if not found.

@@ -19,7 +19,7 @@ use Laravel\Sanctum\HasApiTokens;
  * @property string $amount
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\Cinema $cinema
+ * @property-read \App\Models\Theatre $cinema
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
  * @property-read int|null $notifications_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Seat> $seats
@@ -50,15 +50,15 @@ class SeatType extends Model
         'name',
         'description',
         'amount',
-        'cinema_id',
+        'theatre_id',
     ];
 
     /**
      * @return BelongsTo
      */
-    public function cinema() : BelongsTo
+    public function theatre() : BelongsTo
     {
-        return $this->belongsTo(Cinema::class);
+        return $this->belongsTo(Theatre::class);
     }
 
     /**
