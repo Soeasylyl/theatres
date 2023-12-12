@@ -144,19 +144,20 @@ class HallService
 
             $hall->seats()->delete();
 
+            $seats = [];
             foreach ($dto->getRows() as $rowNumber => $row) {
                 foreach ($row as $place) {
-                    $seatNumber = $place['seatNumber'];
-                    $seatTypeId = $place['seatsTypeId'];
-
-                    $this->seatRepository->createSeat(
-                        hall: $hall,
-                        seatsTypeId: $seatTypeId,
-                        rowNumber: $rowNumber,
-                        seatNumber: $seatNumber
-                    );
+                    $seats[] = [
+                        'seat_type_id' => $place['seatsTypeId'],
+                        'row' => $rowNumber,
+                        'number' => $place['seatNumber'],
+                        'position_x' => rand(0, 100),
+                        'position_y' => rand(0, 100),
+                    ];
                 }
             }
+
+            $hall->seats()->createMany($seats);
 
             DB::commit();
         } catch (\Throwable $exception) {
