@@ -12,7 +12,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
 /**
- * App\Models\Cinema
+ * App\Models\Theatre
  *
  * @property int $id
  * @property string $name
@@ -32,19 +32,19 @@ use Laravel\Sanctum\HasApiTokens;
  * @property-read int|null $tokens_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $users
  * @property-read int|null $users_count
- * @method static \Database\Factories\CinemaFactory factory($count = null, $state = [])
- * @method static \Illuminate\Database\Eloquent\Builder|Cinema newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Cinema newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Cinema query()
- * @method static \Illuminate\Database\Eloquent\Builder|Cinema whereAddress($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Cinema whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Cinema whereDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Cinema whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Cinema whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Cinema whereUpdatedAt($value)
+ * @method static \Database\Factories\TheatreFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder|Theatre newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Theatre newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Theatre query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Theatre whereAddress($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Theatre whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Theatre whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Theatre whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Theatre whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Theatre whereUpdatedAt($value)
  * @mixin \Eloquent
  */
-class Cinema extends Model
+class Theatre extends Model
 {
     use HasApiTokens, HasFactory, Notifiable, HandlesMedia;
 
@@ -84,8 +84,8 @@ class Cinema extends Model
     {
         return $this->belongsToMany(
             related: User::class,
-            table: 'user_cinema',
-            foreignPivotKey: 'cinema_id',
+            table: 'user_theatre',
+            foreignPivotKey: 'theatre_id',
             relatedPivotKey: 'user_id',
         );
     }

@@ -4,7 +4,7 @@ namespace App\Repositories;
 
 use App\DTO\Theatres\CreateTheatreDTO;
 use App\DTO\Theatres\UpdateTheatreDTO;
-use App\Models\Cinema;
+use App\Models\Theatre;
 use App\Models\User;
 use App\Repositories\Interfaces\TheatreRepositoryInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
@@ -18,7 +18,7 @@ class TheatreRepository implements TheatreRepositoryInterface
      */
     public function getCinemasPaginateList(): LengthAwarePaginator
     {
-        return Cinema::paginate(config('app.pagination_limit'));
+        return Theatre::paginate(config('app.pagination_limit'));
     }
 
     /**
@@ -30,7 +30,7 @@ class TheatreRepository implements TheatreRepositoryInterface
      */
     public function getTheatresPaginateList(?string $searchTerm, ?array $relations = []): LengthAwarePaginator
     {
-        return Cinema::with($relations)
+        return Theatre::with($relations)
             ->where('name', 'ilike', "%$searchTerm%")
             ->paginate(config('app.pagination_limit'));
     }
@@ -45,7 +45,7 @@ class TheatreRepository implements TheatreRepositoryInterface
      */
     public function getFilteredTheatresByProducer(User $authUser, ?string $searchTerm, ?array $relations = []): LengthAwarePaginator
     {
-        return $authUser->cinemas()
+        return $authUser->theatres()
             ->with($relations)
             ->where('name', 'ilike', "%$searchTerm%")
             ->paginate(config('app.pagination_limit'));
@@ -55,11 +55,11 @@ class TheatreRepository implements TheatreRepositoryInterface
      * Creates a new theater based on data from the CreateTheatreDTO object.
      *
      * @param CreateTheatreDTO $dto
-     * @return Cinema
+     * @return Theatre
      */
-    public function createTheatre(CreateTheatreDTO $dto): Cinema
+    public function createTheatre(CreateTheatreDTO $dto): Theatre
     {
-        return Cinema::create([
+        return Theatre::create([
            'name' => $dto->getName(),
            'address' => $dto->getAddress(),
            'description' => $dto->getDescription(),
@@ -71,21 +71,21 @@ class TheatreRepository implements TheatreRepositoryInterface
      *
      * @param int $theatreId
      * @param array|null $relations
-     * @return Cinema
+     * @return Theatre
      */
-    public function getTheatreByIdOrFail(int $theatreId, ?array $relations = []): Cinema
+    public function getTheatreByIdOrFail(int $theatreId, ?array $relations = []): Theatre
     {
-        return Cinema::with($relations)->findOrFail($theatreId);
+        return Theatre::with($relations)->findOrFail($theatreId);
     }
 
     /**
      *  Update the information of a cinema (theatre) entity based on the provided UpdateTheatreDTO.
      *
-     * @param Cinema $theatre
+     * @param Theatre $theatre
      * @param UpdateTheatreDTO $dto
-     * @return Cinema
+     * @return Theatre
      */
-    public function updateTheatreInfo(Cinema $theatre, UpdateTheatreDTO $dto): Cinema
+    public function updateTheatreInfo(Theatre $theatre, UpdateTheatreDTO $dto): Theatre
     {
         $theatre->update([
             'name' => $dto->getName(),

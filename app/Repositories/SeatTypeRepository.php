@@ -22,7 +22,7 @@ class SeatTypeRepository implements SeatTypeRepositoryInterface
            'name' => $dto->getName(),
            'description' => $dto->getDescription(),
            'amount' => $dto->getAmount(),
-           'cinema_id' => $dto->getTheatreId(),
+           'theatre_id' => $dto->getTheatreId(),
         ]);
     }
 

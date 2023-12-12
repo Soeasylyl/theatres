@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use App\Models\Booking;
-use App\Models\Cinema;
+use App\Models\Theatre;
 use App\Models\Genre;
 use App\Models\Movie;
 use App\Models\User;
@@ -26,7 +26,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         User::factory(100)->create();
-        Cinema::factory(rand(2, 5))->create();
+        Theatre::factory(rand(2, 5))->create();
         Genre::factory(20)->create();
         Movie::factory(30)->create();
 

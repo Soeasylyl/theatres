@@ -4,7 +4,7 @@ namespace App\Repositories\Interfaces;
 
 use App\DTO\Theatres\CreateTheatreDTO;
 use App\DTO\Theatres\UpdateTheatreDTO;
-use App\Models\Cinema;
+use App\Models\Theatre;
 use App\Models\User;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
@@ -40,25 +40,25 @@ interface TheatreRepositoryInterface
      * Creates a new theater based on data from the CreateTheatreDTO object.
      *
      * @param CreateTheatreDTO $dto
-     * @return Cinema
+     * @return Theatre
      */
-    public function createTheatre(CreateTheatreDTO $dto): Cinema;
+    public function createTheatre(CreateTheatreDTO $dto): Theatre;
 
     /**
      * Retrieves a theater object by its ID, or throws an exception if the theater is not found.
      *
      * @param int $theatreId
      * @param array|null $relations
-     * @return Cinema
+     * @return Theatre
      */
-    public function getTheatreByIdOrFail(int $theatreId, ?array $relations = []): Cinema;
+    public function getTheatreByIdOrFail(int $theatreId, ?array $relations = []): Theatre;
 
     /**
      *  Update the information of a cinema (theatre) entity based on the provided UpdateTheatreDTO.
      *
-     * @param Cinema $theatre
+     * @param Theatre $theatre
      * @param UpdateTheatreDTO $dto
-     * @return Cinema
+     * @return Theatre
      */
-    public function updateTheatreInfo(Cinema $theatre, UpdateTheatreDTO $dto): Cinema;
+    public function updateTheatreInfo(Theatre $theatre, UpdateTheatreDTO $dto): Theatre;
 }

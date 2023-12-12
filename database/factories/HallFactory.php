@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Models\Cinema;
+use App\Models\Theatre;
 use App\Models\Hall;
 use App\Models\Media;
 use App\Models\Seat;

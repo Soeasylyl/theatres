@@ -8,7 +8,7 @@ use App\DTO\Theatres\EditTheatreDTO;
 use App\DTO\Theatres\SearchTheatreDTO;
 use App\DTO\Theatres\UpdateTheatreDTO;
 use App\Enums\RolesUsersEnum;
-use App\Models\Cinema;
+use App\Models\Theatre;
 use App\Repositories\Interfaces\TheatreRepositoryInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
@@ -59,10 +59,10 @@ class TheatreService
      *  The user's role is considered to determine the appropriate actions.
      *
      * @param CreateTheatreDTO $dto
-     * @return Cinema
+     * @return Theatre
      * @throws \Throwable
      */
-    public function createAndSaveTheatreWithMedia(CreateTheatreDTO $dto): Cinema
+    public function createAndSaveTheatreWithMedia(CreateTheatreDTO $dto): Theatre
     {
         $theatre = $this->theatreRepository->createTheatre(dto: $dto);
         if ($dto->getUser()->hasRole(RolesUsersEnum::CINEMA_ADMIN->value)) {
@@ -109,11 +109,11 @@ class TheatreService
      *  This method handles the deletion and addition of media (images) associated with the theatre.
      *
      * @param UpdateTheatreDTO $dto
-     * @return Cinema
+     * @return Theatre
      * @throws \Exception
      * @throws \Throwable
      */
-    public function updateTheatre(UpdateTheatreDTO $dto): Cinema
+    public function updateTheatre(UpdateTheatreDTO $dto): Theatre
     {
         $theatre = $this->theatreRepository->getTheatreByIdOrFail($dto->getTheatreId());
 
