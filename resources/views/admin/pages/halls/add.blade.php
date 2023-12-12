@@ -69,7 +69,7 @@
                             </h2>
                             <ul class="admin-halls__rows">
 
-                            <canvas id="hallCv" width="700" height="600"></canvas>
+                            <canvas id="hallCanvas" ></canvas>
 
                             </ul>
                             <div class="admin-halls__seats-wrapper">
