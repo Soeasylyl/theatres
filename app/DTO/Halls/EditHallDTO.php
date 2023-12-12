@@ -6,11 +6,11 @@ class EditHallDTO
 {
 
     /**
-     * @param int $theatresId
+     * @param int $theatreId
      * @param int $hallId
      */
     public function __construct(
-        private readonly int $theatresId,
+        private readonly int $theatreId,
         private readonly int  $hallId,
     )
     {
@@ -19,9 +19,9 @@ class EditHallDTO
     /**
      * @return int
      */
-    public function getTheatresId(): int
+    public function getTheatreId(): int
     {
-        return $this->theatresId;
+        return $this->theatreId;
     }
 
     /**

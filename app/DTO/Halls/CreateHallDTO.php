@@ -5,14 +5,14 @@ namespace App\DTO\Halls;
 class CreateHallDTO
 {
     /**
-     * @param int $theatresId
+     * @param int $theatreId
      * @param string $name
      * @param string $description
      * @param array $rows
      * @param array|null $hallImages
      */
     public function __construct(
-        private readonly int $theatresId,
+        private readonly int $theatreId,
         private readonly string  $name,
         private readonly string  $description,
         private readonly array  $rows,
@@ -24,9 +24,9 @@ class CreateHallDTO
     /**
      * @return int
      */
-    public function getTheatresId(): int
+    public function getTheatreId(): int
     {
-        return $this->theatresId;
+        return $this->theatreId;
     }
 
     /**

@@ -5,7 +5,7 @@ namespace App\Http\Requests\Admin\Halls;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class HallRequest extends FormRequest
+class CreateAndUpdateHallRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

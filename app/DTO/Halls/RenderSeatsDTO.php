@@ -5,13 +5,13 @@ namespace App\DTO\Halls;
 class RenderSeatsDTO
 {
     /**
-     * @param int $seatsTypeId
+     * @param int $seatTypeId
      * @param int $countSeats
      * @param int $numberRow
      * @param string $htmlContent
      */
     public function __construct(
-        private readonly int $seatsTypeId,
+        private readonly int $seatTypeId,
         private readonly int $countSeats,
         private readonly int $numberRow,
         private readonly string $htmlContent,
@@ -22,9 +22,9 @@ class RenderSeatsDTO
     /**
      * @return int
      */
-    public function getSeatsTypeId(): int
+    public function getSeatTypeId(): int
     {
-        return $this->seatsTypeId;
+        return $this->seatTypeId;
     }
 
     /**

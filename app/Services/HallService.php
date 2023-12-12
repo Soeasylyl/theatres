@@ -49,7 +49,7 @@ class HallService
 
         try {
             DB::beginTransaction();
-            $theatre = $theatreRepository->getTheatreByIdOrFail(theatreId: $dto->getTheatresId());
+            $theatre = $theatreRepository->getTheatreByIdOrFail(theatreId: $dto->getTheatreId());
             $hall = $hallRepository->createHall(theatre: $theatre, dto: $dto);
 
             if ($dto->getHallImages() !== null) {
@@ -117,7 +117,7 @@ class HallService
             $dataSeats[$seat->row][$seat->id] = [$seat->number => $seat->seatType];
         }
 
-        $theatre = $theatreRepository->getTheatreByIdOrFail($dto->getTheatresId(), ['seatTypes']);
+        $theatre = $theatreRepository->getTheatreByIdOrFail($dto->getTheatreId(), ['seatTypes']);
         $seatsTypes = $theatre->seatTypes;
 
         return compact('dataSeats', 'seatsTypes', 'hall');
@@ -179,7 +179,7 @@ class HallService
     public function renderTemplate(RenderSeatsDTO $dto): string
     {
         return view($dto->getHtmlContent(), [
-            'seatTypeId' => $dto->getSeatsTypeId(),
+            'seatTypeId' => $dto->getSeatTypeId(),
             'countSeats' => $dto->getCountSeats(),
             'numberRow' => $dto->getNumberRow(),
         ])->render();

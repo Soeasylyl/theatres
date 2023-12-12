@@ -9,7 +9,7 @@ use App\DTO\Halls\EditHallDTO;
 use App\DTO\Halls\RenderSeatsDTO;
 use App\DTO\Halls\UpdateHallDTO;
 use App\Http\Requests\Admin\Halls\DeleteHallRequest;
-use App\Http\Requests\Admin\Halls\HallRequest;
+use App\Http\Requests\Admin\Halls\CreateAndUpdateHallRequest;
 use App\Http\Requests\Admin\Halls\SeatsDataRowRequest;
 use App\Services\HallService;
 use Illuminate\Contracts\Foundation\Application;
@@ -46,14 +46,14 @@ class HallController extends BaseAdminController
     /**
      * Store a new hall in the specified theatre based on the provided form data.
      *
-     * @param HallRequest $request
-     * @param int $theatresId
+     * @param CreateAndUpdateHallRequest $request
+     * @param int $theatreId
      * @return RedirectResponse
      */
-    public function store(HallRequest $request, int $theatresId)
+    public function store(CreateAndUpdateHallRequest $request, int $theatreId)
     {
         $createHallDto = new CreateHallDTO(
-            theatresId: $theatresId,
+            theatreId: $theatreId,
             name: $request->input('name'),
             description: $request->input('description'),
             rows: $request->input('rows'),
@@ -64,7 +64,7 @@ class HallController extends BaseAdminController
             $this->hallService->createHall(dto: $createHallDto);
 
             return redirect()
-                ->route('theatre.edit', ['theatres' => $createHallDto->getTheatresId()])
+                ->route('theatre.edit', ['theatres' => $createHallDto->getTheatreId()])
                 ->with('successMessages', 'Зал ' . $createHallDto->getName() . ' успешно добавлен');
         } catch (\Throwable $exception) {
             return redirect()->back()->with('error', $exception->getMessage());
@@ -97,7 +97,7 @@ class HallController extends BaseAdminController
     public function showRowSeats(SeatsDataRowRequest $request)
     {
         $renderSeatsDto = new RenderSeatsDTO(
-            seatsTypeId: $request->get('seats_type'),
+            seatTypeId: $request->get('seats_type'),
             countSeats: $request->input('seats_count'),
             numberRow: $request->get('count_row'),
             htmlContent: 'admin.pages.halls.hall-row-ajax',
@@ -105,11 +105,7 @@ class HallController extends BaseAdminController
 
         $template = $this->hallService->renderTemplate(dto: $renderSeatsDto);
 
-        return response()->json(
-            [
-                'html' => $template,
-            ]
-        );
+        return response()->json(['html' => $template]);
     }
 
     /**
@@ -122,12 +118,11 @@ class HallController extends BaseAdminController
     public function edit(int $theatreId, int $hallId)
     {
         $editHallDto = new EditHallDTO(
-            theatresId: $theatreId,
+            theatreId: $theatreId,
             hallId: $hallId,
         );
 
         $dataHall = $this->hallService->getDataHall($editHallDto);
-
 
         return view('admin.pages.halls.edit', [
             'theatres' => $theatreId,
@@ -138,10 +133,10 @@ class HallController extends BaseAdminController
         ]);
     }
 
-    public function update(HallRequest $request, int $theatresId, int $hallId)
+    public function update(CreateAndUpdateHallRequest $request, int $theatreId, int $hallId)
     {
         $updateHallDto = new UpdateHallDTO(
-            theatresId: $theatresId,
+            theatreId: $theatreId,
             hallId: $hallId,
             name: $request->input('name'),
             description: $request->input('description'),
@@ -153,7 +148,7 @@ class HallController extends BaseAdminController
             $this->hallService->updateHall(dto: $updateHallDto);
 
             return redirect()
-                ->route('theatre.edit', ['theatres' => $updateHallDto->getTheatresId()])
+                ->route('theatre.edit', ['theatres' => $updateHallDto->getTheatreId()])
                 ->with('successMessages', 'Информация о зале ' . $updateHallDto->getName() . ' изменена');
         } catch (\Throwable $exception) {
             return redirect()->back()->with('error', $exception->getMessage());
