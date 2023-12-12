@@ -68,9 +68,9 @@
                                 {{ __('Визуализация создания зала') }}
                             </h2>
                             <ul class="admin-halls__rows">
-                                @if($numberRow>0)
-                                    @include('admin.pages.halls.hall-row-ajax')
-                                @endif
+
+                            <canvas id="hallCv" width="700" height="600"></canvas>
+
                             </ul>
                             <div class="admin-halls__seats-wrapper">
                                 <x-input :inputAttributes="[
