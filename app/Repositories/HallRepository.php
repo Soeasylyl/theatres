@@ -4,7 +4,7 @@ namespace App\Repositories;
 
 use App\DTO\Halls\CreateHallDTO;
 use App\Models\Hall;
-use App\Models\Cinema;
+use App\Models\Theatre;
 use App\Repositories\Interfaces\HallRepositoryInterface;
 
 class HallRepository implements HallRepositoryInterface
@@ -12,11 +12,11 @@ class HallRepository implements HallRepositoryInterface
     /**
      * Create a new hall within the specified cinema (theatre) based on the provided DTO.
      *
-     * @param Cinema $theatre
+     * @param Theatre $theatre
      * @param CreateHallDTO $dto
      * @return Hall
      */
-    public function createHall(Cinema $theatre, CreateHallDTO $dto): Hall
+    public function createHall(Theatre $theatre, CreateHallDTO $dto): Hall
     {
         return $theatre->halls()->create([
             'name' => $dto->getName(),

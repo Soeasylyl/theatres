@@ -49,8 +49,8 @@ class UserRepository implements UserRepositoryInterface
         return User::query()
             ->where('id', '!=', $authUserId)
             ->when($cinemaIds->isNotEmpty(), function (Builder $query) use ($cinemaIds) {
-                $query->whereHas('cinemas', function (Builder $query) use ($cinemaIds) {
-                    $query->whereIn('cinema_id', $cinemaIds->toArray());
+                $query->whereHas('theatres', function (Builder $query) use ($cinemaIds) {
+                    $query->whereIn('theatre_id', $cinemaIds->toArray());
                 });
             })
             ->when($searchTerm, function (Builder $query) use ($searchTerm) {
@@ -130,7 +130,7 @@ class UserRepository implements UserRepositoryInterface
      */
     public function attachUserToCinema(User $user, int $cinemaId): void
     {
-        $user->cinemas()->attach($cinemaId);
+        $user->theatres()->attach($cinemaId);
     }
 
     /**

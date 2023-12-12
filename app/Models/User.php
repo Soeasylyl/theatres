@@ -30,7 +30,7 @@ use Spatie\Permission\Traits\HasRoles;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Booking> $bookings
  * @property-read int|null $bookings_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Cinema> $cinemas
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Theatre> $cinemas
  * @property-read int|null $cinemas_count
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
  * @property-read int|null $notifications_count
@@ -122,13 +122,13 @@ class User extends Authenticatable
     /**
      * @return BelongsToMany
      */
-    public function cinemas(): BelongsToMany
+    public function theatres(): BelongsToMany
     {
         return $this->belongsToMany(
-            related: Cinema::class,
-            table: 'user_cinema',
+            related: Theatre::class,
+            table: 'user_theatre',
             foreignPivotKey: 'user_id',
-            relatedPivotKey: 'cinema_id',
+            relatedPivotKey: 'theatre_id',
         );
     }
 

@@ -6,7 +6,6 @@ namespace App\Http\Controllers\Admin;
 use App\DTO\Halls\CreateHallDTO;
 use App\DTO\Halls\DeleteHallDTO;
 use App\DTO\Halls\EditHallDTO;
-use App\DTO\Halls\RenderSeatsDTO;
 use App\DTO\Halls\UpdateHallDTO;
 use App\Http\Requests\Admin\Halls\DeleteHallRequest;
 use App\Http\Requests\Admin\Halls\CreateAndUpdateHallRequest;
@@ -96,16 +95,13 @@ class HallController extends BaseAdminController
      */
     public function showRowSeats(SeatsDataRowRequest $request)
     {
-        $renderSeatsDto = new RenderSeatsDTO(
-            seatTypeId: $request->get('seats_type'),
-            countSeats: $request->input('seats_count'),
-            numberRow: $request->get('count_row'),
-            htmlContent: 'admin.pages.halls.hall-row-ajax',
-        );
-
-        $template = $this->hallService->renderTemplate(dto: $renderSeatsDto);
-
-        return response()->json(['html' => $template]);
+        return response()->json([
+            'html' => view('admin.pages.halls.hall-row-ajax', [
+                'seatTypeId' => $request->get('seats_type'),
+                'countSeats' => $request->input('seats_count'),
+                'numberRow' => $request->get('count_row'),
+            ])->render()
+        ]);
     }
 
     /**

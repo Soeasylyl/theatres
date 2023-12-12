@@ -29,13 +29,13 @@ class CheckUserAccessMiddleware
     {
         $requestedUser = $this->userRepository->getUserByIdOrFail(
             userId: $request->route('user'),
-            relations: ['cinemas']
+            relations: ['theatres']
         );
 
         /** @var User $currentUser */
         $currentUser = auth()?->user()?->load([
-            'cinemas' => function (Builder|BelongsToMany $builder) use ($requestedUser) {
-                $builder->whereIn('cinema_id', $requestedUser->cinemas->pluck('id'));
+            'theatres' => function (Builder|BelongsToMany $builder) use ($requestedUser) {
+                $builder->whereIn('theatre_id', $requestedUser->theatres->pluck('id'));
             }
         ]);
 
@@ -48,7 +48,7 @@ class CheckUserAccessMiddleware
                     !$currentUser->hasRole(RolesUsersEnum::CINEMA_ADMIN->value) ||
                     (
                         $currentUser->hasRole(RolesUsersEnum::CINEMA_ADMIN->value) &&
-                        ! $currentUser->cinemas->intersect($requestedUser->cinemas)->isNotEmpty()
+                        ! $currentUser->theatres->intersect($requestedUser->theatres)->isNotEmpty()
                     )
                 )
             )

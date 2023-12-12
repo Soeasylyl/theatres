@@ -33,7 +33,7 @@ class CreateUserRequest extends FormRequest
                 'nullable',
                 Rule::in(RolesUsersEnum::toArray())
             ],
-            'cinema' => 'nullable|exists:cinemas,id',
+            'cinema' => 'nullable|exists:theatres,id',
         ];
     }
 
