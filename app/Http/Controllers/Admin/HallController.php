@@ -129,6 +129,12 @@ class HallController extends BaseAdminController
         ]);
     }
 
+    /**
+     * @param CreateAndUpdateHallRequest $request
+     * @param int $theatreId
+     * @param int $hallId
+     * @return RedirectResponse
+     */
     public function update(CreateAndUpdateHallRequest $request, int $theatreId, int $hallId)
     {
         $updateHallDto = new UpdateHallDTO(

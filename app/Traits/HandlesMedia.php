@@ -45,19 +45,27 @@ trait HandlesMedia
     /**
      * Delete media files associated with a model or a collection of media records.
      *
-     * @param string ...$collectionNames
+     * @param string|null ...$collectionNames
      * @return void
      */
-    public function deleteMedia(string ...$collectionNames): void
+    public function deleteMedia(?string ...$collectionNames): void
     {
-        foreach ($collectionNames as $collectionName) {
-            $this->medias()
-                ->where('collection', $collectionName)
-                ->chunk(10, function (Collection $query) {
-                    $query->each(function (Media $q) {
-                        $q->delete();
-                    });
+        if (empty($collectionNames)) {
+            $this->chunk(10, function (Collection $query) {
+                $query->each(function (Media $q) {
+                    $q->delete();
                 });
+            });
+        } else {
+            foreach ($collectionNames as $collectionName) {
+                $this->medias()
+                    ->where('collection', $collectionName)
+                    ->chunk(10, function (Collection $query) {
+                        $query->each(function (Media $q) {
+                            $q->delete();
+                        });
+                    });
+            }
         }
     }
 

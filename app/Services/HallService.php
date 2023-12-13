@@ -136,6 +136,7 @@ class HallService
             DB::beginTransaction();
 
             if ($dto->getHallImages() !== null) {
+                $hall->deleteMedia('halls');
                 $hall->saveMultipleFiles(
                     mediaFiles: $dto->getHallImages(),
                     collectionName: 'halls'
