@@ -74,11 +74,11 @@ trait HandlesMedia
     {
         $this->medias()
              ->when(!empty($collectionNames), function (Builder $query) use ($collectionNames) {
-                return $query->whereIn('collection', $collectionNames);
+                  return $query->whereIn('collection', $collectionNames);
              })
-            ->chunk(10, function (Collection $medias) {
-                $medias->each(fn (Media $media) =>
-                    $media->delete());
+             ->chunk(10, function (Collection $medias) {
+                  $medias->each(fn (Media $media) =>
+                      $media->delete());
             });
     }
 
