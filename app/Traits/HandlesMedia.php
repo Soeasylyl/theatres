@@ -21,7 +21,7 @@ trait HandlesMedia
     public static function bootHandlesMedia(): void
     {
         static::deleting(function ($model) {
-            if (in_array(SoftDeletes::class, class_uses_recursive(get_class($model)))) {
+            if (in_array(SoftDeletes::class, class_uses_recursive($model))) {
                 if (!$model->isForceDeleting()) {
                     return;
                 }
@@ -73,13 +73,12 @@ trait HandlesMedia
     public function deleteMedia(?string ...$collectionNames): void
     {
         $this->medias()
-            ->when(!empty($collectionNames), function (Builder $query) use ($collectionNames) {
+             ->when(!empty($collectionNames), function (Builder $query) use ($collectionNames) {
                 return $query->whereIn('collection', $collectionNames);
-            })
-            ->chunk(10, function (Collection $query) {
-                $query->each(function (Media $q) {
-                    $q->delete();
-                });
+             })
+            ->chunk(10, function (Collection $medias) {
+                $medias->each(fn (Media $media) =>
+                    $media->delete());
             });
     }
 
