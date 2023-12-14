@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Contracts\MediaHandling;
 use App\Traits\HandlesMedia;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -43,7 +44,7 @@ use Laravel\Sanctum\HasApiTokens;
  * @method static \Illuminate\Database\Eloquent\Builder|Hall whereUpdatedAt($value)
  * @mixin \Eloquent
  */
-class Hall extends Model
+class Hall extends Model implements MediaHandling
 {
     use HasApiTokens, HasFactory, Notifiable, HandlesMedia;
 

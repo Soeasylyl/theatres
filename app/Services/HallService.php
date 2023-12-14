@@ -97,7 +97,6 @@ class HallService
     public function deleteHall(DeleteHallDTO $dto): void
     {
         $hall = $this->hallRepository->getHallByIdOrFail($dto->getHallId());
-        $hall->deleteMedia('halls');
         $hall->delete();
     }
 
@@ -136,6 +135,7 @@ class HallService
             DB::beginTransaction();
 
             if ($dto->getHallImages() !== null) {
+                $hall->deleteMedia('halls');
                 $hall->saveMultipleFiles(
                     mediaFiles: $dto->getHallImages(),
                     collectionName: 'halls'
