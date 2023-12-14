@@ -3,6 +3,8 @@
 namespace App\Traits;
 
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Collection;
 use App\Models\Media;
 use Illuminate\Http\UploadedFile;
@@ -19,9 +21,13 @@ trait HandlesMedia
     public static function bootHandlesMedia(): void
     {
         static::deleting(function ($model) {
-            if ($model instanceof self) {
-                $model->deleteMedia();
+            if (in_array(SoftDeletes::class, class_uses_recursive(get_class($model)))) {
+                if (!$model->isForceDeleting()) {
+                    return;
+                }
             }
+
+            $model->deleteMedia();
         });
     }
 
@@ -66,24 +72,15 @@ trait HandlesMedia
      */
     public function deleteMedia(?string ...$collectionNames): void
     {
-        if (empty($collectionNames)) {
-            $this->medias()
-                 ->chunk(10, function (Collection $query) {
-                    $query->each(function (Media $q) {
-                        $q->delete();
-                    });
+        $this->medias()
+            ->when(!empty($collectionNames), function (Builder $query) use ($collectionNames) {
+                return $query->whereIn('collection', $collectionNames);
+            })
+            ->chunk(10, function (Collection $query) {
+                $query->each(function (Media $q) {
+                    $q->delete();
                 });
-        } else {
-            foreach ($collectionNames as $collectionName) {
-                $this->medias()
-                     ->where('collection', $collectionName)
-                     ->chunk(10, function (Collection $query) {
-                        $query->each(function (Media $q) {
-                            $q->delete();
-                        });
-                    });
-            }
-        }
+            });
     }
 
     /**

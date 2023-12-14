@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Contracts\MediaHandling;
 use App\Events\ClearStoreEvent;
 use App\Traits\HandlesMedia;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -44,7 +45,7 @@ use Laravel\Sanctum\HasApiTokens;
  * @method static \Illuminate\Database\Eloquent\Builder|Theatre whereUpdatedAt($value)
  * @mixin \Eloquent
  */
-class Theatre extends Model
+class Theatre extends Model implements MediaHandling
 {
     use HasApiTokens, HasFactory, Notifiable, HandlesMedia;
 

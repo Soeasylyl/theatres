@@ -4,15 +4,12 @@ namespace App\Providers;
 
 use App\Events\ClearStoreEvent;
 use App\Events\UserUpdateEvent;
-use App\Events\MediaDeletedEvent;
 use App\Listeners\ClearStoreEventListener;
-use App\Listeners\MediaDeletedListner;
 use App\Listeners\UserBannedListener;
 use App\Listeners\UserUnbannedListener;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
-use Illuminate\Support\Facades\Event;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -32,10 +29,6 @@ class EventServiceProvider extends ServiceProvider
         ClearStoreEvent::class => [
             ClearStoreEventListener::class,
         ],
-        MediaDeletedEvent::class => [
-            MediaDeletedListner::class,
-        ]
-
     ];
 
     /**
