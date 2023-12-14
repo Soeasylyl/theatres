@@ -79,7 +79,7 @@ trait HandlesMedia
              ->chunk(10, function (Collection $medias) {
                   $medias->each(fn (Media $media) =>
                       $media->delete());
-            });
+             });
     }
 
     /**
