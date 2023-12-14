@@ -97,7 +97,6 @@ class HallService
     public function deleteHall(DeleteHallDTO $dto): void
     {
         $hall = $this->hallRepository->getHallByIdOrFail($dto->getHallId());
-        $hall->deleteMedia('halls');
         $hall->delete();
     }
 

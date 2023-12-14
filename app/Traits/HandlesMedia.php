@@ -9,6 +9,22 @@ use Illuminate\Http\UploadedFile;
 
 trait HandlesMedia
 {
+
+    /**
+     *  Listen for the 'deleting' event and automatically
+     *  trigger the deleteMedia method when deleting the model.
+     *
+     * @return void
+     */
+    public static function bootHandlesMedia(): void
+    {
+        static::deleting(function ($model) {
+            if ($model instanceof self) {
+                $model->deleteMedia();
+            }
+        });
+    }
+
     /**
      * Save a single file to the specified media collection for the model.
      *
@@ -51,16 +67,17 @@ trait HandlesMedia
     public function deleteMedia(?string ...$collectionNames): void
     {
         if (empty($collectionNames)) {
-            $this->chunk(10, function (Collection $query) {
-                $query->each(function (Media $q) {
-                    $q->delete();
+            $this->medias()
+                 ->chunk(10, function (Collection $query) {
+                    $query->each(function (Media $q) {
+                        $q->delete();
+                    });
                 });
-            });
         } else {
             foreach ($collectionNames as $collectionName) {
                 $this->medias()
-                    ->where('collection', $collectionName)
-                    ->chunk(10, function (Collection $query) {
+                     ->where('collection', $collectionName)
+                     ->chunk(10, function (Collection $query) {
                         $query->each(function (Media $q) {
                             $q->delete();
                         });

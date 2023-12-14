@@ -4,7 +4,9 @@ namespace App\Providers;
 
 use App\Events\ClearStoreEvent;
 use App\Events\UserUpdateEvent;
+use App\Events\MediaDeletedEvent;
 use App\Listeners\ClearStoreEventListener;
+use App\Listeners\MediaDeletedListner;
 use App\Listeners\UserBannedListener;
 use App\Listeners\UserUnbannedListener;
 use Illuminate\Auth\Events\Registered;
@@ -29,6 +31,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         ClearStoreEvent::class => [
             ClearStoreEventListener::class,
+        ],
+        MediaDeletedEvent::class => [
+            MediaDeletedListner::class,
         ]
 
     ];
