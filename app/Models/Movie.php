@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Contracts\MediaHandling;
 use App\Events\ClearStoreEvent;
 use App\Traits\HandlesMedia;
 use App\Traits\HasSlug;
@@ -58,7 +59,7 @@ use Laravel\Sanctum\PersonalAccessToken;
  * @method static \Illuminate\Database\Eloquent\Builder|Movie whereUpdatedAt($value)
  * @mixin \Eloquent
  */
-class Movie extends Model
+class Movie extends Model implements MediaHandling
 {
     use HasApiTokens, HasFactory, Notifiable, HasSlug, HandlesMedia;
 

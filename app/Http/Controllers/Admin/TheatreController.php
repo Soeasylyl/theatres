@@ -8,7 +8,8 @@ use App\DTO\Theatres\EditTheatreDTO;
 use App\DTO\Theatres\SearchTheatreDTO;
 use App\DTO\Theatres\UpdateTheatreDTO;
 use App\Http\Requests\Admin\Theatres\SearchRequest;
-use App\Http\Requests\Admin\Theatres\TheatreRequest;
+use App\Http\Requests\Admin\Theatres\CreateTheatreRequest;
+use App\Http\Requests\Admin\Theatres\UpdateTheatreRequest;
 use App\Services\TheatreService;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -50,11 +51,11 @@ class TheatreController extends BaseAdminController
     /**
      * Processing a request to create a new cinema.
      *
-     * @param TheatreRequest $request
+     * @param CreateTheatreRequest $request
      * @param TheatreService $theatreService
      * @return RedirectResponse
      */
-    public function store(TheatreRequest $request, TheatreService $theatreService)
+    public function store(CreateTheatreRequest $request, TheatreService $theatreService)
     {
         $authUser = auth()->user();
         $createTheatreDTO = new CreateTheatreDTO(
@@ -62,7 +63,7 @@ class TheatreController extends BaseAdminController
             name: $request->input('name'),
             address: $request->input('address'),
             description: $request->input('description'),
-            theatreImages: $request->file('$theatreImages'),
+            theatreImages: $request->file('theatreImages'),
         );
 
         try {
@@ -100,17 +101,17 @@ class TheatreController extends BaseAdminController
     }
 
     /**
-     * Update a theater's information based on the provided TheatreRequest and theatre ID.
+     * Update a theater's information based on the provided CreateTheatreRequest and theatre ID.
      *
-     * @param TheatreRequest $request
+     * @param UpdateTheatreRequest $request
      * @param int $theatreId
      * @param TheatreService $theatreService
      * @return RedirectResponse
      */
     public function update(
-        TheatreRequest $request,
-        int            $theatreId,
-        TheatreService $theatreService,
+        UpdateTheatreRequest $request,
+        int                  $theatreId,
+        TheatreService       $theatreService,
     )
     {
         $updateTheatreDTO = new UpdateTheatreDTO(

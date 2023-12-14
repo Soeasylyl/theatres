@@ -3,12 +3,34 @@
 namespace App\Traits;
 
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Collection;
 use App\Models\Media;
 use Illuminate\Http\UploadedFile;
 
 trait HandlesMedia
 {
+
+    /**
+     *  Listen for the 'deleting' event and automatically
+     *  trigger the deleteMedia method when deleting the model.
+     *
+     * @return void
+     */
+    public static function bootHandlesMedia(): void
+    {
+        static::deleting(function ($model) {
+            if (in_array(SoftDeletes::class, class_uses_recursive($model))) {
+                if (!$model->isForceDeleting()) {
+                    return;
+                }
+            }
+
+            $model->deleteMedia();
+        });
+    }
+
     /**
      * Save a single file to the specified media collection for the model.
      *
@@ -45,20 +67,19 @@ trait HandlesMedia
     /**
      * Delete media files associated with a model or a collection of media records.
      *
-     * @param string ...$collectionNames
+     * @param string|null ...$collectionNames
      * @return void
      */
-    public function deleteMedia(string ...$collectionNames): void
+    public function deleteMedia(?string ...$collectionNames): void
     {
-        foreach ($collectionNames as $collectionName) {
-            $this->medias()
-                ->where('collection', $collectionName)
-                ->chunk(10, function (Collection $query) {
-                    $query->each(function (Media $q) {
-                        $q->delete();
-                    });
-                });
-        }
+        $this->medias()
+             ->when(!empty($collectionNames), function (Builder $query) use ($collectionNames) {
+                  return $query->whereIn('collection', $collectionNames);
+             })
+             ->chunk(10, function (Collection $medias) {
+                  $medias->each(fn (Media $media) =>
+                      $media->delete());
+             });
     }
 
     /**

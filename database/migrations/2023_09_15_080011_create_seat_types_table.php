@@ -13,15 +13,15 @@ return new class extends Migration
     {
         Schema::create('seat_types', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('cinema_id');
+            $table->unsignedBigInteger('theatre_id');
             $table->string('name');
             $table->text('description');
             $table->decimal('amount')->unsigned();
             $table->timestamps();
 
-            $table->foreign('cinema_id')
+            $table->foreign('theatre_id')
                   ->references('id')
-                  ->on('cinemas')
+                  ->on('theatres')
                   ->cascadeOnDelete();
         });
 

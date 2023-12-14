@@ -15,7 +15,7 @@ use App\Http\Requests\Admin\Users\SearchRequest;
 use App\Http\Requests\Admin\Users\UpdatePasswordRequest;
 use App\Http\Requests\Admin\Users\UpdateProfileRequest;
 use App\Http\Requests\Admin\Users\UpdateRoleRequest;
-use App\Http\Requests\Admin\Users\UserRequest;
+use App\Http\Requests\Admin\Users\CreateUserRequest;
 use App\Services\TheatreService;
 use App\Services\UserService;
 use Carbon\Carbon;
@@ -61,7 +61,7 @@ class UserController extends BaseAdminController
      *
      * @return RedirectResponse
      */
-    protected function store(UserRequest $request, UserService $userService)
+    protected function store(CreateUserRequest $request, UserService $userService)
     {
         $requestDTO = new CreateUserDTO(
             name: $request->input('name'),

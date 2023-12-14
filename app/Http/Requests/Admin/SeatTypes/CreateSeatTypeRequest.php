@@ -5,7 +5,7 @@ namespace App\Http\Requests\Admin\SeatTypes;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class SeatTypeRequest extends FormRequest
+class CreateSeatTypeRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

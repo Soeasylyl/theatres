@@ -5,7 +5,7 @@ namespace App\Http\Requests\Admin\Theatres;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class TheatreRequest extends FormRequest
+class UpdateTheatreRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,8 +26,8 @@ class TheatreRequest extends FormRequest
             'name' => 'required|string|max:100',
             'address' => 'required|string|max:255',
             'description' => 'nullable|string|max:1000',
-            '$theatreImages' => 'nullable|array',
-            '$theatreImages.*' => 'sometimes|file|mimetypes:image/jpeg,image/png,image/jpg|max:10240',
+            'theatreImages' => 'nullable|array',
+            'theatreImages.*' => 'sometimes|file|mimetypes:image/jpeg,image/png,image/jpg|max:10240',
         ];
     }
 

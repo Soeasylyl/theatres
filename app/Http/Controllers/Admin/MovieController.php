@@ -7,7 +7,7 @@ use App\DTO\Movies\DeleteMovieDTO;
 use App\DTO\Movies\UpdateMovieDTO;
 use App\DTO\Movies\SearchMovieDTO;
 use App\Http\Requests\Admin\Movies\SearchRequest;
-use App\Http\Requests\Admin\Movies\MovieRequest;
+use App\Http\Requests\Admin\Movies\CreateAndUpdateMovieRequest;
 use App\Models\Movie;
 use App\Services\MovieService;
 use Illuminate\Contracts\Foundation\Application;
@@ -50,15 +50,15 @@ class MovieController extends BaseAdminController
     /**
      * Updating information for the selected Movie
      *
-     * @param MovieRequest $request
+     * @param CreateAndUpdateMovieRequest $request
      * @param int $movieId
      * @param MovieService $movieService
      * @return RedirectResponse
      */
     public function update(
-        MovieRequest $request,
-        int          $movieId,
-        MovieService $movieService)
+        CreateAndUpdateMovieRequest $request,
+        int                         $movieId,
+        MovieService                $movieService)
     {
         $updateMovieDTO = new UpdateMovieDTO(
             movieId: $movieId,
@@ -94,11 +94,11 @@ class MovieController extends BaseAdminController
     /**
      *  Create new movie
      *
-     * @param MovieRequest $request
+     * @param CreateAndUpdateMovieRequest $request
      * @param MovieService $movieService
      * @return RedirectResponse
      */
-    public function store(MovieRequest $request, MovieService $movieService)
+    public function store(CreateAndUpdateMovieRequest $request, MovieService $movieService)
     {
         $createMovieDTO = new CreateMovieDTO(
             name: $request->input('name'),

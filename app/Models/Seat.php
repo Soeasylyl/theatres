@@ -51,6 +51,7 @@ class Seat extends Model
      */
     protected $fillable = [
         'row',
+        'number',
         'hall_id',
         'seat_type_id',
         'position_x',

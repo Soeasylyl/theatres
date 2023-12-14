@@ -125,20 +125,10 @@
         align-items: center;
     }
 
-    input {
-        width: 100%;
-        height: 35px;
-        border: 1px solid rgba(0, 0, 0, 0.47);
-        padding: 0 10px 0 15px;
-        background-size: 25px;
-        background-repeat: no-repeat;
-        background-position: 9px 50%;
-        font-size: 20px;
-        font-style: normal;
-        font-weight: 400;
-        line-height: 30px;
-        color: #495057;
-        box-sizing: border-box;
+    input, textarea {
+        min-width: 400px!important;
+        max-width: 650px!important;
+
     }
 
     input::placeholder {

@@ -141,7 +141,6 @@ class MovieService
         $movie = $this->movieRepository->getMovieByIdOrFail(movieId: $movieId);
 
         try {
-            $movie->deleteMedia('poster', 'frames');
             $movie->delete();
         } catch (\Exception $e) {
             Log::error("Failed to delete movie: {$e->getMessage()}. Movie ID: {$movie->id}");

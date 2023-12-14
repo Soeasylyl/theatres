@@ -3,7 +3,7 @@
 namespace Database\Factories;
 
 use App\Enums\RolesUsersEnum;
-use App\Models\Cinema;
+use App\Models\Theatre;
 use App\Models\Hall;
 use App\Models\Media;
 use App\Models\SeatType;
@@ -14,9 +14,9 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\Relation;
 
 /**
- * @extends Factory<Cinema>
+ * @extends Factory<Theatre>
  */
-class CinemaFactory extends Factory
+class TheatreFactory extends Factory
 {
     public function definition(): array
     {
@@ -33,7 +33,7 @@ class CinemaFactory extends Factory
 
     public function configure(): static
     {
-        return $this->afterCreating(function (Cinema $cinema) {
+        return $this->afterCreating(function (Theatre $theatre) {
             $mediaCount = rand(1, 3);
 
             for ($i = 0; $i < 3; $i++) {
@@ -41,7 +41,7 @@ class CinemaFactory extends Factory
                 $randomRoleValue = array_rand(array_flip($roleValues), 1);
 
                 $user = User::query()
-                    ->whereDoesntHave('cinemas')
+                    ->whereDoesntHave('theatres')
                     ->whereDoesntHave('roles', function (Builder $query) {
                         $query->where('name', RolesUsersEnum::SUPER_ADMIN->value);
                     })
@@ -52,20 +52,20 @@ class CinemaFactory extends Factory
                     ->first();
 
                 if ($user !== null) {
-                    $cinema->users()->attach($user);
+                    $theatre->users()->attach($user);
                 }
             }
 
             SeatType::factory()
                 ->count(4)
-                ->create(['cinema_id' => $cinema->id]);
+                ->create(['theatre_id' => $theatre->id]);
 
             Hall::factory()
                 ->count(rand(1, 5))
-                ->create(['cinema_id' => $cinema->id]);
+                ->create(['theatre_id' => $theatre->id]);
 
             for ($i = 0; $i < $mediaCount; $i++) {
-                $cinema->medias()->create([
+                $theatre->medias()->create([
                     'path' => $this->faker->filePath(),
                 ]);
             }

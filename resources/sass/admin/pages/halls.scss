@@ -1,0 +1,248 @@
+.admin-halls {
+
+
+    &__rows {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+
+
+        svg {
+            width: 40px;
+            height: 46px;
+            fill: #000000;
+
+            text {
+                fill: #ffffff;
+                font-size: 18px;
+            }
+        }
+    }
+
+    &__row-number {
+        font-size: 30px;
+        font-weight: 700;
+        color: #45454c;
+        margin: 0;
+    }
+
+    &__row {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+    }
+
+    &__row-icons {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    &__body {
+        padding-top: 20px;
+    }
+
+    &__seats-type {
+        height: 100%
+    }
+
+    &__seats {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    &__seats-wrapper {
+        display: flex;
+        justify-content: space-around;
+        gap: 10px;
+        box-sizing: border-box;
+        width: 650px;
+        margin: 20px 0;
+
+        align-items: flex-end;
+    }
+
+    &__body-wrapper {
+        display: flex;
+        justify-content: space-around;
+        padding: 0.375rem 0.75rem;
+        color: #495057;
+        background-color: #fff;
+        background-clip: padding-box;
+        border: 1px solid #ced4da;
+        border-radius: 0.25rem;
+        box-sizing: border-box;
+        width: 650px;
+        margin: 20px 0;
+
+        input, select {
+            @include font-type-6;
+            color: #495057;
+            width: 170px;
+
+            &::placeholder {
+                opacity: 0.6;
+            }
+
+            &:focus {
+                background-color: $c-adp-hov;;
+                border-color: rgba(189, 189, 189, 0.29);
+                outline: 0;
+                box-shadow: 0 0 0 0.1rem rgb(158 158 158 / 14%);
+            }
+        }
+    }
+
+    &__item {
+        display: flex;
+        flex-direction: column;
+
+    }
+
+    &__body {
+        padding-top: 20px;
+    }
+
+    &__form {
+        display: grid;
+        grid-template-columns: repeat(2, 50%);
+        gap: 20px;
+    }
+
+    &__title {
+        text-align: center;
+        border-top: 1px solid #545cd8;
+        padding: 20px 0;
+    }
+
+    &__form-left, &__form-right {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    &__edit_theatres {
+        position: relative;
+        cursor: pointer;
+        z-index: 10;
+    }
+
+    &__items {
+        @include font-type-6;
+        padding: 0.375rem 0.75rem;
+        color: #495057;
+        background-color: #fff;
+        background-clip: padding-box;
+        border: 1px solid #ced4da;
+        border-radius: 0.25rem;
+        transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+        box-sizing: border-box;
+        margin-top: 10px;
+
+        input, textarea {
+            @include font-type-6;
+            color: #495057;
+            width: 100%;
+
+            &::placeholder {
+                opacity: 0.6;
+            }
+
+            &:focus {
+                background-color: $c-adp-hov;;
+                border-color: rgba(189, 189, 189, 0.29);
+                outline: 0;
+                box-shadow: 0 0 0 0.1rem rgb(158 158 158 / 14%);
+            }
+        }
+    }
+
+    &__item-button-wrapper {
+        padding: 10px;
+    }
+
+    &__preview-container {
+        display: flex;
+        gap: 5px;
+        width: 100%;
+        overflow: auto;
+
+        img {
+            width: 150px;
+            height: 210px;
+            object-fit: cover;
+        }
+    }
+
+    &__item-body {
+        display: flex;
+
+        gap: 10px;
+        box-sizing: border-box;
+
+        textarea {
+            width: 100%;
+            min-height: 124px;
+            resize: none;
+        }
+    }
+
+    &__add-row-btn {
+        display: flex;
+        align-items: center;
+        text-align: center;
+        background-color: $c-adp-btn;
+        border: 1px solid $c-adp-header-border;
+        padding: 0.375rem 1.75rem;
+        font-size: 1rem;
+        line-height: 1.5;
+        border-radius: 0.25rem;
+        transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+        cursor: pointer;
+        color: $c-white;
+
+        &:hover {
+            background-color: $c-adp-btn-hover;
+        }
+    }
+
+    &__delete-icon, &__remove-rows {
+        position: relative;
+        margin-right: 5px;
+        z-index: 20;
+
+        svg {
+            fill: #545cd8;
+            cursor: pointer;
+            width: 25px;
+            height: 25px;
+
+            &:hover {
+                animation: rotateAnimation 0.2s forwards;
+                fill: #f34c4c;
+                transform: rotate(10deg);
+            }
+        }
+    }
+
+    @keyframes rotateAnimation {
+        0% {
+            transform: rotate(0deg);
+        }
+        25% {
+            transform: rotate(10deg);
+        }
+        50% {
+            transform: rotate(0deg); /* Половина пути в одну сторону */
+        }
+        75% {
+            transform: rotate(-10deg);
+        }
+        100% {
+            transform: rotate(0deg); /* Возвращение на место */
+        }
+    }
+}

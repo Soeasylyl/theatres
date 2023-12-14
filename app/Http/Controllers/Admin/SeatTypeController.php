@@ -5,7 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\DTO\SeatTypes\CreateSeatTypeDTO;
 use App\DTO\SeatTypes\DeleteSeatTypeDTO;
 use App\DTO\SeatTypes\UpdateSeatTypeDTO;
-use App\Http\Requests\Admin\SeatTypes\SeatTypeRequest;
+use App\Http\Requests\Admin\SeatTypes\DeleteSeatTypeRequest;
+use App\Http\Requests\Admin\SeatTypes\CreateSeatTypeRequest;
 use App\Http\Requests\Admin\SeatTypes\UpdateSeatTypeRequest;
 use App\Services\SeatTypeService;
 use Illuminate\Http\RedirectResponse;
@@ -15,15 +16,15 @@ class SeatTypeController extends BaseAdminController
     /**
      *  Creates a new type of movie theater location.
      *
-     * @param SeatTypeRequest $request
+     * @param CreateSeatTypeRequest $request
      * @param int $theatreId
      * @param SeatTypeService $seatTypeService
      * @return RedirectResponse
      */
     public function store(
-        SeatTypeRequest $request,
-        int $theatreId,
-        SeatTypeService $seatTypeService
+        CreateSeatTypeRequest $request,
+        int                   $theatreId,
+        SeatTypeService       $seatTypeService
     )
     {
         $seatTypeDTO = new CreateSeatTypeDTO(
@@ -72,14 +73,14 @@ class SeatTypeController extends BaseAdminController
     /**
      * Processes a request to delete a place type, including checking associated places and redirecting with a message.
      *
-     * @param int $seatTypeId
      * @param SeatTypeService $seatTypeService
+     * @param DeleteSeatTypeRequest $request
      * @return RedirectResponse
      */
-    public function destroy(int $seatTypeId, SeatTypeService $seatTypeService)
+    public function destroy(SeatTypeService $seatTypeService, DeleteSeatTypeRequest $request)
     {
         $deleteSeatTypeDTO = new DeleteSeatTypeDTO(
-            seatTypeId: $seatTypeId,
+            seatTypeId: $request->input('seat_type_id'),
         );
 
         try {

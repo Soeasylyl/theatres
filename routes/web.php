@@ -2,6 +2,7 @@
 
 use App\Enums\RolesUsersEnum;
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\HallController;
 use App\Http\Controllers\Admin\MovieController;
 use App\Http\Controllers\Admin\SeatTypeController;
 use App\Http\Controllers\Admin\TheatreController;
@@ -77,9 +78,23 @@ Route::prefix('admin')->middleware(['auth', 'isBlock', 'AdminAccess'])->group(fu
                     Route::patch('/', [SeatTypeController::class, 'update'])->name('seat-type.update');
                     Route::delete('/', [SeatTypeController::class, 'destroy'])->name('seat-type.delete');
                 });
-                //Theatre creating
+
+                //Hall creating
+                Route::prefix('{theatres}/hall/')->group(function () {
+                   Route::get('/', [HallController::class, 'create'])->name('hall.create');
+                   Route::post('/', [HallController::class, 'store'])->name('hall.store');
+                   Route::delete('/', [HallController::class, 'destroy'])->name('hall.delete');
+                   Route::get('{halls}/', [HallController::class, 'edit'])->name('hall.edit');
+                   Route::patch('{halls}/', [HallController::class, 'update'])->name('hall.update');
+
+                });
+
             });
         });
+    });
+
+    Route::prefix('/ajax')->group(function () {
+        Route::get('/show-row-seats',[HallController::class, 'showRowSeats'])->name('hall.show.row-seats');
     });
 
     // Users management

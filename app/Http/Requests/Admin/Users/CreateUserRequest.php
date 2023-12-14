@@ -7,7 +7,7 @@ use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class UserRequest extends FormRequest
+class CreateUserRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -33,7 +33,7 @@ class UserRequest extends FormRequest
                 'nullable',
                 Rule::in(RolesUsersEnum::toArray())
             ],
-            'cinema' => 'nullable|exists:cinemas,id',
+            'cinema' => 'nullable|exists:theatres,id',
         ];
     }
 
