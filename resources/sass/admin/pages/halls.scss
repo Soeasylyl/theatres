@@ -1,9 +1,88 @@
 .admin-halls {
 
-    canvas {
-        width: 700px;
-        height: 600px;
-        border: 3px solid black;
+    &__map {
+        .fade-in {
+            opacity: 0;
+            animation: fadeIn 1s ease-in-out forwards; /* forwards сохраняет состояние после завершения анимации */
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+    }
+
+    &__hidden {
+        display: none;
+    }
+
+    &__border-map {
+        border: 5px black solid;
+    }
+
+    &__preview-map {
+        position: relative;
+
+        max-width: 1000px;
+        max-height: 700px;
+
+        img, svg {
+            width: 1000px;
+            height: 700px;
+        }
+
+    }
+
+    &__close-button {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+
+        background-color: red;
+        border-radius: 50%;
+        font-size: 18px;
+        color: #fff;
+        cursor: pointer;
+        padding: 5px;
+    }
+
+    &__map-body {
+        width: 100%;
+        position: relative;
+        text-align: center;
+        box-sizing: border-box;
+
+        input {
+            opacity: 0;
+            visibility: hidden;
+            position: absolute;
+        }
+
+        label {
+            background-color: #545cd8;
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            border-radius: 0.25rem;
+            padding: 0 10px;
+
+            svg {
+                fill: white;
+                width: 40px;
+                height: 46px;
+            }
+
+            &:hover {
+                background-color: #474eb8;
+            }
+        }
     }
 
     &__rows {
@@ -12,18 +91,6 @@
         justify-content: center;
         align-items: center;
         gap: 10px;
-
-
-        svg {
-            width: 40px;
-            height: 46px;
-            fill: #000000;
-
-            text {
-                fill: #ffffff;
-                font-size: 18px;
-            }
-        }
     }
 
     &__row-number {

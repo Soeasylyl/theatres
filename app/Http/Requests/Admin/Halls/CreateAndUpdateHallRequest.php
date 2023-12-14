@@ -31,6 +31,7 @@ class CreateAndUpdateHallRequest extends FormRequest
             'rows.*.*.seatsTypeId' => 'required|exists:seat_types,id',
             'hallImages' => 'nullable|array',
             'hallImages.*' => 'sometimes|file|mimetypes:image/jpeg,image/png,image/jpg|max:10240',
+            'mapImage' => 'nullable|file|mimetypes:image/jpeg,image/png,image/jpg, image/svg|max:10240',
         ];
     }
 
@@ -45,6 +46,7 @@ class CreateAndUpdateHallRequest extends FormRequest
             'name.max' => 'Название кинотеатра не может быть длиннее :max символов',
             'description.max' => 'Описание кинотеатра не может быть длиннее :max символов',
             'hallImages.*.mimetypes' => 'Поддерживаемые форматы изображений: jpeg, jpg, png,',
+            'mapImage.mimetypes' => 'Поддерживаемые форматы изображений: jpeg, jpg, png, svg',
         ];
     }
 }

@@ -67,11 +67,21 @@
                             <h2 class="admin-halls__title">
                                 {{ __('Визуализация создания зала') }}
                             </h2>
-                            <ul class="admin-halls__rows">
+                            <div class="admin-halls__rows">
 
-                            <canvas id="hallCanvas" ></canvas>
+                                <div class="admin-halls__map">
+                                    <div class="admin-halls__preview-map">
 
-                            </ul>
+                                    </div>
+                                    <div class="admin-halls__map-body">
+
+                                        <div class="login-container__btn add-hall-map"> {{ __('Создать карту зала') }}</div>
+                                    </div>
+
+
+                                </div>
+
+                            </div>
                             <div class="admin-halls__seats-wrapper">
                                 <x-input :inputAttributes="[
                                         'name'=>'seats_count',
