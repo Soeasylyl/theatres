@@ -120,6 +120,8 @@
                                     </x-input>
 
                                     <div class="admin-halls__add-seat-btn">{{ __('Добавить') }}</div>
+
+                                    <input id="scaleSlider" type="range" min="0.1" max="1.2" step="0.1" value="0.7" >
                                 </div>
                             </div>
                         </div>

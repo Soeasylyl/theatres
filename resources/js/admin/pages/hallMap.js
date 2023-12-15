@@ -31,7 +31,7 @@ class HallMap {
     getSVGPoint(element) {
         const x = parseFloat(element.getAttributeNS(null, 'x'));
         const y = parseFloat(element.getAttributeNS(null, 'y'));
-        return { x, y };
+        return {x, y};
     }
 
 
@@ -52,7 +52,6 @@ class HallMap {
     handleDrag(event) {
         if (this.draggedElement) {
             const point = this.getEventPoint(event);
-            const svgPoint = this.getSVGPoint(this.draggedElement);
             const dx = point.x + this.offsetX;
             const dy = point.y + this.offsetY;
 
@@ -71,13 +70,15 @@ class HallMap {
     findGElementInMap() {
         const mapContainer = document.querySelector('.admin-halls__map');
         this.gElement = mapContainer.querySelector('g');
+        this.scalableGroup = document.getElementById('scalableGroup');
+        this.scaleSlider = document.getElementById('scaleSlider');
 
         if (!this.gElement) {
             this.gElement = document.createElementNS('http://www.w3.org/2000/svg', 'g');
             mapContainer.appendChild(this.gElement);
         }
 
-        this.gElement.setAttribute('transform', 'scale(0.6)');
+        this.handleScaleChange();
     }
 
     addSeatToMapContainer() {
@@ -90,6 +91,19 @@ class HallMap {
             svgElement.setAttribute('height', '86');
             svgElement.setAttribute('type', 'recliner');
 
+            //Получение номера ряда и типа места для добавления в svg
+            const numberSeatInput = this.seatsWrapperContainer.querySelector('input[name="number_seat"]');
+            const numberRowInput = this.seatsWrapperContainer.querySelector('input[name="number_row"]');
+            const dataSeatTypeInput = this.seatsWrapperContainer.querySelector('select[name="seats_type"]');
+            const selectedSeatType = dataSeatTypeInput ? dataSeatTypeInput.value : '';
+            const selectedSeatName = dataSeatTypeInput ? dataSeatTypeInput.options[dataSeatTypeInput.selectedIndex].text : '';
+
+            svgElement.setAttribute('data-seat-type', selectedSeatType);
+            svgElement.setAttribute('data-number-row', numberRowInput.value);
+
+            const titleElement = document.createElementNS('http://www.w3.org/2000/svg', 'title');
+            titleElement.textContent = `Номер ряда: ${numberRowInput.value}, Тип места: ${selectedSeatName}`;
+
             // Create the text element
             const textElement = document.createElementNS('http://www.w3.org/2000/svg', 'text');
             textElement.setAttribute('x', '50%');
@@ -98,6 +112,8 @@ class HallMap {
             textElement.setAttribute('text-anchor', 'middle');
             textElement.setAttribute('font-size', '20');
             textElement.setAttribute('fill', 'white');
+
+            textElement.textContent = numberSeatInput ? numberSeatInput.value : '';
 
             const pathElement1 = document.createElementNS('http://www.w3.org/2000/svg', 'path');
             pathElement1.setAttribute('d', 'M18.38,46.15V71.06H55.85V46.15a7.83,7.83,0,0,1,7.82-7.82V33.26A9.67,9.67,0,0,0,61,26.53a8.37,8.37,0,0,1-4.37,1.24H23.42v1a7.65,7.65,0,0,1-7.64,7.64H10.55v1.89h0A7.83,7.83,0,0,1,18.38,46.15Z');
@@ -147,22 +163,15 @@ class HallMap {
             pathElement12.setAttribute('d', 'M17.64,25.27a5.66,5.66,0,0,1-2.19-.43,10.27,10.27,0,0,0-1.21.82,7.09,7.09,0,0,0,3.4.86h3.28V25.27Z');
             svgElement.appendChild(pathElement12);
 
-            const numberSeatInput = this.seatsWrapperContainer.querySelector('input[name="number_seat"]');
-            textElement.textContent = numberSeatInput ? numberSeatInput.value : '';
+            svgElement.appendChild(titleElement);
             svgElement.appendChild(textElement);
-
             this.gElement.appendChild(svgElement);
 
             const inputElements = this.seatsWrapperContainer.querySelectorAll('input');
-            const selectElement = this.seatsWrapperContainer.querySelector('select');
 
             inputElements.forEach((input) => {
                 input.value = '';
             });
-
-            if (selectElement) {
-                selectElement.value = '';
-            }
         })
     }
 
@@ -189,7 +198,7 @@ class HallMap {
             this.previewHallMapContainer.innerHTML = `
             <svg width="1000" height="1000" class="admin-halls__map" >
               <path d="M20,20 Q 475 5, 950 20" class="sc-ccXozh ibOKzl"></path>
-               <g>
+               <g id="scalableGroup" transform="scale(0.7)">
                </g>
               <text text-anchor="middle" x="50%" dy="10%" fill="currentColor" font-family="Ubuntu, Roboto, Arial, Helvetica, sans-serif" font-size="36" font-weight="700" class="sc-bsVVwV hWBiPl">Экран
               </text>
@@ -205,6 +214,13 @@ class HallMap {
             this.addHallMapButton.classList.add('admin-halls__hidden');
             this.seatsWrapperContainer.classList.remove('admin-halls__hidden');
         }
+    }
+
+    handleScaleChange() {
+        this.scaleSlider && this.scaleSlider.addEventListener('input', (event) => {
+            const scaleValue = event.target.value;
+            this.scalableGroup.setAttribute('transform', `scale(${scaleValue})`);
+        });
     }
 
 
