@@ -69,43 +69,58 @@
                             </h2>
                             <div class="admin-halls__rows">
 
-                                <div class="admin-halls__map">
+                                <div class="admin-halls__map-container">
                                     <div class="admin-halls__preview-map">
 
                                     </div>
                                     <div class="admin-halls__map-body">
 
-                                        <div class="login-container__btn add-hall-map"> {{ __('Создать карту зала') }}</div>
+                                        <div
+                                            class="login-container__btn add-hall-map"> {{ __('Создать карту зала') }}</div>
                                     </div>
-
-
                                 </div>
 
                             </div>
-                            <div class="admin-halls__seats-wrapper">
-                                <x-input :inputAttributes="[
-                                        'name'=>'seats_count',
+                            <div class="admin-halls__seats-wrapper admin-halls__hidden">
+                                <div class="admin-halls__seats-title">{{ __('Добавление нового места:') }}</div>
+                                <div class="admin-halls__seats-body">
+                                    <x-input :inputAttributes="[
+                                        'name'=>'number_row',
                                         'type' => 'number',
                                         'required' => 'required',
                                         'autocomplete' => 'off',
                                         'class'=> 'admin-halls__seats-count'
                                          ]"
-                                         :errorAttribute="'seats_count'"
-                                >
-                                    {{ __('Введите колчество мест для ряда:') }}
-                                </x-input>
+                                             :errorAttribute="'number_row'"
+                                    >
+                                        {{ __('Укажите номер ряда:') }}
+                                    </x-input>
 
-                                <div class="admin-halls__item">
-                                    <label for="">{{ __('Выберите тип мест:') }}</label>
-                                    <select class="admin-halls__seats-type" name="seats_type">
-                                        @forelse($seatTypes as $seatType)
-                                            <option value="{{ $seatType->id }}">{{ $seatType->name }}</option>
-                                        @empty
-                                            <option value="none">{{ __(('Нет доступных типов')) }}</option>
-                                        @endforelse
-                                    </select>
+                                    <div class="admin-halls__item">
+                                        <label for="">{{ __('Выберите тип места:') }}</label>
+                                        <select class="admin-halls__seats-type" name="seats_type">
+                                            @forelse($seatTypes as $seatType)
+                                                <option value="{{ $seatType->id }}">{{ $seatType->name }}</option>
+                                            @empty
+                                                <option value="none">{{ __(('Нет доступных типов')) }}</option>
+                                            @endforelse
+                                        </select>
+                                    </div>
+
+                                    <x-input :inputAttributes="[
+                                        'name'=>'number_seat',
+                                        'type' => 'number',
+                                        'required' => 'required',
+                                        'autocomplete' => 'off',
+                                        'class'=> 'admin-halls__seats-count'
+                                         ]"
+                                             :errorAttribute="'number_seat'"
+                                    >
+                                        {{ __('Укажите номер места:') }}
+                                    </x-input>
+
+                                    <div class="admin-halls__add-seat-btn">{{ __('Добавить') }}</div>
                                 </div>
-                                <div class="admin-halls__add-row-btn">{{ __('Добавить новый ряд') }}</div>
                             </div>
                         </div>
                         <div class="login-container__button-wrapper" style="justify-content: center">
