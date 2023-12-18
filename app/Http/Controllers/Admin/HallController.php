@@ -94,15 +94,16 @@ class HallController extends BaseAdminController
      * @param SeatsDataRowRequest $request
      * @return JsonResponse
      */
-    public function showRowSeats(SeatsDataRowRequest $request)
+    public function getHallContentAjax(Request $request)
     {
-        return response()->json([
-            'html' => view('admin.pages.halls.hall-row-ajax', [
-                'seatTypeId' => $request->get('seats_type'),
-                'countSeats' => $request->input('seats_count'),
-                'numberRow' => $request->get('count_row'),
-            ])->render()
-        ]);
+        $editHallDto = new EditHallDTO(
+            theatreId: $request->get('theatreId'),
+            hallId:  $request->get('hallId'),
+        );
+
+        $dataSeats = $this->hallService->getHallContent($editHallDto);
+
+        return response()->json($dataSeats);
     }
 
     /**
@@ -124,7 +125,6 @@ class HallController extends BaseAdminController
         return view('admin.pages.halls.edit', [
             'theatres' => $theatreId,
             'halls' => $hallId,
-            'dataHall' => $dataHall['dataSeats'],
             'seatTypes' => $dataHall['seatsTypes'],
             'hall' => $dataHall['hall'],
         ]);

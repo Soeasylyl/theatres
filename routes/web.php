@@ -94,7 +94,7 @@ Route::prefix('admin')->middleware(['auth', 'isBlock', 'AdminAccess'])->group(fu
     });
 
     Route::prefix('/ajax')->group(function () {
-        Route::get('/show-row-seats',[HallController::class, 'showRowSeats'])->name('hall.show.row-seats');
+        Route::get('/get-hall-content',[HallController::class, 'getHallContentAjax'])->name('hall.show.row-seats');
     });
 
     // Users management
