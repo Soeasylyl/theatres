@@ -66,12 +66,16 @@ class HallService
                 foreach ($row as $place) {
                     $seatNumber = $place['seatNumber'];
                     $seatTypeId = $place['seatsTypeId'];
+                    $posX = $place['posX'];
+                    $posY = $place['posY'];
 
                     $this->seatRepository->createSeat(
                         hall: $hall,
                         seatsTypeId: $seatTypeId,
                         rowNumber: $rowNumber,
-                        seatNumber: $seatNumber
+                        seatNumber: $seatNumber,
+                        positionX: $posX,
+                        positionY: $posY
                     );
                 }
             }

@@ -16,6 +16,7 @@ use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 
 class HallController extends BaseAdminController
 {
@@ -49,7 +50,7 @@ class HallController extends BaseAdminController
      * @param int $theatreId
      * @return RedirectResponse
      */
-    public function store(CreateAndUpdateHallRequest $request, int $theatreId)
+    public function store(Request $request, int $theatreId)
     {
         $createHallDto = new CreateHallDTO(
             theatreId: $theatreId,

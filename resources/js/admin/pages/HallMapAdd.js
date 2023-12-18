@@ -1,4 +1,4 @@
-class HallMap {
+class HallMapAdd {
     constructor() {
         this.addHallMapButton = document.querySelector('.add-hall-map');
         this.previewHallMapContainer = document.querySelector('.admin-halls__preview-map');
@@ -17,6 +17,7 @@ class HallMap {
     }
 
     handleDragStart(event) {
+        this.draggedElement = null;
         const target = event.target.closest('svg');
         if (target && target.parentNode === this.gElement) {
             this.draggedElement = target;
@@ -57,6 +58,14 @@ class HallMap {
 
             this.draggedElement.setAttributeNS(null, 'x', dx);
             this.draggedElement.setAttributeNS(null, 'y', dy);
+
+            const posXInput = this.previewHallMapContainer.querySelector(`input[name="rows[${this.draggedElement.dataset.numberRow}][${this.draggedElement.dataset.numberSeat}][posX]"]`);
+            const posYInput = this.previewHallMapContainer.querySelector(`input[name="rows[${this.draggedElement.dataset.numberRow}][${this.draggedElement.dataset.numberSeat}][posY]"]`);
+
+            if (posXInput && posYInput) {
+                posXInput.value = dx;
+                posYInput.value = dy;
+            }
         }
     }
 
@@ -83,20 +92,60 @@ class HallMap {
 
     addSeatToMapContainer() {
         this.addSeatsToMapButton && this.addSeatsToMapButton.addEventListener('click', () => {
+            const numberSeatInput = this.seatsWrapperContainer.querySelector('input[name="number_seat"]');
+
+            if (!numberSeatInput.value.trim()) {
+                alert('Пожалуйста, введите номер места.');
+                return; // Прерываем выполнение функции, если значение отсутствует
+            }
+
             this.findGElementInMap();
             const svgElement = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-            svgElement.setAttribute('x', '450');
-            svgElement.setAttribute('y', '400');
+            svgElement.setAttribute('x', '650');
+            svgElement.setAttribute('y', '125');
             svgElement.setAttribute('width', '80');
             svgElement.setAttribute('height', '86');
             svgElement.setAttribute('type', 'recliner');
 
             //Получение номера ряда и типа места для добавления в svg
-            const numberSeatInput = this.seatsWrapperContainer.querySelector('input[name="number_seat"]');
             const numberRowInput = this.seatsWrapperContainer.querySelector('input[name="number_row"]');
             const dataSeatTypeInput = this.seatsWrapperContainer.querySelector('select[name="seats_type"]');
             const selectedSeatType = dataSeatTypeInput ? dataSeatTypeInput.value : '';
             const selectedSeatName = dataSeatTypeInput ? dataSeatTypeInput.options[dataSeatTypeInput.selectedIndex].text : '';
+
+            // Создаем новый скрытый инпут для номера места
+            const seatNumberInput = document.createElement('input');
+            seatNumberInput.type = 'hidden';
+            seatNumberInput.name = `rows[${numberRowInput.value}][${numberSeatInput.value}][seatNumber]`;
+            seatNumberInput.value = numberSeatInput.value;
+
+            // Создаем новый скрытый инпут для типа места
+            const seatsTypeIdInput = document.createElement('input');
+            seatsTypeIdInput.type = 'hidden';
+            seatsTypeIdInput.name = `rows[${numberRowInput.value}][${numberSeatInput.value}][seatsTypeId]`;
+            seatsTypeIdInput.value = selectedSeatType;
+
+            // Создаем новый скрытый инпут для posX
+            const posXInput = document.createElement('input');
+            posXInput.type = 'hidden';
+            posXInput.name = `rows[${numberRowInput.value}][${numberSeatInput.value}][posX]`;
+            posXInput.value = svgElement.getAttributeNS(null, 'x');
+
+            // Создаем новый скрытый инпут для posY
+            const posYInput = document.createElement('input');
+            posYInput.type = 'hidden';
+            posYInput.name = `rows[${numberRowInput.value}][${numberSeatInput.value}][posY]`;
+            posYInput.value = svgElement.getAttributeNS(null, 'y');
+
+            // Устанавливаем значения номера ряда и места в атрибуты data
+            svgElement.setAttribute('data-number-row', numberRowInput.value);
+            svgElement.setAttribute('data-number-seat', numberSeatInput.value);
+
+            // Добавляем новые инпуты в форму
+            this.previewHallMapContainer.appendChild(seatNumberInput);
+            this.previewHallMapContainer.appendChild(seatsTypeIdInput);
+            this.previewHallMapContainer.appendChild(posXInput);
+            this.previewHallMapContainer.appendChild(posYInput);
 
             svgElement.setAttribute('data-seat-type', selectedSeatType);
             svgElement.setAttribute('data-number-row', numberRowInput.value);
@@ -167,11 +216,11 @@ class HallMap {
             svgElement.appendChild(textElement);
             this.gElement.appendChild(svgElement);
 
-            const inputElements = this.seatsWrapperContainer.querySelectorAll('input');
+            const numberSeatInputClear = this.seatsWrapperContainer.querySelector('input[name="number_seat"]');
 
-            inputElements.forEach((input) => {
-                input.value = '';
-            });
+            if (numberSeatInputClear) {
+                numberSeatInputClear.value = ''; // Очищаем только инпут с именем "number_seat"
+            }
         })
     }
 
@@ -226,21 +275,32 @@ class HallMap {
 
     scrollToElement(element) {
         const elementOffset = element.offsetTop;
-        const scrollStep = Math.PI / (500 / 15); // 15 - время анимации в миллисекундах
-        let count = 0, currPos = window.scrollY || document.documentElement.scrollTop;
+        const duration = 500; // Время анимации в миллисекундах
+        const startTime = performance.now();
+        const startScrollY = window.scrollY || document.documentElement.scrollTop;
 
-        const animateScroll = () => {
-            if (currPos < elementOffset) {
-                window.scrollTo(0, currPos + Math.PI * count);
-                currPos = window.scrollY || document.documentElement.scrollTop;
-                count += scrollStep;
+        const animateScroll = (currentTime) => {
+            const elapsed = currentTime - startTime;
 
+            // Рассчитываем новую позицию прокрутки
+            const progress = Math.min(elapsed / duration, 1);
+            const easeInOutQuad = (t) => t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+            const newPosition = startScrollY + (elementOffset - startScrollY) * easeInOutQuad(progress);
+
+            // Прокручиваем страницу
+            window.scrollTo(0, newPosition);
+
+            // Продолжаем анимацию, если не достигли конечной позиции
+            if (progress < 1) {
                 requestAnimationFrame(animateScroll);
             }
         };
 
-        animateScroll();
+        // Запускаем анимацию
+        requestAnimationFrame(animateScroll);
     }
+
+
 
     removeHallMap() {
         this.previewHallMapContainer.classList.remove('fade-in');
@@ -282,4 +342,4 @@ class HallMap {
     }
 }
 
-new HallMap();
+new HallMapAdd();

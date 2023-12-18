@@ -110,7 +110,6 @@
                                     <x-input :inputAttributes="[
                                         'name'=>'number_seat',
                                         'type' => 'number',
-                                        'required' => 'required',
                                         'autocomplete' => 'off',
                                         'class'=> 'admin-halls__seats-count'
                                          ]"
