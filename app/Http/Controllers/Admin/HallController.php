@@ -2,21 +2,19 @@
 
 namespace App\Http\Controllers\Admin;
 
-
 use App\DTO\Halls\CreateHallDTO;
 use App\DTO\Halls\DeleteHallDTO;
 use App\DTO\Halls\EditHallDTO;
 use App\DTO\Halls\UpdateHallDTO;
 use App\Http\Requests\Admin\Halls\DeleteHallRequest;
 use App\Http\Requests\Admin\Halls\CreateAndUpdateHallRequest;
-use App\Http\Requests\Admin\Halls\SeatsDataRowRequest;
+use App\Http\Requests\Admin\Halls\AjaxSeatsRequest;
 use App\Services\HallService;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 
 class HallController extends BaseAdminController
 {
@@ -50,7 +48,7 @@ class HallController extends BaseAdminController
      * @param int $theatreId
      * @return RedirectResponse
      */
-    public function store(Request $request, int $theatreId)
+    public function store(CreateAndUpdateHallRequest $request, int $theatreId)
     {
         $createHallDto = new CreateHallDTO(
             theatreId: $theatreId,
@@ -89,16 +87,16 @@ class HallController extends BaseAdminController
     }
 
     /**
-     * Display the rendered HTML template for a specific row of seats.
+     * Get the seats of the hall
      *
-     * @param SeatsDataRowRequest $request
+     * @param AjaxSeatsRequest $request
      * @return JsonResponse
      */
-    public function getHallContentAjax(Request $request)
+    public function getHallContentAjax(AjaxSeatsRequest $request)
     {
         $editHallDto = new EditHallDTO(
-            theatreId: $request->get('theatreId'),
-            hallId:  $request->get('hallId'),
+            theatreId: $request->input('theatreId'),
+            hallId:  $request->input('hallId'),
         );
 
         $dataSeats = $this->hallService->getHallContent($editHallDto);

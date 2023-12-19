@@ -5,7 +5,7 @@ namespace App\Http\Requests\Admin\Halls;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class SeatsDataRowRequest extends FormRequest
+class AjaxSeatsRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,9 +23,8 @@ class SeatsDataRowRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'seats_count' => 'required|int',
-            'seats_type' =>'required|exists:seat_types,id',
-            'count_row' =>'required|int',
+            'hallId' => 'required|int|exists:halls,id',
+            'theatreId' =>'required|int|exists:theatres,id',
         ];
     }
 }

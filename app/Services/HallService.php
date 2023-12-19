@@ -10,6 +10,7 @@ use App\Models\Hall;
 use App\Repositories\Interfaces\HallRepositoryInterface;
 use App\Repositories\Interfaces\TheatreRepositoryInterface;
 use App\Repositories\SeatRepository;
+use App\Repositories\SeatTypeRepository;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
@@ -20,6 +21,7 @@ class HallService
         private readonly TheatreRepositoryInterface $theatreRepository,
         private readonly HallRepositoryInterface $hallRepository,
         private readonly SeatRepository $seatRepository,
+        private readonly SeatTypeRepository $seatTypeRepository,
     )
     {
     }
@@ -114,9 +116,7 @@ class HallService
     public function getDataHall(EditHallDTO $dto): array
     {
         $hall = $this->hallRepository->getHallByIdOrFail($dto->getHallId());
-
-        $theatre = $this->theatreRepository->getTheatreByIdOrFail($dto->getTheatreId(), ['seatTypes']);
-        $seatsTypes = $theatre->seatTypes;
+        $seatsTypes = $this->seatTypeRepository->getSeatTypesByHallId($dto->getTheatreId());;
 
         return compact( 'seatsTypes', 'hall');
     }

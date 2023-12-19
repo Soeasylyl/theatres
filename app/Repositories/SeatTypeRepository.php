@@ -7,6 +7,7 @@ use App\DTO\SeatTypes\UpdateSeatTypeDTO;
 use App\Models\Seat;
 use App\Models\SeatType;
 use App\Repositories\Interfaces\SeatTypeRepositoryInterface;
+use Illuminate\Support\Collection;
 
 class SeatTypeRepository implements SeatTypeRepositoryInterface
 {
@@ -76,5 +77,16 @@ class SeatTypeRepository implements SeatTypeRepositoryInterface
         ]);
 
         return  $seatType;
+    }
+
+    /**
+     * Gets a collection of seat types for the specified theater.
+     *
+     * @param int $theatreId
+     * @return Collection
+     */
+    public function getSeatTypesByHallId(int $theatreId): Collection
+    {
+        return SeatType::where('theatre_id', $theatreId)->get();
     }
 }
