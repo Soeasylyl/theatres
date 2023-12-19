@@ -15,21 +15,25 @@ class SeatRepository implements SeatRepositoryInterface
      * @param int $seatsTypeId
      * @param int $rowNumber
      * @param int $seatNumber
+     * @param float $positionX
+     * @param float $positionY
      * @return Seat
      */
     public function createSeat(
         Hall $hall,
         int  $seatsTypeId,
         int  $rowNumber,
-        int  $seatNumber
+        int  $seatNumber,
+        float $positionX,
+        float $positionY
     ): Seat
     {
         return $hall->seats()->create([
             'seat_type_id' => $seatsTypeId,
             'row' => $rowNumber,
             'number' => $seatNumber,
-            'position_x' => rand(0, 100),
-            'position_y' => rand(0, 100),
+            'position_x' => $positionX,
+            'position_y' => $positionY,
         ]);
     }
 

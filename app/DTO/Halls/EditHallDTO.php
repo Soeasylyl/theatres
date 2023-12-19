@@ -11,7 +11,7 @@ class EditHallDTO
      */
     public function __construct(
         private readonly int $theatreId,
-        private readonly int  $hallId,
+        private readonly int $hallId,
     )
     {
     }

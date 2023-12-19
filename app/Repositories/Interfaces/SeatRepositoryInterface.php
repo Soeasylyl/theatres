@@ -14,13 +14,17 @@ interface SeatRepositoryInterface
      * @param int $seatsTypeId
      * @param int $rowNumber
      * @param int $seatNumber
+     * @param float $positionX
+     * @param float $positionY
      * @return Seat
      */
     public function createSeat(
-        Hall $hall,
-        int  $seatsTypeId,
-        int  $rowNumber,
-        int  $seatNumber
+        Hall  $hall,
+        int   $seatsTypeId,
+        int   $rowNumber,
+        int   $seatNumber,
+        float $positionX,
+        float $positionY
     ): Seat;
 
     /**

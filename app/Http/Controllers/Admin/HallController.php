@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
-
 use App\DTO\Halls\CreateHallDTO;
 use App\DTO\Halls\DeleteHallDTO;
 use App\DTO\Halls\EditHallDTO;
 use App\DTO\Halls\UpdateHallDTO;
 use App\Http\Requests\Admin\Halls\DeleteHallRequest;
 use App\Http\Requests\Admin\Halls\CreateAndUpdateHallRequest;
-use App\Http\Requests\Admin\Halls\SeatsDataRowRequest;
+use App\Http\Requests\Admin\Halls\AjaxSeatsRequest;
 use App\Services\HallService;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -88,20 +87,21 @@ class HallController extends BaseAdminController
     }
 
     /**
-     * Display the rendered HTML template for a specific row of seats.
+     * Get the seats of the hall
      *
-     * @param SeatsDataRowRequest $request
+     * @param AjaxSeatsRequest $request
      * @return JsonResponse
      */
-    public function showRowSeats(SeatsDataRowRequest $request)
+    public function getHallContentAjax(AjaxSeatsRequest $request)
     {
-        return response()->json([
-            'html' => view('admin.pages.halls.hall-row-ajax', [
-                'seatTypeId' => $request->get('seats_type'),
-                'countSeats' => $request->input('seats_count'),
-                'numberRow' => $request->get('count_row'),
-            ])->render()
-        ]);
+        $editHallDto = new EditHallDTO(
+            theatreId: $request->input('theatreId'),
+            hallId:  $request->input('hallId'),
+        );
+
+        $dataSeats = $this->hallService->getHallContent($editHallDto);
+
+        return response()->json($dataSeats);
     }
 
     /**
@@ -123,7 +123,6 @@ class HallController extends BaseAdminController
         return view('admin.pages.halls.edit', [
             'theatres' => $theatreId,
             'halls' => $hallId,
-            'dataHall' => $dataHall['dataSeats'],
             'seatTypes' => $dataHall['seatsTypes'],
             'hall' => $dataHall['hall'],
         ]);

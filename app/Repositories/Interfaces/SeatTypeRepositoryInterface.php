@@ -5,6 +5,7 @@ namespace App\Repositories\Interfaces;
 use App\DTO\SeatTypes\CreateSeatTypeDTO;
 use App\DTO\SeatTypes\UpdateSeatTypeDTO;
 use App\Models\SeatType;
+use Illuminate\Support\Collection;
 
 interface SeatTypeRepositoryInterface
 {
@@ -49,4 +50,12 @@ interface SeatTypeRepositoryInterface
      * @return SeatType
      */
     public function updateInfoBySeatType(SeatType $seatType, UpdateSeatTypeDTO $dto): SeatType;
+
+    /**
+     * Gets a collection of seat types for the specified theater.
+     *
+     * @param int $theatreId
+     * @return Collection
+     */
+    public function getSeatTypesByHallId(int $theatreId): Collection;
 }

@@ -10,6 +10,7 @@ use App\Models\Hall;
 use App\Repositories\Interfaces\HallRepositoryInterface;
 use App\Repositories\Interfaces\TheatreRepositoryInterface;
 use App\Repositories\SeatRepository;
+use App\Repositories\SeatTypeRepository;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
@@ -20,6 +21,7 @@ class HallService
         private readonly TheatreRepositoryInterface $theatreRepository,
         private readonly HallRepositoryInterface $hallRepository,
         private readonly SeatRepository $seatRepository,
+        private readonly SeatTypeRepository $seatTypeRepository,
     )
     {
     }
@@ -66,12 +68,16 @@ class HallService
                 foreach ($row as $place) {
                     $seatNumber = $place['seatNumber'];
                     $seatTypeId = $place['seatsTypeId'];
+                    $posX = $place['posX'];
+                    $posY = $place['posY'];
 
                     $this->seatRepository->createSeat(
                         hall: $hall,
                         seatsTypeId: $seatTypeId,
                         rowNumber: $rowNumber,
-                        seatNumber: $seatNumber
+                        seatNumber: $seatNumber,
+                        positionX: $posX,
+                        positionY: $posY
                     );
                 }
             }
@@ -108,18 +114,36 @@ class HallService
      */
     public function getDataHall(EditHallDTO $dto): array
     {
+        $hall = $this->hallRepository->getHallByIdOrFail($dto->getHallId());
+        $seatsTypes = $this->seatTypeRepository->getSeatTypesByHallId($dto->getTheatreId());;
+
+        return compact( 'seatsTypes', 'hall');
+    }
+
+    /**
+     * Retrieves the contents of the room for editing.
+     * Retrieves information about seats in the hall, including seat numbers, seat types, coordinates and other data.
+     *
+     * @param EditHallDTO $dto
+     * @return array
+     */
+    public function getHallContent(EditHallDTO $dto): array
+    {
         $hall = $this->hallRepository->getHallByIdOrFail($dto->getHallId(), ['seats.seatType']);
         $seats = $hall->seats;
         $dataSeats = [];
 
         foreach ($seats as $seat) {
-            $dataSeats[$seat->row][$seat->id] = [$seat->number => $seat->seatType];
+            $dataSeats[$seat->row][$seat->id] = [
+                'number' => $seat->number,
+                'seatsTypeName' => $seat->seatType->name,
+                'seatsTypeId' => $seat->seatType->id,
+                'posX' => $seat->position_x,
+                'posY' => $seat->position_y,
+            ];
         }
 
-        $theatre = $this->theatreRepository->getTheatreByIdOrFail($dto->getTheatreId(), ['seatTypes']);
-        $seatsTypes = $theatre->seatTypes;
-
-        return compact('dataSeats', 'seatsTypes', 'hall');
+        return compact('dataSeats');
     }
 
     /**
@@ -151,8 +175,8 @@ class HallService
                         'seat_type_id' => $place['seatsTypeId'],
                         'row' => $rowNumber,
                         'number' => $place['seatNumber'],
-                        'position_x' => rand(0, 100),
-                        'position_y' => rand(0, 100),
+                        'position_x' => $place['posX'],
+                        'position_y' => $place['posY'],
                     ];
                 }
             }
