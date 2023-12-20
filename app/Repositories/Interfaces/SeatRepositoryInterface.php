@@ -39,16 +39,31 @@ interface SeatRepositoryInterface
     /**
      * Updates information about the Seat.
      *
-     * @param Seat $seat
+     * @param int $seatId
      * @param int $seatsTypeId
+     * @param int $hallId
      * @param int $rowNumber
      * @param int $seatNumber
-     * @return Seat
+     * @param float $positionX
+     * @param float $positionY
+     * @return bool|int
      */
     public function updateSeat(
-        Seat $seat,
-        int  $seatsTypeId,
-        int  $rowNumber,
-        int  $seatNumber
-    ): Seat;
+        int   $seatId,
+        int   $seatsTypeId,
+        int   $hallId,
+        int   $rowNumber,
+        int   $seatNumber,
+        float $positionX,
+        float $positionY,
+    ): bool|int;
+
+    /**
+     * Delete seats in a hall that are not present in the given list of seat IDs.
+     *
+     * @param int $hallId
+     * @param array $seatIdsList
+     * @return bool
+     */
+    public function deleteSeatsNotInList(int $hallId, array $seatIdsList): bool;
 }

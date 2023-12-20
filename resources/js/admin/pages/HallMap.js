@@ -97,6 +97,7 @@ class HallMap {
         seatTypeName,
         renderSeatPosX,
         renderSeatPosY,
+        seatId,
     ) {
 
         if (!numberSeatInputValue) {
@@ -135,6 +136,15 @@ class HallMap {
         posYInput.type = 'hidden';
         posYInput.name = `rows[${numberRowInputValue}][${numberSeatInputValue}][posY]`;
         posYInput.value = svgElement.getAttributeNS(null, 'y');
+
+        if (seatId) {
+            const seatIdInput = document.createElement('input');
+            seatIdInput.type = 'hidden';
+            seatIdInput.name = `rows[${numberRowInputValue}][${numberSeatInputValue}][seatId]`;
+            seatIdInput.value = seatId;
+
+            this.previewHallMapContainer.appendChild(seatIdInput);
+        }
 
         // Устанавливаем значения номера ряда и места в атрибуты data
         svgElement.setAttribute('data-number-row', numberRowInputValue);
@@ -276,6 +286,7 @@ class HallMap {
                                     seatsTypeName,
                                     posX,
                                     posY,
+                                    seatKey,
                                 );
                             }
                         }

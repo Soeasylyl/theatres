@@ -19,9 +19,9 @@ class HallService
 {
     public function __construct(
         private readonly TheatreRepositoryInterface $theatreRepository,
-        private readonly HallRepositoryInterface $hallRepository,
-        private readonly SeatRepository $seatRepository,
-        private readonly SeatTypeRepository $seatTypeRepository,
+        private readonly HallRepositoryInterface    $hallRepository,
+        private readonly SeatRepository             $seatRepository,
+        private readonly SeatTypeRepository         $seatTypeRepository,
     )
     {
     }
@@ -115,9 +115,9 @@ class HallService
     public function getDataHall(EditHallDTO $dto): array
     {
         $hall = $this->hallRepository->getHallByIdOrFail($dto->getHallId());
-        $seatsTypes = $this->seatTypeRepository->getSeatTypesByHallId($dto->getTheatreId());;
+        $seatsTypes = $this->seatTypeRepository->getSeatTypesByHallId($dto->getTheatreId());
 
-        return compact( 'seatsTypes', 'hall');
+        return compact('seatsTypes', 'hall');
     }
 
     /**
@@ -166,22 +166,41 @@ class HallService
                 );
             }
 
-            $hall->seats()->delete();
+            $existingSeatIds = [];
 
-            $seats = [];
             foreach ($dto->getRows() as $rowNumber => $row) {
                 foreach ($row as $place) {
-                    $seats[] = [
-                        'seat_type_id' => $place['seatsTypeId'],
-                        'row' => $rowNumber,
-                        'number' => $place['seatNumber'],
-                        'position_x' => $place['posX'],
-                        'position_y' => $place['posY'],
-                    ];
+                    if (isset($place['seatId'])) {
+                        $existingSeatIds[] = $place['seatId'];
+
+                        $this->seatRepository->updateSeat(
+                            seatId: $place['seatId'],
+                            seatsTypeId: $place['seatsTypeId'],
+                            hallId: $hall->id,
+                            rowNumber: $rowNumber,
+                            seatNumber: $place['seatNumber'],
+                            positionX: $place['posX'],
+                            positionY: $place['posY'],
+                        );
+                    } else {
+                        $newSeat = $this->seatRepository->createSeat(
+                            hall: $hall,
+                            seatsTypeId: $place['seatsTypeId'],
+                            rowNumber: $rowNumber,
+                            seatNumber: $place['seatNumber'],
+                            positionX: $place['posX'],
+                            positionY: $place['posY'],
+                        );
+                        $existingSeatIds[] = $newSeat->id;
+                    }
                 }
             }
 
-            $hall->seats()->createMany($seats);
+            $existingSeatIds = array_map('intval', $existingSeatIds);
+            $this->seatRepository->deleteSeatsNotInList(
+                hallId: $hall->id,
+                seatIdsList: $existingSeatIds
+            );
 
             DB::commit();
         } catch (\Throwable $exception) {

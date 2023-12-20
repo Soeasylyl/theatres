@@ -20,10 +20,10 @@ class SeatRepository implements SeatRepositoryInterface
      * @return Seat
      */
     public function createSeat(
-        Hall $hall,
-        int  $seatsTypeId,
-        int  $rowNumber,
-        int  $seatNumber,
+        Hall  $hall,
+        int   $seatsTypeId,
+        int   $rowNumber,
+        int   $seatNumber,
         float $positionX,
         float $positionY
     ): Seat
@@ -52,27 +52,46 @@ class SeatRepository implements SeatRepositoryInterface
     /**
      * Updates information about the Seat.
      *
-     * @param Seat $seat
+     * @param int $seatId
      * @param int $seatsTypeId
+     * @param int $hallId
      * @param int $rowNumber
      * @param int $seatNumber
-     * @return Seat
+     * @param float $positionX
+     * @param float $positionY
+     * @return bool|int
      */
     public function updateSeat(
-        Seat $seat,
-        int  $seatsTypeId,
-        int  $rowNumber,
-        int  $seatNumber
-    ): Seat
+        int   $seatId,
+        int   $seatsTypeId,
+        int   $hallId,
+        int   $rowNumber,
+        int   $seatNumber,
+        float $positionX,
+        float $positionY,
+    ): bool|int
     {
-        $seat->update([
+        return Seat::where('id', $seatId)->update([
             'seat_type_id' => $seatsTypeId,
+            'hall_id' => $hallId,
             'row' => $rowNumber,
             'number' => $seatNumber,
-            'position_x' => rand(0, 100),
-            'position_y' => rand(0, 100),
+            'position_x' => $positionX,
+            'position_y' => $positionY,
         ]);
+    }
 
-        return $seat;
+    /**
+     * Delete seats in a hall that are not present in the given list of seat IDs.
+     *
+     * @param int $hallId
+     * @param array $seatIdsList
+     * @return bool
+     */
+    public function deleteSeatsNotInList(int $hallId, array $seatIdsList): bool
+    {
+        return Seat::where('hall_id', $hallId)
+            ->whereNotIn('id', $seatIdsList)
+            ->delete();
     }
 }
