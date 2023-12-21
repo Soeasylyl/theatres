@@ -17,6 +17,46 @@
         }
     }
 
+    //.border-animation {
+    //    @keyframes linearGradientMove {
+    //        100% {
+    //            background-position: 4px 0, -4px 100%, 0 -4px, 100% 4px;
+    //        }
+    //    }
+    //
+    //    border: none;
+    //    background: linear-gradient(90deg, $c-adp-btn-hover 50%, transparent 0) repeat-x,
+    //    linear-gradient(90deg, $c-adp-btn-hover 50%, transparent 0) repeat-x,
+    //    linear-gradient(0deg, $c-adp-btn-hover 50%, transparent 0) repeat-y,
+    //    linear-gradient(0deg, $c-adp-btn-hover 50%, transparent 0) repeat-y;
+    //    background-size: 8px 2px, 8px 2px, 2px 8px, 2px 8px;
+    //    background-position: 0 0, 0 100%, 0 0, 100% 0;
+    //    animation: linearGradientMove .3s infinite linear;
+    //}
+
+    .selected path {
+        stroke-width: 2; /* Измените толщину обводки на свой выбор */
+        animation: pulse 3s infinite; /* Увеличьте общую продолжительность анимации */
+    }
+
+    @keyframes pulse {
+        0% {
+            fill: $c-adp-btn-hover;
+        }
+        25% {
+            fill: $c-adp-btn-hover; /* Цвет остается неизменным в течение 25% анимации */
+        }
+        50% {
+            fill: black;
+        }
+        75% {
+            fill: black; /* Цвет остается неизменным в течение 25% анимации */
+        }
+        100% {
+            fill: $c-adp-btn-hover;
+        }
+    }
+
     &__seat {
         transform: scale(0.8);
     }
@@ -39,13 +79,34 @@
     &__map-context-menu {
         position: absolute;
         z-index: 999;
-         ul { list-style: none; margin: 0; padding: 0; }
 
-        /* стиль отдельных элементов */
-        ul li { margin: 0; padding: 0; background-color: #fff; display: block; }
+        /* не показываем меню с самого начала */
+        display: none;
+        background-color: #fff;
+        border: 1px solid #333;
 
-        /* меняем фон в пункте меню при наведении мыши */
-        .context-menu ul li:hover { background-color: #eee; }
+        /* Добавим тени */
+        -moz-box-shadow: 5px 2px 10px rgba(0, 0, 0, 0.5);
+        -webkit-box-shadow: 5px 2px 10px rgba(0, 0, 0, 0.5);
+        box-shadow: 5px 2px 10px rgba(0, 0, 0, 0.5);
+
+        ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        ul li {
+            margin: 0;
+            padding: 4px 10px;
+            background-color: #fff;
+            display: block;
+        }
+
+        ul li:hover {
+            background-color: $c-adp-hov;
+            cursor: pointer;
+        }
     }
 
     &__map {
@@ -67,23 +128,6 @@
         75% {
             clip-path: inset(0 0 0 95%);
         }
-    }
-
-    .border-animation {
-        @keyframes linearGradientMove {
-            100% {
-                background-position: 4px 0, -4px 100%, 0 -4px, 100% 4px;
-            }
-        }
-
-        border: none;
-        background: linear-gradient(90deg, $c-adp-btn-hover 50%, transparent 0) repeat-x,
-                    linear-gradient(90deg, $c-adp-btn-hover 50%, transparent 0) repeat-x,
-                    linear-gradient(0deg, $c-adp-btn-hover 50%, transparent 0) repeat-y,
-                    linear-gradient(0deg, $c-adp-btn-hover 50%, transparent 0) repeat-y;
-        background-size: 8px 2px, 8px 2px, 2px 8px, 2px 8px;
-        background-position: 0 0, 0 100%, 0 0, 100% 0;
-        animation: linearGradientMove .3s infinite linear;
     }
 
     &__close-button {

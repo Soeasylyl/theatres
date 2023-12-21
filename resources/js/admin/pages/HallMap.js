@@ -7,6 +7,8 @@ class HallMap {
 
         this.draggedElement = null;
 
+        this.editingSVGElement = null;
+
         this.init();
     }
 
@@ -54,19 +56,17 @@ class HallMap {
         });
     }
 
-
     showMapContextMenu(event) {
         event.preventDefault();
-        const x = event.clientX - 200;
-        const y = event.clientY - 50;
+        const x = event.pageX - 200;
+        const y = event.pageY - 60;
 
         this.displayContextMenu(x, y, [
-            { label: 'Добавить новое место', action: this.addNewPlace.bind(this) }
+            {label: 'Добавить новое место', action: () => this.addNewPlace()}
         ]);
-        console.log('Контекстное меню для карты', x, y);
     }
 
-     displayContextMenu(x, y, menuItems) {
+    displayContextMenu(x, y, menuItems) {
         const contextMenu = document.getElementById('contextMenu');
         const menuList = document.getElementById('menuList');
 
@@ -97,24 +97,45 @@ class HallMap {
 
     showSVGContextMenu(event) {
         event.preventDefault();
-        const x = event.clientX - 200;
-        const y = event.clientY - 50;
+        const x = event.pageX - 200;
+        const y = event.pageY - 60;
 
         this.displayContextMenu(x, y, [
-            { label: 'Редактировать место', action: this.editPlace },
-            { label: 'Удалить место', action: this.deletePlace }
+            {label: 'Редактировать место', action: () => this.editPlace()},
+            {label: 'Удалить место', action: () => this.deletePlace()}
         ]);
-        console.log('Контекстное меню для SVG элемента', x, y);
     }
 
     addNewPlace() {
         console.log('Добавление нового места');
+
         this.hideContextMenu();
+        const titleElement = document.querySelector('.admin-halls__seats-title');
+        titleElement.textContent = 'Добавление нового места:';
+        this.seatsWrapperContainer && this.seatsWrapperContainer.classList.remove('admin-halls__hidden');
     }
 
     editPlace() {
-        console.log('Редактирование места');
+        console.log('Редактирование место');
         this.hideContextMenu();
+
+        const titleElement = document.querySelector('.admin-halls__seats-title');
+        titleElement.textContent = 'Редактирование места:';
+        this.seatsWrapperContainer && this.seatsWrapperContainer.classList.remove('admin-halls__hidden');
+
+        const svgElement = this.getEditingSVGElement();
+    }
+
+    getEditingSVGElement() {
+
+        const isEditing = true;
+
+        if (isEditing) {
+
+            return this.editingSVGElement;
+        }
+
+        return null;
     }
 
     deletePlace() {
@@ -131,6 +152,7 @@ class HallMap {
             this.addHallMap(autoload);
             this.ajaxGetDataHallMap(url);
         }
+        this.seatsWrapperContainer && this.seatsWrapperContainer.classList.add('admin-halls__hidden');
     }
 
     handleDragStart(event) {
@@ -154,8 +176,8 @@ class HallMap {
 
     getEventPoint(event) {
         const svgPoint = this.gElement.ownerSVGElement.createSVGPoint();
-        svgPoint.x = event.clientX;
-        svgPoint.y = event.clientY;
+        svgPoint.x = event.pageX;
+        svgPoint.y = event.pageY;
         return svgPoint.matrixTransform(this.gElement.getScreenCTM().inverse());
     }
 
@@ -189,6 +211,8 @@ class HallMap {
         document.addEventListener('mousedown', this.handleDragStart.bind(this));
         document.addEventListener('mouseup', this.handleDragEnd.bind(this));
         document.addEventListener('mousemove', this.handleDrag.bind(this));
+
+        this.addClickEventListeners();
     }
 
     findGElementInMap() {
