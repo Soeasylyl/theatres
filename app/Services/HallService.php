@@ -11,6 +11,7 @@ use App\Repositories\Interfaces\HallRepositoryInterface;
 use App\Repositories\Interfaces\TheatreRepositoryInterface;
 use App\Repositories\SeatRepository;
 use App\Repositories\SeatTypeRepository;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
@@ -34,11 +35,9 @@ class HallService
      */
     public function getDataForCreate(int $theatreId): array
     {
-        $theatre = $this->theatreRepository->getTheatreByIdOrFail(theatreId: $theatreId, relations: ['seatTypes']);
-        $seatTypes = $theatre->seatTypes;
-        $numberRow = 0;
+        $seatTypes = $this->seatTypeRepository->getSeatTypesByHallId($theatreId);
 
-        return compact('seatTypes', 'numberRow');
+        return compact('seatTypes');
     }
 
     /**
@@ -109,15 +108,12 @@ class HallService
     /**
      * Receives data for editing the hall.
      *
-     * @param EditHallDTO $dto
-     * @return array
+     * @param int $hallId
+     * @return Hall
      */
-    public function getDataHall(EditHallDTO $dto): array
+    public function getHall(int $hallId): Hall
     {
-        $hall = $this->hallRepository->getHallByIdOrFail($dto->getHallId());
-        $seatsTypes = $this->seatTypeRepository->getSeatTypesByHallId($dto->getTheatreId());
-
-        return compact('seatsTypes', 'hall');
+        return $this->hallRepository->getHallByIdOrFail($hallId);
     }
 
     /**

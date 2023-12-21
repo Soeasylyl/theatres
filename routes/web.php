@@ -4,6 +4,7 @@ use App\Enums\RolesUsersEnum;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\HallController;
 use App\Http\Controllers\Admin\MovieController;
+use App\Http\Controllers\Admin\SeatController;
 use App\Http\Controllers\Admin\SeatTypeController;
 use App\Http\Controllers\Admin\TheatreController;
 use App\Http\Controllers\Admin\UserController;
@@ -79,23 +80,26 @@ Route::prefix('admin')->middleware(['auth', 'isBlock', 'AdminAccess'])->group(fu
                     Route::delete('/', [SeatTypeController::class, 'destroy'])->name('seat-type.delete');
                 });
 
-                //Hall creating
+                //Hall CRUD
                 Route::prefix('{theatres}/hall/')->group(function () {
                    Route::get('/', [HallController::class, 'create'])->name('hall.create');
                    Route::post('/', [HallController::class, 'store'])->name('hall.store');
                    Route::delete('/', [HallController::class, 'destroy'])->name('hall.delete');
-                   Route::get('{halls}/', [HallController::class, 'edit'])->name('hall.edit');
-                   Route::patch('{halls}/', [HallController::class, 'update'])->name('hall.update');
 
+                   Route::prefix('{halls}')->group(function () {
+                       Route::get('/', [HallController::class, 'edit'])->name('hall.edit');
+                       Route::patch('/', [HallController::class, 'update'])->name('hall.update');
+
+                       Route::get('/seat', [SeatController::class, 'create'])->name('seat.create');
+                   });
                 });
-
             });
         });
     });
 
-    Route::prefix('/ajax')->group(function () {
-        Route::get('/get-hall-content',[HallController::class, 'getHallContentAjax'])->name('hall.show.row-seats');
-    });
+//    Route::prefix('/ajax')->group(function () {
+//        Route::get('/get-hall-content',[HallController::class, 'getHallContentAjax'])->name('hall.show.row-seats');
+//    });
 
     // Users management
     Route::prefix('users')->middleware(['role:' . RolesUsersEnum::SUPER_ADMIN->value . '|' . RolesUsersEnum::CINEMA_ADMIN->value])->group(function () {

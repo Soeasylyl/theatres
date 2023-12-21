@@ -69,6 +69,10 @@
                             <h2 class="admin-halls__title">
                                 {{ __('Визуализация создания зала') }}
                             </h2>
+                            <a href="{{ route('seat.create', ['theatres' => $theatres, 'halls' => $halls]) }}">
+                                {{ __('Редактирование карты') }}
+                            </a>
+
                             <div class="admin-halls__rows">
                                 <div class="admin-halls__map-container">
                                     <div class="admin-halls__preview-map">
@@ -76,9 +80,7 @@
                                     <div class="admin-halls__map-body">
 
                                         <div class="login-container__btn add-hall-map"
-                                             data-id-hall="{{ $halls }}"
-                                             data-id-theatre="{{ $theatres }}"
-                                             data-url="{{ route('hall.show.row-seats') }}"
+                                             data-url="{{ route('generateMap.create', ['theatres' => $theatres, 'halls' => $halls]) }}"
                                              data-edit="true"> {{ __('Показать карту зала') }}</div>
                                     </div>
                                 </div>

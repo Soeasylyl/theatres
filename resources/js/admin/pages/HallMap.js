@@ -14,6 +14,123 @@ class HallMap {
         this.addSeatToMapContainer();
         this.closePreviewMapContainer();
         this.addDragEventListeners();
+        this.autoLoadMap();
+
+        this.addMapContextMenu();
+        this.addSVGContextMenuRecursively(this.gElement);
+    }
+
+    addMapContextMenu() {
+        const mapContainer = document.querySelector('.admin-halls__map');
+        mapContainer.addEventListener('contextmenu', (event) => {
+            event.preventDefault();
+            const svgElement = event.target.closest('[contextmenu="seatContextMenu"]');
+            if (svgElement && mapContainer.contains(svgElement)) {
+                // Если клик был на SVG элементе или его дочерних элементах, не вызываем контекстное меню для карты
+                return;
+            }
+            // В противном случае, вызываем контекстное меню для карты
+            this.showMapContextMenu(event);
+        });
+    }
+
+    addSVGContextMenuRecursively(parentElement) {
+        parentElement.addEventListener('contextmenu', (event) => {
+            event.preventDefault();
+
+            // Проверяем, был ли клик на SVG элементе или его дочерних элементах
+            const svgElement = event.target.closest('[contextmenu="seatContextMenu"]');
+            if (svgElement && parentElement.contains(svgElement)) {
+                // Если клик был на SVG элементе или его дочерних элементах, вызываем контекстное меню для SVG
+                this.showSVGContextMenu(event);
+            }
+        });
+
+        const childElements = parentElement.children;
+        Array.from(childElements).forEach((childElement) => {
+            if (childElement instanceof SVGElement) {
+                this.addSVGContextMenuRecursively(childElement);
+            }
+        });
+    }
+
+
+    showMapContextMenu(event) {
+        event.preventDefault();
+        const x = event.clientX - 200;
+        const y = event.clientY - 50;
+
+        this.displayContextMenu(x, y, [
+            { label: 'Добавить новое место', action: this.addNewPlace.bind(this) }
+        ]);
+        console.log('Контекстное меню для карты', x, y);
+    }
+
+     displayContextMenu(x, y, menuItems) {
+        const contextMenu = document.getElementById('contextMenu');
+        const menuList = document.getElementById('menuList');
+
+        // Очистка предыдущего контекстного меню
+        menuList.innerHTML = '';
+
+        // Добавление новых пунктов меню
+        menuItems.forEach(item => {
+            const menuItem = document.createElement('li');
+            menuItem.textContent = item.label;
+            menuItem.addEventListener('click', item.action);
+            menuList.appendChild(menuItem);
+        });
+
+        // Показ контекстного меню
+        contextMenu.style.display = 'block';
+        contextMenu.style.left = x + 'px';
+        contextMenu.style.top = y + 'px';
+
+        // Скрытие контекстного меню при клике вне его области
+        document.addEventListener('click', this.hideContextMenu);
+    }
+
+    hideContextMenu() {
+        const contextMenu = document.getElementById('contextMenu');
+        contextMenu.style.display = 'none';
+    }
+
+    showSVGContextMenu(event) {
+        event.preventDefault();
+        const x = event.clientX - 200;
+        const y = event.clientY - 50;
+
+        this.displayContextMenu(x, y, [
+            { label: 'Редактировать место', action: this.editPlace },
+            { label: 'Удалить место', action: this.deletePlace }
+        ]);
+        console.log('Контекстное меню для SVG элемента', x, y);
+    }
+
+    addNewPlace() {
+        console.log('Добавление нового места');
+        this.hideContextMenu();
+    }
+
+    editPlace() {
+        console.log('Редактирование места');
+        this.hideContextMenu();
+    }
+
+    deletePlace() {
+        console.log('Удаление места');
+        this.hideContextMenu();
+    }
+
+    autoLoadMap() {
+        const elementUrl = document.querySelector('[data-page-url]');
+
+        if (elementUrl) {
+            const url = elementUrl.dataset.pageUrl;
+            const autoload = true;
+            this.addHallMap(autoload);
+            this.ajaxGetDataHallMap(url);
+        }
     }
 
     handleDragStart(event) {
@@ -34,7 +151,6 @@ class HallMap {
         const y = parseFloat(element.getAttributeNS(null, 'y'));
         return {x, y};
     }
-
 
     getEventPoint(event) {
         const svgPoint = this.gElement.ownerSVGElement.createSVGPoint();
@@ -68,7 +184,6 @@ class HallMap {
             }
         }
     }
-
 
     addDragEventListeners() {
         document.addEventListener('mousedown', this.handleDragStart.bind(this));
@@ -112,6 +227,8 @@ class HallMap {
         svgElement.setAttribute('width', '80');
         svgElement.setAttribute('height', '86');
         svgElement.setAttribute('type', 'recliner');
+
+        svgElement.setAttribute('contextmenu', 'seatContextMenu');
 
         // Создаем новый скрытый инпут для номера места
         const seatNumberInput = document.createElement('input');
@@ -230,7 +347,6 @@ class HallMap {
         if (numberSeatInputClear) {
             numberSeatInputClear.value = ''; // Очищаем только инпут с именем "number_seat"
         }
-
     }
 
     addSeatToMapContainer() {
@@ -251,7 +367,6 @@ class HallMap {
         })
     }
 
-
     closePreviewMapContainer() {
         this.addHallMapButton && this.addHallMapButton.addEventListener('click', () => {
             this.addHallMap();
@@ -259,38 +374,8 @@ class HallMap {
             const isEditButton = this.addHallMapButton.dataset.edit === 'true';
 
             if (isEditButton) {
-                const idHall = this.addHallMapButton.dataset.idHall;
-                const idTheatre = this.addHallMapButton.dataset.idTheatre;
                 const url = this.addHallMapButton.dataset.url;
-                fetch(`${url}?hallId=${idHall}&theatreId=${idTheatre}`, {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                    },
-                })
-                    .then((response) => {
-                        return response.json();
-                    })
-                    .then((data) => {
-                        const seatEntries = Object.entries(data.dataSeats);
-
-                        for (const [rowKey, seats] of seatEntries) {
-                            for (const [seatKey, seat] of Object.entries(seats)) {
-                                const { number, posX, posY, seatsTypeId, seatsTypeName } = seat;
-
-                                // Вызов вашего метода с полученными значениями
-                                this.renderMapToPreview(
-                                    number,
-                                    rowKey,
-                                    seatsTypeId,
-                                    seatsTypeName,
-                                    posX,
-                                    posY,
-                                    seatKey,
-                                );
-                            }
-                        }
-                    });
+                this.ajaxGetDataHallMap(url)
             }
         });
 
@@ -302,7 +387,39 @@ class HallMap {
         });
     }
 
-    addHallMap() {
+    ajaxGetDataHallMap(url) {
+        fetch(`${url}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+        })
+            .then((response) => {
+                return response.json();
+            })
+            .then((data) => {
+                const seatEntries = Object.entries(data.dataSeats);
+
+                for (const [rowKey, seats] of seatEntries) {
+                    for (const [seatKey, seat] of Object.entries(seats)) {
+                        const {number, posX, posY, seatsTypeId, seatsTypeName} = seat;
+
+                        // Вызов вашего метода с полученными значениями
+                        this.renderMapToPreview(
+                            number,
+                            rowKey,
+                            seatsTypeId,
+                            seatsTypeName,
+                            posX,
+                            posY,
+                            seatKey,
+                        );
+                    }
+                }
+            });
+    }
+
+    addHallMap(autoload) {
         const isMapVisible = this.previewHallMapContainer.classList.contains('fade-in');
 
         if (!isMapVisible) {
@@ -319,13 +436,16 @@ class HallMap {
         `;
             this.findGElementInMap();
             this.addBorderToMap();
-            this.addCloseButton();
+
+            if (!autoload) {
+                this.addCloseButton();
+            }
 
             this.scrollToElement(this.previewHallMapContainer);
 
-            this.previewHallMapContainer.classList.add('fade-in');
-            this.addHallMapButton.classList.add('admin-halls__hidden');
-            this.seatsWrapperContainer.classList.remove('admin-halls__hidden');
+            this.previewHallMapContainer && this.previewHallMapContainer.classList.add('fade-in');
+            this.addHallMapButton && this.addHallMapButton.classList.add('admin-halls__hidden');
+            this.seatsWrapperContainer && this.seatsWrapperContainer.classList.remove('admin-halls__hidden');
         }
     }
 
@@ -335,7 +455,6 @@ class HallMap {
             this.scalableGroup.setAttribute('transform', `scale(${scaleValue})`);
         });
     }
-
 
     scrollToElement(element) {
         const elementOffset = element.offsetTop;
@@ -364,16 +483,14 @@ class HallMap {
         requestAnimationFrame(animateScroll);
     }
 
-
     removeHallMap() {
-        this.previewHallMapContainer.classList.remove('fade-in');
-        this.addHallMapButton.classList.remove('admin-halls__hidden');
-        this.seatsWrapperContainer.classList.add('admin-halls__hidden');
+        this.previewHallMapContainer && this.previewHallMapContainer.classList.remove('fade-in');
+        this.addHallMapButton && this.addHallMapButton.classList.remove('admin-halls__hidden');
+        this.seatsWrapperContainer && this.seatsWrapperContainer.classList.add('admin-halls__hidden');
 
         this.previewHallMapContainer.innerHTML = '';
         this.previewHallMapContainer && this.previewHallMapContainer.classList.remove('admin-halls__border-map');
         this.removeCloseButton();
-
     }
 
     addBorderToMap() {
@@ -403,39 +520,6 @@ class HallMap {
             existingButton.remove();
         }
     }
-
-    //
-    // generateSeatsFromData(seatData) {
-    //     if (seatData && Array.isArray(seatData)) {
-    //         seatData.forEach((row, rowIndex) => {
-    //             Object.keys(row).forEach((seatNumber) => {
-    //                 const seatInfo = row[seatNumber];
-    //                 this.createSeatOnMap(rowIndex, seatNumber, seatInfo);
-    //             });
-    //         });
-    //     }
-    // }
-    //
-    // createSeatOnMap(row, seatNumber, seatInfo) {
-    //     // Здесь создайте место на карте с использованием данных из seatInfo
-    //     // Например, используйте метод addSeatToMapContainer и передайте соответствующие параметры
-    //     // seatInfo может содержать информацию о типе места, posX, posY и другие данные
-    //
-    //     // Пример:
-    //     const numberRowInput = document.querySelector('input[name="number_row"]');
-    //     const dataSeatTypeInput = document.querySelector('select[name="seats_type"]');
-    //     const numberSeatInput = document.querySelector('input[name="number_seat"]');
-    //
-    //     numberRowInput.value = row;
-    //     numberSeatInput.value = seatNumber;
-    //     dataSeatTypeInput.value = seatInfo.seatsTypeId;
-    //
-    //     // Вызовем ваш метод addSeatToMapContainer с передачей нужных данных
-    //     this.addSeatToMapContainer();
-    //
-    //     // Очистим поля ввода для следующих мест
-    //     numberSeatInput.value = '';
-    // }
 }
 
 new HallMap();
