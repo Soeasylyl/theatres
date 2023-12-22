@@ -152,7 +152,7 @@ class HallMap {
         }
     }
 
-     extractIdFromUrl() {
+    extractIdFromUrl() {
         const url = document.querySelector('[data-page-url]');
         if (url) {
             const urlSegments = url.dataset.pageUrl.split('/');
@@ -470,49 +470,42 @@ class HallMap {
 
         svgElement.setAttribute('contextmenu', 'seatContextMenu');
 
-        // Создаем новый скрытый инпут для номера места
-        const seatNumberInput = document.createElement('input');
-        seatNumberInput.type = 'hidden';
-        seatNumberInput.name = `rows[${numberRowInputValue}][${numberSeatInputValue}][seatNumber]`;
-        seatNumberInput.value = numberSeatInputValue;
+        if (!seatId) {
+            // Создаем новый скрытый инпут для номера места
+            const seatNumberInput = document.createElement('input');
+            seatNumberInput.type = 'hidden';
+            seatNumberInput.name = `rows[${numberRowInputValue}][${numberSeatInputValue}][seatNumber]`;
+            seatNumberInput.value = numberSeatInputValue;
+            this.previewHallMapContainer.appendChild(seatNumberInput);
 
-        // Создаем новый скрытый инпут для типа места
-        const seatsTypeIdInput = document.createElement('input');
-        seatsTypeIdInput.type = 'hidden';
-        seatsTypeIdInput.name = `rows[${numberRowInputValue}][${numberSeatInputValue}][seatsTypeId]`;
-        seatsTypeIdInput.value = seatTypeId;
+            // Создаем новый скрытый инпут для типа места
+            const seatsTypeIdInput = document.createElement('input');
+            seatsTypeIdInput.type = 'hidden';
+            seatsTypeIdInput.name = `rows[${numberRowInputValue}][${numberSeatInputValue}][seatsTypeId]`;
+            seatsTypeIdInput.value = seatTypeId;
+            this.previewHallMapContainer.appendChild(seatsTypeIdInput);
 
-        // Создаем новый скрытый инпут для posX
-        const posXInput = document.createElement('input');
-        posXInput.type = 'hidden';
-        posXInput.name = `rows[${numberRowInputValue}][${numberSeatInputValue}][posX]`;
-        posXInput.value = svgElement.getAttributeNS(null, 'x');
+            // Создаем новый скрытый инпут для posX
+            const posXInput = document.createElement('input');
+            posXInput.type = 'hidden';
+            posXInput.name = `rows[${numberRowInputValue}][${numberSeatInputValue}][posX]`;
+            posXInput.value = svgElement.getAttributeNS(null, 'x');
+            this.previewHallMapContainer.appendChild(posXInput);
 
-        // Создаем новый скрытый инпут для posY
-        const posYInput = document.createElement('input');
-        posYInput.type = 'hidden';
-        posYInput.name = `rows[${numberRowInputValue}][${numberSeatInputValue}][posY]`;
-        posYInput.value = svgElement.getAttributeNS(null, 'y');
 
-        if (seatId) {
-            const seatIdInput = document.createElement('input');
-            seatIdInput.type = 'hidden';
-            seatIdInput.name = `rows[${numberRowInputValue}][${numberSeatInputValue}][seatId]`;
-            seatIdInput.value = seatId;
-
-            this.previewHallMapContainer.appendChild(seatIdInput);
-            svgElement.setAttribute('data-seat-id', seatId);
+            // Создаем новый скрытый инпут для posY
+            const posYInput = document.createElement('input');
+            posYInput.type = 'hidden';
+            posYInput.name = `rows[${numberRowInputValue}][${numberSeatInputValue}][posY]`;
+            posYInput.value = svgElement.getAttributeNS(null, 'y');
+            this.previewHallMapContainer.appendChild(posYInput);
         }
+        // если id присутствует вешаем data атрибут
+        seatId && svgElement.setAttribute('data-seat-id', seatId);
 
         // Устанавливаем значения номера ряда и места в атрибуты data
         svgElement.setAttribute('data-number-row', numberRowInputValue);
         svgElement.setAttribute('data-number-seat', numberSeatInputValue);
-
-        // Добавляем новые инпуты в форму
-        this.previewHallMapContainer.appendChild(seatNumberInput);
-        this.previewHallMapContainer.appendChild(seatsTypeIdInput);
-        this.previewHallMapContainer.appendChild(posXInput);
-        this.previewHallMapContainer.appendChild(posYInput);
 
         svgElement.setAttribute('data-seat-type', seatTypeId);
         svgElement.setAttribute('data-number-row', numberRowInputValue);
