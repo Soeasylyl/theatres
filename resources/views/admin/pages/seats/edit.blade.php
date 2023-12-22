@@ -85,7 +85,6 @@
 
                                 @csrf
                                 <div class="admin-halls__save-seat-btn"
-                                     data-update-url="{{ route('seat.update', ['theatres' => $theatreId, 'halls' => $hallId, 'seats' => 1]) }}"
                                      data-selected-seat-id=""
                                      data-hall-id="{{ $hallId }}">{{ __('Сохранить') }}</div>
 

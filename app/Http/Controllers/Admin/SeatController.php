@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\DTO\Halls\EditHallDTO;
+use App\DTO\Seats\DeleteSeatDTO;
 use App\DTO\Seats\UpdateSeatDTO;
+use App\Http\Requests\Admin\Seats\DeleteSeatRequest;
 use App\Http\Requests\Admin\Seats\UpdateSeatRequest;
 use App\Services\HallService;
 use App\Services\SeatService;
@@ -139,9 +141,31 @@ class SeatController extends BaseAdminController
 
     /**
      * Remove the specified resource from storage.
+     *
+     * @param DeleteSeatRequest $request
+     * @param SeatService $seatService
+     * @return JsonResponse
      */
-    public function destroy(string $id)
+    public function destroy(
+        DeleteSeatRequest $request,
+        SeatService       $seatService
+    )
     {
-        //
+        $deleteSeatDto = new DeleteSeatDTO(
+            seatId: $request->input('seat_id'),
+        );
+        try {
+            $seatService->deleteSeat($deleteSeatDto);
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Место успешно удалено',
+            ]);
+        } catch (\Throwable $exception) {
+            return response()->json([
+                'status' => false,
+                'message' => $exception->getMessage(),
+            ]);
+        }
     }
 }

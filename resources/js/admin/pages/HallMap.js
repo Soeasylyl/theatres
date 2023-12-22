@@ -102,7 +102,7 @@ class HallMap {
 
         this.displayContextMenu(x, y, [
             {label: 'Редактировать место', action: () => this.editPlace(event)},
-            {label: 'Удалить место', action: () => this.deletePlace()}
+            {label: 'Удалить место', action: () => this.deletePlace(event)}
         ]);
     }
 
@@ -122,7 +122,7 @@ class HallMap {
             const XSeatInput = document.querySelector('input[name="x_pos_seat"]');
             const YSeatInput = document.querySelector('input[name="y_pos_seat"]');
             const seatsTypeSelect = document.querySelector('select[name="seats_type"]');
-            const seatsButton = document.querySelector('[data-update-url]');
+            const seatsButton = document.querySelector('[data-selected-seat-id]');
 
             YSeatInput && (YSeatInput.value = clickedElement.getAttribute('y') || clickedElement.dataset.y);
             XSeatInput && (XSeatInput.value = clickedElement.getAttribute('x') || clickedElement.dataset.x);
@@ -133,22 +133,33 @@ class HallMap {
                 const seatId = clickedElement.dataset.seatId;
                 seatsButton.dataset.selectedSeatId = seatId;
 
-                const updateUrl = seatsButton.dataset.updateUrl;
-
-                // Разделяем URL по слэшам
-                const urlSegments = updateUrl.split('/');
-
-                // Меняем значение последнего сегмента на seatId
-                urlSegments[urlSegments.length - 1] = seatId;
-
-                // Объединяем сегменты обратно в строку URL и Присваиваем новое значение атрибуту
-                seatsButton.dataset.updateUrl = urlSegments.join('/');
+                this.buildSeatActionUrl(seatId);
             }
 
             clickedElement.classList.add('selected');
 
             this.editingSVGElement = clickedElement;
         }
+    }
+
+    buildSeatActionUrl(seatId) {
+        if (seatId) {
+            const url = document.querySelector('[data-page-url]');
+            const updateUrl = url.dataset.pageUrl;
+            const urlSegments = updateUrl.split('/');
+            urlSegments[urlSegments.length - 1] = seatId;
+            url.dataset.pageUrl = urlSegments.join('/');
+        }
+    }
+
+     extractIdFromUrl() {
+        const url = document.querySelector('[data-page-url]');
+        if (url) {
+            const urlSegments = url.dataset.pageUrl.split('/');
+            const lastSegment = urlSegments[urlSegments.length - 1];
+            return lastSegment || null;
+        }
+        return null;
     }
 
     addNewPlace() {
@@ -177,8 +188,41 @@ class HallMap {
         this.editInputListener();
     }
 
+    deleteSeatAjax(clickedElement) {
+        const url = document.querySelector('[data-page-url]').getAttribute('data-page-url');
+        const csrfToken = document.querySelector('input[name="_token"]').value;
+        const seatId = this.extractIdFromUrl();
+
+        fetch(`${url}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': csrfToken,
+            },
+            body: JSON.stringify({
+                seat_id: seatId,
+            }),
+        })
+            .then((response) => {
+                return response.json();
+            })
+            .then(resp => {
+                if (resp.status) {
+                    const typeNotification = 'notifications-success';
+
+                    this.resetSelectedSeat(typeNotification, resp.message);
+                    clickedElement.remove();
+                } else {
+                    const typeNotification = 'notifications-danger';
+
+                    this.resetSelectedSeat(typeNotification, resp.message);
+                    this.autoLoadMap();
+                }
+            })
+    }
+
     saveSeatAjax() {
-        const seatsButton = document.querySelector('[data-update-url]');
+        const seatsButton = document.querySelector('[data-selected-seat-id]');
 
         seatsButton?.addEventListener('click', () => {
             const numberRow = document.querySelector('input[name="number_row"]').value;
@@ -187,7 +231,7 @@ class HallMap {
             const YSeat = document.querySelector('input[name="y_pos_seat"]').value;
             const seatsType = document.querySelector('select[name="seats_type"]').value;
 
-            const url = seatsButton.getAttribute('data-update-url');
+            const url = document.querySelector('[data-page-url]').getAttribute('data-page-url');
             const id = seatsButton.getAttribute('data-selected-seat-id');
             const hallId = seatsButton.getAttribute('data-hall-id');
             const csrfToken = document.querySelector('input[name="_token"]').value;
@@ -213,13 +257,13 @@ class HallMap {
                 })
                 .then(resp => {
                     if (resp.status) {
-                       const typeNotification = 'notifications-success';
+                        const typeNotification = 'notifications-success';
 
-                       this.resetSelectedSeat(typeNotification,resp.message)
+                        this.resetSelectedSeat(typeNotification, resp.message)
                     } else {
                         const typeNotification = 'notifications-danger';
 
-                        this.resetSelectedSeat(typeNotification,resp.message)
+                        this.resetSelectedSeat(typeNotification, resp.message)
                     }
                 })
         });
@@ -238,7 +282,6 @@ class HallMap {
         const selectedElement = document.querySelector('.selected');
         selectedElement?.classList.remove('selected');
     }
-
 
     editInputListener() {
         const XSeatInput = document.querySelector('input[name="x_pos_seat"]');
@@ -298,9 +341,15 @@ class HallMap {
         return null;
     }
 
-    deletePlace() {
+    deletePlace(event) {
         console.log('Удаление места');
         this.hideContextMenu();
+
+        const clickedElement = event.target.closest('svg');
+        const seatId = clickedElement.dataset.seatId;
+        this.buildSeatActionUrl(seatId);
+
+        this.deleteSeatAjax(clickedElement);
     }
 
     autoLoadMap() {

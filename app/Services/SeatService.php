@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\DTO\Seats\DeleteSeatDTO;
 use App\DTO\Seats\UpdateSeatDTO;
 use App\Repositories\SeatRepository;
 
@@ -31,5 +32,16 @@ class SeatService
             positionX: $dto->getPosX(),
             positionY: $dto->getPosY(),
         );
+    }
+
+    /**
+     * Deletes a seat based on the provided DTO.
+     *
+     * @param DeleteSeatDTO $dto
+     * @return bool
+     */
+    public function deleteSeat(DeleteSeatDTO $dto): bool
+    {
+        return $this->seatRepository->deleteSeatsByIdOrFail(seatId: $dto->getSeatId());
     }
 }

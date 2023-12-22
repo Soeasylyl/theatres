@@ -66,4 +66,12 @@ interface SeatRepositoryInterface
      * @return bool
      */
     public function deleteSeatsNotInList(int $hallId, array $seatIdsList): bool;
+
+    /**
+     * Deletes a seat with the given seat ID.
+     *
+     * @param int $seatId
+     * @return bool
+     */
+    public function deleteSeatsByIdOrFail(int $seatId): bool;
 }

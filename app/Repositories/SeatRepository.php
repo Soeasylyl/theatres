@@ -94,4 +94,15 @@ class SeatRepository implements SeatRepositoryInterface
             ->whereNotIn('id', $seatIdsList)
             ->delete();
     }
+
+    /**
+     * Deletes a seat with the given seat ID.
+     *
+     * @param int $seatId
+     * @return bool
+     */
+    public function deleteSeatsByIdOrFail(int $seatId): bool
+    {
+        return Seat::findOrFail($seatId)->delete();
+    }
 }

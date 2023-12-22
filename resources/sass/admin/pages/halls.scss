@@ -41,10 +41,10 @@
 
     @keyframes pulse {
         0% {
-            fill: $c-adp-btn-hover;
+            fill: red;
         }
         25% {
-            fill: $c-adp-btn-hover; /* Цвет остается неизменным в течение 25% анимации */
+            fill: red; /* Цвет остается неизменным в течение 25% анимации */
         }
         50% {
             fill: black;
@@ -53,7 +53,7 @@
             fill: black; /* Цвет остается неизменным в течение 25% анимации */
         }
         100% {
-            fill: $c-adp-btn-hover;
+            fill: red;
         }
     }
 
