@@ -251,13 +251,11 @@
     }
 
     &__seats-body {
-
         display: grid;
-        grid-template-columns: repeat(2, 50%);
+        grid-template-columns: repeat(3, 33%);
         gap: 5px;
         box-sizing: border-box;
-        width: 650px;
-
+        width: 750px;
         padding: 0;
 
     }
@@ -387,7 +385,7 @@
         }
     }
 
-    &__add-seat-btn {
+    &__add-seat-btn, &__save-seat-btn {
         display: flex;
         align-items: center;
         text-align: center;

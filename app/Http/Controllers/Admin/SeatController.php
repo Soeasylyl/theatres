@@ -3,15 +3,15 @@
 namespace App\Http\Controllers\Admin;
 
 use App\DTO\Halls\EditHallDTO;
-use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\Halls\AjaxSeatsRequest;
+use App\DTO\Seats\UpdateSeatDTO;
+use App\Http\Requests\Admin\Seats\UpdateSeatRequest;
 use App\Services\HallService;
+use App\Services\SeatService;
 use App\Services\SeatTypeService;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class SeatController extends BaseAdminController
@@ -101,11 +101,40 @@ class SeatController extends BaseAdminController
     }
 
     /**
-     * Update the specified resource in storage.
+     * Updates information about a seat in the hall.
+     *
+     * @param UpdateSeatRequest $request
+     * @param SeatService $seatService
+     * @return JsonResponse
      */
-    public function update(Request $request, string $id)
+    public function update(
+        UpdateSeatRequest $request,
+        SeatService       $seatService,
+    )
     {
-        //
+        $updateSeatDto = new UpdateSeatDTO(
+            hallId: $request->input('hall_id'),
+            seatId: $request->input('seat_id'),
+            seatTypeId: $request->input('seat_type_id'),
+            row: $request->input('row'),
+            number: $request->input('number'),
+            posX: $request->input('position_x'),
+            posY: $request->input('position_y'),
+        );
+
+        try {
+            $seatService->updateSeat($updateSeatDto);
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Место успешно сохранено',
+            ]);
+        } catch (\Throwable $exception) {
+            return response()->json([
+                'status' => false,
+                'message' => $exception->getMessage(),
+            ]);
+        }
     }
 
     /**

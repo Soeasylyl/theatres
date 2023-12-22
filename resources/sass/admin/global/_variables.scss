@@ -17,8 +17,28 @@ $c-adp-account: rgb(47, 79, 79);
 $c-adp-btn: #545cd8;
 $c-adp-btn-hover: #474eb8;
 
+$c-danger: #dc3545;
+$c-danger-border: #f5c2c7;
+$c-danger-background: #f8d7da;
+$c-danger-text: #842029;
 
+$c-success: #198754;
+$c-success-border: #badbcc;
+$c-success-background: #d1e7dd;
+$c-success-text: #0f5132;
 
+$c-warning: #ffc107;
+$c-warning-border: #ffecb5;
+$c-warning-background: #fff3cd;
+$c-warning-text: #664d03;
+
+$c-info: #0dcaf0;
+$c-info-border: #b6effb;
+$c-info-background: #cff4fc;
+$c-info-text: #055160;
+
+$transition-main: 250ms ease-in-out;
+$border-radius-input: 6px;
 
 $transition-link: 150ms ease-in-out;
 $transition-btn: 200ms ease-in-out;

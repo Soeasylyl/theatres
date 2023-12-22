@@ -6,7 +6,6 @@ class HallMap {
         this.addSeatsToMapButton = document.querySelector('.admin-halls__add-seat-btn');
 
         this.draggedElement = null;
-
         this.editingSVGElement = null;
 
         this.init();
@@ -18,6 +17,7 @@ class HallMap {
         this.addDragEventListeners();
         this.autoLoadMap();
 
+        this.saveSeatAjax();
         this.addMapContextMenu();
         this.addSVGContextMenuRecursively(this.gElement);
     }
@@ -101,9 +101,54 @@ class HallMap {
         const y = event.pageY - 60;
 
         this.displayContextMenu(x, y, [
-            {label: 'Редактировать место', action: () => this.editPlace()},
+            {label: 'Редактировать место', action: () => this.editPlace(event)},
             {label: 'Удалить место', action: () => this.deletePlace()}
         ]);
+    }
+
+    contextMenuListener(event) {
+        event.preventDefault();
+
+        // Находим SVG-элемент, на который был совершен клик
+        const clickedElement = event.target.closest('svg');
+
+        if (clickedElement) {
+            // Убираем стиль "selected" у предыдущего выбранного элемента
+            const previouslySelected = document.querySelector('svg.selected');
+            previouslySelected?.classList.remove('selected');
+
+            const numberRowInput = document.querySelector('input[name="number_row"]');
+            const numberSeatInput = document.querySelector('input[name="number_seat"]');
+            const XSeatInput = document.querySelector('input[name="x_pos_seat"]');
+            const YSeatInput = document.querySelector('input[name="y_pos_seat"]');
+            const seatsTypeSelect = document.querySelector('select[name="seats_type"]');
+            const seatsButton = document.querySelector('[data-update-url]');
+
+            YSeatInput && (YSeatInput.value = clickedElement.getAttribute('y') || clickedElement.dataset.y);
+            XSeatInput && (XSeatInput.value = clickedElement.getAttribute('x') || clickedElement.dataset.x);
+            numberRowInput && (numberRowInput.value = clickedElement.dataset.numberRow);
+            numberSeatInput && (numberSeatInput.value = clickedElement.dataset.numberSeat);
+            seatsTypeSelect && (seatsTypeSelect.value = clickedElement.dataset.seatType);
+            if (seatsButton && clickedElement && clickedElement.dataset.seatId) {
+                const seatId = clickedElement.dataset.seatId;
+                seatsButton.dataset.selectedSeatId = seatId;
+
+                const updateUrl = seatsButton.dataset.updateUrl;
+
+                // Разделяем URL по слэшам
+                const urlSegments = updateUrl.split('/');
+
+                // Меняем значение последнего сегмента на seatId
+                urlSegments[urlSegments.length - 1] = seatId;
+
+                // Объединяем сегменты обратно в строку URL и Присваиваем новое значение атрибуту
+                seatsButton.dataset.updateUrl = urlSegments.join('/');
+            }
+
+            clickedElement.classList.add('selected');
+
+            this.editingSVGElement = clickedElement;
+        }
     }
 
     addNewPlace() {
@@ -115,15 +160,130 @@ class HallMap {
         this.seatsWrapperContainer && this.seatsWrapperContainer.classList.remove('admin-halls__hidden');
     }
 
-    editPlace() {
+    editPlace(event) {
         console.log('Редактирование место');
         this.hideContextMenu();
-
+        this.contextMenuListener(event);
         const titleElement = document.querySelector('.admin-halls__seats-title');
         titleElement.textContent = 'Редактирование места:';
         this.seatsWrapperContainer && this.seatsWrapperContainer.classList.remove('admin-halls__hidden');
 
         const svgElement = this.getEditingSVGElement();
+        if (svgElement) {
+            // Примените стиль "selected" к SVG элементу
+            svgElement.classList.add('selected');
+        }
+
+        this.editInputListener();
+    }
+
+    saveSeatAjax() {
+        const seatsButton = document.querySelector('[data-update-url]');
+
+        seatsButton?.addEventListener('click', () => {
+            const numberRow = document.querySelector('input[name="number_row"]').value;
+            const numberSeat = document.querySelector('input[name="number_seat"]').value;
+            const XSeat = document.querySelector('input[name="x_pos_seat"]').value;
+            const YSeat = document.querySelector('input[name="y_pos_seat"]').value;
+            const seatsType = document.querySelector('select[name="seats_type"]').value;
+
+            const url = seatsButton.getAttribute('data-update-url');
+            const id = seatsButton.getAttribute('data-selected-seat-id');
+            const hallId = seatsButton.getAttribute('data-hall-id');
+            const csrfToken = document.querySelector('input[name="_token"]').value;
+
+            fetch(`${url}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken,
+                },
+                body: JSON.stringify({
+                    seat_id: id,
+                    hall_id: hallId,
+                    row: numberRow,
+                    number: numberSeat,
+                    position_x: XSeat,
+                    position_y: YSeat,
+                    seat_type_id: seatsType,
+                }),
+            })
+                .then((response) => {
+                    return response.json();
+                })
+                .then(resp => {
+                    if (resp.status) {
+                       const typeNotification = 'notifications-success';
+
+                       this.resetSelectedSeat(typeNotification,resp.message)
+                    } else {
+                        const typeNotification = 'notifications-danger';
+
+                        this.resetSelectedSeat(typeNotification,resp.message)
+                    }
+                })
+        });
+    }
+
+    resetSelectedSeat(typeNotification, message) {
+        const notificationsSection = document.querySelector('.notifications');
+        const messageDiv = document.createElement('div');
+        messageDiv.innerHTML = message;
+        messageDiv.classList.add(typeNotification);
+        notificationsSection.appendChild(messageDiv);
+        window.notifications.init();
+
+        this.seatsWrapperContainer?.classList.add('admin-halls__hidden');
+
+        const selectedElement = document.querySelector('.selected');
+        selectedElement?.classList.remove('selected');
+    }
+
+
+    editInputListener() {
+        const XSeatInput = document.querySelector('input[name="x_pos_seat"]');
+        const YSeatInput = document.querySelector('input[name="y_pos_seat"]');
+        const numberRowInput = document.querySelector('input[name="number_row"]');
+        const numberSeatInput = document.querySelector('input[name="number_seat"]');
+        const seatsTypeSelect = document.querySelector('select[name="seats_type"]');
+
+        XSeatInput?.addEventListener('input', () => this.handleInputInformationChange('x'));
+        YSeatInput?.addEventListener('input', () => this.handleInputInformationChange('y'));
+        numberRowInput?.addEventListener('input', () => this.handleInputInformationChange('number_row'));
+        numberSeatInput?.addEventListener('input', () => this.handleInputInformationChange('number_seat'));
+        seatsTypeSelect?.addEventListener('input', () => this.handleInputInformationChange('seats_type'));
+    }
+
+    handleInputInformationChange(data) {
+        const numberRowInput = document.querySelector('input[name="number_row"]');
+        const numberSeatInput = document.querySelector('input[name="number_seat"]');
+        const XSeatInput = document.querySelector('input[name="x_pos_seat"]');
+        const YSeatInput = document.querySelector('input[name="y_pos_seat"]');
+        const seatsTypeSelect = document.querySelector('select[name="seats_type"]');
+        const selectedElement = document.querySelector('svg.selected');
+
+        if (numberRowInput && numberSeatInput && XSeatInput && YSeatInput && seatsTypeSelect) {
+            const numberRow = parseInt(numberRowInput.value);
+            const numberSeat = parseInt(numberSeatInput.value);
+            const XSeat = parseFloat(XSeatInput.value);
+            const YSeat = parseFloat(YSeatInput.value);
+            const seatsType = parseInt(seatsTypeSelect.value);
+            const seatsTypeName = seatsTypeSelect.options[seatsTypeSelect.selectedIndex].textContent;
+
+            if (!isNaN(XSeat) && !isNaN(YSeat) && !isNaN(numberRow) && !isNaN(numberSeat)) {
+                selectedElement.setAttributeNS(null, 'x', XSeat);
+                selectedElement.setAttributeNS(null, 'y', YSeat);
+                selectedElement.setAttributeNS(null, 'data-number-row', numberRow);
+                selectedElement.setAttributeNS(null, 'data-number-seat', numberSeat);
+                selectedElement.setAttributeNS(null, 'data-seat-type', seatsType);
+
+                const textElement = selectedElement.querySelector('text');
+                textElement?.textContent && (textElement.textContent = numberSeat.toString());
+
+                const titleElement = selectedElement.querySelector('title');
+                titleElement?.textContent && (titleElement.textContent = `Номер ряда: ${numberRow}, Тип места: ${seatsTypeName}`);
+            }
+        }
     }
 
     getEditingSVGElement() {
@@ -151,6 +311,7 @@ class HallMap {
             const autoload = true;
             this.addHallMap(autoload);
             this.ajaxGetDataHallMap(url);
+
         }
         this.seatsWrapperContainer && this.seatsWrapperContainer.classList.add('admin-halls__hidden');
     }
@@ -158,7 +319,7 @@ class HallMap {
     handleDragStart(event) {
         this.draggedElement = null;
         const target = event.target.closest('svg');
-        if (target && target.parentNode === this.gElement) {
+        if (target && target.parentNode === this.gElement && target.classList.contains('selected')) {
             this.draggedElement = target;
             const point = this.getEventPoint(event);
             const svgPoint = this.getSVGPoint(this.draggedElement);
@@ -204,6 +365,13 @@ class HallMap {
                 posXInput.value = dx;
                 posYInput.value = dy;
             }
+
+            const XSeatInput = document.querySelector('input[name="x_pos_seat"]');
+            const YSeatInput = document.querySelector('input[name="y_pos_seat"]');
+            if (XSeatInput && YSeatInput) {
+                XSeatInput.value = dx;
+                YSeatInput.value = dy;
+            }
         }
     }
 
@@ -211,8 +379,7 @@ class HallMap {
         document.addEventListener('mousedown', this.handleDragStart.bind(this));
         document.addEventListener('mouseup', this.handleDragEnd.bind(this));
         document.addEventListener('mousemove', this.handleDrag.bind(this));
-
-        this.addClickEventListeners();
+        // this.addClickEventListeners();
     }
 
     findGElementInMap() {
@@ -285,6 +452,7 @@ class HallMap {
             seatIdInput.value = seatId;
 
             this.previewHallMapContainer.appendChild(seatIdInput);
+            svgElement.setAttribute('data-seat-id', seatId);
         }
 
         // Устанавливаем значения номера ряда и места в атрибуты data

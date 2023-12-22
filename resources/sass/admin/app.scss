@@ -6,6 +6,8 @@
 // admin-errors
 @import "errors/error-404";
 
+@import "global/notifications";
+
 @import "partials/menu";
 @import "partials/login";
 @import "partials/header";

@@ -24,6 +24,7 @@
         @include('admin.partials.menu')
 
         <section class="admin-main">
+            @include('admin.partials.notification')
             @yield('content')
         </section>
 
