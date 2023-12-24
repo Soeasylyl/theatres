@@ -242,7 +242,7 @@ class HallMap {
 
         document.querySelector('input[name="x_pos_seat"]').value = x;
         document.querySelector('input[name="y_pos_seat"]').value = y;
-        document.querySelector('input[name="number_seat"]').focus();
+        document.querySelector('input[name="number_seat"]').focus().scrollIntoView({ behavior: 'smooth', block: 'start' });
         document.querySelector('input[name="number_row"]').value = '1';
         document.querySelector('select[name="seats_type"] option').selected = true;
     }
@@ -576,7 +576,6 @@ class HallMap {
             this.offsetX = svgPoint.x - point.x;
             this.offsetY = svgPoint.y - point.y;
             this.draggedElement.style.cursor = 'grabbing';
-
         }
     }
 
