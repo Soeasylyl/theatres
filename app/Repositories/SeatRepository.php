@@ -2,7 +2,6 @@
 
 namespace App\Repositories;
 
-use App\Models\Hall;
 use App\Models\Seat;
 use App\Repositories\Interfaces\SeatRepositoryInterface;
 
@@ -31,35 +30,6 @@ class SeatRepository implements SeatRepositoryInterface
         return Seat::create([
             'seat_type_id' => $seatsTypeId,
             'hall_id' => $hallId,
-            'row' => $rowNumber,
-            'number' => $seatNumber,
-            'position_x' => $positionX,
-            'position_y' => $positionY,
-        ]);
-    }
-
-    /**
-     * Create a new seat within the specified hall based on provided seat details.
-     *
-     * @param Hall $hall
-     * @param int $seatsTypeId
-     * @param int $rowNumber
-     * @param int $seatNumber
-     * @param float $positionX
-     * @param float $positionY
-     * @return Seat
-     */
-    public function createSeatToSelectedHall(
-        Hall  $hall,
-        int   $seatsTypeId,
-        int   $rowNumber,
-        int   $seatNumber,
-        float $positionX,
-        float $positionY
-    ): Seat
-    {
-        return $hall->seats()->create([
-            'seat_type_id' => $seatsTypeId,
             'row' => $rowNumber,
             'number' => $seatNumber,
             'position_x' => $positionX,

@@ -89,10 +89,11 @@ class SeatController extends BaseAdminController
         );
 
         try {
-            $seatService->createSeat($createSeatDto);
+            $seatId = $seatService->createSeat($createSeatDto)->id;
 
             return response()->json([
                 'status' => true,
+                'seat_id' => $seatId,
                 'message' => 'Место успешно добавлено',
             ]);
         } catch (\Throwable $exception) {

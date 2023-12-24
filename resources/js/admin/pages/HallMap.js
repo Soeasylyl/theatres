@@ -3,16 +3,15 @@ class HallMap {
         this.addHallMapButton = document.querySelector('.add-hall-map');
         this.previewHallMapContainer = document.querySelector('.admin-halls__preview-map');
         this.seatsWrapperContainer = document.querySelector('.admin-halls__seats-wrapper');
-        this.addSeatsToMapButton = document.querySelector('.admin-halls__add-seat-btn');
 
         this.draggedElement = null;
         this.editingSVGElement = null;
+        this.createHall = 'false';
 
         this.init();
     }
 
     init() {
-        this.addSeatToMapContainer();
         this.openAndClosePreviewMapContainer();
         this.addDragEventListeners();
         this.autoLoadMap();
@@ -218,10 +217,10 @@ class HallMap {
         const svgElement = document.querySelector('.admin-halls__map'); // Замените на ваш класс SVG
 
         const saveOldSeatBtn = document.querySelector('.admin-halls__save-seat-btn');
-        saveOldSeatBtn.classList.add('admin-halls__hidden');
+        saveOldSeatBtn?.classList.add('admin-halls__hidden');
 
         const saveNewSeatBtn = document.querySelector('.admin-halls__save-new-seat-btn');
-        saveNewSeatBtn.classList.remove('admin-halls__hidden');
+        saveNewSeatBtn?.classList.remove('admin-halls__hidden');
 
         // Получаем координаты курсора относительно видимой области SVG
         const rect = svgElement.getBoundingClientRect();
@@ -342,6 +341,7 @@ class HallMap {
         const addSeatButton = document.querySelector('[data-create-seat-url]');
 
         addSeatButton?.addEventListener('click', () => {
+            const selectedSvg = document.querySelector('.selected');
             const numberRow = document.querySelector('input[name="number_row"]').value;
             const numberSeat = document.querySelector('input[name="number_seat"]').value;
             const XSeat = document.querySelector('input[name="x_pos_seat"]').value;
@@ -374,6 +374,7 @@ class HallMap {
                     if (resp.status) {
                         const typeNotification = 'notifications-success';
 
+                        selectedSvg.setAttributeNS(null, 'data-seat-id', resp.seat_id);
                         this.resetSelectedSeat(typeNotification, resp.message)
                     } else {
                         const typeNotification = 'notifications-danger';
@@ -558,7 +559,6 @@ class HallMap {
             const autoload = true;
             this.addHallMap(autoload);
             this.ajaxGetDataHallMap(url);
-
         }
         this.seatsWrapperContainer && this.seatsWrapperContainer.classList.add('admin-halls__hidden');
     }
@@ -666,34 +666,35 @@ class HallMap {
             // довешиваем класс для редактирования и делаем элемент редактируемым
             svgElement.setAttribute('class', 'selected');
             this.editingSVGElement = svgElement;
+            if (this.createHall === 'true') {
+                // Создаем новый скрытый инпут для номера места
+                const seatNumberInput = document.createElement('input');
+                seatNumberInput.type = 'hidden';
+                seatNumberInput.name = `rows[${numberRowInputValue}][${numberSeatInputValue}][seatNumber]`;
+                seatNumberInput.value = numberSeatInputValue;
+                this.previewHallMapContainer.appendChild(seatNumberInput);
 
-            // Создаем новый скрытый инпут для номера места
-            const seatNumberInput = document.createElement('input');
-            seatNumberInput.type = 'hidden';
-            seatNumberInput.name = `rows[${numberRowInputValue}][${numberSeatInputValue}][seatNumber]`;
-            seatNumberInput.value = numberSeatInputValue;
-            this.previewHallMapContainer.appendChild(seatNumberInput);
+                // Создаем новый скрытый инпут для типа места
+                const seatsTypeIdInput = document.createElement('input');
+                seatsTypeIdInput.type = 'hidden';
+                seatsTypeIdInput.name = `rows[${numberRowInputValue}][${numberSeatInputValue}][seatsTypeId]`;
+                seatsTypeIdInput.value = seatTypeId;
+                this.previewHallMapContainer.appendChild(seatsTypeIdInput);
 
-            // Создаем новый скрытый инпут для типа места
-            const seatsTypeIdInput = document.createElement('input');
-            seatsTypeIdInput.type = 'hidden';
-            seatsTypeIdInput.name = `rows[${numberRowInputValue}][${numberSeatInputValue}][seatsTypeId]`;
-            seatsTypeIdInput.value = seatTypeId;
-            this.previewHallMapContainer.appendChild(seatsTypeIdInput);
+                // Создаем новый скрытый инпут для posX
+                const posXInput = document.createElement('input');
+                posXInput.type = 'hidden';
+                posXInput.name = `rows[${numberRowInputValue}][${numberSeatInputValue}][posX]`;
+                posXInput.value = svgElement.getAttributeNS(null, 'x');
+                this.previewHallMapContainer.appendChild(posXInput);
 
-            // Создаем новый скрытый инпут для posX
-            const posXInput = document.createElement('input');
-            posXInput.type = 'hidden';
-            posXInput.name = `rows[${numberRowInputValue}][${numberSeatInputValue}][posX]`;
-            posXInput.value = svgElement.getAttributeNS(null, 'x');
-            this.previewHallMapContainer.appendChild(posXInput);
-
-            // Создаем новый скрытый инпут для posY
-            const posYInput = document.createElement('input');
-            posYInput.type = 'hidden';
-            posYInput.name = `rows[${numberRowInputValue}][${numberSeatInputValue}][posY]`;
-            posYInput.value = svgElement.getAttributeNS(null, 'y');
-            this.previewHallMapContainer.appendChild(posYInput);
+                // Создаем новый скрытый инпут для posY
+                const posYInput = document.createElement('input');
+                posYInput.type = 'hidden';
+                posYInput.name = `rows[${numberRowInputValue}][${numberSeatInputValue}][posY]`;
+                posYInput.value = svgElement.getAttributeNS(null, 'y');
+                this.previewHallMapContainer.appendChild(posYInput);
+            }
         }
 
         if (eventType === 'edit-place') {
@@ -780,37 +781,14 @@ class HallMap {
         }
     }
 
-    addSeatToMapContainer() {
-        this.addSeatsToMapButton && this.addSeatsToMapButton.addEventListener('click', () => {
-            const numberSeatInput = this.seatsWrapperContainer.querySelector('input[name="number_seat"]');
-            const numberRowInput = this.seatsWrapperContainer.querySelector('input[name="number_row"]');
-
-            const dataSeatTypeInput = this.seatsWrapperContainer.querySelector('select[name="seats_type"]');
-            const selectedSeatTypeId = dataSeatTypeInput ? dataSeatTypeInput.value : '';
-            const selectedSeatName = dataSeatTypeInput ? dataSeatTypeInput.options[dataSeatTypeInput.selectedIndex].text : '';
-
-            const eventType = 'add-place';
-
-            this.renderMapToPreview(
-                eventType,
-                numberSeatInput.value.trim(),
-                numberRowInput.value.trim(),
-                selectedSeatTypeId,
-                selectedSeatName,
-            );
-        })
-    }
-
     openAndClosePreviewMapContainer() {
         this.addHallMapButton && this.addHallMapButton.addEventListener('click', () => {
             this.addHallMap();
+            this.createHall = 'true';
+            this.addMapContextMenu();
+            this.addSVGContextMenuRecursively(this.gElement);
 
-            const isEditButton = this.addHallMapButton.dataset.edit === 'true';
-
-            if (isEditButton) {
-                const url = this.addHallMapButton.dataset.url;
-                this.ajaxGetDataHallMap(url)
-            }
+            this.seatsWrapperContainer && this.seatsWrapperContainer.classList.add('admin-halls__hidden');
         });
 
         this.previewHallMapContainer && this.previewHallMapContainer.addEventListener('click', (event) => {
@@ -838,7 +816,6 @@ class HallMap {
                     for (const [seatKey, seat] of Object.entries(seats)) {
                         const {number, posX, posY, seatsTypeId, seatsTypeName} = seat;
 
-                        // Вызов вашего метода с полученными значениями
                         this.renderMapToPreview(
                             eventType,
                             number,

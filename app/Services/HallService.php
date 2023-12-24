@@ -21,7 +21,6 @@ class HallService
     public function __construct(
         private readonly TheatreRepositoryInterface $theatreRepository,
         private readonly HallRepositoryInterface    $hallRepository,
-        private readonly SeatRepository             $seatRepository,
         private readonly SeatTypeRepository         $seatTypeRepository,
     )
     {
@@ -61,24 +60,6 @@ class HallService
                     mediaFiles: $dto->getHallImages(),
                     collectionName: 'halls'
                 );
-            }
-
-            foreach ($dto->getRows() as $rowNumber => $row) {
-                foreach ($row as $place) {
-                    $seatNumber = $place['seatNumber'];
-                    $seatTypeId = $place['seatsTypeId'];
-                    $posX = $place['posX'];
-                    $posY = $place['posY'];
-
-                    $this->seatRepository->createSeatToSelectedHall(
-                        hall: $hall,
-                        seatsTypeId: $seatTypeId,
-                        rowNumber: $rowNumber,
-                        seatNumber: $seatNumber,
-                        positionX: $posX,
-                        positionY: $posY
-                    );
-                }
             }
 
             DB::commit();

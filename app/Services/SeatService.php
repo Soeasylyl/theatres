@@ -51,11 +51,11 @@ class SeatService
      * Creates a new seat in the repository based on the provided CreateSeatDTO.
      *
      * @param CreateSeatDTO $dto
-     * @return void
+     * @return Seat
      */
-    public function createSeat(CreateSeatDTO $dto): void
+    public function createSeat(CreateSeatDTO $dto): Seat
     {
-        $this->seatRepository->createSeat(
+        return $this->seatRepository->createSeat(
             seatsTypeId: $dto->getSeatTypeId(),
             hallId: $dto->getHallId(),
             rowNumber: $dto->getRow(),

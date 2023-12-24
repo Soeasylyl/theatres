@@ -12,14 +12,12 @@
 
                 <div class="admin-halls__body">
                     <div class="admin-halls__seats ">
-                        <div class="admin-halls__rows">
-                            <div class="admin-halls__map-container">
-                                <div id="contextMenu" class="admin-halls__map-context-menu">
-                                    <ul id="menuList"></ul>
-                                </div>
-                                <div class="admin-halls__preview-map">
+                        <div class="admin-halls__map-container">
+                            <div id="contextMenu" class="admin-halls__map-context-menu">
+                                <ul id="menuList"></ul>
+                            </div>
+                            <div class="admin-halls__preview-map">
 
-                                </div>
                             </div>
 
                         </div>

@@ -53,7 +53,6 @@ class HallController extends BaseAdminController
             theatreId: $theatreId,
             name: $request->input('name'),
             description: $request->input('description'),
-            rows: $request->input('rows'),
             hallImages: $request->file('hallImages'),
         );
 

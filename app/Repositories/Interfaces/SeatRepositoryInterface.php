@@ -28,26 +28,6 @@ interface SeatRepositoryInterface
     ): Seat;
 
     /**
-     * Create a new seat within the specified hall based on provided seat details.
-     *
-     * @param Hall $hall
-     * @param int $seatsTypeId
-     * @param int $rowNumber
-     * @param int $seatNumber
-     * @param float $positionX
-     * @param float $positionY
-     * @return Seat
-     */
-    public function createSeatToSelectedHall(
-        Hall  $hall,
-        int   $seatsTypeId,
-        int   $rowNumber,
-        int   $seatNumber,
-        float $positionX,
-        float $positionY
-    ): Seat;
-
-    /**
      * Gets a Seat by identifier with the ability to load associated data.
      *
      * @param int $seatId
