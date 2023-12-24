@@ -9,7 +9,6 @@ class UpdateHallDTO
      * @param int $hallId
      * @param string $name
      * @param string $description
-     * @param array $rows
      * @param array|null $hallImages
      */
     public function __construct(
@@ -17,7 +16,6 @@ class UpdateHallDTO
         private readonly int $hallId,
         private readonly string  $name,
         private readonly string  $description,
-        private readonly array  $rows,
         private readonly ?array  $hallImages,
     )
     {
@@ -53,14 +51,6 @@ class UpdateHallDTO
     public function getDescription(): string
     {
         return $this->description;
-    }
-
-    /**
-     * @return array
-     */
-    public function getRows(): array
-    {
-        return $this->rows;
     }
 
     /**

@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\Admin;
 
 use App\DTO\Halls\EditHallDTO;
-use App\DTO\Seats\DeleteSeatDTO;
+use App\DTO\Seats\CreateSeatDTO;
+use App\DTO\Seats\SeatIdDTO;
 use App\DTO\Seats\UpdateSeatDTO;
+use App\Http\Requests\Admin\Seats\CheckSeatRequest;
+use App\Http\Requests\Admin\Seats\CreateSeatRequest;
 use App\Http\Requests\Admin\Seats\DeleteSeatRequest;
 use App\Http\Requests\Admin\Seats\UpdateSeatRequest;
 use App\Services\HallService;
@@ -14,25 +17,15 @@ use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class SeatController extends BaseAdminController
 {
-
     public function __construct(
         private readonly HallService     $hallService,
         private readonly SeatTypeService $seatTypeService,
     )
     {
-        //
-    }
-
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
     }
 
     /**
@@ -81,25 +74,71 @@ class SeatController extends BaseAdminController
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(
+        CreateSeatRequest $request,
+        SeatService       $seatService
+    )
     {
-        //
+        $createSeatDto = new CreateSeatDTO(
+            seatTypeId: $request->input('seat_type_id'),
+            hallId: $request->input('hall_id'),
+            row: $request->input('row'),
+            number: $request->input('number'),
+            posX: $request->input('position_x'),
+            posY: $request->input('position_y'),
+        );
+
+        try {
+            $seatService->createSeat($createSeatDto);
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Место успешно добавлено',
+            ]);
+        } catch (\Throwable $exception) {
+            Log::error("Failed to create new seat: {$exception->getMessage()}");
+
+            return response()->json([
+                'status' => false,
+                'message' => 'Произошла ошибка создания места',
+            ]);
+        }
     }
 
     /**
-     * Display the specified resource.
+     *  Method for checking the condition of a place.
+     *
+     * @param CheckSeatRequest $request
+     * @param SeatService $seatService
+     * @return JsonResponse
      */
-    public function show(string $id)
+    public function check(
+        CheckSeatRequest $request,
+        SeatService      $seatService,
+    )
     {
-        //
-    }
+        $checkSeatDto = new SeatIdDTO(
+            seatId: $request->input('seat_id'),
+        );
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
+        try {
+            $seat = $seatService->findSeat($checkSeatDto);
+
+            $seatType = $seat->seatType->name;
+
+            return response()->json([
+                'status' => true,
+                'seat' => $seat,
+                'seatTypeName' => $seatType,
+            ]);
+        } catch (\Throwable $exception) {
+            Log::error("Failed to find seat: {$exception->getMessage()}");
+
+            return response()->json([
+                'status' => false,
+                'message' => 'Произошла ошибка при поиске места',
+            ]);
+        }
     }
 
     /**
@@ -132,9 +171,11 @@ class SeatController extends BaseAdminController
                 'message' => 'Место успешно сохранено',
             ]);
         } catch (\Throwable $exception) {
+            Log::error("Failed to save seat: {$exception->getMessage()}");
+
             return response()->json([
                 'status' => false,
-                'message' => $exception->getMessage(),
+                'message' => 'Произошла ошибка сохранения места',
             ]);
         }
     }
@@ -151,7 +192,7 @@ class SeatController extends BaseAdminController
         SeatService       $seatService
     )
     {
-        $deleteSeatDto = new DeleteSeatDTO(
+        $deleteSeatDto = new SeatIdDTO(
             seatId: $request->input('seat_id'),
         );
         try {
@@ -162,9 +203,11 @@ class SeatController extends BaseAdminController
                 'message' => 'Место успешно удалено',
             ]);
         } catch (\Throwable $exception) {
+            Log::error("Failed to save seat: {$exception->getMessage()}");
+
             return response()->json([
                 'status' => false,
-                'message' => $exception->getMessage(),
+                'message' => 'Произошла ошибка при удалении места',
             ]);
         }
     }

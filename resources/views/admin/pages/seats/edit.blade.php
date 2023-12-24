@@ -5,7 +5,8 @@
         <div class="admin-container__form">
             <div class="admin-halls">
                 <div class="admin-container__form-header"
-                     data-page-url="{{ route('generateMap.create', ['theatres' => $theatreId, 'halls' => $hallId]) }}">
+                     data-page-url="{{ route('generateMap.create', ['theatres' => $theatreId, 'halls' => $hallId]) }}"
+                     data-check-url="{{ route('seat.check', ['theatres' => $theatreId, 'halls' => $hallId]) }}">
                     {{ __('Редактирование зала') }}
                 </div>
 
@@ -87,6 +88,10 @@
                                 <div class="admin-halls__save-seat-btn"
                                      data-selected-seat-id=""
                                      data-hall-id="{{ $hallId }}">{{ __('Сохранить') }}</div>
+
+                                <div class="admin-halls__save-new-seat-btn"
+                                     data-create-seat-url="{{ route('seat.store', ['theatres' => $theatreId, 'halls' => $hallId]) }}"
+                                     data-hall-id="{{ $hallId }}">{{ __('Сохранить новое место') }}</div>
 
                                 <input id="scaleSlider" type="range" min="0.1" max="1.2" step="0.1" value="0.7">
                             </div>

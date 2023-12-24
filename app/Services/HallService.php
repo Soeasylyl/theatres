@@ -70,7 +70,7 @@ class HallService
                     $posX = $place['posX'];
                     $posY = $place['posY'];
 
-                    $this->seatRepository->createSeat(
+                    $this->seatRepository->createSeatToSelectedHall(
                         hall: $hall,
                         seatsTypeId: $seatTypeId,
                         rowNumber: $rowNumber,
@@ -154,6 +154,8 @@ class HallService
         try {
             DB::beginTransaction();
 
+            $this->hallRepository->updateHall(hall: $hall, dto: $dto);
+
             if ($dto->getHallImages() !== null) {
                 $hall->deleteMedia('halls');
                 $hall->saveMultipleFiles(
@@ -161,42 +163,6 @@ class HallService
                     collectionName: 'halls'
                 );
             }
-
-            $existingSeatIds = [];
-
-            foreach ($dto->getRows() as $rowNumber => $row) {
-                foreach ($row as $place) {
-                    if (isset($place['seatId'])) {
-                        $existingSeatIds[] = $place['seatId'];
-
-                        $this->seatRepository->updateSeat(
-                            seatId: $place['seatId'],
-                            seatsTypeId: $place['seatsTypeId'],
-                            hallId: $hall->id,
-                            rowNumber: $rowNumber,
-                            seatNumber: $place['seatNumber'],
-                            positionX: $place['posX'],
-                            positionY: $place['posY'],
-                        );
-                    } else {
-                        $newSeat = $this->seatRepository->createSeat(
-                            hall: $hall,
-                            seatsTypeId: $place['seatsTypeId'],
-                            rowNumber: $rowNumber,
-                            seatNumber: $place['seatNumber'],
-                            positionX: $place['posX'],
-                            positionY: $place['posY'],
-                        );
-                        $existingSeatIds[] = $newSeat->id;
-                    }
-                }
-            }
-
-            $existingSeatIds = array_map('intval', $existingSeatIds);
-            $this->seatRepository->deleteSeatsNotInList(
-                hallId: $hall->id,
-                seatIdsList: $existingSeatIds
-            );
 
             DB::commit();
         } catch (\Throwable $exception) {

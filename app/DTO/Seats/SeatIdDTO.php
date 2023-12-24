@@ -2,13 +2,13 @@
 
 namespace App\DTO\Seats;
 
-class DeleteSeatDTO
+class SeatIdDTO
 {
     /**
      * @param int $seatId
      */
     public function __construct(
-        private readonly int   $seatId,
+        private readonly int $seatId,
     )
     {
     }

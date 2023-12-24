@@ -25,9 +25,10 @@ Route::prefix('/admin/theatres/{theatres}/hall/{halls}/seat')
         'CheckTheatreAccessMiddleware'
     ])->group(function () {
         Route::get('/map', [SeatController::class, 'generateMap'])->name('generateMap.create');
+        Route::get('/check', [SeatController::class, 'check'])->name('seat.check');
+        Route::post('/', [SeatController::class, 'store'])->name('seat.store');
 
         Route::prefix('{seats}/')->group(function () {
-            Route::post('/', [SeatController::class, 'store'])->name('seat.store');
             Route::patch('/', [SeatController::class, 'update'])->name('seat.update');
             Route::delete('/', [SeatController::class, 'destroy'])->name('seat.delete');
         });

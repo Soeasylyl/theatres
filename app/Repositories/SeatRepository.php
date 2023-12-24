@@ -11,6 +11,36 @@ class SeatRepository implements SeatRepositoryInterface
     /**
      * Create a new seat within the specified hall based on provided seat details.
      *
+     * @param int $seatsTypeId
+     * @param int $hallId
+     * @param int $rowNumber
+     * @param int $seatNumber
+     * @param float $positionX
+     * @param float $positionY
+     * @return Seat
+     */
+    public function createSeat(
+        int   $seatsTypeId,
+        int   $hallId,
+        int   $rowNumber,
+        int   $seatNumber,
+        float $positionX,
+        float $positionY
+    ): Seat
+    {
+        return Seat::create([
+            'seat_type_id' => $seatsTypeId,
+            'hall_id' => $hallId,
+            'row' => $rowNumber,
+            'number' => $seatNumber,
+            'position_x' => $positionX,
+            'position_y' => $positionY,
+        ]);
+    }
+
+    /**
+     * Create a new seat within the specified hall based on provided seat details.
+     *
      * @param Hall $hall
      * @param int $seatsTypeId
      * @param int $rowNumber
@@ -19,7 +49,7 @@ class SeatRepository implements SeatRepositoryInterface
      * @param float $positionY
      * @return Seat
      */
-    public function createSeat(
+    public function createSeatToSelectedHall(
         Hall  $hall,
         int   $seatsTypeId,
         int   $rowNumber,
@@ -42,11 +72,12 @@ class SeatRepository implements SeatRepositoryInterface
      *
      * @param int $seatId
      * @param array|null $relations
+     * @param array|null $columns
      * @return Seat
      */
-    public function getSeatById(int $seatId, ?array $relations = []): Seat
+    public function getSeatById(int $seatId, ?array $relations = [], ?array $columns = ['*']): Seat
     {
-        return Seat::with($relations)->find($seatId);
+        return Seat::select($columns)->with($relations)->find($seatId);
     }
 
     /**

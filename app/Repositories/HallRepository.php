@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\DTO\Halls\CreateHallDTO;
+use App\DTO\Halls\UpdateHallDTO;
 use App\Models\Hall;
 use App\Models\Theatre;
 use App\Repositories\Interfaces\HallRepositoryInterface;
@@ -34,5 +35,21 @@ class HallRepository implements HallRepositoryInterface
     public function getHallByIdOrFail(int $hallId, ?array $relations = []): Hall
     {
         return Hall::with($relations)->findOrFail($hallId);
+    }
+
+    /**
+     * Update the specified hall.
+     *
+     * @param Hall $hall
+     * @param UpdateHallDTO $dto
+     * @return bool
+     */
+    public function updateHall(Hall $hall, UpdateHallDTO $dto): bool
+    {
+        return $hall->update([
+            'theatre_id' => $dto->getTheatreId(),
+            'name' => $dto->getName(),
+            'description' => $dto->getDescription(),
+        ]);
     }
 }

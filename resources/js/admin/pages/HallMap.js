@@ -13,18 +13,20 @@ class HallMap {
 
     init() {
         this.addSeatToMapContainer();
-        this.closePreviewMapContainer();
+        this.openAndClosePreviewMapContainer();
         this.addDragEventListeners();
         this.autoLoadMap();
 
-        this.saveSeatAjax();
+        this.saveSeatAjaxButtonClick();
+        this.createSeatAjax();
+
         this.addMapContextMenu();
         this.addSVGContextMenuRecursively(this.gElement);
     }
 
     addMapContextMenu() {
         const mapContainer = document.querySelector('.admin-halls__map');
-        mapContainer.addEventListener('contextmenu', (event) => {
+        mapContainer?.addEventListener('contextmenu', (event) => {
             event.preventDefault();
             const svgElement = event.target.closest('[contextmenu="seatContextMenu"]');
             if (svgElement && mapContainer.contains(svgElement)) {
@@ -37,7 +39,7 @@ class HallMap {
     }
 
     addSVGContextMenuRecursively(parentElement) {
-        parentElement.addEventListener('contextmenu', (event) => {
+        parentElement?.addEventListener('contextmenu', (event) => {
             event.preventDefault();
 
             // Проверяем, был ли клик на SVG элементе или его дочерних элементах
@@ -48,12 +50,14 @@ class HallMap {
             }
         });
 
-        const childElements = parentElement.children;
-        Array.from(childElements).forEach((childElement) => {
-            if (childElement instanceof SVGElement) {
-                this.addSVGContextMenuRecursively(childElement);
-            }
-        });
+        const childElements = parentElement?.children;
+        if (childElements) {
+            Array.from(childElements).forEach((childElement) => {
+                if (childElement instanceof SVGElement) {
+                    this.addSVGContextMenuRecursively(childElement);
+                }
+            });
+        }
     }
 
     showMapContextMenu(event) {
@@ -61,9 +65,17 @@ class HallMap {
         const x = event.pageX - 200;
         const y = event.pageY - 60;
 
-        this.displayContextMenu(x, y, [
-            {label: 'Добавить новое место', action: () => this.addNewPlace()}
-        ]);
+        const svgElement = this.getEditingSVGElement();
+
+        if (svgElement && svgElement.classList.contains('selected')) {
+            this.displayContextMenu(x, y, [
+                {label: 'Отменить редактирование', action: () => this.cancelEditing(svgElement)},
+            ]);
+        } else {
+            this.displayContextMenu(x, y, [
+                {label: 'Добавить новое место', action: () => this.addNewPlace(event)}
+            ]);
+        }
     }
 
     displayContextMenu(x, y, menuItems) {
@@ -99,11 +111,46 @@ class HallMap {
         event.preventDefault();
         const x = event.pageX - 200;
         const y = event.pageY - 60;
+        const svgElement = this.getEditingSVGElement();
 
-        this.displayContextMenu(x, y, [
+        const contextMenuItems = [
             {label: 'Редактировать место', action: () => this.editPlace(event)},
             {label: 'Удалить место', action: () => this.deletePlace(event)}
-        ]);
+        ];
+
+        // Проверка, редактируется ли элемент
+        if (svgElement && svgElement.classList.contains('selected')) {
+            // Удаляем элемент по индексу 1, если условие выполняется
+            contextMenuItems.splice(0, 1);
+            contextMenuItems.unshift({label: 'Сохранить изменения', action: () => this.saveEditing()});
+            contextMenuItems.unshift({label: 'Отменить редактирование', action: () => this.cancelEditing(svgElement)});
+        }
+
+        this.displayContextMenu(x, y, contextMenuItems);
+    }
+
+    saveEditing() {
+        const saveSeatButton = document.querySelector('[data-selected-seat-id]');
+        this.saveSeatAjax(saveSeatButton);
+    }
+
+    cancelEditing(svgElement) {
+        const seatId = svgElement.getAttribute('data-seat-id');
+        if (seatId) {
+            // выполняем  ajax запрос и присваеваем нашему свг элементы значение ответа
+            this.findSeatAndSetSVGValuesAjax(seatId, svgElement)
+
+            const typeNotification = 'notifications-warning';
+            const messageNotification = 'Редактирование отменено';
+
+            this.resetSelectedSeat(typeNotification, messageNotification)
+        } else {
+            const typeNotification = 'notifications-warning';
+            const messageNotification = 'Редактирование отменено';
+
+            this.resetSelectedSeat(typeNotification, messageNotification)
+            svgElement.remove();
+        }
     }
 
     contextMenuListener(event) {
@@ -162,22 +209,52 @@ class HallMap {
         return null;
     }
 
-    addNewPlace() {
-        console.log('Добавление нового места');
-
+    addNewPlace(event) {
         this.hideContextMenu();
+        // Изменяем название заголовка
         const titleElement = document.querySelector('.admin-halls__seats-title');
         titleElement.textContent = 'Добавление нового места:';
         this.seatsWrapperContainer && this.seatsWrapperContainer.classList.remove('admin-halls__hidden');
+        const svgElement = document.querySelector('.admin-halls__map'); // Замените на ваш класс SVG
+
+        const saveOldSeatBtn = document.querySelector('.admin-halls__save-seat-btn');
+        saveOldSeatBtn.classList.add('admin-halls__hidden');
+
+        const saveNewSeatBtn = document.querySelector('.admin-halls__save-new-seat-btn');
+        saveNewSeatBtn.classList.remove('admin-halls__hidden');
+
+        // Получаем координаты курсора относительно видимой области SVG
+        const rect = svgElement.getBoundingClientRect();
+        const x = event.clientX - rect.left + 200;
+        const y = event.clientY - rect.top + 60;
+
+        const eventType = 'add-place';
+
+        this.renderMapToPreview(
+            eventType,
+            'new',
+            null,
+            null,
+            null,
+            x,
+            y,
+        );
+
+        this.editInputListener();
     }
 
     editPlace(event) {
-        console.log('Редактирование место');
         this.hideContextMenu();
         this.contextMenuListener(event);
         const titleElement = document.querySelector('.admin-halls__seats-title');
         titleElement.textContent = 'Редактирование места:';
         this.seatsWrapperContainer && this.seatsWrapperContainer.classList.remove('admin-halls__hidden');
+
+        const saveOldSeatBtn = document.querySelector('.admin-halls__save-seat-btn');
+        saveOldSeatBtn.classList.remove('admin-halls__hidden');
+
+        const saveNewSeatBtn = document.querySelector('.admin-halls__save-new-seat-btn');
+        saveNewSeatBtn.classList.add('admin-halls__hidden');
 
         const svgElement = this.getEditingSVGElement();
         if (svgElement) {
@@ -215,41 +292,79 @@ class HallMap {
                 } else {
                     const typeNotification = 'notifications-danger';
 
-                    this.resetSelectedSeat(typeNotification, resp.message);
+                    this.errorAjaxSeatNotification(typeNotification, resp.message);
                     this.autoLoadMap();
                 }
             })
+            .catch(error => {
+                const typeNotification = 'notifications-danger';
+                const messageNotification = 'Произошла ошибка при удалении места';
+
+                this.errorAjaxSeatNotification(typeNotification, messageNotification)
+            });
     }
 
-    saveSeatAjax() {
-        const seatsButton = document.querySelector('[data-selected-seat-id]');
+    findSeatAndSetSVGValuesAjax(seatId, svgElement) {
+        const url = document.querySelector('[data-check-url]').getAttribute('data-check-url');
+        fetch(`${url}?seat_id=${seatId}`, {
+            method: 'get',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+        })
+            .then((response) => {
+                return response.json();
+            })
+            .then((resp) => {
+                const selectedElement = svgElement;
 
-        seatsButton?.addEventListener('click', () => {
+                selectedElement.setAttributeNS(null, 'x', parseFloat(resp.seat.position_x));
+                selectedElement.setAttributeNS(null, 'y', parseFloat(resp.seat.position_y));
+                selectedElement.setAttributeNS(null, 'data-number-row', resp.seat.row);
+                selectedElement.setAttributeNS(null, 'data-number-seat', resp.seat.number);
+                selectedElement.setAttributeNS(null, 'data-seat-type', resp.seat.seat_type_id);
+
+                const textElement = selectedElement.querySelector('text');
+                textElement?.textContent && (textElement.textContent = resp.seat.number.toString());
+
+                const titleElement = selectedElement.querySelector('title');
+                titleElement?.textContent && (titleElement.textContent = `Номер ряда: ${resp.seat.row}, Тип места: ${resp.seatTypeName}`);
+            })
+            .catch(error => {
+                const typeNotification = 'notifications-danger';
+                const messageNotification = 'Произошла ошибка перезагрузите страницу!';
+
+                this.errorAjaxSeatNotification(typeNotification, messageNotification);
+            })
+    }
+
+    createSeatAjax() {
+        const addSeatButton = document.querySelector('[data-create-seat-url]');
+
+        addSeatButton?.addEventListener('click', () => {
             const numberRow = document.querySelector('input[name="number_row"]').value;
             const numberSeat = document.querySelector('input[name="number_seat"]').value;
             const XSeat = document.querySelector('input[name="x_pos_seat"]').value;
             const YSeat = document.querySelector('input[name="y_pos_seat"]').value;
             const seatsType = document.querySelector('select[name="seats_type"]').value;
 
-            const url = document.querySelector('[data-page-url]').getAttribute('data-page-url');
-            const id = seatsButton.getAttribute('data-selected-seat-id');
-            const hallId = seatsButton.getAttribute('data-hall-id');
+            const url = addSeatButton.getAttribute('data-create-seat-url');
+            const hallId = addSeatButton.getAttribute('data-hall-id');
             const csrfToken = document.querySelector('input[name="_token"]').value;
 
             fetch(`${url}`, {
-                method: 'PATCH',
+                method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     'X-CSRF-TOKEN': csrfToken,
                 },
                 body: JSON.stringify({
-                    seat_id: id,
+                    seat_type_id: seatsType,
                     hall_id: hallId,
                     row: numberRow,
                     number: numberSeat,
                     position_x: XSeat,
                     position_y: YSeat,
-                    seat_type_id: seatsType,
                 }),
             })
                 .then((response) => {
@@ -263,24 +378,96 @@ class HallMap {
                     } else {
                         const typeNotification = 'notifications-danger';
 
-                        this.resetSelectedSeat(typeNotification, resp.message)
+                        this.errorAjaxSeatNotification(typeNotification, resp.message)
                     }
                 })
-        });
+                .catch(error => {
+                    const typeNotification = 'notifications-danger';
+                    const messageNotification = 'Не корректно заполнены данные о месте';
+
+                    this.errorAjaxSeatNotification(typeNotification, messageNotification)
+                });
+        })
+    }
+
+    errorAjaxSeatNotification(typeNotification, message) {
+        this.notificationsMessages(typeNotification, message);
     }
 
     resetSelectedSeat(typeNotification, message) {
+        this.notificationsMessages(typeNotification, message);
+
+        const selectedElement = document.querySelector('.selected');
+        selectedElement?.classList.remove('selected');
+
+        this.seatsWrapperContainer?.classList.add('admin-halls__hidden');
+    }
+
+    notificationsMessages(typeNotification, message) {
         const notificationsSection = document.querySelector('.notifications');
         const messageDiv = document.createElement('div');
         messageDiv.innerHTML = message;
         messageDiv.classList.add(typeNotification);
         notificationsSection.appendChild(messageDiv);
         window.notifications.init();
+    }
 
-        this.seatsWrapperContainer?.classList.add('admin-halls__hidden');
+    saveSeatAjaxButtonClick() {
+        const saveSeatButton = document.querySelector('[data-selected-seat-id]');
 
-        const selectedElement = document.querySelector('.selected');
-        selectedElement?.classList.remove('selected');
+        saveSeatButton?.addEventListener('click', () => {
+            this.saveSeatAjax(saveSeatButton);
+        });
+    }
+
+    saveSeatAjax(saveSeatButton) {
+        const numberRow = document.querySelector('input[name="number_row"]').value;
+        const numberSeat = document.querySelector('input[name="number_seat"]').value;
+        const XSeat = document.querySelector('input[name="x_pos_seat"]').value;
+        const YSeat = document.querySelector('input[name="y_pos_seat"]').value;
+        const seatsType = document.querySelector('select[name="seats_type"]').value;
+
+        const url = document.querySelector('[data-page-url]').getAttribute('data-page-url');
+        const id = saveSeatButton.getAttribute('data-selected-seat-id');
+        const hallId = saveSeatButton.getAttribute('data-hall-id');
+        const csrfToken = document.querySelector('input[name="_token"]').value;
+
+        fetch(`${url}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': csrfToken,
+            },
+            body: JSON.stringify({
+                seat_id: id,
+                hall_id: hallId,
+                row: numberRow,
+                number: numberSeat,
+                position_x: XSeat,
+                position_y: YSeat,
+                seat_type_id: seatsType,
+            }),
+        })
+            .then((response) => {
+                return response.json();
+            })
+            .then(resp => {
+                if (resp.status) {
+                    const typeNotification = 'notifications-success';
+
+                    this.resetSelectedSeat(typeNotification, resp.message)
+                } else {
+                    const typeNotification = 'notifications-danger';
+
+                    this.errorAjaxSeatNotification(typeNotification, resp.message)
+                }
+            })
+            .catch(error => {
+                const typeNotification = 'notifications-danger';
+                const messageNotification = 'Не корректно заполнены данные о месте';
+
+                this.errorAjaxSeatNotification(typeNotification, messageNotification)
+            });
     }
 
     editInputListener() {
@@ -342,14 +529,25 @@ class HallMap {
     }
 
     deletePlace(event) {
-        console.log('Удаление места');
+        const confirmDelete = window.confirm('Вы действительно хотите удалить место?');
+        if (!confirmDelete) {
+            return;
+        }
+
         this.hideContextMenu();
-
         const clickedElement = event.target.closest('svg');
-        const seatId = clickedElement.dataset.seatId;
-        this.buildSeatActionUrl(seatId);
+        if (clickedElement.dataset.seatId) {
+            const seatId = clickedElement.dataset.seatId;
+            this.buildSeatActionUrl(seatId);
 
-        this.deleteSeatAjax(clickedElement);
+            this.deleteSeatAjax(clickedElement);
+        } else {
+            const typeNotification = 'notifications-success';
+            const messageNotification = 'Место удалено';
+
+            this.resetSelectedSeat(typeNotification, messageNotification);
+            clickedElement.remove();
+        }
     }
 
     autoLoadMap() {
@@ -428,7 +626,6 @@ class HallMap {
         document.addEventListener('mousedown', this.handleDragStart.bind(this));
         document.addEventListener('mouseup', this.handleDragEnd.bind(this));
         document.addEventListener('mousemove', this.handleDrag.bind(this));
-        // this.addClickEventListeners();
     }
 
     findGElementInMap() {
@@ -446,6 +643,7 @@ class HallMap {
     }
 
     renderMapToPreview(
+        eventType,
         numberSeatInputValue,
         numberRowInputValue,
         seatTypeId,
@@ -454,12 +652,6 @@ class HallMap {
         renderSeatPosY,
         seatId,
     ) {
-
-        if (!numberSeatInputValue) {
-            alert('Пожалуйста, введите номер места.');
-            return; // Прерываем выполнение функции, если значение отсутствует
-        }
-
         this.findGElementInMap();
         const svgElement = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
         svgElement.setAttribute('x', renderSeatPosX !== undefined ? renderSeatPosX : '650');
@@ -470,7 +662,11 @@ class HallMap {
 
         svgElement.setAttribute('contextmenu', 'seatContextMenu');
 
-        if (!seatId) {
+        if (eventType === 'add-place') {
+            // довешиваем класс для редактирования и делаем элемент редактируемым
+            svgElement.setAttribute('class', 'selected');
+            this.editingSVGElement = svgElement;
+
             // Создаем новый скрытый инпут для номера места
             const seatNumberInput = document.createElement('input');
             seatNumberInput.type = 'hidden';
@@ -492,7 +688,6 @@ class HallMap {
             posXInput.value = svgElement.getAttributeNS(null, 'x');
             this.previewHallMapContainer.appendChild(posXInput);
 
-
             // Создаем новый скрытый инпут для posY
             const posYInput = document.createElement('input');
             posYInput.type = 'hidden';
@@ -500,8 +695,10 @@ class HallMap {
             posYInput.value = svgElement.getAttributeNS(null, 'y');
             this.previewHallMapContainer.appendChild(posYInput);
         }
-        // если id присутствует вешаем data атрибут
-        seatId && svgElement.setAttribute('data-seat-id', seatId);
+
+        if (eventType === 'edit-place') {
+            seatId && svgElement.setAttribute('data-seat-id', seatId);
+        }
 
         // Устанавливаем значения номера ряда и места в атрибуты data
         svgElement.setAttribute('data-number-row', numberRowInputValue);
@@ -592,7 +789,10 @@ class HallMap {
             const selectedSeatTypeId = dataSeatTypeInput ? dataSeatTypeInput.value : '';
             const selectedSeatName = dataSeatTypeInput ? dataSeatTypeInput.options[dataSeatTypeInput.selectedIndex].text : '';
 
+            const eventType = 'add-place';
+
             this.renderMapToPreview(
+                eventType,
                 numberSeatInput.value.trim(),
                 numberRowInput.value.trim(),
                 selectedSeatTypeId,
@@ -601,7 +801,7 @@ class HallMap {
         })
     }
 
-    closePreviewMapContainer() {
+    openAndClosePreviewMapContainer() {
         this.addHallMapButton && this.addHallMapButton.addEventListener('click', () => {
             this.addHallMap();
 
@@ -633,13 +833,14 @@ class HallMap {
             })
             .then((data) => {
                 const seatEntries = Object.entries(data.dataSeats);
-
+                const eventType = 'edit-place';
                 for (const [rowKey, seats] of seatEntries) {
                     for (const [seatKey, seat] of Object.entries(seats)) {
                         const {number, posX, posY, seatsTypeId, seatsTypeName} = seat;
 
                         // Вызов вашего метода с полученными значениями
                         this.renderMapToPreview(
+                            eventType,
                             number,
                             rowKey,
                             seatsTypeId,
@@ -663,6 +864,7 @@ class HallMap {
             <svg width="1000" height="1000" class="admin-halls__map" >
               <path d="M20,20 Q 475 5, 950 20" class="sc-ccXozh ibOKzl"></path>
                <g id="scalableGroup" transform="scale(0.7)">
+
                </g>
               <text text-anchor="middle" x="50%" dy="10%" fill="currentColor" font-family="Ubuntu, Roboto, Arial, Helvetica, sans-serif" font-size="36" font-weight="700" class="sc-bsVVwV hWBiPl">Экран
               </text>

@@ -8,6 +8,26 @@ use App\Models\Seat;
 interface SeatRepositoryInterface
 {
     /**
+     * Create a new seat.
+     *
+     * @param int $hallId
+     * @param int $seatsTypeId
+     * @param int $rowNumber
+     * @param int $seatNumber
+     * @param float $positionX
+     * @param float $positionY
+     * @return Seat
+     */
+    public function createSeat(
+        int   $seatsTypeId,
+        int   $hallId,
+        int   $rowNumber,
+        int   $seatNumber,
+        float $positionX,
+        float $positionY
+    ): Seat;
+
+    /**
      * Create a new seat within the specified hall based on provided seat details.
      *
      * @param Hall $hall
@@ -18,7 +38,7 @@ interface SeatRepositoryInterface
      * @param float $positionY
      * @return Seat
      */
-    public function createSeat(
+    public function createSeatToSelectedHall(
         Hall  $hall,
         int   $seatsTypeId,
         int   $rowNumber,

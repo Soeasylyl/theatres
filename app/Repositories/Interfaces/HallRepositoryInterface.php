@@ -3,6 +3,7 @@
 namespace App\Repositories\Interfaces;
 
 use App\DTO\Halls\CreateHallDTO;
+use App\DTO\Halls\UpdateHallDTO;
 use App\Models\Theatre;
 use App\Models\Hall;
 
@@ -25,4 +26,13 @@ interface HallRepositoryInterface
      * @return Hall
      */
     public function getHallByIdOrFail(int $hallId, ?array $relations = []): Hall;
+
+    /**
+     * Update the specified hall.
+     *
+     * @param Hall $hall
+     * @param UpdateHallDTO $dto
+     * @return bool
+     */
+    public function updateHall(Hall $hall,UpdateHallDTO $dto): bool;
 }
