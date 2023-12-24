@@ -6,14 +6,15 @@ class HallMap {
 
         this.draggedElement = null;
         this.editingSVGElement = null;
-        this.createHall = 'false';
+
+        this.resrveSeats = null;
 
         this.init();
     }
 
     init() {
-        this.openAndClosePreviewMapContainer();
         this.addDragEventListeners();
+        this.editInputListener();
         this.autoLoadMap();
 
         this.saveSeatAjaxButtonClick();
@@ -121,8 +122,8 @@ class HallMap {
         if (svgElement && svgElement.classList.contains('selected')) {
             // Удаляем элемент по индексу 1, если условие выполняется
             contextMenuItems.splice(0, 1);
-            contextMenuItems.unshift({label: 'Сохранить изменения', action: () => this.saveEditing()});
             contextMenuItems.unshift({label: 'Отменить редактирование', action: () => this.cancelEditing(svgElement)});
+            contextMenuItems.unshift({label: 'Сохранить изменения', action: () => this.saveEditing()});
         }
 
         this.displayContextMenu(x, y, contextMenuItems);
@@ -239,7 +240,11 @@ class HallMap {
             y,
         );
 
-        this.editInputListener();
+        document.querySelector('input[name="x_pos_seat"]').value = x;
+        document.querySelector('input[name="y_pos_seat"]').value = y;
+        document.querySelector('input[name="number_seat"]').focus();
+        document.querySelector('input[name="number_row"]').value = '1';
+        document.querySelector('select[name="seats_type"] option').selected = true;
     }
 
     editPlace(event) {
@@ -260,8 +265,6 @@ class HallMap {
             // Примените стиль "selected" к SVG элементу
             svgElement.classList.add('selected');
         }
-
-        this.editInputListener();
     }
 
     deleteSeatAjax(clickedElement) {
@@ -478,14 +481,14 @@ class HallMap {
         const numberSeatInput = document.querySelector('input[name="number_seat"]');
         const seatsTypeSelect = document.querySelector('select[name="seats_type"]');
 
-        XSeatInput?.addEventListener('input', () => this.handleInputInformationChange('x'));
-        YSeatInput?.addEventListener('input', () => this.handleInputInformationChange('y'));
-        numberRowInput?.addEventListener('input', () => this.handleInputInformationChange('number_row'));
-        numberSeatInput?.addEventListener('input', () => this.handleInputInformationChange('number_seat'));
-        seatsTypeSelect?.addEventListener('input', () => this.handleInputInformationChange('seats_type'));
+        XSeatInput?.addEventListener('input', () => this.handleInputInformationChange());
+        YSeatInput?.addEventListener('input', () => this.handleInputInformationChange());
+        numberRowInput?.addEventListener('input', () => this.handleInputInformationChange());
+        numberSeatInput?.addEventListener('input', () => this.handleInputInformationChange());
+        seatsTypeSelect?.addEventListener('input', () => this.handleInputInformationChange());
     }
 
-    handleInputInformationChange(data) {
+    handleInputInformationChange() {
         const numberRowInput = document.querySelector('input[name="number_row"]');
         const numberSeatInput = document.querySelector('input[name="number_seat"]');
         const XSeatInput = document.querySelector('input[name="x_pos_seat"]');
@@ -573,6 +576,7 @@ class HallMap {
             this.offsetX = svgPoint.x - point.x;
             this.offsetY = svgPoint.y - point.y;
             this.draggedElement.style.cursor = 'grabbing';
+
         }
     }
 
@@ -666,35 +670,6 @@ class HallMap {
             // довешиваем класс для редактирования и делаем элемент редактируемым
             svgElement.setAttribute('class', 'selected');
             this.editingSVGElement = svgElement;
-            if (this.createHall === 'true') {
-                // Создаем новый скрытый инпут для номера места
-                const seatNumberInput = document.createElement('input');
-                seatNumberInput.type = 'hidden';
-                seatNumberInput.name = `rows[${numberRowInputValue}][${numberSeatInputValue}][seatNumber]`;
-                seatNumberInput.value = numberSeatInputValue;
-                this.previewHallMapContainer.appendChild(seatNumberInput);
-
-                // Создаем новый скрытый инпут для типа места
-                const seatsTypeIdInput = document.createElement('input');
-                seatsTypeIdInput.type = 'hidden';
-                seatsTypeIdInput.name = `rows[${numberRowInputValue}][${numberSeatInputValue}][seatsTypeId]`;
-                seatsTypeIdInput.value = seatTypeId;
-                this.previewHallMapContainer.appendChild(seatsTypeIdInput);
-
-                // Создаем новый скрытый инпут для posX
-                const posXInput = document.createElement('input');
-                posXInput.type = 'hidden';
-                posXInput.name = `rows[${numberRowInputValue}][${numberSeatInputValue}][posX]`;
-                posXInput.value = svgElement.getAttributeNS(null, 'x');
-                this.previewHallMapContainer.appendChild(posXInput);
-
-                // Создаем новый скрытый инпут для posY
-                const posYInput = document.createElement('input');
-                posYInput.type = 'hidden';
-                posYInput.name = `rows[${numberRowInputValue}][${numberSeatInputValue}][posY]`;
-                posYInput.value = svgElement.getAttributeNS(null, 'y');
-                this.previewHallMapContainer.appendChild(posYInput);
-            }
         }
 
         if (eventType === 'edit-place') {
@@ -781,24 +756,6 @@ class HallMap {
         }
     }
 
-    openAndClosePreviewMapContainer() {
-        this.addHallMapButton && this.addHallMapButton.addEventListener('click', () => {
-            this.addHallMap();
-            this.createHall = 'true';
-            this.addMapContextMenu();
-            this.addSVGContextMenuRecursively(this.gElement);
-
-            this.seatsWrapperContainer && this.seatsWrapperContainer.classList.add('admin-halls__hidden');
-        });
-
-        this.previewHallMapContainer && this.previewHallMapContainer.addEventListener('click', (event) => {
-            const closeButton = this.previewHallMapContainer.querySelector('.admin-halls__close-button');
-            if (event.target === closeButton) {
-                this.removeHallMap();
-            }
-        });
-    }
-
     ajaxGetDataHallMap(url) {
         fetch(`${url}`, {
             method: 'GET',
@@ -850,12 +807,6 @@ class HallMap {
             this.findGElementInMap();
             this.addBorderToMap();
 
-            if (!autoload) {
-                this.addCloseButton();
-            }
-
-            this.scrollToElement(this.previewHallMapContainer);
-
             this.previewHallMapContainer && this.previewHallMapContainer.classList.add('fade-in');
             this.addHallMapButton && this.addHallMapButton.classList.add('admin-halls__hidden');
             this.seatsWrapperContainer && this.seatsWrapperContainer.classList.remove('admin-halls__hidden');
@@ -869,69 +820,8 @@ class HallMap {
         });
     }
 
-    scrollToElement(element) {
-        const elementOffset = element.offsetTop;
-        const duration = 500; // Время анимации в миллисекундах
-        const startTime = performance.now();
-        const startScrollY = window.scrollY || document.documentElement.scrollTop;
-
-        const animateScroll = (currentTime) => {
-            const elapsed = currentTime - startTime;
-
-            // Рассчитываем новую позицию прокрутки
-            const progress = Math.min(elapsed / duration, 1);
-            const easeInOutQuad = (t) => t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
-            const newPosition = startScrollY + (elementOffset - startScrollY) * easeInOutQuad(progress);
-
-            // Прокручиваем страницу
-            window.scrollTo(0, newPosition);
-
-            // Продолжаем анимацию, если не достигли конечной позиции
-            if (progress < 1) {
-                requestAnimationFrame(animateScroll);
-            }
-        };
-
-        // Запускаем анимацию
-        requestAnimationFrame(animateScroll);
-    }
-
-    removeHallMap() {
-        this.previewHallMapContainer && this.previewHallMapContainer.classList.remove('fade-in');
-        this.addHallMapButton && this.addHallMapButton.classList.remove('admin-halls__hidden');
-        this.seatsWrapperContainer && this.seatsWrapperContainer.classList.add('admin-halls__hidden');
-
-        this.previewHallMapContainer.innerHTML = '';
-        this.previewHallMapContainer && this.previewHallMapContainer.classList.remove('admin-halls__border-map');
-        this.removeCloseButton();
-    }
-
     addBorderToMap() {
         this.previewHallMapContainer && this.previewHallMapContainer.classList.toggle('admin-halls__border-map', true);
-    }
-
-    addCloseButton() {
-        const existingButton = this.previewHallMapContainer.querySelector('.admin-halls__close-button');
-
-        if (!existingButton) {
-            const closeButton = document.createElement('span');
-            closeButton.className = 'admin-halls__close-button';
-            closeButton.innerText = '×';
-
-            this.previewHallMapContainer.appendChild(closeButton);
-
-            closeButton.addEventListener('click', () => {
-                this.removeHallMap();
-            });
-        }
-    }
-
-    removeCloseButton() {
-        const existingButton = this.previewHallMapContainer.querySelector('.admin-halls__close-button');
-
-        if (existingButton) {
-            existingButton.remove();
-        }
     }
 }
 

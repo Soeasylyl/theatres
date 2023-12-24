@@ -24,8 +24,8 @@ class CreateSeatRequest extends FormRequest
     {
         return [
             'hall_id' => 'required|int|exists:halls,id',
-            'row' => 'required|int',
-            'number' => 'required|int',
+            'row' => 'required|int|min:0',
+            'number' => 'required|int|min:0',
             'position_x' => 'required|numeric',
             'position_y' => 'required|numeric',
             'seat_type_id' => 'required|int|exists:seat_types,id',
