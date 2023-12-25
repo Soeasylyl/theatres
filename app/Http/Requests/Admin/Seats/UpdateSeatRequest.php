@@ -3,7 +3,10 @@
 namespace App\Http\Requests\Admin\Seats;
 
 use Illuminate\Contracts\Validation\ValidationRule;
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Http\JsonResponse;
 
 class UpdateSeatRequest extends FormRequest
 {
@@ -41,9 +44,25 @@ class UpdateSeatRequest extends FormRequest
     public function messages(): array
     {
         return [
+            'row.min' => 'Ряд не может быть отрицательным или равным 0',
+            'number.min' => 'Номер места не может быть отрицательным или равным 0',
             'seat_id.exists' => 'Такого места не существует',
             'hall_id.exists' => 'Такого зала не существует',
             'seat_type_id.exists' => 'Такого типа мест не существует',
         ];
+    }
+
+    /**
+     *  Handle a failed validation attempt and respond with a JSON representation
+     *  of the first validation error along with an HTTP 422 Unprocessable Entity status.
+     *
+     * @param Validator $validator
+     * @return JsonResponse
+     */
+    protected function failedValidation(Validator $validator): JsonResponse
+    {
+        throw new HttpResponseException(response()->json([
+            'message' => $validator->errors()->first(),
+        ], 422));
     }
 }

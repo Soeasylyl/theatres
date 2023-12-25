@@ -30,6 +30,7 @@ class HallMap {
             event.preventDefault();
             const svgElement = event.target.closest('[contextmenu="seatContextMenu"]');
             if (svgElement && mapContainer.contains(svgElement)) {
+
                 // Если клик был на SVG элементе или его дочерних элементах, не вызываем контекстное меню для карты
                 return;
             }
@@ -204,8 +205,10 @@ class HallMap {
         if (url) {
             const urlSegments = url.dataset.pageUrl.split('/');
             const lastSegment = urlSegments[urlSegments.length - 1];
+
             return lastSegment || null;
         }
+
         return null;
     }
 
@@ -283,6 +286,7 @@ class HallMap {
             }),
         })
             .then((response) => {
+
                 return response.json();
             })
             .then(resp => {
@@ -315,6 +319,7 @@ class HallMap {
             },
         })
             .then((response) => {
+
                 return response.json();
             })
             .then((resp) => {
@@ -371,6 +376,7 @@ class HallMap {
                 }),
             })
                 .then((response) => {
+
                     return response.json();
                 })
                 .then(resp => {
@@ -453,7 +459,8 @@ class HallMap {
             }),
         })
             .then((response) => {
-                return response.json();
+
+                    return response.json();
             })
             .then(resp => {
                 if (resp.status) {
@@ -535,6 +542,7 @@ class HallMap {
     deletePlace(event) {
         const confirmDelete = window.confirm('Вы действительно хотите удалить место?');
         if (!confirmDelete) {
+
             return;
         }
 
@@ -582,6 +590,7 @@ class HallMap {
     getSVGPoint(element) {
         const x = parseFloat(element.getAttributeNS(null, 'x'));
         const y = parseFloat(element.getAttributeNS(null, 'y'));
+
         return {x, y};
     }
 
@@ -589,6 +598,7 @@ class HallMap {
         const svgPoint = this.gElement.ownerSVGElement.createSVGPoint();
         svgPoint.x = event.pageX;
         svgPoint.y = event.pageY;
+
         return svgPoint.matrixTransform(this.gElement.getScreenCTM().inverse());
     }
 
@@ -763,6 +773,7 @@ class HallMap {
             },
         })
             .then((response) => {
+
                 return response.json();
             })
             .then((data) => {

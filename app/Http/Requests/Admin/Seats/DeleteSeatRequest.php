@@ -3,7 +3,10 @@
 namespace App\Http\Requests\Admin\Seats;
 
 use Illuminate\Contracts\Validation\ValidationRule;
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Http\JsonResponse;
 
 class DeleteSeatRequest extends FormRequest
 {
@@ -37,5 +40,19 @@ class DeleteSeatRequest extends FormRequest
         return [
             'seat_id.exists' => 'Такого места не существует',
         ];
+    }
+
+    /**
+     *  Handle a failed validation attempt and respond with a JSON representation
+     *  of the first validation error along with an HTTP 422 Unprocessable Entity status.
+     *
+     * @param Validator $validator
+     * @return JsonResponse
+     */
+    protected function failedValidation(Validator $validator): JsonResponse
+    {
+        throw new HttpResponseException(response()->json([
+            'message' => $validator->errors()->first(),
+        ], 422));
     }
 }
