@@ -10,9 +10,8 @@ interface SeatRepositoryInterface
     /**
      * Create a new seat.
      *
+     * @param Hall $hall
      * @param int $seatsTypeId
-     * @param int $hallId
-     * @param int $theatreId
      * @param int $rowNumber
      * @param int $seatNumber
      * @param float $positionX
@@ -20,9 +19,8 @@ interface SeatRepositoryInterface
      * @return Seat
      */
     public function createSeat(
+        Hall  $hall,
         int   $seatsTypeId,
-        int   $hallId,
-        int   $theatreId,
         int   $rowNumber,
         int   $seatNumber,
         float $positionX,
@@ -30,50 +28,56 @@ interface SeatRepositoryInterface
     ): Seat;
 
     /**
-     * Gets a Seat by identifier with the ability to load associated data.
-     *
-     * @param int $seatId
-     * @param array|null $relations
-     * @return Seat
-     */
-    public function getSeatById(int $seatId, ?array $relations = []): Seat;
-
-    /**
      * Updates information about the Seat.
      *
-     * @param int $seatId
-     * @param int $seatsTypeId
+     * @param Seat $seat
      * @param int $hallId
+     * @param int $seatsTypeId
      * @param int $rowNumber
      * @param int $seatNumber
      * @param float $positionX
      * @param float $positionY
-     * @return bool|int
+     * @return Seat
      */
     public function updateSeat(
-        int   $seatId,
-        int   $seatsTypeId,
+        Seat  $seat,
         int   $hallId,
+        int   $seatsTypeId,
         int   $rowNumber,
         int   $seatNumber,
         float $positionX,
         float $positionY,
-    ): bool|int;
+    ): Seat;
 
     /**
-     * Delete seats in a hall that are not present in the given list of seat IDs.
+     *  Retrieve a seat by ID with specified conditions in the associated hall, theatre, and seat type.
      *
+     * @param int $theatreId
      * @param int $hallId
-     * @param array $seatIdsList
-     * @return bool
+     * @param int $seatsTypeId
+     * @param int $seatId
+     * @return Seat
      */
-    public function deleteSeatsNotInList(int $hallId, array $seatIdsList): bool;
+    public function getSeatByIdWithTheatreAndHallAndSeatTypeConditionsOrFail(
+        int $theatreId,
+        int $hallId,
+        int $seatsTypeId,
+        int $seatId,
+    ): Seat;
 
     /**
-     * Deletes a seat with the given seat ID.
+     *  Get a seat by ID, taking into account affiliation with the theater and hall.
      *
+     * @param int $theatreId
+     * @param int $hallId
      * @param int $seatId
-     * @return bool
+     * @param array|null $columns
+     * @return Seat
      */
-    public function deleteSeatsByIdOrFail(int $seatId): bool;
+    public function getSeatByIdWithTheatreAndHallConditionsOrFail(
+        int $theatreId,
+        int $hallId,
+        int $seatId,
+        ?array $columns = ['*']
+    ): Seat;
 }

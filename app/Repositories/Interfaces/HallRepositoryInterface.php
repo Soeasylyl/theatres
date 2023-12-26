@@ -35,4 +35,18 @@ interface HallRepositoryInterface
      * @return bool
      */
     public function updateHall(Hall $hall,UpdateHallDTO $dto): bool;
+
+    /**
+     * It turns out the hall object with checking the lighting in the cinema and the restrictions on the type of seats.
+     *
+     * @param int $seatsTypeId
+     * @param int $hallId
+     * @param int $theatreId
+     * @return Hall
+     */
+    public function getHallWithTheatreAndSeatTypeConditionsByIdOrFail(
+        int $theatreId,
+        int $hallId,
+        int $seatsTypeId,
+    ): Hall;
 }

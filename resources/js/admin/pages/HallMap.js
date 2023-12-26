@@ -273,7 +273,6 @@ class HallMap {
     deleteSeatAjax(clickedElement) {
         const url = document.querySelector('[data-page-url]').getAttribute('data-page-url');
         const csrfToken = document.querySelector('input[name="_token"]').value;
-        const seatId = this.extractIdFromUrl();
 
         fetch(`${url}`, {
             method: 'DELETE',
@@ -281,9 +280,6 @@ class HallMap {
                 'Content-Type': 'application/json',
                 'X-CSRF-TOKEN': csrfToken,
             },
-            body: JSON.stringify({
-                seat_id: seatId,
-            }),
         })
             .then((response) => {
 
@@ -357,7 +353,6 @@ class HallMap {
             const seatsType = document.querySelector('select[name="seats_type"]').value;
 
             const url = addSeatButton.getAttribute('data-create-seat-url');
-            // const hallId = addSeatButton.getAttribute('data-hall-id');
             const csrfToken = document.querySelector('input[name="_token"]').value;
             console.log(url)
 
@@ -369,7 +364,6 @@ class HallMap {
                 },
                 body: JSON.stringify({
                     seat_type_id: seatsType,
-                    // hall_id: hallId,
                     row: numberRow,
                     number: numberSeat,
                     position_x: XSeat,
@@ -392,12 +386,12 @@ class HallMap {
                         this.errorAjaxSeatNotification(typeNotification, resp.message)
                     }
                 })
-                // .catch(error => {
-                //     const typeNotification = 'notifications-danger';
-                //     const messageNotification = 'Не корректно заполнены данные о месте';
-                //
-                //     this.errorAjaxSeatNotification(typeNotification, messageNotification)
-                // });
+                .catch(error => {
+                    const typeNotification = 'notifications-danger';
+                    const messageNotification = 'Не корректно заполнены данные о месте';
+
+                    this.errorAjaxSeatNotification(typeNotification, messageNotification)
+                });
         })
     }
 
@@ -440,7 +434,6 @@ class HallMap {
 
         const url = document.querySelector('[data-page-url]').getAttribute('data-page-url');
         const id = saveSeatButton.getAttribute('data-selected-seat-id');
-        const hallId = saveSeatButton.getAttribute('data-hall-id');
         const csrfToken = document.querySelector('input[name="_token"]').value;
 
         fetch(`${url}`, {
@@ -451,7 +444,6 @@ class HallMap {
             },
             body: JSON.stringify({
                 seat_id: id,
-                hall_id: hallId,
                 row: numberRow,
                 number: numberSeat,
                 position_x: XSeat,

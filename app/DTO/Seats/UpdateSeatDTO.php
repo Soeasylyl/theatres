@@ -7,6 +7,7 @@ class UpdateSeatDTO
     /**
      * @param int $hallId
      * @param int $seatId
+     * @param int $theatreId
      * @param int $seatTypeId
      * @param int $row
      * @param int $number
@@ -16,6 +17,7 @@ class UpdateSeatDTO
     public function __construct(
         private readonly int   $hallId,
         private readonly int   $seatId,
+        private readonly int   $theatreId,
         private readonly int   $seatTypeId,
         private readonly int   $row,
         private readonly int   $number,
@@ -23,6 +25,14 @@ class UpdateSeatDTO
         private readonly float $posY,
     )
     {
+    }
+
+    /**
+     * @return int
+     */
+    public function getTheatreId(): int
+    {
+        return $this->theatreId;
     }
 
     /**

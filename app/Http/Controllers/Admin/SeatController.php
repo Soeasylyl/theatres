@@ -8,7 +8,6 @@ use App\DTO\Seats\SeatIdDTO;
 use App\DTO\Seats\UpdateSeatDTO;
 use App\Http\Requests\Admin\Seats\CheckSeatRequest;
 use App\Http\Requests\Admin\Seats\CreateSeatRequest;
-use App\Http\Requests\Admin\Seats\DeleteSeatRequest;
 use App\Http\Requests\Admin\Seats\UpdateSeatRequest;
 use App\Services\HallService;
 use App\Services\SeatService;
@@ -113,27 +112,31 @@ class SeatController extends BaseAdminController
      *  Method for checking the condition of a place.
      *
      * @param CheckSeatRequest $request
+     * @param int $theatreId
+     * @param int $hallId
      * @param SeatService $seatService
      * @return JsonResponse
      */
     public function check(
         CheckSeatRequest $request,
-        SeatService      $seatService,
+        int         $theatreId,
+        int         $hallId,
+        SeatService $seatService,
     )
     {
         $checkSeatDto = new SeatIdDTO(
+            theatreId: $theatreId,
+            hallId: $hallId,
             seatId: $request->input('seat_id'),
         );
 
         try {
-            $seat = $seatService->findSeat($checkSeatDto);
-
-            $seatType = $seat->seatType->name;
+            $seatData = $seatService->findSeatWithSeatType($checkSeatDto);
 
             return response()->json([
                 'status' => true,
-                'seat' => $seat,
-                'seatTypeName' => $seatType,
+                'seat' => $seatData['seat'],
+                'seatTypeName' => $seatData['seatType'],
             ]);
         } catch (\Throwable $exception) {
             Log::error("Failed to find seat: {$exception->getMessage()}");
@@ -149,17 +152,24 @@ class SeatController extends BaseAdminController
      * Updates information about a seat in the hall.
      *
      * @param UpdateSeatRequest $request
+     * @param int $theatreId
+     * @param int $hallId
+     * @param int $seatId
      * @param SeatService $seatService
      * @return JsonResponse
      */
     public function update(
         UpdateSeatRequest $request,
+        int               $theatreId,
+        int               $hallId,
+        int               $seatId,
         SeatService       $seatService,
     )
     {
         $updateSeatDto = new UpdateSeatDTO(
-            hallId: $request->input('hall_id'),
-            seatId: $request->input('seat_id'),
+            hallId: $hallId,
+            seatId: $seatId,
+            theatreId: $theatreId,
             seatTypeId: $request->input('seat_type_id'),
             row: $request->input('row'),
             number: $request->input('number'),
@@ -187,17 +197,23 @@ class SeatController extends BaseAdminController
     /**
      * Remove the specified resource from storage.
      *
-     * @param DeleteSeatRequest $request
+     * @param int $theatreId
+     * @param int $hallId
+     * @param int $seatId
      * @param SeatService $seatService
      * @return JsonResponse
      */
     public function destroy(
-        DeleteSeatRequest $request,
-        SeatService       $seatService
+        int         $theatreId,
+        int         $hallId,
+        int         $seatId,
+        SeatService $seatService
     )
     {
         $deleteSeatDto = new SeatIdDTO(
-            seatId: $request->input('seat_id'),
+            theatreId: $theatreId,
+            hallId: $hallId,
+            seatId: $seatId,
         );
         try {
             $seatService->deleteSeat($deleteSeatDto);

@@ -26,8 +26,6 @@ class UpdateSeatRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'seat_id' => 'required|int|exists:seats,id',
-            'hall_id' => 'required|int|exists:halls,id',
             'row' => 'required|int|min:0',
             'number' => 'required|int|min:0',
             'position_x' => 'required|numeric',
@@ -46,8 +44,6 @@ class UpdateSeatRequest extends FormRequest
         return [
             'row.min' => 'Ряд не может быть отрицательным или равным 0',
             'number.min' => 'Номер места не может быть отрицательным или равным 0',
-            'seat_id.exists' => 'Такого места не существует',
-            'hall_id.exists' => 'Такого зала не существует',
             'seat_type_id.exists' => 'Такого типа мест не существует',
         ];
     }
