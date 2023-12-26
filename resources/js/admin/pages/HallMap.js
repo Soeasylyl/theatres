@@ -114,17 +114,23 @@ class HallMap {
         const y = event.pageY - 60;
         const svgElement = this.getEditingSVGElement();
 
-        const contextMenuItems = [
-            {label: 'Редактировать место', action: () => this.editPlace(event)},
-            {label: 'Удалить место', action: () => this.deletePlace(event)}
-        ];
+        const contextMenuItems = [];
 
-        // Проверка, редактируется ли элемент
-        if (svgElement && svgElement.classList.contains('selected')) {
-            // Удаляем элемент по индексу 1, если условие выполняется
-            contextMenuItems.splice(0, 1);
-            contextMenuItems.unshift({label: 'Отменить редактирование', action: () => this.cancelEditing(svgElement)});
-            contextMenuItems.unshift({label: 'Сохранить изменения', action: () => this.saveEditing()});
+        // Проверяем, редактируется ли элемент и есть ли у него класс 'hall-new-place'
+        if (svgElement && svgElement.classList.contains('hall-new-place')) {
+            contextMenuItems.push({ label: 'Отменить редактирование', action: () => this.cancelEditing(svgElement) });
+        } else if (svgElement && svgElement.classList.contains('selected')) {
+            // Если есть класс 'selected', добавляем пункты меню для редактирования
+            contextMenuItems.push(
+                { label: 'Отменить редактирование', action: () => this.cancelEditing(svgElement) },
+                { label: 'Сохранить изменения', action: () => this.saveEditing() }
+            );
+        } else {
+            // Если не редактируется и не имеет класс 'hall-new-place' или 'selected', добавляем стандартные пункты меню
+            contextMenuItems.push(
+                { label: 'Редактировать место', action: () => this.editPlace(event) },
+                { label: 'Удалить место', action: () => this.deletePlace(event) }
+            );
         }
 
         this.displayContextMenu(x, y, contextMenuItems);
@@ -245,7 +251,7 @@ class HallMap {
 
         document.querySelector('input[name="x_pos_seat"]').value = x;
         document.querySelector('input[name="y_pos_seat"]').value = y;
-        document.querySelector('input[name="number_seat"]').focus().scrollIntoView({ behavior: 'smooth', block: 'start' });
+        document.querySelector('input[name="number_seat"]').focus();
         document.querySelector('input[name="number_row"]').value = '1';
         document.querySelector('select[name="seats_type"] option').selected = true;
     }
@@ -404,6 +410,7 @@ class HallMap {
 
         const selectedElement = document.querySelector('.selected');
         selectedElement?.classList.remove('selected');
+        selectedElement?.classList.remove('hall-new-place');
 
         this.seatsWrapperContainer?.classList.add('admin-halls__hidden');
     }
@@ -670,7 +677,8 @@ class HallMap {
 
         if (eventType === 'add-place') {
             // довешиваем класс для редактирования и делаем элемент редактируемым
-            svgElement.setAttribute('class', 'selected');
+            svgElement.setAttribute('class', 'selected hall-new-place');
+
             this.editingSVGElement = svgElement;
         }
 
