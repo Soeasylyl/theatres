@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 // Admin-panel routes
-Route::prefix('/admin/theatres/{theatres}/hall/{halls}/seat')
+Route::prefix('/admin/theatres/{theatre}/halls/{hall}/seats')
     ->middleware([
         'auth',
         'isBlock',
@@ -28,11 +28,8 @@ Route::prefix('/admin/theatres/{theatres}/hall/{halls}/seat')
         Route::get('/check', [SeatController::class, 'check'])->name('seat.check');
         Route::post('/', [SeatController::class, 'store'])->name('seat.store');
 
-        Route::prefix('{seats}/')->group(function () {
+        Route::prefix('{seat}/')->group(function () {
             Route::patch('/', [SeatController::class, 'update'])->name('seat.update');
             Route::delete('/', [SeatController::class, 'destroy'])->name('seat.delete');
         });
     });
-
-
-

@@ -58,11 +58,13 @@ class SeatService
         return $this->seatRepository->createSeat(
             seatsTypeId: $dto->getSeatTypeId(),
             hallId: $dto->getHallId(),
+            theatreId: $dto->getTheatreId(),
             rowNumber: $dto->getRow(),
             seatNumber: $dto->getNumber(),
             positionX: $dto->getPosX(),
             positionY: $dto->getPosY(),
         );
+
     }
 
     /**

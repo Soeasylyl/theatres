@@ -69,24 +69,24 @@ Route::prefix('admin')->middleware(['auth', 'isBlock', 'AdminAccess'])->group(fu
             Route::post('/', [TheatreController::class, 'store'])->name('theatre.store');
 
             Route::middleware('CheckTheatreAccessMiddleware')->group(function () {
-                Route::get('{theatres}/edit', [TheatreController::class, 'edit'])->name('theatre.edit');
-                Route::patch('{theatres}/', [TheatreController::class, 'update'])->name('theatre.update');
-                Route::delete('{theatres}/', [TheatreController::class, 'destroy'])->name('theatre.delete');
+                Route::get('{theatre}/edit', [TheatreController::class, 'edit'])->name('theatre.edit');
+                Route::patch('{theatre}/', [TheatreController::class, 'update'])->name('theatre.update');
+                Route::delete('{theatre}/', [TheatreController::class, 'destroy'])->name('theatre.delete');
 
                 //Seat Type CRUD
-                Route::prefix('{theatres}/seat-type')->group(function () {
+                Route::prefix('{theatre}/seat-type')->group(function () {
                     Route::post('/', [SeatTypeController::class, 'store'])->name('seat-type.create');
                     Route::patch('/', [SeatTypeController::class, 'update'])->name('seat-type.update');
                     Route::delete('/', [SeatTypeController::class, 'destroy'])->name('seat-type.delete');
                 });
 
                 //Hall CRUD
-                Route::prefix('{theatres}/hall/')->group(function () {
+                Route::prefix('{theatre}/halls/')->group(function () {
                    Route::get('/', [HallController::class, 'create'])->name('hall.create');
                    Route::post('/', [HallController::class, 'store'])->name('hall.store');
                    Route::delete('/', [HallController::class, 'destroy'])->name('hall.delete');
 
-                   Route::prefix('{halls}')->group(function () {
+                   Route::prefix('{hall}')->group(function () {
                        Route::get('/', [HallController::class, 'edit'])->name('hall.edit');
                        Route::patch('/', [HallController::class, 'update'])->name('hall.update');
 

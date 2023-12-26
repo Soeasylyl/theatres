@@ -7,6 +7,7 @@ class CreateSeatDTO
     /**
      * @param int $seatTypeId
      * @param int $hallId
+     * @param int $theatreId
      * @param int $row
      * @param int $number
      * @param float $posX
@@ -15,12 +16,21 @@ class CreateSeatDTO
     public function __construct(
         private readonly int   $seatTypeId,
         private readonly int   $hallId,
+        private readonly int   $theatreId,
         private readonly int   $row,
         private readonly int   $number,
         private readonly float $posX,
         private readonly float $posY,
     )
     {
+    }
+
+    /**
+     * @return int
+     */
+    public function getTheatreId(): int
+    {
+        return $this->theatreId;
     }
 
     /**

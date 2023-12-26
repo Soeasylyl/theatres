@@ -70,7 +70,7 @@
                                 {{ __('Редактирование карты зала') }}
                             </h2>
 
-                            <a class="login-container__btn" href="{{ route('seat.create', ['theatres' => $theatres, 'halls' => $halls]) }}">
+                            <a class="login-container__btn" href="{{ route('seat.create', ['theatre' => $theatres, 'hall' => $halls]) }}">
                                 {{ __('Начать редактирование') }}
                             </a>
                         </div>

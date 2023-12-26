@@ -25,7 +25,7 @@
                 <div class="admin-theatres__body">
                     <div class="admin-theatres__body-wrapper">
                         <form method="POST"
-                              action="{{ route('theatre.update', ['theatres' => $theatre->id]) }}"
+                              action="{{ route('theatre.update', ['theatre' => $theatre->id]) }}"
                               enctype="multipart/form-data">
                             @csrf
                             @method('PATCH')
@@ -152,7 +152,8 @@
                                     @forelse($halls as $hall)
                                         <tr class="admin-theatres__edit-halls"
                                             data-hall-id="{{$hall->id}}"
-                                            data-theatre-id="{{$theatre->id}}">
+                                            data-theatre-id="{{$theatre->id}}"
+                                            data-edit-hall-url="{{ route('hall.edit', ["theatre"=> $theatre->id, "hall" => $hall->id]) }}">
                                             <td>{{ $hall->name }}</td>
                                             <td>{{ $hall->seats->count() }}</td>
                                             <td>
@@ -184,7 +185,7 @@
 
                                 <a class="login-container__btn"
                                    style="justify-content: center; display: flex; text-decoration: none;"
-                                   href="{{ route('hall.create',['theatres' => $theatre->id]) }}">{{ __('Добавить новый зал') }}</a>
+                                   href="{{ route('hall.create',['theatre' => $theatre->id]) }}">{{ __('Добавить новый зал') }}</a>
                             </div>
 
                         </div>

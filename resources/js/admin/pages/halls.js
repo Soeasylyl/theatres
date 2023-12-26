@@ -35,11 +35,10 @@ class Halls {
                 if (!event.target.closest('.admin-theatres__delete-hall-icon')) {
                     event.preventDefault(); // Preventing link from being followed
 
-                    const hallId = item.dataset.hallId;
-                    const theatreId = item.dataset.theatreId;
-                    if (hallId) {
-                        window.location.href = `/admin/theatres/${theatreId}/hall/${hallId}`;
-                    }
+                    const url = item.dataset.editHallUrl.trim();
+                    console.log('URL PAGE', url);
+
+                    window.location.href = url;
                 }
             })
         })

@@ -76,12 +76,15 @@ class SeatController extends BaseAdminController
      */
     public function store(
         CreateSeatRequest $request,
+        int               $theatreId,
+        int               $hallId,
         SeatService       $seatService
     )
     {
         $createSeatDto = new CreateSeatDTO(
             seatTypeId: $request->input('seat_type_id'),
-            hallId: $request->input('hall_id'),
+            hallId: $hallId,
+            theatreId: $theatreId,
             row: $request->input('row'),
             number: $request->input('number'),
             posX: $request->input('position_x'),

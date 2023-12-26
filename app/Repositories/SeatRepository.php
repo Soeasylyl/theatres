@@ -2,8 +2,10 @@
 
 namespace App\Repositories;
 
+use App\Models\Hall;
 use App\Models\Seat;
 use App\Repositories\Interfaces\SeatRepositoryInterface;
+use Illuminate\Database\Eloquent\Builder;
 
 class SeatRepository implements SeatRepositoryInterface
 {
@@ -12,6 +14,7 @@ class SeatRepository implements SeatRepositoryInterface
      *
      * @param int $seatsTypeId
      * @param int $hallId
+     * @param int $theatreId
      * @param int $rowNumber
      * @param int $seatNumber
      * @param float $positionX
@@ -21,13 +24,28 @@ class SeatRepository implements SeatRepositoryInterface
     public function createSeat(
         int   $seatsTypeId,
         int   $hallId,
+        int   $theatreId,
         int   $rowNumber,
         int   $seatNumber,
         float $positionX,
         float $positionY
     ): Seat
     {
-        return Seat::create([
+        $hall = Hall::query()
+            ->where('theatre_id', $theatreId)
+            ->when($seatsTypeId, function (Builder $builder) use ($seatsTypeId, $theatreId) {
+                $builder->whereHas('theatre', function (Builder $query) use ($seatsTypeId) {
+                    $query->whereHas('seatTypes', function (Builder $seatTypeQuery) use ($seatsTypeId) {
+                        $seatTypeQuery->where('id', $seatsTypeId);
+                    });
+                });
+            })
+            ->when($hallId, function (Builder $builder) use ($hallId) {
+                $builder->where('id', $hallId);
+            })
+            ->firstOrFail();
+
+        return $hall->seats()->create([
             'seat_type_id' => $seatsTypeId,
             'hall_id' => $hallId,
             'row' => $rowNumber,

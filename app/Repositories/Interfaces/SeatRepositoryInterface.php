@@ -10,8 +10,9 @@ interface SeatRepositoryInterface
     /**
      * Create a new seat.
      *
-     * @param int $hallId
      * @param int $seatsTypeId
+     * @param int $hallId
+     * @param int $theatreId
      * @param int $rowNumber
      * @param int $seatNumber
      * @param float $positionX
@@ -21,6 +22,7 @@ interface SeatRepositoryInterface
     public function createSeat(
         int   $seatsTypeId,
         int   $hallId,
+        int   $theatreId,
         int   $rowNumber,
         int   $seatNumber,
         float $positionX,

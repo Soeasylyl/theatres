@@ -10,7 +10,7 @@
 
                 <div class="admin-halls__body">
                     <form method="POST"
-                          action="{{route('hall.store', ['theatres' => $theatreId])}}"
+                          action="{{route('hall.store', ['theatre' => $theatreId])}}"
                           enctype="multipart/form-data">
                         <div class="admin-halls__form">
                             @csrf

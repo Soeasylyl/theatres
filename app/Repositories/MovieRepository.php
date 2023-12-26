@@ -31,9 +31,22 @@ class MovieRepository implements MovieRepositoryInterface
     }
 
     /**
+     * Retrieve a movie with specified relationships or throw an exception if not found.
+     *
+     * @param array|null $relations The relationships to eager load.
+     * @param int $movieId The ID of the movie to retrieve.
+     * @return Movie The retrieved movie with specified relationships.
+     * @throws ModelNotFoundException If the movie with the given ID is not found.
+     */
+    public function getMovieByIdOrFail(int $movieId, ?array $relations = []): Movie
+    {
+        return Movie::with($relations)->findOrFail($movieId);
+    }
+
+    /**
      *Get a collection of random movies along with their screenings and related media.
      *
-     * @param Carbon $currentDateTime
+ * @param Carbon $currentDateTime
      * @param int|null $limit
      * @param array|null $relations
      * @return Collection
@@ -47,19 +60,6 @@ class MovieRepository implements MovieRepositoryInterface
             ->inRandomOrder()
             ->when($limit !== null, fn(Builder $query) => $query->limit($limit))
             ->get();
-    }
-
-    /**
-     * Retrieve a movie with specified relationships or throw an exception if not found.
-     *
-     * @param array|null $relations The relationships to eager load.
-     * @param int $movieId The ID of the movie to retrieve.
-     * @return Movie The retrieved movie with specified relationships.
-     * @throws ModelNotFoundException If the movie with the given ID is not found.
-     */
-    public function getMovieByIdOrFail(int $movieId, ?array $relations = []): Movie
-    {
-        return Movie::with($relations)->findOrFail($movieId);
     }
 
     /**

@@ -60,7 +60,7 @@ class HallController extends BaseAdminController
             $this->hallService->createHall(dto: $createHallDto);
 
             return redirect()
-                ->route('theatre.edit', ['theatres' => $createHallDto->getTheatreId()])
+                ->route('theatre.edit', ['theatre' => $createHallDto->getTheatreId()])
                 ->with('successMessages', 'Зал ' . $createHallDto->getName() . ' успешно добавлен');
         } catch (\Throwable $exception) {
             return redirect()->back()->with('error', $exception->getMessage());
