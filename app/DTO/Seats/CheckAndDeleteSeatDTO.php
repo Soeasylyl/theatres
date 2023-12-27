@@ -2,7 +2,7 @@
 
 namespace App\DTO\Seats;
 
-class SeatIdDTO
+class CheckAndDeleteSeatDTO
 {
     /**
      * @param int $theatreId

@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\DTO\Halls\EditHallDTO;
 use App\DTO\Seats\CreateSeatDTO;
-use App\DTO\Seats\SeatIdDTO;
+use App\DTO\Seats\CheckAndDeleteSeatDTO;
 use App\DTO\Seats\UpdateSeatDTO;
 use App\Http\Requests\Admin\Seats\CheckSeatRequest;
 use App\Http\Requests\Admin\Seats\CreateSeatRequest;
@@ -124,7 +124,7 @@ class SeatController extends BaseAdminController
         SeatService $seatService,
     )
     {
-        $checkSeatDto = new SeatIdDTO(
+        $checkSeatDto = new CheckAndDeleteSeatDTO(
             theatreId: $theatreId,
             hallId: $hallId,
             seatId: $request->input('seat_id'),
@@ -210,7 +210,7 @@ class SeatController extends BaseAdminController
         SeatService $seatService
     )
     {
-        $deleteSeatDto = new SeatIdDTO(
+        $deleteSeatDto = new CheckAndDeleteSeatDTO(
             theatreId: $theatreId,
             hallId: $hallId,
             seatId: $seatId,

@@ -25,7 +25,7 @@ Route::prefix('/admin/theatres/{theatre}/halls/{hall}/seats')
         'CheckTheatreAccessMiddleware'
     ])->group(function () {
         Route::get('/map', [SeatController::class, 'generateMap'])->name('generateMap.create');
-        Route::get('/check', [SeatController::class, 'check'])->name('seat.check');
+        Route::get('/check-seat', [SeatController::class, 'check'])->name('seat.check');
         Route::post('/', [SeatController::class, 'store'])->name('seat.store');
 
         Route::prefix('{seat}/')->group(function () {

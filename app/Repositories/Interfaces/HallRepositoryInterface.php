@@ -44,7 +44,7 @@ interface HallRepositoryInterface
      * @param int $theatreId
      * @return Hall
      */
-    public function getHallWithTheatreAndSeatTypeConditionsByIdOrFail(
+    public function getHallForCreationChecking(
         int $theatreId,
         int $hallId,
         int $seatsTypeId,

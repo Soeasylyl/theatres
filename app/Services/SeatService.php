@@ -3,7 +3,7 @@
 namespace App\Services;
 
 use App\DTO\Seats\CreateSeatDTO;
-use App\DTO\Seats\SeatIdDTO;
+use App\DTO\Seats\CheckAndDeleteSeatDTO;
 use App\DTO\Seats\UpdateSeatDTO;
 use App\Models\Seat;
 use App\Repositories\HallRepository;
@@ -27,7 +27,7 @@ class SeatService
      */
     public function updateSeat(UpdateSeatDto $dto): Seat
     {
-        $seat = $this->seatRepository->getSeatByIdWithTheatreAndHallAndSeatTypeConditionsOrFail(
+        $seat = $this->seatRepository->getSeatForCreationChecking(
             theatreId: $dto->getTheatreId(),
             hallId: $dto->getHallId(),
             seatsTypeId: $dto->getSeatTypeId(),
@@ -48,12 +48,12 @@ class SeatService
     /**
      * Deletes a seat based on the provided DTO.
      *
-     * @param SeatIdDTO $dto
+     * @param CheckAndDeleteSeatDTO $dto
      * @return bool
      */
-    public function deleteSeat(SeatIdDTO $dto): bool
+    public function deleteSeat(CheckAndDeleteSeatDTO $dto): bool
     {
-        $seat = $this->seatRepository->getSeatByIdWithTheatreAndHallConditionsOrFail(
+        $seat = $this->seatRepository->getSeatWithTheatreAndHallChecking(
             theatreId: $dto->getTheatreId(),
             hallId: $dto->getHallId(),
             seatId: $dto->getSeatId(),
@@ -70,7 +70,7 @@ class SeatService
      */
     public function createSeat(CreateSeatDTO $dto): Seat
     {
-        $hall = $this->hallRepository->getHallWithTheatreAndSeatTypeConditionsByIdOrFail(
+        $hall = $this->hallRepository->getHallForCreationChecking(
             theatreId: $dto->getTheatreId(),
             hallId: $dto->getHallId(),
             seatsTypeId: $dto->getSeatTypeId(),
@@ -87,14 +87,14 @@ class SeatService
     }
 
     /**
-     * Find a seat with its type based on the provided SeatIdDTO.
+     * Find a seat with its type based on the provided CheckAndDeleteSeatDTO.
      *
-     * @param SeatIdDTO $dto
+     * @param CheckAndDeleteSeatDTO $dto
      * @return array
      */
-    public function findSeatWithSeatType(SeatIdDTO $dto): array
+    public function findSeatWithSeatType(CheckAndDeleteSeatDTO $dto): array
     {
-        $seat = $this->seatRepository->getSeatByIdWithTheatreAndHallConditionsOrFail(
+        $seat = $this->seatRepository->getSeatWithTheatreAndHallChecking(
             theatreId: $dto->getTheatreId(),
             hallId: $dto->getHallId(),
             seatId: $dto->getSeatId(),

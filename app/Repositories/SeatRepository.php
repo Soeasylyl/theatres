@@ -81,7 +81,7 @@ class SeatRepository implements SeatRepositoryInterface
      * @param int $seatId
      * @return Seat
      */
-    public function getSeatByIdWithTheatreAndHallAndSeatTypeConditionsOrFail(
+    public function getSeatForCreationChecking(
         int $theatreId,
         int $hallId,
         int $seatsTypeId,
@@ -91,11 +91,11 @@ class SeatRepository implements SeatRepositoryInterface
         return Seat::query()
             ->whereHas('hall', function (Builder $builder) use ($seatsTypeId, $theatreId, $hallId) {
                 $builder->where('id', $hallId)
-                    ->whereHas('theatre', function (Builder $builder) use ($seatsTypeId, $theatreId) {
-                        $builder->where('id', $theatreId)
-                            ->whereHas('seatTypes', function (Builder $builder) use ($seatsTypeId) {
-                                $builder->where('id', $seatsTypeId);
-                            });
+                        ->whereHas('theatre', function (Builder $builder) use ($seatsTypeId, $theatreId) {
+                            $builder->where('id', $theatreId)
+                                    ->whereHas('seatTypes', function (Builder $builder) use ($seatsTypeId) {
+                                        $builder->where('id', $seatsTypeId);
+                                     });
                     });
             })
             ->findOrFail($seatId);
@@ -110,7 +110,7 @@ class SeatRepository implements SeatRepositoryInterface
      * @param array|null $columns
      * @return Seat
      */
-    public function getSeatByIdWithTheatreAndHallConditionsOrFail(
+    public function getSeatWithTheatreAndHallChecking(
         int $theatreId,
         int $hallId,
         int $seatId,
@@ -121,9 +121,9 @@ class SeatRepository implements SeatRepositoryInterface
             ->select($columns)
             ->whereHas('hall', function (Builder $builder) use ($theatreId, $hallId) {
                 $builder->where('id', $hallId)
-                    ->whereHas('theatre', function (Builder $builder) use ($theatreId) {
-                        $builder->where('id', $theatreId);
-                    });
+                        ->whereHas('theatre', function (Builder $builder) use ($theatreId) {
+                            $builder->where('id', $theatreId);
+                        });
             })
             ->findOrFail($seatId);
     }

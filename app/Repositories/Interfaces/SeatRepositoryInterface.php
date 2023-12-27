@@ -58,7 +58,7 @@ interface SeatRepositoryInterface
      * @param int $seatId
      * @return Seat
      */
-    public function getSeatByIdWithTheatreAndHallAndSeatTypeConditionsOrFail(
+    public function getSeatForCreationChecking(
         int $theatreId,
         int $hallId,
         int $seatsTypeId,
@@ -74,7 +74,7 @@ interface SeatRepositoryInterface
      * @param array|null $columns
      * @return Seat
      */
-    public function getSeatByIdWithTheatreAndHallConditionsOrFail(
+    public function getSeatWithTheatreAndHallChecking(
         int $theatreId,
         int $hallId,
         int $seatId,

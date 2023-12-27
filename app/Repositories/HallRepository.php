@@ -62,7 +62,7 @@ class HallRepository implements HallRepositoryInterface
      * @param int $theatreId
      * @return Hall
      */
-    public function getHallWithTheatreAndSeatTypeConditionsByIdOrFail(
+    public function getHallForCreationChecking(
         int $theatreId,
         int $hallId,
         int $seatsTypeId,
@@ -71,9 +71,9 @@ class HallRepository implements HallRepositoryInterface
         return Hall::query()
             ->whereHas('theatre', function (Builder $builder) use ($seatsTypeId, $theatreId) {
                 $builder->where('id', $theatreId)
-                    ->whereHas('seatTypes', function (Builder $builder) use ($seatsTypeId) {
-                        $builder->where('id', $seatsTypeId);
-                    });
+                        ->whereHas('seatTypes', function (Builder $builder) use ($seatsTypeId) {
+                            $builder->where('id', $seatsTypeId);
+                        });
             })
             ->findOrFail($hallId);
     }

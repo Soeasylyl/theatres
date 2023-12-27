@@ -74,7 +74,7 @@ Route::prefix('admin')->middleware(['auth', 'isBlock', 'AdminAccess'])->group(fu
                 Route::delete('{theatre}/', [TheatreController::class, 'destroy'])->name('theatre.delete');
 
                 //Seat Type CRUD
-                Route::prefix('{theatre}/seat-type')->group(function () {
+                Route::prefix('{theatre}/seat-types')->group(function () {
                     Route::post('/', [SeatTypeController::class, 'store'])->name('seat-type.create');
                     Route::patch('/', [SeatTypeController::class, 'update'])->name('seat-type.update');
                     Route::delete('/', [SeatTypeController::class, 'destroy'])->name('seat-type.delete');
@@ -90,16 +90,12 @@ Route::prefix('admin')->middleware(['auth', 'isBlock', 'AdminAccess'])->group(fu
                        Route::get('/', [HallController::class, 'edit'])->name('hall.edit');
                        Route::patch('/', [HallController::class, 'update'])->name('hall.update');
 
-                       Route::get('/seat', [SeatController::class, 'create'])->name('seat.create');
+                       Route::get('/seats', [SeatController::class, 'create'])->name('seat.create');
                    });
                 });
             });
         });
     });
-
-//    Route::prefix('/ajax')->group(function () {
-//        Route::get('/get-hall-content',[HallController::class, 'getHallContentAjax'])->name('hall.show.row-seats');
-//    });
 
     // Users management
     Route::prefix('users')->middleware(['role:' . RolesUsersEnum::SUPER_ADMIN->value . '|' . RolesUsersEnum::CINEMA_ADMIN->value])->group(function () {
