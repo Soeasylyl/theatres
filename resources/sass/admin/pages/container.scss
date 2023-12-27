@@ -48,13 +48,16 @@
                 box-shadow: 0 0 0 0.1rem rgb(158 158 158 / 14%);
             }
         }
-
     }
 
     &__search-element-wrapper {
         display: flex;
-        flex-direction: column;
         gap:10px;
+    }
+
+    &__search-form {
+        display: flex;
+        gap: 10px;
     }
 
     &__search-wrapper {
@@ -131,7 +134,7 @@
         display: flex;
         justify-content: space-between;
         gap: 10px;
-        padding-bottom: 10px;
+        padding: 10px 0;
     }
 
 

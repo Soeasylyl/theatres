@@ -68,17 +68,18 @@
                         <div class="modal__seats-container">
                             <div class="modal__seats-number">
                                 <div class="modal__seats-number-left">
-                                        <input type="text" name="seat_id" style="display: none">
+                                    <input type="text" name="seat_id" style="display: none">
 
-                                        <x-input :inputAttributes="[
+                                    <x-input :inputAttributes="[
                                         'name'=>'seat_name',
                                         'required'=>'required',
                                         'autocomplete' => 'off',
+                                        'style' => 'min-width: 450px !important;',
                                          ]"
-                                                 :errorAttribute="'seat_name'"
-                                                 input_required>
-                                            {{ __('Введите типа места:') }}
-                                        </x-input>
+                                             :errorAttribute="'seat_name'"
+                                             input_required>
+                                        {{ __('Введите типа места:') }}
+                                    </x-input>
 
                                     <x-textarea :inputAttributes="[
                                         'name'=>'seat_description',
@@ -141,6 +142,55 @@
                 </form>
             </div>
         @endif
+    </div>
+
+    <div class="modal" id="filteredScreeningsModal">
+        {{--        @if(isset($user))--}}
+        <div class="modal__container">
+            <div class="modal__title">{{ __('Выберите необходимые фильтры') }}</div>
+            <form method="GET" action="{{ route("screening.index") }}">
+                {{--                    <input type="hidden" name="timeZone" id="timezone">--}}
+
+                <div class="modal__item">
+                    <select class="admin-halls__seats-type" name="theatre">
+                        <option value="" selected>{{ __(('Все кинотеатры')) }}</option>
+                        @if(isset($theatres))
+                            @forelse($theatres as $theatre)
+                                <option value="{{ $theatre->id }}"> {{ $theatre->name }}</option>
+                            @empty
+                                <option value="none">{{ __(('Нет доступных кинотеатров')) }}</option>
+                            @endforelse
+                        @endif
+                    </select>
+                </div>
+
+                <x-input :inputAttributes="[
+                                        'name'=>'date',
+                                        'type'=>'date',
+                                        'autocomplete' => 'off',
+                                        'style' => 'min-width: 450px !important;',
+                                         ]"
+                         :errorAttribute="'dateScreenings'"
+                         input_required>
+                    {{ __('Выберите дату:') }}
+                </x-input>
+
+                <div class="modal__item">
+                    <div class="modal__checkbox-container">
+                        <label for="filteredAllScreenings">{{ __('Отобразить все сеансы') }}
+                            <input type="checkbox" id="filteredAllScreenings">
+                            <span class="checkmark"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="modal__button-wrapper">
+                    <button type="submit" class="modal__button modal__filter-btn">{{ __('Применить фильтры') }}</button>
+                    <div class="modal__button modal__close-btn">{{ __('Отмена') }}</div>
+                </div>
+            </form>
+        </div>
+        {{--        @endif--}}
     </div>
 
 </footer>

@@ -7,11 +7,13 @@ use App\Repositories\Interfaces\HallRepositoryInterface;
 use App\Repositories\Interfaces\MovieRepositoryInterface;
 use App\Repositories\Interfaces\SeatRepositoryInterface;
 use App\Repositories\Interfaces\SeatTypeRepositoryInterface;
+use App\Repositories\Interfaces\ScreeningRepositoryInterface;
 use App\Repositories\Interfaces\TheatreRepositoryInterface;
 use App\Repositories\Interfaces\UserRepositoryInterface;
 use App\Repositories\MovieRepository;
 use App\Repositories\SeatRepository;
 use App\Repositories\SeatTypeRepository;
+use App\Repositories\ScreeningRepository;
 use App\Repositories\TheatreRepository;
 use App\Repositories\UserRepository;
 use Illuminate\Support\ServiceProvider;
@@ -51,6 +53,11 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(
             SeatRepositoryInterface::class,
             SeatRepository::class
+        );
+
+        $this->app->bind(
+            ScreeningRepositoryInterface::class,
+            ScreeningRepository::class
         );
     }
 

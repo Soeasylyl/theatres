@@ -13,9 +13,10 @@ interface TheatreRepositoryInterface
     /**
      * Get all cinemas
      *
+     * @param array|null $relations
      * @return LengthAwarePaginator
      */
-    public function getCinemasPaginateList(): LengthAwarePaginator;
+    public function getCinemasPaginateList(?array $relations = []): LengthAwarePaginator;
 
     /**
      * Returns a paginated list of cinemas with screens.

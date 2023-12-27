@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\HallController;
 use App\Http\Controllers\Admin\MovieController;
 use App\Http\Controllers\Admin\SeatController;
 use App\Http\Controllers\Admin\SeatTypeController;
+use App\Http\Controllers\Admin\ScreeningController;
 use App\Http\Controllers\Admin\TheatreController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Auth\AuthController;
@@ -41,6 +42,13 @@ Route::post('/register', [RegisterController::class, 'register']);
 Route::prefix('admin')->middleware(['auth', 'isBlock', 'AdminAccess'])->group(function () {
     // Admin Dashboard
     Route::get('/', [AdminController::class, 'index'])->name('admin');
+
+    // Sessions management
+    Route::prefix('screenings')->group(function () {
+        Route::get('/', [ScreeningController::class, 'index'])->name('screening.index');
+
+
+    });
 
     // Movies management
     Route::prefix('movies')->group(function () {
