@@ -8,18 +8,18 @@ use App\DTO\Halls\EditHallDTO;
 use App\DTO\Halls\UpdateHallDTO;
 use App\Http\Requests\Admin\Halls\DeleteHallRequest;
 use App\Http\Requests\Admin\Halls\CreateAndUpdateHallRequest;
-use App\Http\Requests\Admin\Halls\AjaxSeatsRequest;
 use App\Services\HallService;
+use App\Services\SeatTypeService;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 
 class HallController extends BaseAdminController
 {
     public function __construct(
         private readonly HallService $hallService,
+        private readonly SeatTypeService $seatTypeService,
     )
     {
     }
@@ -37,7 +37,6 @@ class HallController extends BaseAdminController
         return view('admin.pages.halls.add', [
             'theatreId' => $theatreId,
             'seatTypes' => $hallData['seatTypes'],
-            'numberRow' => $hallData['numberRow'],
         ]);
     }
 
@@ -54,7 +53,6 @@ class HallController extends BaseAdminController
             theatreId: $theatreId,
             name: $request->input('name'),
             description: $request->input('description'),
-            rows: $request->input('rows'),
             hallImages: $request->file('hallImages'),
         );
 
@@ -62,7 +60,7 @@ class HallController extends BaseAdminController
             $this->hallService->createHall(dto: $createHallDto);
 
             return redirect()
-                ->route('theatre.edit', ['theatres' => $createHallDto->getTheatreId()])
+                ->route('theatre.edit', ['theatre' => $createHallDto->getTheatreId()])
                 ->with('successMessages', 'Зал ' . $createHallDto->getName() . ' успешно добавлен');
         } catch (\Throwable $exception) {
             return redirect()->back()->with('error', $exception->getMessage());
@@ -87,24 +85,6 @@ class HallController extends BaseAdminController
     }
 
     /**
-     * Get the seats of the hall
-     *
-     * @param AjaxSeatsRequest $request
-     * @return JsonResponse
-     */
-    public function getHallContentAjax(AjaxSeatsRequest $request)
-    {
-        $editHallDto = new EditHallDTO(
-            theatreId: $request->input('theatreId'),
-            hallId:  $request->input('hallId'),
-        );
-
-        $dataSeats = $this->hallService->getHallContent($editHallDto);
-
-        return response()->json($dataSeats);
-    }
-
-    /**
      * Displays the hall editing page
      *
      * @param int $theatreId
@@ -118,13 +98,14 @@ class HallController extends BaseAdminController
             hallId: $hallId,
         );
 
-        $dataHall = $this->hallService->getDataHall($editHallDto);
+        $hall = $this->hallService->getHall($editHallDto->getHallId());
+        $seatTypes = $this->seatTypeService->getSeatsTypeToHall($editHallDto->getTheatreId());
 
         return view('admin.pages.halls.edit', [
             'theatres' => $theatreId,
             'halls' => $hallId,
-            'seatTypes' => $dataHall['seatsTypes'],
-            'hall' => $dataHall['hall'],
+            'seatTypes' => $seatTypes,
+            'hall' => $hall,
         ]);
     }
 
@@ -141,7 +122,6 @@ class HallController extends BaseAdminController
             hallId: $hallId,
             name: $request->input('name'),
             description: $request->input('description'),
-            rows: $request->get('rows'),
             hallImages: $request->file('hallImages'),
         );
 

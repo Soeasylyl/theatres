@@ -1,0 +1,85 @@
+.notifications {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    position: fixed;
+    top: 90px;
+    right: 0;
+    z-index: 10;
+    transition: $transition-main;
+}
+
+.notifications-danger,
+.notifications-success,
+.notifications-warning {
+    position: relative;
+    padding: 16px 24px;
+    border-radius: $border-radius-input;
+    cursor: pointer;
+    font-family: "GolosText Semibold Web", Arial, sans-serif;
+    font-size: 16px;
+    line-height: normal;
+    animation: slideIn 0.4s ease forwards, slideOut 0.4s ease forwards 3s;
+    transition: $transition-main;
+    right: 0;
+
+    &::before {
+        content: '✕';
+        display: block;
+        position: absolute;
+        top: 3px;
+        right: 3px;
+        width: 20px;
+        height: 20px;
+        font-size: 14px;
+        line-height: 20px;
+        text-align: center;
+        cursor: pointer;
+    }
+
+    &:hover {
+        transform: rotate(3deg);
+    }
+}
+
+.notifications-danger {
+    background-color: $c-danger-background;
+    border: 1px solid f $c-danger-border;
+    color: $c-danger-text;
+
+    &::before {
+        color: $c-danger-text;
+    }
+}
+
+.notifications-success {
+    background-color: $c-success-background;
+    border: 1px solid $c-success-border;
+    color: $c-success-text;
+
+    &::before {
+        color: $c-success-text;
+    }
+}
+
+.notifications-warning {
+    border: 1px solid $c-warning-border;
+    color: $c-warning-text;
+    background-color: $c-warning-background;
+
+    &::before {
+        color: $c-warning-text;
+    }
+}
+
+@keyframes slideIn {
+    to {
+        right: 30px;
+    }
+}
+
+@keyframes slideOut {
+    to {
+        opacity: 0;
+    }
+}

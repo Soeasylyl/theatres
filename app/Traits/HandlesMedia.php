@@ -73,7 +73,7 @@ trait HandlesMedia
     public function deleteMedia(?string ...$collectionNames): void
     {
         $this->medias()
-             ->when(!empty($collectionNames), function (Builder $query) use ($collectionNames) {
+             ->when(!empty($collectionNames), function (Builder|\Illuminate\Database\Eloquent\Builder $query) use ($collectionNames) {
                   return $query->whereIn('collection', $collectionNames);
              })
              ->chunk(10, function (Collection $medias) {

@@ -3,7 +3,7 @@
     <div class="modal" id="addSeatTypeModal">
         @if(isset($theatre))
             <div class="modal__container">
-                <form method="POST" action="{{ route('seat-type.create', ['theatres' => $theatre->id]) }}">
+                <form method="POST" action="{{ route('seat-type.create', ['theatre' => $theatre->id]) }}">
                     @csrf
                     @method('POST')
 
@@ -59,7 +59,7 @@
     <div class="modal" id="editSeatTypeModal">
         @if(isset($theatre))
             <div class="modal__container">
-                <form method="POST" action="{{ route('seat-type.update', ['theatres' => $theatre->id]) }}">
+                <form method="POST" action="{{ route('seat-type.update', ['theatre' => $theatre->id]) }}">
                     @csrf
                     @method('PATCH')
 

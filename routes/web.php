@@ -4,6 +4,7 @@ use App\Enums\RolesUsersEnum;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\HallController;
 use App\Http\Controllers\Admin\MovieController;
+use App\Http\Controllers\Admin\SeatController;
 use App\Http\Controllers\Admin\SeatTypeController;
 use App\Http\Controllers\Admin\TheatreController;
 use App\Http\Controllers\Admin\UserController;
@@ -68,33 +69,32 @@ Route::prefix('admin')->middleware(['auth', 'isBlock', 'AdminAccess'])->group(fu
             Route::post('/', [TheatreController::class, 'store'])->name('theatre.store');
 
             Route::middleware('CheckTheatreAccessMiddleware')->group(function () {
-                Route::get('{theatres}/edit', [TheatreController::class, 'edit'])->name('theatre.edit');
-                Route::patch('{theatres}/', [TheatreController::class, 'update'])->name('theatre.update');
-                Route::delete('{theatres}/', [TheatreController::class, 'destroy'])->name('theatre.delete');
+                Route::get('{theatre}/edit', [TheatreController::class, 'edit'])->name('theatre.edit');
+                Route::patch('{theatre}/', [TheatreController::class, 'update'])->name('theatre.update');
+                Route::delete('{theatre}/', [TheatreController::class, 'destroy'])->name('theatre.delete');
 
                 //Seat Type CRUD
-                Route::prefix('{theatres}/seat-type')->group(function () {
+                Route::prefix('{theatre}/seat-types')->group(function () {
                     Route::post('/', [SeatTypeController::class, 'store'])->name('seat-type.create');
                     Route::patch('/', [SeatTypeController::class, 'update'])->name('seat-type.update');
                     Route::delete('/', [SeatTypeController::class, 'destroy'])->name('seat-type.delete');
                 });
 
-                //Hall creating
-                Route::prefix('{theatres}/hall/')->group(function () {
+                //Hall CRUD
+                Route::prefix('{theatre}/halls/')->group(function () {
                    Route::get('/', [HallController::class, 'create'])->name('hall.create');
                    Route::post('/', [HallController::class, 'store'])->name('hall.store');
                    Route::delete('/', [HallController::class, 'destroy'])->name('hall.delete');
-                   Route::get('{halls}/', [HallController::class, 'edit'])->name('hall.edit');
-                   Route::patch('{halls}/', [HallController::class, 'update'])->name('hall.update');
 
+                   Route::prefix('{hall}')->group(function () {
+                       Route::get('/', [HallController::class, 'edit'])->name('hall.edit');
+                       Route::patch('/', [HallController::class, 'update'])->name('hall.update');
+
+                       Route::get('/seats', [SeatController::class, 'create'])->name('seat.create');
+                   });
                 });
-
             });
         });
-    });
-
-    Route::prefix('/ajax')->group(function () {
-        Route::get('/get-hall-content',[HallController::class, 'getHallContentAjax'])->name('hall.show.row-seats');
     });
 
     // Users management

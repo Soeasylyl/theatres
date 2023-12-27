@@ -1,0 +1,2 @@
+<section class="notifications">
+</section>

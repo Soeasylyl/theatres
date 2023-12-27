@@ -3,6 +3,7 @@
 namespace App\Repositories\Interfaces;
 
 use App\DTO\Halls\CreateHallDTO;
+use App\DTO\Halls\UpdateHallDTO;
 use App\Models\Theatre;
 use App\Models\Hall;
 
@@ -25,4 +26,27 @@ interface HallRepositoryInterface
      * @return Hall
      */
     public function getHallByIdOrFail(int $hallId, ?array $relations = []): Hall;
+
+    /**
+     * Update the specified hall.
+     *
+     * @param Hall $hall
+     * @param UpdateHallDTO $dto
+     * @return bool
+     */
+    public function updateHall(Hall $hall,UpdateHallDTO $dto): bool;
+
+    /**
+     * It turns out the hall object with checking the lighting in the cinema and the restrictions on the type of seats.
+     *
+     * @param int $seatsTypeId
+     * @param int $hallId
+     * @param int $theatreId
+     * @return Hall
+     */
+    public function getHallForCreationChecking(
+        int $theatreId,
+        int $hallId,
+        int $seatsTypeId,
+    ): Hall;
 }

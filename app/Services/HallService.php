@@ -11,6 +11,7 @@ use App\Repositories\Interfaces\HallRepositoryInterface;
 use App\Repositories\Interfaces\TheatreRepositoryInterface;
 use App\Repositories\SeatRepository;
 use App\Repositories\SeatTypeRepository;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
@@ -19,9 +20,8 @@ class HallService
 {
     public function __construct(
         private readonly TheatreRepositoryInterface $theatreRepository,
-        private readonly HallRepositoryInterface $hallRepository,
-        private readonly SeatRepository $seatRepository,
-        private readonly SeatTypeRepository $seatTypeRepository,
+        private readonly HallRepositoryInterface    $hallRepository,
+        private readonly SeatTypeRepository         $seatTypeRepository,
     )
     {
     }
@@ -34,11 +34,9 @@ class HallService
      */
     public function getDataForCreate(int $theatreId): array
     {
-        $theatre = $this->theatreRepository->getTheatreByIdOrFail(theatreId: $theatreId, relations: ['seatTypes']);
-        $seatTypes = $theatre->seatTypes;
-        $numberRow = 0;
+        $seatTypes = $this->seatTypeRepository->getSeatTypesByHallId($theatreId);
 
-        return compact('seatTypes', 'numberRow');
+        return compact('seatTypes');
     }
 
     /**
@@ -62,24 +60,6 @@ class HallService
                     mediaFiles: $dto->getHallImages(),
                     collectionName: 'halls'
                 );
-            }
-
-            foreach ($dto->getRows() as $rowNumber => $row) {
-                foreach ($row as $place) {
-                    $seatNumber = $place['seatNumber'];
-                    $seatTypeId = $place['seatsTypeId'];
-                    $posX = $place['posX'];
-                    $posY = $place['posY'];
-
-                    $this->seatRepository->createSeat(
-                        hall: $hall,
-                        seatsTypeId: $seatTypeId,
-                        rowNumber: $rowNumber,
-                        seatNumber: $seatNumber,
-                        positionX: $posX,
-                        positionY: $posY
-                    );
-                }
             }
 
             DB::commit();
@@ -109,15 +89,12 @@ class HallService
     /**
      * Receives data for editing the hall.
      *
-     * @param EditHallDTO $dto
-     * @return array
+     * @param int $hallId
+     * @return Hall
      */
-    public function getDataHall(EditHallDTO $dto): array
+    public function getHall(int $hallId): Hall
     {
-        $hall = $this->hallRepository->getHallByIdOrFail($dto->getHallId());
-        $seatsTypes = $this->seatTypeRepository->getSeatTypesByHallId($dto->getTheatreId());;
-
-        return compact( 'seatsTypes', 'hall');
+        return $this->hallRepository->getHallByIdOrFail($hallId);
     }
 
     /**
@@ -158,6 +135,8 @@ class HallService
         try {
             DB::beginTransaction();
 
+            $this->hallRepository->updateHall(hall: $hall, dto: $dto);
+
             if ($dto->getHallImages() !== null) {
                 $hall->deleteMedia('halls');
                 $hall->saveMultipleFiles(
@@ -165,23 +144,6 @@ class HallService
                     collectionName: 'halls'
                 );
             }
-
-            $hall->seats()->delete();
-
-            $seats = [];
-            foreach ($dto->getRows() as $rowNumber => $row) {
-                foreach ($row as $place) {
-                    $seats[] = [
-                        'seat_type_id' => $place['seatsTypeId'],
-                        'row' => $rowNumber,
-                        'number' => $place['seatNumber'],
-                        'position_x' => $place['posX'],
-                        'position_y' => $place['posY'],
-                    ];
-                }
-            }
-
-            $hall->seats()->createMany($seats);
 
             DB::commit();
         } catch (\Throwable $exception) {

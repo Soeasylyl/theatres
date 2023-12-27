@@ -7,6 +7,7 @@ use App\DTO\SeatTypes\DeleteSeatTypeDTO;
 use App\DTO\SeatTypes\UpdateSeatTypeDTO;
 use App\Models\SeatType;
 use App\Repositories\Interfaces\SeatTypeRepositoryInterface;
+use Illuminate\Support\Collection;
 
 class SeatTypeService
 {
@@ -55,5 +56,14 @@ class SeatTypeService
         $seatType = $this->seatTypeRepository->getSeatTypeByIdOrFail(seatTypeId: $dto->getSeatTypeId());
 
         return $this->seatTypeRepository->updateInfoBySeatType(seatType: $seatType, dto: $dto);
+    }
+
+    /**
+     * @param int $theatreId
+     * @return Collection
+     */
+    public function getSeatsTypeToHall(int $theatreId): Collection
+    {
+        return $this->seatTypeRepository->getSeatTypesByHallId($theatreId);
     }
 }
