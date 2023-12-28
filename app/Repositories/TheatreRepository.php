@@ -8,17 +8,19 @@ use App\Models\Theatre;
 use App\Models\User;
 use App\Repositories\Interfaces\TheatreRepositoryInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Builder;
 
 class TheatreRepository implements TheatreRepositoryInterface
 {
     /**
      * Obtaining information about all users except authorized and super administrator
      *
+     * @param array|null $relations
      * @return LengthAwarePaginator
      */
-    public function getCinemasPaginateList(): LengthAwarePaginator
+    public function getCinemasPaginateList(?array $relations = []): LengthAwarePaginator
     {
-        return Theatre::paginate(config('app.pagination_limit'));
+        return Theatre::with($relations)->paginate(config('app.pagination_limit'));
     }
 
     /**
@@ -28,10 +30,12 @@ class TheatreRepository implements TheatreRepositoryInterface
      * @param array|null $relations
      * @return LengthAwarePaginator
      */
-    public function getTheatresPaginateList(?string $searchTerm, ?array $relations = []): LengthAwarePaginator
+    public function getTheatresPaginateList(?string $searchTerm = null, ?array $relations = []): LengthAwarePaginator
     {
         return Theatre::with($relations)
-            ->where('name', 'ilike', "%$searchTerm%")
+            ->when(!is_null($searchTerm), function (Builder $builder) use ($searchTerm) {
+                $builder->where('name', 'ilike', "%$searchTerm%");
+            })
             ->paginate(config('app.pagination_limit'));
     }
 
@@ -43,11 +47,13 @@ class TheatreRepository implements TheatreRepositoryInterface
      * @param array|null $relations
      * @return LengthAwarePaginator
      */
-    public function getFilteredTheatresByProducer(User $authUser, ?string $searchTerm, ?array $relations = []): LengthAwarePaginator
+    public function getFilteredTheatresByProducer(User $authUser, ?string $searchTerm = null, ?array $relations = []): LengthAwarePaginator
     {
         return $authUser->theatres()
             ->with($relations)
-            ->where('name', 'ilike', "%$searchTerm%")
+            ->when(!is_null($searchTerm), function (Builder $builder) use ($searchTerm) {
+                $builder->where('name', 'ilike', "%$searchTerm%");
+            })
             ->paginate(config('app.pagination_limit'));
     }
 
@@ -60,9 +66,9 @@ class TheatreRepository implements TheatreRepositoryInterface
     public function createTheatre(CreateTheatreDTO $dto): Theatre
     {
         return Theatre::create([
-           'name' => $dto->getName(),
-           'address' => $dto->getAddress(),
-           'description' => $dto->getDescription(),
+            'name' => $dto->getName(),
+            'address' => $dto->getAddress(),
+            'description' => $dto->getDescription(),
         ]);
     }
 

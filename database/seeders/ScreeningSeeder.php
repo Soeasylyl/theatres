@@ -26,7 +26,7 @@ class ScreeningSeeder extends Seeder
                     'movie_id' => $movie->id,
                     'hall_id' => $hall->id,
                     'price' => fake()->randomFloat(2, 10, 20),
-                    'start_at' => fake()->dateTimeBetween('now','+1 years'),
+                    'start_at' => fake()->dateTimeBetween('-1 years','+1 years'),
                 ]);
             }
         }

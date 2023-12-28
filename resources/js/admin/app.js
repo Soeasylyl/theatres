@@ -7,4 +7,5 @@ import './pages/users.js';
 import './pages/theatres.js';
 import './pages/movie.js';
 import './pages/halls.js';
-import './pages/HallMap.js';
+import './pages/hallMap.js';
+import './pages/screenings.js';

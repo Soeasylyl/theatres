@@ -13,7 +13,7 @@ enum PermissionsUsersEnum: string
     #[Description('Управление залами')]
     case MANAGE_HALLS = 'manage-halls';
     #[Description('Управление сеансами')]
-    case MANAGE_SESSIONS = 'manage-sessions';
+    case MANAGE_SCREENINGS = 'manage-screening';
     #[Description('Управление ценами')]
     case MANAGE_PRICES = 'manage-prices';
     #[Description('Управление местами')]

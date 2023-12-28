@@ -57,7 +57,7 @@ $easing: ease;
 
 .page-numbers {
     display: block;
-    padding: 0 20px;
+    padding: 0 15px;
     float: left;
     transition: $duration $easing;
     color: #3f6ad8;
@@ -68,7 +68,7 @@ $easing: ease;
 
     &__disabled {
         display: block;
-        padding: 0 20px;
+        padding: 0 15px;
         float: left;
         transition: $duration $easing;
         color: $grey;
@@ -98,7 +98,7 @@ $easing: ease;
     }
 
     @include breakpoint(touch) {
-        padding: 0 14px;
+        padding: 0 9px;
         display: none;
 
         &:nth-of-type(2) {
@@ -120,7 +120,7 @@ $easing: ease;
         }
 
         &:nth-last-child(-n+4) {
-            padding-right: 14px;
+            padding-right: 9px;
 
             &::after {
                 content: none;
