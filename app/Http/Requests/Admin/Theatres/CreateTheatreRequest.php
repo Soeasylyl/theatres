@@ -41,6 +41,8 @@ class CreateTheatreRequest extends FormRequest
         return [
             'address.max' => 'Количество символов не более :max',
             'description.max' => 'Количество символов не более :max',
+            'theatreImages.*.max' => 'Размер файла не должен превышать :max',
+            'theatreImages.*.mimetypes' => 'Поддерживаемые форматы: jpg, jpeg, png',
         ];
     }
 }

@@ -33,6 +33,7 @@
 
     &__item {
         margin-top: 20px;
+        transition: ease-in-out 250ms;
 
         select {
             height: 61px;
@@ -40,6 +41,10 @@
     }
 
     &__hidden {
-        display: none;
+        position: relative;
+        opacity: 0;
+        height: 0;
+        margin: 0;
+        z-index: -999;
     }
 }

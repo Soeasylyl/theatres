@@ -41,12 +41,12 @@ class Screenings {
                     })
                     .then((resp) => {
                         if (resp.status) {
-                            hallSelect.classList.remove('admin-screenings__hidden');
+                            hallSelect.parentNode.classList.remove('admin-screenings__hidden');
 
                             hallSelect.innerHTML = '';
                             const option = document.createElement('option');
                             option.value = null;
-                            option.textContent = 'Выбирите зал';
+                            option.textContent = 'Выберите зал';
                             option.disabled = true;
                             option.selected = true;
                             hallSelect.appendChild(option);
@@ -104,7 +104,6 @@ class Screenings {
             this.screeningsModal?.classList.add('modal__active');
             this.mainClass.classList?.add('open-modal-overflow-hidden');
         });
-
     }
 
     // deleteProfile() {

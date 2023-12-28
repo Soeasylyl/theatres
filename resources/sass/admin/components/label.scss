@@ -80,31 +80,30 @@
         background-color: #4d4d4d;
         color: white;
     }
+}
+.error-message {
+    color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+    margin-top: 3px;
+    border-radius: 20px;
+    padding: 0.25rem !important;
+    font-size: 17px;
+    line-height: normal;
+    text-align: center;
 
-    .error-message {
-        color: #721c24;
-        background-color: #f8d7da;
-        border-color: #f5c6cb;
-        margin-top: 3px;
-        border-radius: 20px;
-        padding: 0.25rem !important;
-        font-size: 17px;
-        line-height: normal;
-        text-align: center;
+    opacity: 0;
+    transition: 250ms ease-in-out;
+    animation: errorOpacity 1s ease forwards;
 
-        opacity: 0;
-        transition: 250ms ease-in-out;
-        animation: errorOpacity 1s ease forwards;
-
-        &__wrapper {
-            display: flex;
-            justify-content: flex-end;
-        }
+    &__wrapper {
+        display: flex;
+        justify-content: flex-end;
     }
+}
 
-    @keyframes errorOpacity {
-        to {
-           opacity: 1;
-        }
+@keyframes errorOpacity {
+    to {
+        opacity: 1;
     }
 }

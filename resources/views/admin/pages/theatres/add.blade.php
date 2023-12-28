@@ -53,12 +53,12 @@
                             </x-input>
 
                             <div class="admin-theatres__items">
-                                @error('$theatreImages')
+                                @error('theatreImages')
                                 <div class="error-messages">
                                     {{$message}}
                                 </div>
                                 @enderror
-                                @error('$theatreImages.*')
+                                @error('theatreImages.*')
                                 <div class="error-messages">
                                     {{$message}}
                                 </div>

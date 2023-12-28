@@ -3,11 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\DTO\Halls\GetHallsDTO;
+use App\DTO\Screening\CreateScreeningDTO;
 use App\DTO\Screening\SearchScreeningDTO;
 use App\DTO\Users\GetUserDTO;
 use App\Http\Requests\Admin\Screenings\ajaxGetHallsRequest;
+use App\Http\Requests\Admin\Screenings\CreateScreeningRequest;
 use App\Http\Requests\Admin\Screenings\SearchScreeningRequest;
-use App\Repositories\HallRepository;
 use App\Services\ScreeningService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -68,7 +69,7 @@ class ScreeningController extends BaseAdminController
      */
     public function getHalls(
         ajaxGetHallsRequest $request,
-        ScreeningService      $screeningService,
+        ScreeningService    $screeningService,
     )
     {
         $getHallsDto = new GetHallsDTO(
@@ -93,9 +94,30 @@ class ScreeningController extends BaseAdminController
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(
+        CreateScreeningRequest $request,
+        ScreeningService       $screeningService,
+    )
     {
-        //
+        $createScreeningDto = new CreateScreeningDTO(
+            producer: auth()->user(),
+            theatreId: $request->input('theatre'),
+            hallId: $request->input('hall'),
+            movieId: $request->input('movie'),
+            price: $request->input('price'),
+            dateStart: $request->input('date'),
+            timeZone: $request->input('timeZone'),
+        );
+
+        try {
+            $screeningService->createScreening($createScreeningDto);
+
+            return redirect()
+                ->route('screening.index')
+                ->with('successMessages', 'Сеанс успешно добавлен');
+        } catch (\Throwable $exception) {
+            return redirect()->back()->with('error', $exception->getMessage());
+        }
     }
 
     /**

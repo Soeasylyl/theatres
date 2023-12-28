@@ -26,14 +26,13 @@
                                          input_required>
                                     {{ __('Название зала:') }}
                                 </x-input>
-
                                 <div class="admin-halls__items">
-                                    @error('$hallImages')
+                                    @error('hallImages')
                                     <div class="error-messages">
                                         {{$message}}
                                     </div>
                                     @enderror
-                                    @error('$hallImages.*')
+                                    @error('hallImages.*')
                                     <div class="error-messages">
                                         {{$message}}
                                     </div>

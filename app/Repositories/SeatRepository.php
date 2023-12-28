@@ -89,15 +89,12 @@ class SeatRepository implements SeatRepositoryInterface
     ): Seat
     {
         return Seat::query()
-            ->whereHas('hall', function (Builder $builder) use ($seatsTypeId, $theatreId, $hallId) {
+            ->whereHas('hall', fn (Builder $builder) =>
                 $builder->where('id', $hallId)
-                        ->whereHas('theatre', function (Builder $builder) use ($seatsTypeId, $theatreId) {
+                        ->whereHas('theatre', fn (Builder $builder) =>
                             $builder->where('id', $theatreId)
-                                    ->whereHas('seatTypes', function (Builder $builder) use ($seatsTypeId) {
-                                        $builder->where('id', $seatsTypeId);
-                                     });
-                    });
-            })
+                                    ->whereHas('seatTypes', fn (Builder $builder) =>
+                                        $builder->where('id', $seatsTypeId))))
             ->findOrFail($seatId);
     }
 

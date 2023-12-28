@@ -3,15 +3,12 @@
 namespace App\Services;
 
 use App\DTO\Halls\GetHallsDTO;
-use App\DTO\SeatTypes\CreateSeatTypeDTO;
-use App\DTO\SeatTypes\DeleteSeatTypeDTO;
-use App\DTO\SeatTypes\UpdateSeatTypeDTO;
+use App\DTO\Screening\CreateScreeningDTO;
 use App\DTO\Screening\SearchScreeningDTO;
 use App\Enums\RolesUsersEnum;
-use App\Models\SeatType;
+use App\Models\Screening;
 use App\Models\User;
 use App\Repositories\HallRepository;
-use App\Repositories\Interfaces\SeatTypeRepositoryInterface;
 use App\Repositories\ScreeningRepository;
 use App\Repositories\TheatreRepository;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
@@ -98,4 +95,35 @@ class ScreeningService
             columns: ['id', 'name'],
         );
     }
+
+    /**
+     * Creates a new session according to the passed DTO.
+     *
+     * @param CreateScreeningDTO $dto
+     * @return Screening
+     * @throws \Exception
+     */
+    public function createScreening(CreateScreeningDTO $dto): Screening
+    {
+        if (
+            $dto->getProducer()->hasAnyRole(
+                RolesUsersEnum::SUPER_ADMIN->value,
+                RolesUsersEnum::MODERATOR->value,
+            )
+        ) {
+            return $this->screeningRepository->createScreening($dto);
+        }
+
+        if (
+            !in_array(
+                $dto->getTheatreId(),
+                $dto->getProducer()->theatres->pluck('id')->toArray()
+            )
+        ) {
+            throw new \Exception('Недостаточно прав для создания сеанса', 403);
+        }
+
+        return $this->screeningRepository->createScreening($dto);
+    }
+
 }

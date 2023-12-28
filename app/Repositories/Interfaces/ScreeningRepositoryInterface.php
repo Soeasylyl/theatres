@@ -2,6 +2,8 @@
 
 namespace App\Repositories\Interfaces;
 
+use App\DTO\Screening\CreateScreeningDTO;
+use App\Models\Screening;
 use App\Models\User;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
@@ -41,4 +43,6 @@ interface ScreeningRepositoryInterface
         ?int    $theatreId = null,
         ?string $date = null,
     ): LengthAwarePaginator;
+
+    public function createScreening(CreateScreeningDTO $dto): Screening;
 }

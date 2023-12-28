@@ -7,14 +7,9 @@
                 <div class="admin-container__form-header">
                     {{ __('Добавление нового сеанса') }}
                 </div>
-                @error('error')
-                <div class="error-messages">
-                    {{$message}}
-                </div>
-                @enderror
                 <div class="admin-screenings__body">
                     <form method="POST"
-                          {{--                          action="{{ route('theatre.store') }}"--}}
+                          action="{{ route('screening.store') }}"
                           class="admin-screenings__form" enctype="multipart/form-data">
                         @csrf
                         @method('POST')
@@ -34,25 +29,55 @@
                                         @endforelse
                                     @endif
                                 </select>
+                                @error('theatre')
+                                <div class="error-message">
+                                    {{$message}}
+                                </div>
+                                @enderror
                             </div>
 
-                            <div class="admin-screenings__item ">
-                                <select class="admin-halls__seats-type admin-screenings__hidden" name="hall">
+                            <div class="admin-screenings__item admin-screenings__hidden">
+                                <select class="admin-halls__seats-type" name="hall">
                                     <option value="" disabled selected>{{ __('Выберите зал:') }}</option>
 
                                 </select>
+                                @error('hall')
+                                <div class="error-message">
+                                    {{$message}}
+                                </div>
+                                @enderror
                             </div>
                         </div>
 
                         <div class="admin-screenings__form-right">
+{{--                            <div class="admin-screenings__item">--}}
+{{--                                <select class="admin-halls__seats-type" name="movie">--}}
+{{--                                    <option value="" disabled selected>{{ __('Выберите фильм:') }}</option>--}}
+{{--                                    @if(isset($movies))--}}
+{{--                                        <option value="" selected>{{ __(('Все фильмы')) }}</option>--}}
+{{--                                        @forelse($movies as $movie)--}}
+{{--                                            <option value="{{ $movie->id }}"> {{ $movie->name }}</option>--}}
+{{--                                        @empty--}}
+{{--                                            <option value="null">{{ __(('Нет доступных фильмов')) }}</option>--}}
+{{--                                        @endforelse--}}
+{{--                                    @endif--}}
+{{--                                </select>--}}
+{{--                                @error('movie')--}}
+{{--                                <div class="error-message">--}}
+{{--                                    {{$message}}--}}
+{{--                                </div>--}}
+{{--                                @enderror--}}
+{{--                            </div>--}}
+
                             <x-input :inputAttributes="[
                                         'name'=>'price',
                                         'type' => 'number',
+                                        'step' => 'any',
                                         'required'=>'required',
                                         'autocomplete' => 'off',
                                         'min' => '1',
                                          ]"
-                                     :errorAttribute="'address'"
+                                     :errorAttribute="'price'"
                                      input_required>
                                 {{ __('Минимальная цена билета:') }}
                             </x-input>
@@ -64,13 +89,14 @@
                                         'required'=>'required',
                                         'autocomplete' => 'off',
                                          ]"
-                                     :errorAttribute="'dateTime'"
+                                     :errorAttribute="'date'"
                                      input_required>
-                                {{ __('Выбирите дату начала показа:') }}
+                                {{ __('Выберите дату начала показа:') }}
                             </x-input>
 
                         </div>
-                        <div class="login-container__button-wrapper admin-screenings__button-wrapper" style="justify-content: center">
+                        <div class="login-container__button-wrapper admin-screenings__button-wrapper"
+                             style="justify-content: center">
                             <button type="submit" class="login-container__btn" style="width: 50%">
                                 {{ __('Добавить сеанс') }}
                             </button>

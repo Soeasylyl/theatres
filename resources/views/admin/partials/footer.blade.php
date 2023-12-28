@@ -200,10 +200,10 @@
 
                     <div class="modal__item">
                         <div class="modal__radio-container">
-                            <label for="filteredCompleteScreenings">{{ __('Отобразить только завершенные сеансы') }}
+                            <label for="filteredEndedScreenings">{{ __('Отобразить только завершенные сеансы') }}
                                 <input name="fScreenings"
                                        type="radio"
-                                       id="filteredCompleteScreenings"
+                                       id="filteredEndedScreenings"
                                        value="completed">
                                 <span class="radio-checkmark"></span>
                             </label>
