@@ -145,64 +145,83 @@
     </div>
 
     @if(request()->route()->getName() === 'screening.index')
-    <div class="modal" id="filteredScreeningsModal">
-        <div class="modal__container">
-            <div class="modal__title">{{ __('Выберите необходимые фильтры') }}</div>
-            <form method="GET" action="{{ route("screening.index") }}">
+        <div class="modal" id="filteredScreeningsModal">
+            <div class="modal__container">
+                <div class="modal__title">{{ __('Выберите необходимые фильтры') }}</div>
+                <form method="GET" action="{{ route("screening.index") }}">
+                    <div class="modal__item">
+                        <select class="admin-halls__seats-type" name="fTheatre">
+                            @if(isset($theatres))
+                                <option value="" selected>{{ __(('Все кинотеатры')) }}</option>
+                                @forelse($theatres as $theatre)
+                                    <option value="{{ $theatre->id }}"> {{ $theatre->name }}</option>
+                                @empty
+                                    <option value="null">{{ __(('Нет доступных кинотеатров')) }}</option>
+                                @endforelse
+                            @endif
+                        </select>
+                    </div>
 
-                <div class="modal__item">
-                    <select class="admin-halls__seats-type" name="theatre">
-                        <option value="" selected>{{ __(('Все кинотеатры')) }}</option>
-                        @if(isset($theatres))
-                            @forelse($theatres as $theatre)
-                                <option value="{{ $theatre->id }}"> {{ $theatre->name }}</option>
-                            @empty
-                                <option value="none">{{ __(('Нет доступных кинотеатров')) }}</option>
-                            @endforelse
-                        @endif
-                    </select>
-                </div>
-
-                <div class="modal__item">
-                    <select class="admin-halls__seats-type" name="theatre">
-                        <option value="" selected>{{ __(('Доступные залы')) }}</option>
-{{--                        @if(isset($theatres))--}}
-{{--                            @forelse($theatres as $theatre)--}}
-{{--                                <option value="{{ $theatre->id }}"> {{ $theatre->name }}</option>--}}
-{{--                            @empty--}}
-                                <option value="none">{{ __(('Нет доступных залов')) }}</option>
-{{--                            @endforelse--}}
-{{--                        @endif--}}
-                    </select>
-                </div>
-
-                <x-input :inputAttributes="[
-                                        'name'=>'date',
+                    <div class="modal__item">
+                        <x-input :inputAttributes="[
+                                        'name'=>'fDate',
                                         'type'=>'date',
                                         'autocomplete' => 'off',
                                         'style' => 'min-width: 450px !important;',
                                          ]"
-                         :errorAttribute="'dateScreenings'"
-                         input_required>
-                    {{ __('Выберите дату:') }}
-                </x-input>
-
-                <div class="modal__item">
-                    <div class="modal__checkbox-container">
-                        <label for="filteredAllScreenings">{{ __('Отобразить все сеансы') }}
-                            <input type="checkbox" id="filteredAllScreenings">
-                            <span class="checkmark"></span>
-                        </label>
+                                 :errorAttribute="'dateScreenings'"
+                                 input_required>
+                            {{ __('Выберите дату:') }}
+                        </x-input>
                     </div>
-                </div>
 
-                <div class="modal__button-wrapper">
-                    <button type="submit" class="modal__button modal__filter-btn">{{ __('Применить фильтры') }}</button>
-                    <div class="modal__button modal__close-btn">{{ __('Отмена') }}</div>
-                </div>
-            </form>
+                    <div class="modal__item">
+                        <div class="modal__radio-container">
+                            <label for="filteredAllScreenings">{{ __('Отобразить все сеансы') }}
+                                <input name="fScreenings"
+                                       type="radio"
+                                       id="filteredAllScreenings"
+                                       value="all" checked>
+                                <span class="radio-checkmark"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="modal__item">
+                        <div class="modal__radio-container">
+                            <label for="filteredCompleteScreenings">{{ __('Отобразить только предстоящие сеансы') }}
+                                <input name="fScreenings"
+                                       type="radio"
+                                       id="filteredCompleteScreenings"
+                                       value="upcoming">
+                                <span class="radio-checkmark"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="modal__item">
+                        <div class="modal__radio-container">
+                            <label for="filteredCompleteScreenings">{{ __('Отобразить только завершенные сеансы') }}
+                                <input name="fScreenings"
+                                       type="radio"
+                                       id="filteredCompleteScreenings"
+                                       value="completed">
+                                <span class="radio-checkmark"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="modal__button-wrapper">
+                        <button type="submit"
+                                class="modal__button modal__filter-btn">
+                            {{ __('Применить фильтры') }}
+                        </button>
+                        <div class="modal__button modal__close-btn">
+                            {{ __('Отмена') }}
+                        </div>
+                    </div>
+                </form>
+            </div>
         </div>
-        {{--        @endif--}}
-    </div>
     @endif
 </footer>

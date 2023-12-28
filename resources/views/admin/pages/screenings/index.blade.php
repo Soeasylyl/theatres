@@ -34,8 +34,12 @@
                             </button>
                             </form>
                             <button type="submit" class="page-wrapper__panel-btn open-filters-modal">
-                                {{ __('Фильтры') }}
+                                {{ __('Настроить фильтры') }}
                             </button>
+
+                            <a href="{{ route('screening.index') }}" class="page-wrapper__panel-btn">
+                                {{ __('Сбросить фильтры') }}
+                            </a>
                         </div>
 
                 </div>
@@ -68,7 +72,6 @@
                                     </a>
 
                                         <div class="admin-container__table_last_cell_cinema_trash"
-{{--                                             data-theatre-name="{{ $theatre->name }}"--}}
                                              title="{{ __('Удалить') }}">
                                             <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="20" height="23"
                                                  viewBox="0 0 1024 1024">
@@ -84,7 +87,12 @@
                     @endforelse
                     </tbody>
                 </table>
-                {{ $screenings->links('admin.partials.pagination') }}
+                {{ $screenings->appends([
+                'fTheatre'=> $fTheatre,
+                'fDate'=> $fDate,
+                'fScreenings'=> $fScreenings,
+                'search' => $searchTern,
+                ])->links('admin.partials.pagination') }}
             </div>
         </div>
     </div>

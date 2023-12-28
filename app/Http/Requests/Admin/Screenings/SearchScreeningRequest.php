@@ -4,6 +4,7 @@ namespace App\Http\Requests\Admin\Screenings;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class SearchScreeningRequest extends FormRequest
 {
@@ -23,7 +24,10 @@ class SearchScreeningRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'search' => 'nullable|max:40'
+            'search' => 'nullable|max:40',
+            "fTheatre" => 'nullable|int|exists:theatres,id',
+            "fDate" => 'nullable|date',
+            "fScreenings" => 'nullable', Rule::in(['all', 'upcoming', 'completed']),
         ];
     }
 

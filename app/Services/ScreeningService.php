@@ -23,12 +23,20 @@ class ScreeningService
     {
     }
 
+    /**
+     *  Retrieves a filtered list of shows and cinemas with pagination depending on the user's role.
+     *
+     * @param SearchScreeningDTO $dto
+     * @return array
+     */
     public function getScreeningsBasedOnRolePaginated(SearchScreeningDTO $dto): array
     {
         if ($dto->getProducer()->hasAnyRole(RolesUsersEnum::SUPER_ADMIN->value, RolesUsersEnum::MODERATOR->value)) {
-            $screenings = $this->sessionRepository->getSessionsPaginateList(
+            $screenings = $this->sessionRepository->getScreeningsPaginateList(
+                fScreening: $dto->getFScreenings(),
+                searchTerm: $dto->getSearchTerm(),
                 theatreId: $dto->getTheatreId(),
-                date: $dto->getDate()
+                date: $dto->getDate(),
             );
             $theatres = $this->theatreRepository->getTheatresPaginateList(relations: ['halls']);
 
@@ -37,10 +45,13 @@ class ScreeningService
                 'theatres' => $theatres,
             ];
         }
-        $screenings = $this->sessionRepository->getFilteredSessionsByProducer(
+
+        $screenings = $this->sessionRepository->getFilteredScreeningsByProducer(
             producer: $dto->getProducer(),
+            fScreening: $dto->getFScreenings(),
+            searchTerm: $dto->getSearchTerm(),
             theatreId: $dto->getTheatreId(),
-            date: $dto->getDate()
+            date: $dto->getDate(),
         );
         $theatres = $this->theatreRepository->getFilteredTheatresByProducer(
             authUser: $dto->getProducer(),
