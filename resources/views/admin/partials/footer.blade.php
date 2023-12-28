@@ -144,12 +144,11 @@
         @endif
     </div>
 
+    @if(request()->route()->getName() === 'screening.index')
     <div class="modal" id="filteredScreeningsModal">
-        {{--        @if(isset($user))--}}
         <div class="modal__container">
             <div class="modal__title">{{ __('Выберите необходимые фильтры') }}</div>
             <form method="GET" action="{{ route("screening.index") }}">
-                {{--                    <input type="hidden" name="timeZone" id="timezone">--}}
 
                 <div class="modal__item">
                     <select class="admin-halls__seats-type" name="theatre">
@@ -161,6 +160,19 @@
                                 <option value="none">{{ __(('Нет доступных кинотеатров')) }}</option>
                             @endforelse
                         @endif
+                    </select>
+                </div>
+
+                <div class="modal__item">
+                    <select class="admin-halls__seats-type" name="theatre">
+                        <option value="" selected>{{ __(('Доступные залы')) }}</option>
+{{--                        @if(isset($theatres))--}}
+{{--                            @forelse($theatres as $theatre)--}}
+{{--                                <option value="{{ $theatre->id }}"> {{ $theatre->name }}</option>--}}
+{{--                            @empty--}}
+                                <option value="none">{{ __(('Нет доступных залов')) }}</option>
+{{--                            @endforelse--}}
+{{--                        @endif--}}
                     </select>
                 </div>
 
@@ -192,5 +204,5 @@
         </div>
         {{--        @endif--}}
     </div>
-
+    @endif
 </footer>
