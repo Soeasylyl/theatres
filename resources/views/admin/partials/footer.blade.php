@@ -1,5 +1,4 @@
 <footer>
-
     <div class="modal" id="addSeatTypeModal">
         @if(isset($theatre))
             <div class="modal__container">

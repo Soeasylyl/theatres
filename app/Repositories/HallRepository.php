@@ -8,6 +8,7 @@ use App\Models\Hall;
 use App\Models\Theatre;
 use App\Repositories\Interfaces\HallRepositoryInterface;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 
 class HallRepository implements HallRepositoryInterface
 {
@@ -76,5 +77,19 @@ class HallRepository implements HallRepositoryInterface
                         });
             })
             ->findOrFail($hallId);
+    }
+
+    /**
+     * Retrieves a list of screens for the specified theatre.
+     *
+     * @param int $theatreId
+     * @param array|null $columns
+     * @return Collection
+     */
+    public function getHallsByTheatreId(int $theatreId, ?array $columns = ['*']): Collection
+    {
+        return Hall::select($columns)->
+            where('theatre_id', $theatreId)
+            ->get();
     }
 }

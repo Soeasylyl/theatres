@@ -43,11 +43,10 @@ Route::prefix('admin')->middleware(['auth', 'isBlock', 'AdminAccess'])->group(fu
     // Admin Dashboard
     Route::get('/', [AdminController::class, 'index'])->name('admin');
 
-    // Sessions management
+    // Screenings management
     Route::prefix('screenings')->group(function () {
         Route::get('/', [ScreeningController::class, 'index'])->name('screening.index');
-
-
+        Route::get('/create', [ScreeningController::class, 'create'])->name('screening.create');
     });
 
     // Movies management

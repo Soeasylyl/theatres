@@ -6,7 +6,6 @@ class HallMap {
 
         this.draggedElement = null;
         this.editingSVGElement = null;
-
         this.resrveSeats = null;
 
         this.init();

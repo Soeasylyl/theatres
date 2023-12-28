@@ -1,0 +1,45 @@
+.admin-screenings {
+
+    &__body {
+        padding: 10px 0;
+    }
+
+    &__form {
+        display: grid;
+        grid-template-columns: repeat(2, 50%);
+        gap: 20px;
+    }
+
+    &__button-wrapper {
+        grid-column: 1/span 2;
+    }
+    &__item-title {
+        @include font-type-6;
+        padding: 0.375rem 0.75rem;
+        color: #495057;
+    }
+
+    &__form-left {
+        display: flex;
+        flex-direction: column;
+    }
+
+    &__form-right {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        padding-right: 10px;
+    }
+
+    &__item {
+        margin-top: 20px;
+
+        select {
+            height: 61px;
+        }
+    }
+
+    &__hidden {
+        display: none;
+    }
+}

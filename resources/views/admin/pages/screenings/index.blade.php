@@ -21,8 +21,7 @@
             <div class="admin-container__form-body">
                 <div class="admin-container__menu">
                     <a class="page-wrapper__panel-btn"
-                       href="#"> {{ __('Добавить сеанс') }}</a>
-
+                       href="{{ route('screening.create') }}"> {{ __('Добавить сеанс') }}</a>
 
                         <div class="admin-container__search-element-wrapper">
                             <form method="get" action="{{ route('screening.index') }}" class="admin-container__search-form" >
@@ -41,7 +40,6 @@
                                 {{ __('Сбросить фильтры') }}
                             </a>
                         </div>
-
                 </div>
                 <table class="admin-container__table">
                     <thead>

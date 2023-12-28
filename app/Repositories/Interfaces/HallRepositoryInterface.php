@@ -6,6 +6,7 @@ use App\DTO\Halls\CreateHallDTO;
 use App\DTO\Halls\UpdateHallDTO;
 use App\Models\Theatre;
 use App\Models\Hall;
+use Illuminate\Database\Eloquent\Collection;
 
 interface HallRepositoryInterface
 {
@@ -49,4 +50,13 @@ interface HallRepositoryInterface
         int $hallId,
         int $seatsTypeId,
     ): Hall;
+
+    /**
+     * Retrieves a list of screens for the specified theatre.
+     *
+     * @param int $theatreId
+     * @param array|null $columns
+     * @return Collection
+     */
+    public function getHallsByTheatreId(int $theatreId, ?array $columns = ['*']): Collection;
 }

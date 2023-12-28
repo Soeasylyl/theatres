@@ -5,11 +5,12 @@ class Screenings {
         this.screeningsCloseModal = document.querySelector('.modal__close-btn');
         this.mainClass = document.querySelector('.admin-main');
 
+        this.theatreSelect = document.getElementById('screeningsTheatreSelectAdd');
 
         // this.deleteUserButton = document.querySelectorAll('.admin-container__table_last_cell_trash');
         // this.deleteProfileButton = document.getElementById('deleteProfileButton');
         // this.blockUserButton = document.querySelectorAll('.page-wrapper__block-wrapper');
-        // this.timeZoneInput = document.getElementById('timezone');
+        this.timeZoneInput = document.querySelector('.admin-screenings__timezone-input');
         this.init();
     }
 
@@ -18,7 +19,60 @@ class Screenings {
         this.closeFilteredScreeningsModal();
         // this.deleteProfile();
         // this.deleteUser();
-        // this.setTimeZone();
+        this.selectedTheatreAjax()
+        this.setTimeZone();
+    }
+
+    selectedTheatreAjax() {
+        this.theatreSelect?.addEventListener('change', () => {
+            const url = this.theatreSelect.dataset.getHallUrl;
+            const selectedValue = this.theatreSelect.value;
+            const hallSelect = document.querySelector('.admin-screenings__item select[name="hall"]');
+            if (selectedValue) {
+                fetch(`${url}?theatreId=${selectedValue}`, {
+                    method: 'get',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                })
+                    .then((response) => {
+
+                        return response.json();
+                    })
+                    .then((resp) => {
+                        if (resp.status) {
+                            hallSelect.classList.remove('admin-screenings__hidden');
+
+                            hallSelect.innerHTML = '';
+                            const option = document.createElement('option');
+                            option.value = null;
+                            option.textContent = 'Выбирите зал';
+                            option.disabled = true;
+                            option.selected = true;
+                            hallSelect.appendChild(option);
+
+                            resp.halls.forEach(hall => {
+                                const option = document.createElement('option');
+                                option.value = hall.id;
+                                option.textContent = hall.name;
+                                hallSelect.appendChild(option);
+                            });
+
+                        } else {
+                            hallSelect.innerHTML = '';
+                            const option = document.createElement('option');
+                            option.value = null;
+                            option.textContent = 'Нет доступных залов';
+                            hallSelect.appendChild(option);
+
+                            console.log(resp.message);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Ошибка при выполнении запроса:', error);
+                    });
+            }
+        });
     }
 
     // deleteUser() {
@@ -46,7 +100,7 @@ class Screenings {
     }
 
     openFilteredScreeningsModal() {
-        this.filteredScreeningsBtn?.addEventListener('click', (event) => {
+        this.filteredScreeningsBtn?.addEventListener('click', () => {
             this.screeningsModal?.classList.add('modal__active');
             this.mainClass.classList?.add('open-modal-overflow-hidden');
         });
@@ -68,11 +122,11 @@ class Screenings {
     //     )
     // }
 
-    // setTimeZone() {
-    //     if (this.timeZoneInput) {
-    //         this.timeZoneInput.value = Intl.DateTimeFormat().resolvedOptions().timeZone;
-    //     }
-    // }
+    setTimeZone() {
+        if (this.timeZoneInput) {
+            this.timeZoneInput.value = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        }
+    }
 }
 
 new Screenings();
