@@ -44,5 +44,11 @@ interface ScreeningRepositoryInterface
         ?string $date = null,
     ): LengthAwarePaginator;
 
+    /**
+     *  Creates a new session based on the transferred data.
+     *
+     * @param CreateScreeningDTO $dto
+     * @return Screening
+     */
     public function createScreening(CreateScreeningDTO $dto): Screening;
 }

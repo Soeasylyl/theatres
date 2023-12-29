@@ -50,24 +50,29 @@
                         </div>
 
                         <div class="admin-screenings__form-right">
-{{--                            <div class="admin-screenings__item">--}}
-{{--                                <select class="admin-halls__seats-type" name="movie">--}}
-{{--                                    <option value="" disabled selected>{{ __('Выберите фильм:') }}</option>--}}
-{{--                                    @if(isset($movies))--}}
-{{--                                        <option value="" selected>{{ __(('Все фильмы')) }}</option>--}}
-{{--                                        @forelse($movies as $movie)--}}
-{{--                                            <option value="{{ $movie->id }}"> {{ $movie->name }}</option>--}}
-{{--                                        @empty--}}
-{{--                                            <option value="null">{{ __(('Нет доступных фильмов')) }}</option>--}}
-{{--                                        @endforelse--}}
-{{--                                    @endif--}}
-{{--                                </select>--}}
-{{--                                @error('movie')--}}
-{{--                                <div class="error-message">--}}
-{{--                                    {{$message}}--}}
-{{--                                </div>--}}
-{{--                                @enderror--}}
-{{--                            </div>--}}
+
+                            <div class="select__select-box" data-movies-url="{{ route('movie.get-movies') }}">
+                                <div class="select__select-option">
+                                    <input id="screeningsSelectSoValue"
+                                           name=""
+                                           type="text"
+                                           placeholder="{{ __('Поиск фильма:') }}"
+                                           readonly
+                                    >
+                                </div>
+                                <div class="select__content">
+                                    <div class="select__select-search">
+                                        <input id="screeningsSelectOptionsSearch"
+                                               name=""
+                                               type="text"
+                                               placeholder="{{ __('Поиск:') }}"
+                                        >
+                                        <ul class="select__options">
+
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
 
                             <x-input :inputAttributes="[
                                         'name'=>'price',

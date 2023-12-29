@@ -3,6 +3,8 @@ import '../bootstrap';
 // admin js
 import './partials/admin-menu.js';
 import './partials/notification.js';
+import './partials/search-select.js';
+
 import './pages/users.js';
 import './pages/theatres.js';
 import './pages/movie.js';

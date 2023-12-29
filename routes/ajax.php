@@ -1,6 +1,7 @@
 <?php
 
 use App\Enums\RolesUsersEnum;
+use App\Http\Controllers\Admin\MovieController;
 use App\Http\Controllers\Admin\ScreeningController;
 use App\Http\Controllers\Admin\SeatController;
 use Illuminate\Support\Facades\Route;
@@ -26,6 +27,10 @@ Route::prefix('admin/')
 
         Route::prefix('screenings')->group(function () {
             Route::get('/get-halls', [ScreeningController::class, 'getHalls'])->name('screening.get-halls');
+        });
+
+        Route::prefix('movies')->group(function () {
+            Route::get('/get-movies', [MovieController::class, 'getMovies'])->name('movie.get-movies');
         });
 
         Route::prefix('theatres/{theatre}/halls/{hall}/seats')

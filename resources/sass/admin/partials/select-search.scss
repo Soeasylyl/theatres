@@ -1,0 +1,102 @@
+.select {
+
+    &__select-box {
+        width: 100%;
+        position: relative;
+        margin-top: 20px;
+    }
+
+    &__select-option {
+        position: relative;
+        display: flex;
+    }
+
+    &__select-option input {
+        width: 100%;
+        background-color: white;
+        color: #000;
+        border-radius: 20px;
+        font-size: 22px;
+        cursor: default;
+        padding: 17px 20px;
+        border: solid 1px rgba(0, 0, 0, 0.29);;
+        outline: 0 !important;
+    }
+
+    &__select-option:after {
+        content: "";
+        border-top: 12px solid #000;
+        border-left: 8px solid transparent;
+        border-right: 8px solid transparent;
+        position: absolute;
+        right: 15px;
+        top: 50%;
+        margin-top: -8px;
+        cursor: pointer;
+
+        transition: ease-in-out 100ms;
+    }
+
+    &__content {
+        background-color: #fff;
+        position: absolute;
+        color: #000;
+        border-radius: 20px;
+        width: 100%;
+        z-index: 999;
+
+        display: none;
+    }
+
+    &__select-search {
+        display: flex;
+        flex-direction: column;
+        padding: 15px;
+        border-radius: 20px;
+        box-shadow: 0 0.46875rem 2.1875rem rgba(4, 9, 20, 0.03),
+        0 0.9375rem 1.40625rem rgba(4, 9, 20, 0.03),
+        0 0.25rem 0.53125rem rgba(4, 9, 20, 0.05),
+        0 0.125rem 0.1875rem rgba(4, 9, 20, 0.03);
+    }
+
+    &__select-search input {
+        width: 100%;
+        font-size: 17px;
+        padding: 15px;
+        outline: 0;
+        border: 1px solid #b3b3b3;
+        border-radius: 20px;
+        box-sizing: border-box;
+    }
+
+    &__options {
+        margin-top: 10px;
+        max-height: 250px;
+        overflow-x: auto;
+        padding: 0;
+    }
+
+    &__options li {
+        padding: 10px 15px;
+        font-size: 21px;
+        cursor: pointer;
+        border-bottom: 1px solid gray;
+    }
+
+    &__options li:hover {
+        background-color: #4397f0;
+
+        span {
+            color: white;
+        }
+    }
+
+    &__select-box.active &__content{
+        display: block;
+    }
+
+    &__select-box.active &__select-option:after {
+        transform: rotate(180deg);
+    }
+
+}

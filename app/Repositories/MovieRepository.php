@@ -19,14 +19,20 @@ class MovieRepository implements MovieRepositoryInterface
      * Get a paginated list of movies.
      *
      * @param string|null $searchTern
+     * @param array $columns
      * @return LengthAwarePaginator
      */
-    public function getMoviesPaginatedList(?string $searchTern): LengthAwarePaginator
+    public function getMoviesPaginatedList(
+        ?string $searchTern = null,
+        array   $columns = ['*'],
+    ): LengthAwarePaginator
     {
         return Movie::query()
+            ->select($columns)
             ->when($searchTern, function (Builder $query) use ($searchTern) {
                 $query->where('name', 'ilike', "%$searchTern%");
             })
+            ->orderBy('name', 'asc')
             ->paginate(config('app.pagination_limit'));
     }
 
@@ -46,7 +52,7 @@ class MovieRepository implements MovieRepositoryInterface
     /**
      *Get a collection of random movies along with their screenings and related media.
      *
- * @param Carbon $currentDateTime
+     * @param Carbon $currentDateTime
      * @param int|null $limit
      * @param array|null $relations
      * @return Collection

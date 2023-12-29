@@ -144,4 +144,21 @@ class MovieController extends BaseAdminController
             return redirect()->back()->with('error', $e->getMessage());
         }
     }
+
+    public function getMovies(MovieService $movieService)
+    {
+        try {
+            $movies = $movieService->getAllMovies();
+
+            return response()->json([
+                'status' => true,
+                'movies' => $movies,
+            ]);
+        } catch (\Throwable $exception) {
+            return response()->json([
+                'status' => false,
+                'message' => $exception->getMessage(),
+            ]);
+        }
+    }
 }

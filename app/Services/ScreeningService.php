@@ -125,5 +125,4 @@ class ScreeningService
 
         return $this->screeningRepository->createScreening($dto);
     }
-
 }

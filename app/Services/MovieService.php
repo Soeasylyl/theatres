@@ -44,12 +44,14 @@ class MovieService
     /**
      * Returns a paginated list of all cinemas with auditoriums.
      *
-     * @param SearchMovieDTO $dto
+     * @param SearchMovieDTO|null $dto
      * @return LengthAwarePaginator
      */
-    public function getAllMovies(SearchMovieDTO $dto): LengthAwarePaginator
+    public function getAllMovies(?SearchMovieDTO $dto = null): LengthAwarePaginator
     {
-        return $this->movieRepository->getMoviesPaginatedList(searchTern: $dto->getSearchTerm());
+        return $dto === null
+            ? $this->movieRepository->getMoviesPaginatedList(columns: ['id', 'name', 'date_start'])
+            : $this->movieRepository->getMoviesPaginatedList(searchTern: $dto->getSearchTerm());
     }
 
     /**
@@ -108,18 +110,18 @@ class MovieService
         $movie = $this->movieRepository->createMovie(dto: $dto);
 
         try {
-        if ($dto->getMoviePoster() !== null) {
-            $movie->saveFile(
-                file: $dto->getMoviePoster(),
-                collectionName: 'poster'
-            );
-        }
-        if ($dto->getMovieFrames() !== null) {
-            $movie->saveMultipleFiles(
-                mediaFiles: $dto->getMovieFrames(),
-                collectionName: 'frames'
-            );
-        }
+            if ($dto->getMoviePoster() !== null) {
+                $movie->saveFile(
+                    file: $dto->getMoviePoster(),
+                    collectionName: 'poster'
+                );
+            }
+            if ($dto->getMovieFrames() !== null) {
+                $movie->saveMultipleFiles(
+                    mediaFiles: $dto->getMovieFrames(),
+                    collectionName: 'frames'
+                );
+            }
         } catch (\Throwable $e) {
             Log::error("Failed to save poster or frames: {$e->getMessage()} movie id: {$movie->id}");
 

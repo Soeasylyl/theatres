@@ -17,9 +17,13 @@ interface MovieRepositoryInterface
      * Get all movies
      *
      * @param string|null $searchTern
+     * @param array $columns
      * @return LengthAwarePaginator
      */
-    public function getMoviesPaginatedList(?string $searchTern): LengthAwarePaginator;
+    public function getMoviesPaginatedList(
+        ?string $searchTern = null,
+        array   $columns = ['*'],
+    ): LengthAwarePaginator;
 
     /**
      * @param Carbon $currentDateTime

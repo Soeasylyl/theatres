@@ -56,14 +56,16 @@ Route::prefix('admin')->middleware(['auth', 'isBlock', 'AdminAccess'])->group(fu
         Route::get('/', [MovieController::class, 'index'])->name('movies');
 
         // Movie editing and deleting
-        Route::middleware(['role:' . RolesUsersEnum::SUPER_ADMIN->value . '|' . RolesUsersEnum::MODERATOR->value])->group(function () {
+        Route::middleware([
+            'role:' . RolesUsersEnum::SUPER_ADMIN->value . '|' . RolesUsersEnum::MODERATOR->value
+        ])->group(function () {
             Route::get('{movie}/edit', [MovieController::class, 'edit'])->name('movie.edit');
             Route::patch('{movie}/', [MovieController::class, 'update'])->name('movie.update');
-            Route::delete('{movie}/',[MovieController::class, 'destroy'])->name('movie.delete');
+            Route::delete('{movie}/', [MovieController::class, 'destroy'])->name('movie.delete');
 
             // Movie creating
-            Route::get('/create',[MovieController::class, 'create'])->name('movie.create');
-            Route::post('/',[MovieController::class, 'store'])->name('movie.store');
+            Route::get('/create', [MovieController::class, 'create'])->name('movie.create');
+            Route::post('/', [MovieController::class, 'store'])->name('movie.store');
         });
     });
 
@@ -72,7 +74,9 @@ Route::prefix('admin')->middleware(['auth', 'isBlock', 'AdminAccess'])->group(fu
         Route::get('/', [TheatreController::class, 'index'])->name('theatres');
 
         // Theatre CRUD
-        Route::middleware(['role:' . RolesUsersEnum::SUPER_ADMIN->value . '|' . RolesUsersEnum::CINEMA_ADMIN->value])->group(function () {
+        Route::middleware([
+            'role:' . RolesUsersEnum::SUPER_ADMIN->value . '|' . RolesUsersEnum::CINEMA_ADMIN->value
+        ])->group(function () {
             Route::get('/create', [TheatreController::class, 'create'])->name('theatre.create');
             Route::post('/', [TheatreController::class, 'store'])->name('theatre.store');
 
@@ -90,23 +94,25 @@ Route::prefix('admin')->middleware(['auth', 'isBlock', 'AdminAccess'])->group(fu
 
                 //Hall CRUD
                 Route::prefix('{theatre}/halls/')->group(function () {
-                   Route::get('/', [HallController::class, 'create'])->name('hall.create');
-                   Route::post('/', [HallController::class, 'store'])->name('hall.store');
-                   Route::delete('/', [HallController::class, 'destroy'])->name('hall.delete');
+                    Route::get('/', [HallController::class, 'create'])->name('hall.create');
+                    Route::post('/', [HallController::class, 'store'])->name('hall.store');
+                    Route::delete('/', [HallController::class, 'destroy'])->name('hall.delete');
 
-                   Route::prefix('{hall}')->group(function () {
-                       Route::get('/', [HallController::class, 'edit'])->name('hall.edit');
-                       Route::patch('/', [HallController::class, 'update'])->name('hall.update');
+                    Route::prefix('{hall}')->group(function () {
+                        Route::get('/', [HallController::class, 'edit'])->name('hall.edit');
+                        Route::patch('/', [HallController::class, 'update'])->name('hall.update');
 
-                       Route::get('/seats', [SeatController::class, 'create'])->name('seat.create');
-                   });
+                        Route::get('/seats', [SeatController::class, 'create'])->name('seat.create');
+                    });
                 });
             });
         });
     });
 
     // Users management
-    Route::prefix('users')->middleware(['role:' . RolesUsersEnum::SUPER_ADMIN->value . '|' . RolesUsersEnum::CINEMA_ADMIN->value])->group(function () {
+    Route::prefix('users')->middleware([
+        'role:' . RolesUsersEnum::SUPER_ADMIN->value . '|' . RolesUsersEnum::CINEMA_ADMIN->value
+    ])->group(function () {
         // List all users and user creation routes
         Route::get('/', [UserController::class, 'index'])->name('users');
         Route::get('/create', [UserController::class, 'create'])->name('users.create');
@@ -115,7 +121,9 @@ Route::prefix('admin')->middleware(['auth', 'isBlock', 'AdminAccess'])->group(fu
         // User editing routes
         Route::prefix('/')->middleware('CheckUserAccessMiddleware')->group(function () {
             Route::get('/{user}/edit', [UserController::class, 'edit'])
-                ->withoutMiddleware(['role:' . RolesUsersEnum::SUPER_ADMIN->value . '|' . RolesUsersEnum::CINEMA_ADMIN->value])
+                ->withoutMiddleware([
+                    'role:' . RolesUsersEnum::SUPER_ADMIN->value . '|' . RolesUsersEnum::CINEMA_ADMIN->value
+                ])
                 ->name('user.edit');
 
             Route::patch('/{user}/', [UserController::class, 'update'])
@@ -125,11 +133,15 @@ Route::prefix('admin')->middleware(['auth', 'isBlock', 'AdminAccess'])->group(fu
                 ->name('user.updatePassword');
 
             Route::patch('/{user}/profiles', [UserController::class, 'updateProfile'])
-                ->withoutMiddleware(['role:' . RolesUsersEnum::SUPER_ADMIN->value . '|' . RolesUsersEnum::CINEMA_ADMIN->value])
+                ->withoutMiddleware([
+                    'role:' . RolesUsersEnum::SUPER_ADMIN->value . '|' . RolesUsersEnum::CINEMA_ADMIN->value
+                ])
                 ->name('user.updateProfile');
 
             Route::patch('/{user}/profile-password', [UserController::class, 'updatePasswordProfile'])
-                ->withoutMiddleware(['role:' . RolesUsersEnum::SUPER_ADMIN->value . '|' . RolesUsersEnum::CINEMA_ADMIN->value])
+                ->withoutMiddleware([
+                    'role:' . RolesUsersEnum::SUPER_ADMIN->value . '|' . RolesUsersEnum::CINEMA_ADMIN->value
+                ])
                 ->name('user.updatePasswordProfile');
 
             Route::patch('/{user}/roles', [UserController::class, 'updateRole'])

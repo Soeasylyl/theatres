@@ -86,23 +86,19 @@ class ScreeningRepository implements ScreeningRepositoryInterface
             ->paginate(config('app.pagination_limit'));
     }
 
-
+    /**
+     *  Creates a new session based on the transferred data.
+     *
+     * @param CreateScreeningDTO $dto
+     * @return Screening
+     */
     public function createScreening(CreateScreeningDTO $dto): Screening
     {
-        return Screening::query()
-            ->whereHas('hall', function (Builder $builder) use ($dto) {
-                $builder->where('id', $dto->getHallId())
-                        ->whereHas('theatre', fn(Builder $builder) =>
-                            $builder->where('id', $dto->getTheatreId())
-                        );
-            })
-            ->whereHas('movie', fn(Builder $builder) =>
-                $builder->where('id', $dto->getMovieId()))
-            ->create([
-                'movie_id' => $dto->getMovieId(),
-                'hall_id' => $dto->getHallId(),
-                'price' => $dto->getPrice(),
-                'start_at' => $dto->getDateStart(),
-            ]);
+        return Screening::create([
+            'movie_id' => $dto->getMovieId(),
+            'hall_id' => $dto->getHallId(),
+            'price' => $dto->getPrice(),
+            'start_at' => $dto->getDateStart(),
+        ]);
     }
 }
