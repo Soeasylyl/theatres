@@ -3,6 +3,7 @@ class SearchSelect {
         this.selectBox = document.querySelector('.select__select-box');
         this.selectOption = document.querySelector('.select__select-option');
         this.soValue = document.querySelector('#screeningsSelectSoValue');
+        this.soValueId = document.querySelector('#screeningsSelectSoValueId');
         this.optionSearch = document.querySelector('#screeningsSelectOptionsSearch');
         this.options = document.querySelector('.select__options');
 
@@ -16,7 +17,7 @@ class SearchSelect {
     init() {
         this.openCloseSelectMenu();
         this.closeSelectMenuOnOutsideClick();
-        this.searchBySelect();
+        this.setupSearchInput();
 
         this.getMoviesAjax();
         this.setupInfiniteScroll();
@@ -24,41 +25,43 @@ class SearchSelect {
 
 
     getMoviesAjax() {
-        if (this.loading) {
-            return;  // Если запрос уже выполняется, выходим из функции
+        if (this.selectBox) {
+            if (this.loading) {
+                return;  // Если запрос уже выполняется, выходим из функции
+            }
+
+            const url = this.selectBox?.dataset.moviesUrl;
+            this.loading = true;
+
+            fetch(`${url}?page=${this.page}`, {
+                method: 'get',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+            })
+                .then((response) => {
+
+                    return response.json();
+                })
+                .then((resp) => {
+                    if (
+                        resp.status && resp.movies.last_page >= resp.movies.current_page
+                    ) {
+                        this.populateMoviesOptions(resp.movies);
+                        this.setSelectedValue();
+                        this.page++;
+                        this.lastPage = resp.movies.last_page;
+                    } else {
+                        console.log(resp.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Ошибка при выполнении запроса:', error);
+                })
+                .finally(() => {
+                    this.loading = false;
+                });
         }
-
-        const url = this.selectBox.dataset.moviesUrl;
-        this.loading = true;
-
-        fetch(`${url}?page=${this.page}`, {
-            method: 'get',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-        })
-            .then((response) => {
-
-                return response.json();
-            })
-            .then((resp) => {
-                if (
-                    resp.status && resp.movies.last_page >= resp.movies.current_page
-                ) {
-                    this.populateMoviesOptions(resp.movies);
-                    this.setSelectedValue();
-                    this.page++;
-                    this.lastPage = resp.movies.last_page;
-                } else {
-                    console.log(resp.message);
-                }
-            })
-            .catch(error => {
-                console.error('Ошибка при выполнении запроса:', error);
-            })
-            .finally(() => {
-                this.loading = false;
-            });
     }
 
     setupInfiniteScroll() {
@@ -73,42 +76,56 @@ class SearchSelect {
                 this.getMoviesAjax();
 
                 if (this.lastPage === this.page) {
-                    optionsList.removeEventListener('scroll', scrollHandler);
+                    optionsList?.removeEventListener('scroll', scrollHandler);
                 }
             }
         };
 
         // Добавляем обработчик события
-        optionsList.addEventListener('scroll', scrollHandler);
+        optionsList?.addEventListener('scroll', scrollHandler);
 
         // Вызываем cleanup при выходе из объекта
         window.addEventListener('beforeunload', () => {
-            optionsList.removeEventListener('scroll', scrollHandler);
+            optionsList?.removeEventListener('scroll', scrollHandler);
         });
     }
 
     populateMoviesOptions(movies) {
-        movies.data.forEach((movie) => {
-            const li = document.createElement('li');
-            const span = document.createElement('span');
+        // Проверяем, есть ли данные и они не пусты
+        if (movies && movies.data.length !== 0) {
+            movies.data.forEach((movie) => {
+                const li = document.createElement('li');
+                const span = document.createElement('span');
 
-            const date = new Date(movie.date_start);
-            const formattedDate = `${
-                ('0' + date.getDate()).slice(-2)} ${('0' + (date.getMonth() + 1)).slice(-2)} ${date.getFullYear()
-            }`;
+                const date = new Date(movie.date_start);
+                const formattedDate = `${
+                    ('0' + date.getDate()).slice(-2)} ${('0' + (date.getMonth() + 1)).slice(-2)} ${date.getFullYear()
+                }`;
 
-            span.setAttribute('data-movie-id', movie.id);
-            span.textContent = `${movie.name} (${formattedDate})`;
+                span.setAttribute('data-movie-id', movie.id);
+                span.textContent = `${movie.name} (${formattedDate})`;
 
-            li.appendChild(span);
-            this.options.appendChild(li);
+                li.appendChild(span);
+                this.options.appendChild(li);
 
-            // Добавляем обработчик события для выбора фильма
-            li.addEventListener('click', () => {
-                this.soValue.value = `${movie.name} (${formattedDate})`;
-                this.selectBox.classList.remove('active');
+                // Добавляем обработчик события для выбора фильма
+                li.addEventListener('click', () => {
+                    this.soValue.value = `${movie.name} (${formattedDate})`;
+                    this.soValue.setAttribute(
+                        'data-movie-id',
+                        movie.id
+                    );
+
+                    this.selectBox?.classList.remove('active');
+                });
             });
-        });
+        } else {
+            // Если данных нет или они пусты, добавляем сообщение
+            const li = document.createElement('li');
+            li.textContent = 'Такого фильма не найдено';
+            li.classList.add('select__not-found');
+            this.options.appendChild(li);
+        }
     }
 
 
@@ -116,7 +133,7 @@ class SearchSelect {
         this.selectOption?.addEventListener('click', () => {
             this.selectBox?.classList.toggle('active');
             if (this.selectBox?.classList.contains('active')) {
-                // this.getMoviesAjax();
+                this.optionSearch?.focus();
             }
         })
     }
@@ -139,33 +156,54 @@ class SearchSelect {
         optionsList?.forEach(item => {
             item?.addEventListener('click', () => {
                 this.soValue.value = item.querySelector('span').textContent;
-                this.soValue.setAttribute(
-                    'data-movie-id',
-                    item.querySelector('span').getAttribute('data-movie-id')
-                );
+                this.soValueId.value = item.querySelector('span').getAttribute('data-movie-id');
 
                 this.selectBox?.classList.remove('active');
             })
         })
     }
 
-    searchBySelect() {
-        this.optionSearch?.addEventListener('keyup', () => {
-            let filter, li, i, txtValue;
-            filter = this.optionSearch.value.toUpperCase();
-            li = this.options.getElementsByTagName('li');
+    setupSearchInput() {
+        let timeoutId;
 
-            for (i = 0; i < li.length; i++) {
-                txtValue = li[i].textContent || li[i].innerText;
-                if (
-                    txtValue.toUpperCase().indexOf(filter) > -1
-                ) {
-                    li[i].style.display = "";
-                } else {
-                    li[i].style.display = "none";
-                }
-            }
+        this.optionSearch?.addEventListener('input', () => {
+            const searchTerm = this.optionSearch.value.trim();
+
+            clearTimeout(timeoutId);
+
+            timeoutId = setTimeout(() => {
+                this.performAjaxSearch(searchTerm);
+            }, 500);
+        });
+    }
+
+    performAjaxSearch(searchTerm) {
+        const url = this.selectBox.dataset.moviesUrl;
+
+        fetch(`${url}?search=${searchTerm}`, {
+            method: 'get',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
         })
+            .then((response) => response.json())
+            .then((resp) => {
+                if (resp.status && resp.movies.data.length > 0) {
+                    this.clearOptions();
+                    this.populateMoviesOptions(resp.movies);
+                    this.setSelectedValue();
+                } else {
+                    this.clearOptions();
+                    this.populateMoviesOptions(resp.movies);
+                }
+            })
+            .catch(error => {
+                console.error('Ошибка при выполнении запроса:', error);
+            });
+    }
+
+    clearOptions() {
+        this.options.innerHTML = '';
     }
 }
 

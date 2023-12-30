@@ -145,10 +145,18 @@ class MovieController extends BaseAdminController
         }
     }
 
-    public function getMovies(MovieService $movieService)
+    public function getMovies(
+        SearchRequest $request,
+        MovieService  $movieService,
+    )
     {
+        $searchMovieDTO = new SearchMovieDTO(
+            searchTerm: $request->input('search'),
+        );
+
+
         try {
-            $movies = $movieService->getAllMovies();
+            $movies = $movieService->getAllMovies($searchMovieDTO);
 
             return response()->json([
                 'status' => true,

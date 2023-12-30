@@ -26,7 +26,7 @@ class CreateScreeningRequest extends FormRequest
         return [
             'theatre' => 'required|int|exists:theatres,id',
             'hall' => 'required|int|exists:halls,id',
-            'movie' => 'required|int|exists:movies,id',
+            'movie_id' => 'required|int|exists:movies,id',
             'price' => 'required|numeric',
             'date' => 'required|date_format:Y-m-d\TH:i',
         ];
@@ -43,7 +43,7 @@ class CreateScreeningRequest extends FormRequest
             'theatre.exists' => 'Такого кинотеатра не существует в базе данных',
             'theatre.required' => 'Необходимо выбрать кинотеатр',
             'hall.exists' => 'Такого зала не существует в базе данных',
-            'movies.exists' => 'Такого фильма не существует в базе данных',
+            'movie_id.exists' => 'Такого фильма не существует в базе данных',
             'hall.required' => 'Необходимо выбрать зал',
             'date.date_format' => 'Не верный формат даты',
         ];

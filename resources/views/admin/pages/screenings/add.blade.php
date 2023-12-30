@@ -59,19 +59,26 @@
                                            placeholder="{{ __('Поиск фильма:') }}"
                                            readonly
                                     >
+                                    <input type="hidden" id="screeningsSelectSoValueId" name="movie_id">
                                 </div>
                                 <div class="select__content">
                                     <div class="select__select-search">
                                         <input id="screeningsSelectOptionsSearch"
-                                               name=""
                                                type="text"
+                                               autofocus
                                                placeholder="{{ __('Поиск:') }}"
                                         >
+
                                         <ul class="select__options">
 
                                         </ul>
                                     </div>
                                 </div>
+                                @error('movie_id')
+                                <div class="error-message">
+                                    {{$message}}
+                                </div>
+                                @enderror
                             </div>
 
                             <x-input :inputAttributes="[

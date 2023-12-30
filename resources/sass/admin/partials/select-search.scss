@@ -99,4 +99,8 @@
         transform: rotate(180deg);
     }
 
+    &__not-found {
+        color: gray;
+        pointer-events: none!important;
+    }
 }

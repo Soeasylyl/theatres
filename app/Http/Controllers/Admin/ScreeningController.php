@@ -103,7 +103,7 @@ class ScreeningController extends BaseAdminController
             producer: auth()->user(),
             theatreId: $request->input('theatre'),
             hallId: $request->input('hall'),
-            movieId: $request->input('movie'),
+            movieId: $request->input('movie_id'),
             price: $request->input('price'),
             dateStart: $request->input('date'),
             timeZone: $request->input('timeZone'),
