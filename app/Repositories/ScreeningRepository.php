@@ -101,4 +101,16 @@ class ScreeningRepository implements ScreeningRepositoryInterface
             'start_at' => $dto->getDateStart(),
         ]);
     }
+
+    /**
+     *  Retrieve a screening by its ID, eagerly loading specified relations.
+     *
+     * @param int $screeningId
+     * @param array $relations
+     * @return Screening
+     */
+    public function getScreeningByIdOrFail(int $screeningId, array $relations = []): Screening
+    {
+        return Screening::with($relations)->findOrFail($screeningId);
+    }
 }

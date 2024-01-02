@@ -7,9 +7,8 @@ class Screenings {
 
         this.theatreSelect = document.getElementById('screeningsTheatreSelectAdd');
 
-        // this.deleteUserButton = document.querySelectorAll('.admin-container__table_last_cell_trash');
-        // this.deleteProfileButton = document.getElementById('deleteProfileButton');
-        // this.blockUserButton = document.querySelectorAll('.page-wrapper__block-wrapper');
+        this.deleteScreeningButton = document.querySelectorAll('.admin-container__table_last_cell_screenings_trash');
+
         this.timeZoneInput = document.querySelector('.admin-screenings__timezone-input');
         this.init();
     }
@@ -17,8 +16,7 @@ class Screenings {
     init() {
         this.openFilteredScreeningsModal();
         this.closeFilteredScreeningsModal();
-        // this.deleteProfile();
-        // this.deleteUser();
+        this.deleteScreening();
         this.selectedTheatreAjax()
         this.setTimeZone();
     }
@@ -75,22 +73,24 @@ class Screenings {
         });
     }
 
-    // deleteUser() {
-    //     this.deleteUserButton && this.deleteUserButton.forEach(item => {
-    //         item.addEventListener('click', (event) => {
-    //             event.preventDefault(); // Preventing link from being followed
-    //
-    //             const user = event.currentTarget.getAttribute('data-username'); // Getting the username
-    //             if (confirm(`Вы уверены, что хотите удалить пользователя ${user}?`)) {
-    //
-    //                 const form = event.currentTarget.closest('form');
-    //                 if (form) {
-    //                     form.submit();
-    //                 }
-    //             }
-    //         });
-    //     });
-    // }
+    deleteScreening() {
+         this.deleteScreeningButton?.forEach(item => {
+            item.addEventListener('click', (event) => {
+                event.preventDefault(); // Preventing link from being followed
+
+                const dateTime = event.currentTarget.getAttribute('data-screening-start');
+                const theatreName = event.currentTarget.getAttribute('data-theatre-name');
+                const hallName = event.currentTarget.getAttribute('data-hall-name');
+                if (confirm(`Вы уверены, что хотите удалить сеанс кинотеатра ${theatreName}, в зале ${hallName} на ${dateTime}?`)) {
+
+                    const form = event.currentTarget.closest('form');
+                    if (form) {
+                        form.submit();
+                    }
+                }
+            });
+        });
+    }
 
     closeFilteredScreeningsModal() {
         this.screeningsCloseModal?.addEventListener('click', () => {
@@ -105,21 +105,6 @@ class Screenings {
             this.mainClass.classList?.add('open-modal-overflow-hidden');
         });
     }
-
-    // deleteProfile() {
-    //     this.deleteProfileButton && this.deleteProfileButton.addEventListener('click', (event) => {
-    //             event.preventDefault();
-    //
-    //             if (confirm(`Вы уверены, что хотите удалить свой профиль?`)) {
-    //
-    //                 const form = event.currentTarget.closest('form');
-    //                 if (form) {
-    //                     form.submit();
-    //                 }
-    //             }
-    //         }
-    //     )
-    // }
 
     setTimeZone() {
         if (this.timeZoneInput) {

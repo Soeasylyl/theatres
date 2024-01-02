@@ -4,13 +4,16 @@ namespace App\Http\Controllers\Admin;
 
 use App\DTO\Halls\GetHallsDTO;
 use App\DTO\Screening\CreateScreeningDTO;
+use App\DTO\Screening\DeleteScreeningDTO;
 use App\DTO\Screening\SearchScreeningDTO;
 use App\DTO\Users\GetUserDTO;
 use App\Http\Requests\Admin\Screenings\ajaxGetHallsRequest;
 use App\Http\Requests\Admin\Screenings\CreateScreeningRequest;
+use App\Http\Requests\Admin\Screenings\DeleteScreeningRequest;
 use App\Http\Requests\Admin\Screenings\SearchScreeningRequest;
 use App\Services\ScreeningService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class ScreeningController extends BaseAdminController
@@ -145,10 +148,33 @@ class ScreeningController extends BaseAdminController
     }
 
     /**
-     * Remove the specified resource from storage.
+     *  Remove the specified resource from storage.
+     *
+     * @param int $id
+     * @param DeleteScreeningRequest $request
+     * @param ScreeningService $screeningService
+     * @return RedirectResponse
      */
-    public function destroy(string $id)
+    public function destroy(
+        int                    $id,
+        DeleteScreeningRequest $request,
+        ScreeningService       $screeningService,
+    )
     {
-        //
+        $deleteScreeningDto = new DeleteScreeningDTO(
+            screeningId: $id,
+            theatreId: $request->input('theatre_id'),
+            producer: auth()->user(),
+        );
+
+        try {
+            $screeningService->deleteScreening($deleteScreeningDto);
+
+            return redirect()
+                ->route('screening.index')
+                ->with('successMessages', 'Сеанс успешно удалён');
+        } catch (\Throwable $exception) {
+            return redirect()->back()->with('error', $exception->getMessage());
+        }
     }
 }

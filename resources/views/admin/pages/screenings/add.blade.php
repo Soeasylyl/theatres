@@ -56,7 +56,7 @@
                                     <input id="screeningsSelectSoValue"
                                            name=""
                                            type="text"
-                                           placeholder="{{ __('Поиск фильма:') }}"
+                                           placeholder="{{ __('Выберите фильм:') }}"
                                            readonly
                                     >
                                     <input type="hidden" id="screeningsSelectSoValueId" name="movie_id">

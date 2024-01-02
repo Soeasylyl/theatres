@@ -51,4 +51,13 @@ interface ScreeningRepositoryInterface
      * @return Screening
      */
     public function createScreening(CreateScreeningDTO $dto): Screening;
+
+    /**
+     *  Retrieve a screening by its ID, eagerly loading specified relations.
+     *
+     * @param int $screeningId
+     * @param array $relations
+     * @return Screening
+     */
+    public function getScreeningByIdOrFail(int $screeningId, array $relations = []): Screening;
 }

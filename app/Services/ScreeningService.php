@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\DTO\Halls\GetHallsDTO;
 use App\DTO\Screening\CreateScreeningDTO;
+use App\DTO\Screening\DeleteScreeningDTO;
 use App\DTO\Screening\SearchScreeningDTO;
 use App\Enums\RolesUsersEnum;
 use App\Models\Screening;
@@ -124,5 +125,49 @@ class ScreeningService
         }
 
         return $this->screeningRepository->createScreening($dto);
+    }
+
+    /**
+     * Delete a screening based on the provided DeleteScreeningDTO.
+     *
+     * @param DeleteScreeningDTO $dto
+     * @return bool|null
+     * @throws \Exception
+     */
+    public function deleteScreening(DeleteScreeningDTO $dto): ?bool
+    {
+        if (
+            $dto->getProducer()->hasAnyRole(
+                RolesUsersEnum::SUPER_ADMIN->value,
+                RolesUsersEnum::MODERATOR->value,
+            )
+        ) {
+            return $this->findScreeningByIdAndDelete($dto->getScreeningId());
+        }
+
+        if (
+            !in_array(
+                $dto->getTheatreId(),
+                $dto->getProducer()->theatres->pluck('id')->toArray()
+            )
+        ) {
+            throw new \Exception('Недостаточно прав для удаления сеанса', 403);
+        }
+
+        return $this->findScreeningByIdAndDelete($dto->getScreeningId());
+    }
+
+    /**
+     *  Find a screening by its ID and delete it.
+     *  This method retrieves the screening by its ID and deletes it from the database.
+     *
+     * @param int $screeningId
+     * @return bool|null
+     */
+    private function findScreeningByIdAndDelete(int $screeningId): ?bool
+    {
+        $screening = $this->screeningRepository->getScreeningByIdOrFail($screeningId);
+
+        return $screening->delete();
     }
 }

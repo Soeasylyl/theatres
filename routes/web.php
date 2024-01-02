@@ -48,6 +48,7 @@ Route::prefix('admin')->middleware(['auth', 'isBlock', 'AdminAccess'])->group(fu
         Route::get('/', [ScreeningController::class, 'index'])->name('screening.index');
         Route::get('/create', [ScreeningController::class, 'create'])->name('screening.create');
         Route::post('/', [ScreeningController::class, 'store'])->name('screening.store');
+        Route::delete('{screening}/', [ScreeningController::class, 'destroy'])->name('screening.delete');
     });
 
     // Movies management
