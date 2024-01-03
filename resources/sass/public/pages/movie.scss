@@ -1,6 +1,166 @@
-.movie-body {
-    &__sort-menu {
+.movie {
+    &__header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        color: white;
+        height: 80px;
+
+        cursor: default;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        transition: all 0.2s ease 0s;
+        background: rgba(39, 39, 42, 0.8);
+        box-shadow: rgba(255, 255, 255, 0.15) 0 1px 0 0;
+    }
+
+    &__hader-name {
+        align-content: center;
+    }
+
+    &__header-btn-back {
+        background: none;
+        border: none;
+        display: inline-block;
+        vertical-align: top;
+        width: 40px;
+        margin: -15px -9px;
+        padding: 29px 9px;
+        line-height: 0;
+        color: rgba(255, 255, 255, 0.35);
+        transition: all 0.2s ease 0s;
+        cursor: pointer;
+        box-sizing: border-box;
+        pointer-events: all;
+
+        &:hover {
+            color: rgb(255, 255, 255);
+        }
+    }
+
+    &__body-sort-menu {
         display: flex;
         justify-content: space-around;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    &__body-sort-menu-items {
+        width: 100%;
+    }
+
+    &__body-menu-left {
+        border-right: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    &__body-menu-right {
+        border-left: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    &__select {
+        position: relative;
+    }
+
+    &__select-header {
+        color: #bdbaba;
+        display: flex;
+
+        .movie__svg-icon {
+            path {
+                fill: #bdbaba;
+            }
+        }
+
+        &:hover {
+            color: white;
+            cursor: pointer;
+
+            .movie__svg-icon {
+                path {
+                    fill: white;
+                }
+            }
+        }
+    }
+
+    &__svg-arrow {
+        width: 22px;
+        height: 22px;
+        color: rgb(212, 7, 84);
+        transition: all 0.2s ease 0s;
+    }
+
+    &__select-body {
+        position: absolute;
+        width: 100%;
+        background-color: white;
+        transition: 250ms ease-in-out;
+    }
+
+    &__select-header-content {
+        padding: 10px;
+        gap: 10px;
+        align-items: center;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    &__select-theatre-options {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        padding: 10px;
+
+        &::after {
+            content: "";
+            opacity: 0;
+            position: absolute;
+        }
+
+        &:hover {
+            color: rgb(28, 156, 223);
+            cursor: pointer;
+        }
+
+        span {
+            color: rgba(24, 24, 24, 0.35);
+            font-size: 0.875em;
+            line-height: 24px;
+            display: block;
+        }
+    }
+
+    &__theatre-selected {
+        padding-left: 50px;
+        transition: 250ms ease-in-out;
+        color: red;
+
+        &::after {
+            content: "✓";
+            position: absolute;
+            opacity: 1;
+            left: 10px;
+            color: red;
+            transition: 500ms ease-in-out;
+        }
+    }
+
+    &__svg-rotate {
+        transform: rotate(180deg);
+    }
+
+    &__hidden {
+        position: relative;
+        opacity: 0;
+        visibility: hidden;
+        height: 0;
+        margin: 0;
+        top: -999px;
+        z-index: -999;
+
+        &:hover {
+            pointer-events: none;
+        }
     }
 }

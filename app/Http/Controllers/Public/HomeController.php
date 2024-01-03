@@ -3,11 +3,14 @@
 namespace App\Http\Controllers\Public;
 
 use App\Models\Movie;
+use App\Models\Theatre;
 use App\Services\MovieService;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class HomeController extends BasePublicController
 {
@@ -37,6 +40,13 @@ class HomeController extends BasePublicController
      */
     public function show(Movie $movie)
     {
-        return view('public.pages.movie', compact('movie'));
+        $theaters = Theatre::with('halls.screenings')
+            ->WithWhereHas('halls.screenings', function (Builder|HasMany $builder) use ($movie) {
+                $builder->where('movie_id', $movie->id)
+                        ->where('start_at', '>=', now());
+            })
+            ->paginate(config('app.pagination_limit'));
+
+        return view('public.pages.movie', compact('movie', 'theaters'));
     }
 }

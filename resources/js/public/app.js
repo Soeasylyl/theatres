@@ -5,4 +5,4 @@ import './partials/header.js'
 import './partials/swiper.js'
 import './partials/home.js'
 
-
+import './pages/movie.js'
