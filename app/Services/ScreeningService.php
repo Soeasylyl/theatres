@@ -7,9 +7,9 @@ use App\DTO\Screening\CreateScreeningDTO;
 use App\DTO\Screening\DeleteScreeningDTO;
 use App\DTO\Screening\EditScreeningDTO;
 use App\DTO\Screening\SearchScreeningDTO;
+use App\DTO\Screening\UpdateScreeningDTO;
 use App\Enums\RolesUsersEnum;
 use App\Models\Screening;
-use App\Models\Theatre;
 use App\Models\User;
 use App\Repositories\HallRepository;
 use App\Repositories\ScreeningRepository;
@@ -190,5 +190,35 @@ class ScreeningService
             'screeningHall' => $screeningHall,
             'halls' => $halls,
         ];
+    }
+
+    /**
+     * @param UpdateScreeningDTO $dto
+     * @return Screening
+     * @throws \Exception
+     */
+    public function updateScreening(UpdateScreeningDTO $dto): Screening
+    {
+        $screening = $this->screeningRepository->getScreeningByIdOrFail($dto->getScreeningId());
+
+        if (
+            $dto->getProducer()->hasAnyRole(
+                RolesUsersEnum::SUPER_ADMIN->value,
+                RolesUsersEnum::MODERATOR->value,
+            )
+        ) {
+            return $this->screeningRepository->updateScreening(screening: $screening, dto: $dto);
+        }
+
+        if (
+            !in_array(
+                $this->hallRepository->getHallByIdOrFail($dto->getHallId())->theatre->id,
+                $dto->getProducer()->theatres->pluck('id')->toArray()
+            )
+        ) {
+            throw new \Exception('Недостаточно прав для редактирования сеанса', 403);
+        }
+
+        return $this->screeningRepository->updateScreening(screening: $screening, dto: $dto);
     }
 }

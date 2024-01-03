@@ -84,4 +84,16 @@ class Screening extends Model
     {
         return $this->hasMany(Booking::class);
     }
+
+    /**
+     *  An accessor for the price attribute that removes the "$" character from the beginning of the value
+     *  and returns a cleaned string.
+     *
+     * @param $value
+     * @return string
+     */
+    public function getPriceAttribute($value): string
+    {
+        return ltrim($value, '$');
+    }
 }

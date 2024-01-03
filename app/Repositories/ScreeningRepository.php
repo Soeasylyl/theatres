@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\DTO\Screening\CreateScreeningDTO;
+use App\DTO\Screening\UpdateScreeningDTO;
 use App\Models\Screening;
 use App\Models\User;
 use App\Repositories\Interfaces\ScreeningRepositoryInterface;
@@ -31,16 +32,16 @@ class ScreeningRepository implements ScreeningRepositoryInterface
         $now = now();
 
         return Screening::with(['hall.theatre', 'movie'])
-            ->when(!is_null($theatreId), fn (Builder $builder)=>
-                $builder->whereHas('hall.theatre', fn (Builder $subBuilder) =>
+            ->when(!is_null($theatreId), fn(Builder $builder) =>
+                $builder->whereHas('hall.theatre', fn(Builder $subBuilder) =>
                     $subBuilder->where('id', $theatreId)))
-            ->when(!is_null($date), fn (Builder $builder) =>
+            ->when(!is_null($date), fn(Builder $builder) =>
                 $builder->whereDate('start_at', $date))
-            ->when($fScreening === 'upcoming', fn (Builder $builder) =>
+            ->when($fScreening === 'upcoming', fn(Builder $builder) =>
                 $builder->where('start_at', '>', $now))
-            ->when($fScreening === 'completed', fn (Builder $builder) =>
+            ->when($fScreening === 'completed', fn(Builder $builder) =>
                 $builder->where('start_at', '<', $now))
-            ->when(!is_null($searchTerm), fn (Builder $builder) =>
+            ->when(!is_null($searchTerm), fn(Builder $builder) =>
                 $builder->whereHas('movie', fn(Builder $builder) =>
                     $builder->where('name', 'ilike', "%$searchTerm%")))
             ->orderBy('start_at', 'desc')
@@ -68,18 +69,18 @@ class ScreeningRepository implements ScreeningRepositoryInterface
         $now = now();
 
         return Screening::with(['hall.theatre', 'movie'])
-            ->when(!is_null($date), fn (Builder $builder) =>
+            ->when(!is_null($date), fn(Builder $builder) =>
                 $builder->whereDate('start_at', $date))
-            ->when(!is_null($theatreId), fn (Builder $builder) =>
-                $builder->whereHas('hall.theatre', fn (Builder $builder) =>
+            ->when(!is_null($theatreId), fn(Builder $builder) =>
+                $builder->whereHas('hall.theatre', fn(Builder $builder) =>
                     $builder->where('id', $theatreId)))
-            ->whereHas('hall.theatre.users', fn (Builder $builder) =>
+            ->whereHas('hall.theatre.users', fn(Builder $builder) =>
                 $builder->where('user_id', $producer->id))
-            ->when($fScreening === 'upcoming', fn (Builder $builder) =>
+            ->when($fScreening === 'upcoming', fn(Builder $builder) =>
                 $builder->where('start_at', '>', $now))
-            ->when($fScreening === 'completed', fn (Builder $builder) =>
+            ->when($fScreening === 'completed', fn(Builder $builder) =>
                 $builder->where('start_at', '<', $now))
-            ->when(!is_null($searchTerm), fn (Builder $builder) =>
+            ->when(!is_null($searchTerm), fn(Builder $builder) =>
                 $builder->whereHas('movie', fn(Builder $builder) =>
                     $builder->where('name', 'ilike', "%$searchTerm%")))
             ->orderBy('start_at', 'desc')
@@ -112,5 +113,27 @@ class ScreeningRepository implements ScreeningRepositoryInterface
     public function getScreeningByIdOrFail(int $screeningId, array $relations = []): Screening
     {
         return Screening::with($relations)->findOrFail($screeningId);
+    }
+
+    /**
+     *  Updates session data in the database based on the passed data from the UpdateScreeningDTO object.
+     *
+     * @param Screening $screening
+     * @param UpdateScreeningDTO $dto
+     * @return Screening
+     */
+    public function updateScreening(
+        Screening $screening,
+        UpdateScreeningDTO $dto
+    ): Screening
+    {
+         $screening->update([
+           'movie_id' => $dto->getMovieId(),
+           'hall_id' => $dto->getHallId(),
+           'price' => $dto->getPrice(),
+           'start_at' => $dto->getDateStart(),
+       ]);
+
+        return $screening;
     }
 }

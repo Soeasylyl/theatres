@@ -7,18 +7,19 @@ use App\DTO\Screening\CreateScreeningDTO;
 use App\DTO\Screening\DeleteScreeningDTO;
 use App\DTO\Screening\EditScreeningDTO;
 use App\DTO\Screening\SearchScreeningDTO;
+use App\DTO\Screening\UpdateScreeningDTO;
 use App\DTO\Users\GetUserDTO;
 use App\Http\Requests\Admin\Screenings\ajaxGetHallsRequest;
 use App\Http\Requests\Admin\Screenings\CreateScreeningRequest;
 use App\Http\Requests\Admin\Screenings\DeleteScreeningRequest;
 use App\Http\Requests\Admin\Screenings\SearchScreeningRequest;
+use App\Http\Requests\Admin\Screenings\UpdateScreeningRequest;
 use App\Services\ScreeningService;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 
 class ScreeningController extends BaseAdminController
 {
@@ -161,11 +162,38 @@ class ScreeningController extends BaseAdminController
     }
 
     /**
-     * Update the specified resource in storage.
+     *  Processes a request to update session information based on data provided by the form.
+     *
+     * @param UpdateScreeningRequest $request
+     * @param int $screeningId
+     * @param ScreeningService $screeningService
+     * @return RedirectResponse
      */
-    public function update(Request $request, string $id)
+    public function update(
+        UpdateScreeningRequest $request,
+        int                    $screeningId,
+        ScreeningService       $screeningService,
+    )
     {
-        //
+        $updateScreeningDto = new UpdateScreeningDTO(
+            producer: auth()->user(),
+            screeningId: $screeningId,
+            hallId: $request->input('hall'),
+            movieId: $request->input('movie_id'),
+            price: $request->input('price'),
+            dateStart: $request->input('date'),
+            timeZone: $request->input('timeZone'),
+        );
+
+        try {
+            $screeningService->updateScreening($updateScreeningDto);
+
+            return redirect()
+                ->route('screening.index')
+                ->with('successMessages', 'Информация о сеансе успешно обновлена');
+        } catch (\Throwable $exception) {
+            return redirect()->back()->with('error', $exception->getMessage());
+        }
     }
 
     /**

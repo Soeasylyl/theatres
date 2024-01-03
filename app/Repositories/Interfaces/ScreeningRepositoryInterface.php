@@ -3,6 +3,7 @@
 namespace App\Repositories\Interfaces;
 
 use App\DTO\Screening\CreateScreeningDTO;
+use App\DTO\Screening\UpdateScreeningDTO;
 use App\Models\Screening;
 use App\Models\User;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
@@ -60,4 +61,16 @@ interface ScreeningRepositoryInterface
      * @return Screening
      */
     public function getScreeningByIdOrFail(int $screeningId, array $relations = []): Screening;
+
+    /**
+     *  Updates session data in the database based on the passed data from the UpdateScreeningDTO object.
+     *
+     * @param Screening $screening
+     * @param UpdateScreeningDTO $dto
+     * @return Screening
+     */
+    public function updateScreening(
+        Screening $screening,
+        UpdateScreeningDTO $dto
+    ): Screening;
 }

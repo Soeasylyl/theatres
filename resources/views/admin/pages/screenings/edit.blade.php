@@ -9,12 +9,12 @@
                 </div>
                 <div class="admin-screenings__body">
                     <form method="POST"
-                          action="#"
+                          action="{{ route('screening.update', ['screening' => $screening->id]) }}"
                           class="admin-screenings__form" enctype="multipart/form-data">
                         @csrf
-                        @method('POST')
-                        <div class="admin-screenings__form-left">
+                        @method('PATCH')
 
+                        <div class="admin-screenings__form-left">
                             <div class="admin-screenings__item">
                                 <select class="admin-halls__seats-type" name="hall">
                                     <option value="" disabled>{{ __('Выбирите зал') }}</option>
@@ -37,13 +37,12 @@
                             </div>
 
                             <x-input :inputAttributes="[
-                                        'name'=>'price',
-                                        'type' => 'text',
+                                        'name' => 'price',
+                                        'type' => 'number',
                                         'step' => 'any',
-                                        'required'=>'required',
+                                        'required' => 'required',
                                         'autocomplete' => 'off',
                                         'min' => '1',
-                                        'pattern' => '^[$]?\d+(\.\d+)?$',
                                         'value' => $screening->price,
                                          ]"
                                      :errorAttribute="'price'"
@@ -70,9 +69,10 @@
                                            name="movie_id"
                                            @if($screening->movie->id)
                                                value="{{ $screening->movie->id }}"
-                                           @endif
+                                        @endif
                                     >
                                 </div>
+
                                 <div class="select__content">
                                     <div class="select__select-search">
                                         <input id="screeningsSelectOptionsSearch"
@@ -95,9 +95,9 @@
 
                             <input type="hidden" name="timeZone" class="admin-screenings__timezone-input">
                             <x-input :inputAttributes="[
-                                        'name'=>'date',
-                                        'type'=>'datetime-local',
-                                        'required'=>'required',
+                                        'name' => 'date',
+                                        'type' => 'datetime-local',
+                                        'required' => 'required',
                                         'autocomplete' => 'off',
                                         'value' => $screening->start_at,
                                          ]"
@@ -105,7 +105,6 @@
                                      input_required>
                                 {{ __('Выберите дату начала показа:') }}
                             </x-input>
-
                         </div>
                         <div class="login-container__button-wrapper admin-screenings__button-wrapper"
                              style="justify-content: center">
