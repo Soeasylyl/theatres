@@ -5,9 +5,11 @@ namespace App\Services;
 use App\DTO\Halls\GetHallsDTO;
 use App\DTO\Screening\CreateScreeningDTO;
 use App\DTO\Screening\DeleteScreeningDTO;
+use App\DTO\Screening\EditScreeningDTO;
 use App\DTO\Screening\SearchScreeningDTO;
 use App\Enums\RolesUsersEnum;
 use App\Models\Screening;
+use App\Models\Theatre;
 use App\Models\User;
 use App\Repositories\HallRepository;
 use App\Repositories\ScreeningRepository;
@@ -169,5 +171,24 @@ class ScreeningService
         $screening = $this->screeningRepository->getScreeningByIdOrFail($screeningId);
 
         return $screening->delete();
+    }
+
+    /**
+     * Retrieves the screening data to edit.
+     *
+     * @param EditScreeningDTO $dto
+     * @return array
+     */
+    public function getScreeningDataToEdit(EditScreeningDTO $dto): array
+    {
+        $screening = $this->screeningRepository->getScreeningByIdOrFail($dto->getScreeningId());
+        $screeningHall = $screening->hall;
+        $halls = $screeningHall->theatre->halls;
+
+        return [
+            'screening' => $screening,
+            'screeningHall' => $screeningHall,
+            'halls' => $halls,
+        ];
     }
 }

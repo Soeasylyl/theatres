@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\DTO\Halls\GetHallsDTO;
 use App\DTO\Screening\CreateScreeningDTO;
 use App\DTO\Screening\DeleteScreeningDTO;
+use App\DTO\Screening\EditScreeningDTO;
 use App\DTO\Screening\SearchScreeningDTO;
 use App\DTO\Users\GetUserDTO;
 use App\Http\Requests\Admin\Screenings\ajaxGetHallsRequest;
@@ -12,6 +13,9 @@ use App\Http\Requests\Admin\Screenings\CreateScreeningRequest;
 use App\Http\Requests\Admin\Screenings\DeleteScreeningRequest;
 use App\Http\Requests\Admin\Screenings\SearchScreeningRequest;
 use App\Services\ScreeningService;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -132,11 +136,28 @@ class ScreeningController extends BaseAdminController
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Displays the session edit page with relevant data.
+     *
+     * @param int $screeningId
+     * @param ScreeningService $screeningService
+     * @return Application|Factory|View|\Illuminate\Foundation\Application
      */
-    public function edit(string $id)
+    public function edit(
+        int              $screeningId,
+        ScreeningService $screeningService,
+    )
     {
-        //
+        $editScreeningDto = new EditScreeningDTO(
+            screeningId: $screeningId,
+        );
+
+        $data = $screeningService->getScreeningDataToEdit($editScreeningDto);
+
+        return view('admin.pages.screenings.edit', [
+            'screening' => $data['screening'],
+            'screeningHall' => $data['screeningHall'],
+            'halls' => $data['halls'],
+        ]);
     }
 
     /**

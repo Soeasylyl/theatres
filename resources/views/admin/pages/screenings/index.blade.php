@@ -59,7 +59,7 @@
                             <td>{{ $screening->start_at }}</td>
                             <td>
                                 <div class="admin-container__table_last_cell">
-                                    <a href="#"
+                                    <a href="{{ route('screening.edit', $screening->id) }}"
                                        class="admin-container__table_last_cell_edit"
                                        title="{{ __('Редактировать') }}">
                                         <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="20" height="23"
