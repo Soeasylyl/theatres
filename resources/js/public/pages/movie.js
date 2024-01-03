@@ -11,7 +11,7 @@ class PublicMovie {
     init() {
         this.openCloseTheatresSelect();
         this.selectTheatreOption();
-        this. closeSelectMenuOnOutsideClick();
+        this.closeSelectMenuOnOutsideClick();
     }
 
     openCloseTheatresSelect() {
@@ -36,6 +36,16 @@ class PublicMovie {
         });
     }
 
+    closeSelectMenuOnOutsideClick() {
+        document.addEventListener('click', (event) => {
+            const isClickInsideSelect = this.movieSelectHeaderForTheatre?.contains(event.target) || this.movieSelectBodyForTheatre?.contains(event.target);
+
+            if (!isClickInsideSelect) {
+                this.movieSelectBodyForTheatre?.classList.add('movie__hidden');
+                this.movieSvgArrowForTheatre?.classList.remove('movie__svg-rotate');
+            }
+        });
+    }
 }
 
 new PublicMovie();

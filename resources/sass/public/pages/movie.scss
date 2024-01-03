@@ -121,6 +121,10 @@
         &:hover {
             color: rgb(28, 156, 223);
             cursor: pointer;
+
+            &:after {
+                color: rgb(28, 156, 223);
+            }
         }
 
         span {
@@ -134,10 +138,12 @@
     &__theatre-selected {
         padding-left: 50px;
         transition: 250ms ease-in-out;
+        justify-content: center;
         color: red;
 
         &::after {
             content: "✓";
+            font-size: 30px;
             position: absolute;
             opacity: 1;
             left: 10px;
