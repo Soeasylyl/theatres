@@ -40,13 +40,19 @@ class HomeController extends BasePublicController
      */
     public function show(Movie $movie)
     {
-        $theaters = Theatre::with('halls.screenings')
+        $theaters = Theatre::with([
+            'halls.seats',
+            'halls.screenings.bookings',
+        ])
             ->WithWhereHas('halls.screenings', function (Builder|HasMany $builder) use ($movie) {
                 $builder->where('movie_id', $movie->id)
                         ->where('start_at', '>=', now());
             })
             ->paginate(config('app.pagination_limit'));
 
-        return view('public.pages.movie', compact('movie', 'theaters'));
+        return view('public.pages.movie', compact(
+            'movie',
+            'theaters'
+        ));
     }
 }

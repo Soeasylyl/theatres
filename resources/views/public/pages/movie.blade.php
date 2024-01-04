@@ -16,7 +16,6 @@
             <div class="movie__body">
                 <div class="movie__body-sort-menu">
                     <div class="movie__body-sort-menu-items movie__body-menu-left">
-
                         <div class="movie__select">
                             <div class="movie__select-header">
                                 <div class="movie__select-header-content" id="movieSelectHeaderForTheatre">
@@ -33,7 +32,7 @@
                                     <div class="movie__select-theatre-name">
                                         {{ __('Все кинотеатры') }}
                                     </div>
-                                    <svg class="movie__svg-arrow" id="svgIconRoundArrow" viewBox="0 0 22 22"
+                                    <svg class="movie__svg-arrow" id="svgIconRoundArrowTheatre" viewBox="0 0 22 22"
                                          width="100%" height="100%">
                                         <circle fill="none" stroke="currentColor" stroke-width="2"
                                                 vector-effect="non-scaling-stroke" cx="11" cy="11" r="10"></circle>
@@ -60,35 +59,188 @@
                                 @endforelse
                             </div>
                         </div>
-
                     </div>
 
                     <div class="movie__body-sort-menu-items">
-                        <label>
-                            <select>
-                                <option value="1">Сегодняшняя дата</option>
-                                {{--                            форычем список будующих дат когда будут сеансы--}}
+                        <div class="movie__select">
+                            <div class="movie__select-header">
+                                <div class="movie__select-header-content" id="movieSelectHeaderForDate">
+                                    <svg class="movie__svg-icon" viewBox="0 0 32 32" fill="currentColor"
+                                         xmlns="http://www.w3.org/2000/svg">
+                                        <text text-anchor="middle" x="47%" dy="22" fill="currentColor"
+                                              font-family="Ubuntu, Roboto, Arial, Helvetica, sans-serif" font-size="16">
+                                            <script>
+                                                const currentDate = new Date();
+                                                const day = currentDate.getDate();
+                                                document.write(day);
+                                            </script>
+                                        </text>
+                                        <g>
+                                            <path fill-rule="evenodd" clip-rule="evenodd"
+                                                  d="M13.9813 1.06034V2.53448H7.93434V1.06034C7.93434 0.813942 7.85252 0.550849 7.66699 0.342753C7.47308 0.125251 7.19376 0 6.87237 0C6.56851 0 6.30755 0.146308 6.13267 0.320671C5.95788 0.494939 5.8104 0.7558 5.8104 1.06034V2.53448H3.42244C1.59484 2.53448 0 4.12237 0 5.94828V26.5862C0 28.513 1.6054 30 3.42244 30H26.5733C28.4916 30 29.9957 28.5026 29.9957 26.5862V5.96277C30.095 4.11364 28.4794 2.53448 26.6641 2.53448H24.2761V1.06034C24.2761 0.7558 24.1286 0.494939 23.9538 0.320671C23.7789 0.146308 23.518 0 23.2141 0C22.9103 0 22.6493 0.146308 22.4744 0.320671C22.2996 0.494939 22.1522 0.7558 22.1522 1.06034V2.53448H16.196V0.97617L16.1693 0.896339C16.0937 0.670038 15.9502 0.459633 15.7745 0.301986C15.6026 0.147723 15.3487 0 15.0432 0C14.7394 0 14.4784 0.146308 14.3035 0.320671C14.1288 0.494939 13.9813 0.7558 13.9813 1.06034ZM27.781 5.94828V27.1034H27.8531C27.6515 27.5582 27.1936 27.8793 26.6641 27.8793H3.42244C2.70799 27.8793 2.12393 27.2948 2.12393 26.5862V5.94828C2.12393 5.2397 2.70799 4.65517 3.42244 4.65517H5.8104V6.67241C5.8104 6.97696 5.95788 7.23782 6.13267 7.41209C6.30755 7.58645 6.56851 7.73276 6.87237 7.73276C7.17623 7.73276 7.43718 7.58645 7.61207 7.41209C7.78685 7.23782 7.93434 6.97696 7.93434 6.67241V4.65517H13.8905V6.67241C13.8905 6.97696 14.038 7.23782 14.2128 7.41209C14.3876 7.58645 14.6486 7.73276 14.9525 7.73276C15.2563 7.73276 15.5173 7.58645 15.6922 7.41209C15.8669 7.23782 16.0144 6.97696 16.0144 6.67241V4.65517H21.9706V6.67241C21.9706 6.97696 22.1181 7.23782 22.2929 7.41209C22.4677 7.58645 22.7287 7.73276 23.0325 7.73276C23.3364 7.73276 23.5974 7.58645 23.7722 7.41209C23.947 7.23782 24.0945 6.97696 24.0945 6.67241V4.65517H26.4825C27.1969 4.65517 27.781 5.2397 27.781 5.94828Z"></path>
+                                        </g>
+                                        <defs>
+                                            <clipPath id="clip0">
+                                                <rect width="32" height="32"></rect>
+                                            </clipPath>
+                                        </defs>
+                                    </svg>
+                                    <div class="movie__select-date-name">
 
-                            </select>
-                        </label>
+                                    </div>
+                                    <svg class="movie__svg-arrow" id="svgIconRoundArrowDate" viewBox="0 0 22 22"
+                                         width="100%" height="100%">
+                                        <circle fill="none" stroke="currentColor" stroke-width="2"
+                                                vector-effect="non-scaling-stroke" cx="11" cy="11" r="10"></circle>
+                                        <path fill="none" stroke="currentColor" stroke-width="2"
+                                              vector-effect="non-scaling-stroke" d="M6,9 L11,14 L16,9"></path>
+                                    </svg>
+                                </div>
+                            </div>
+                            <div class="movie__select-body movie__hidden" id="movieSelectBodyForDate">
+                            </div>
+                        </div>
                     </div>
 
                     <div class="movie__body-sort-menu-items movie__body-menu-right">
-                        <label>
-                            <select>
-                                <option value="1">Все сеансы</option>
-                                {{--                            Список для сортировки--}}
-                                <option value="2">7:00 - 11:59</option>
-                                <option value="2">12:00 - 16:59</option>
-                                <option value="2">17:00 - 21:59</option>
-                                <option value="2">22:00 - 6:59</option>
-
-                            </select>
-                        </label>
+                        <div class="movie__select">
+                            <div class="movie__select-header">
+                                <div class="movie__select-header-content" id="movieSelectHeaderForTime">
+                                    <svg class="movie__svg-icon" xmlns="http://www.w3.org/2000/svg" width="30"
+                                         height="30" viewBox="0 0 30 30"
+                                         fill="none">
+                                        <path fill-rule="evenodd" clip-rule="evenodd"
+                                              d="M16.2958 15.4995V6.30986H13.7042V16.1344L13.842 16.4099L18.8394 21.1014L20.6401 19.5408L16.2958 15.4995Z"
+                                              fill="white"/>
+                                        <path fill-rule="evenodd" clip-rule="evenodd"
+                                              d="M15 0C6.70022 0 0 6.70022 0 15C0 23.2998 6.70022 30 15 30C23.2998 30 30 23.2998 30 15C30 6.79973 23.3007 0 15 0ZM15 27.8028C8.01913 27.8028 2.29577 22.0815 2.29577 15C2.29577 8.01809 8.01809 2.29577 15 2.29577C21.9819 2.29577 27.7042 8.01809 27.7042 15C27.7042 22.0815 21.9809 27.8028 15 27.8028Z"
+                                              fill="white"/>
+                                    </svg>
+                                    <div class="movie__select-time-name">
+                                        {{ __('Все сеансы') }}
+                                    </div>
+                                    <svg class="movie__svg-arrow" id="svgIconRoundArrowTime" viewBox="0 0 22 22"
+                                         width="100%" height="100%">
+                                        <circle fill="none" stroke="currentColor" stroke-width="2"
+                                                vector-effect="non-scaling-stroke" cx="11" cy="11" r="10"></circle>
+                                        <path fill="none" stroke="currentColor" stroke-width="2"
+                                              vector-effect="non-scaling-stroke" d="M6,9 L11,14 L16,9"></path>
+                                    </svg>
+                                </div>
+                            </div>
+                            <div class="movie__select-body movie__hidden" id="movieSelectBodyForTime">
+                                <div class="movie__select-time-options movie__time-selected">
+                                    <div class="movie__select-time-options-name">
+                                        {{ __('Все сеансы') }}
+                                    </div>
+                                </div>
+                                <div class="movie__select-time-options">
+                                    <div class="movie__select-time-options-name">7:00 - 11:59</div>
+                                </div>
+                                <div class="movie__select-time-options">
+                                    <div class="movie__select-time-options-name">12:00 - 16:59</div>
+                                </div>
+                                <div class="movie__select-time-options">
+                                    <div class="movie__select-time-options-name">17:00 - 21:59</div>
+                                </div>
+                                <div class="movie__select-time-options">
+                                    <div class="movie__select-time-options-name">22:00 - 6:59</div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-
                 </div>
-                <div class="movie__body-content"></div>
+                <div class="movie__body-content">
+                    <div class="movie__body-left-column">
+                        <div class="movie__left-column-movie">
+                            <div class="movie__left-column-movie-poster">
+                                @if ($media = optional($movie->poster))
+                                    <img src="{{ asset($media->path) }}" alt="{{ $movie->name }}">
+                                @endif
+                            </div>
+                            <div class="movie__left-column-movie-options">
+                                <h1 class="movie__left-column-movie-name">
+                                    {{ $movie->name }}
+                                </h1>
+                                <span class="movie__left-column-movie-description">
+                                    {{ $movie->genres()->first()->name }} /
+                                    {{ $movie->age_limit }} /
+                                    {{ $movie->session_duration }}
+                                </span>
+                            </div>
+                        </div>
+
+                        @forelse($theaters as $theatre)
+                            <div class="movie__left-column-theatre">
+                                <div class="movie__left-column-theatre-wrapper">
+                                    <div class="movie__left-column-theatre-options">
+                                        <div class="movie__theatre-options-wrapper">
+                                            <h4 class="movie__theatre-options-name">
+                                                {{ $theatre->name }}
+                                            </h4>
+                                            <span class="movie__theatre-options-address">
+                                                {{ $theatre->address }}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="movie__right-column-halls">
+                                    @forelse($halls = $theatre->halls as $hall)
+                                        @forelse($screenings = $hall->screenings as $screening)
+                                            <div class="movie__hall">
+                                                <div class="movie__hall-wrapper">
+                                                    <div class="movie__screening-time">
+                                                        {{ $screening->start_at->format('H:i') }}
+                                                    </div>
+                                                    <div class="movie__hall-options">
+                                                        <div class="movie__hall-name">
+                                                            {{ $hall->name }}
+                                                        </div>
+                                                        <div class="movie__hall-load"
+                                                             style="width: {{
+                                                                ($screening->bookings->count() > 0)
+                                                                ? (($screening->bookings->count() / $hall->seats->count()) * 100)
+                                                                : 0
+                                                             }}%;">
+
+                                                         </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        @empty
+
+                                        @endforelse
+
+                                    @empty
+
+                                    @endforelse
+
+                                </div>
+                            </div>
+                        @empty
+
+                        @endforelse
+
+                    </div>
+                    <div class="movie__body-right-column">
+                        <div class="movie__right-column-wrapper">
+                            <div class="movie__right-column-movie-frame">
+                                @if ($media = optional($movie->frames))
+                                    <img src="{{ asset($media->first()->path) }}" alt="{{ $movie->name }}">
+                                @endif
+                            </div>
+                            <div class="movie__right-column-movie-name">
+                                {{ $movie->name }}
+                            </div>
+                            <div class="movie__right-column-movie-description">
+                                {{ $movie->description }}
+                            </div>
+                            <div class="movie__right-column-movie-link">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>

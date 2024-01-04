@@ -63,9 +63,11 @@
 
     &__select-header {
         color: #bdbaba;
-        display: flex;
 
         .movie__svg-icon {
+            width: 30px;
+            height: 30px;
+
             path {
                 fill: #bdbaba;
             }
@@ -106,7 +108,7 @@
         justify-content: space-between;
     }
 
-    &__select-theatre-options {
+    &__select-theatre-options, &__select-date-options, &__select-time-options {
         display: flex;
         flex-direction: column;
         gap: 10px;
@@ -135,7 +137,7 @@
         }
     }
 
-    &__theatre-selected {
+    &__theatre-selected, &__date-selected, &__time-selected {
         padding-left: 50px;
         transition: 250ms ease-in-out;
         justify-content: center;
@@ -168,5 +170,161 @@
         &:hover {
             pointer-events: none;
         }
+    }
+
+    &__body-content {
+        display: flex;
+        margin: 45px 0;
+    }
+
+    &__left-column-movie-description {
+        margin: 15px 0;
+        color: rgba(255, 255, 255, 0.35);
+    }
+
+    &__left-column-movie-name {
+        text-size-adjust: 100%;
+        font: 700 3.125em / 60px Ubuntu, Roboto, Arial, Helvetica, sans-serif;
+        margin: 0;
+        color: rgba(255, 255, 255, 0.8);
+    }
+
+    &__left-column-movie-options {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 40px;
+    }
+
+    &__left-column-movie-poster {
+        margin-right: 30px;
+
+        img {
+            width: 120px;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+    }
+
+    &__right-column-movie-frame {
+
+        img {
+            width: 270px;
+            height: 150px;
+        }
+    }
+
+    &__left-column-movie {
+        display: flex;
+        margin-bottom: 40px;
+    }
+
+    &__body-right-column {
+        padding-left: 55px;
+        flex: 0 0 auto;
+        width: 29%;
+        max-width: 29%;
+        min-width: 300px;
+    }
+
+
+    &__right-column-movie-description {
+        margin: 10px 0;
+        color: rgba(255, 255, 255, 0.8);
+        font-size: 16px;
+    }
+
+    &__body-left-column {
+        flex: 1 1 auto;
+    }
+
+    &__left-column-theatre {
+        border-top: 5px solid rgba(255, 255, 255, 0.15);
+        //border-bottom: 5px solid rgba(255, 255, 255, 0.15);
+        color: rgba(255, 255, 255, 0.8);
+        display: flex;
+    }
+
+    &__left-column-theatre-wrapper {
+        padding: 35px 0;
+    }
+
+    &__left-column-theatre-options {
+        display: flex;
+        width: 190px;
+        padding-right: 40px;
+        font-size: 0;
+    }
+
+    &__theatre-options-name {
+        line-height: 1.4em !important;
+    }
+
+    &__theatre-options-address {
+        color: rgba(255, 255, 255, 0.35);
+        font-size: 14px;
+        line-height: 24px;
+        margin: 10px 0;
+    }
+
+    &__hall {
+        margin: 0 10px;
+    }
+
+    &__hall-wrapper {
+        position: relative;
+        width: 100%;
+        min-height: 144px;
+        margin: 20px 0 ;
+        padding: 20px;
+        cursor: pointer;
+        user-select: none;
+        border: 2px solid rgba(255, 255, 255, 0.15);
+        border-radius: 22px;
+        text-align: center;
+        transition: all 0.2s ease 0s;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    &__hall-load {
+        height: 10px;
+        width: 50%;
+        background: rgb(63, 182, 24);
+
+        &:before {
+            position: absolute;
+            content: "";
+            background: rgba(255, 255, 255, 0.15);
+            height: 10px;
+            width: 118px;
+            bottom: 20px;
+            left: 20px;
+        }
+    }
+
+    @keyframes loadingAnimation {
+        0% {
+            width: 0;
+        }
+        50% {
+            width: 50%;
+        }
+        100% {
+            width: 100%;
+        }
+    }
+
+    &__right-column-halls {
+        width: 100%;
+        display: grid;
+        grid-template-columns: repeat(4, 25%);
+    }
+
+    &__hall-options {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
     }
 }

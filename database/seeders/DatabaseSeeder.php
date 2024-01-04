@@ -26,7 +26,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         User::factory(100)->create();
-        Theatre::factory(rand(2, 5))->create();
+        Theatre::factory(rand(3, 8))->create();
         Genre::factory(20)->create();
         Movie::factory(30)->create();
 
@@ -34,6 +34,6 @@ class DatabaseSeeder extends Seeder
             ScreeningSeeder::class,
         ]);
 
-        Booking::factory(10)->create();
+        Booking::factory(700)->create();
     }
 }

@@ -61,7 +61,7 @@ class TheatreFactory extends Factory
                 ->create(['theatre_id' => $theatre->id]);
 
             Hall::factory()
-                ->count(rand(1, 5))
+                ->count(rand(3, 8))
                 ->create(['theatre_id' => $theatre->id]);
 
             for ($i = 0; $i < $mediaCount; $i++) {
