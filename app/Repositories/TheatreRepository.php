@@ -4,11 +4,14 @@ namespace App\Repositories;
 
 use App\DTO\Theatres\CreateTheatreDTO;
 use App\DTO\Theatres\UpdateTheatreDTO;
+use App\Models\Movie;
 use App\Models\Theatre;
 use App\Models\User;
 use App\Repositories\Interfaces\TheatreRepositoryInterface;
+use Carbon\Carbon;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class TheatreRepository implements TheatreRepositoryInterface
 {
@@ -100,5 +103,34 @@ class TheatreRepository implements TheatreRepositoryInterface
         ]);
 
         return $theatre;
+    }
+
+    /**
+     *  Receives and returns a paginated list of theaters with detailed information about films and reserved seats
+     *  in the halls, filtered according to the parameters passed in the FilterTheatreDTO object.
+     *
+     * @param Movie $movie
+     * @param int|null $theatreId
+     * @param Carbon $date
+     * @param array|null $relations
+     * @return LengthAwarePaginator
+     */
+    public function getTheatersWithMovieInfo(
+        Movie  $movie,
+        Carbon $date,
+        ?int   $theatreId = null,
+        ?array $relations = [],
+    ): LengthAwarePaginator
+    {
+        return Theatre::with($relations)
+            ->when($theatreId, fn(Builder $builder) =>
+                $builder->where('id', $theatreId))
+            ->WithWhereHas('halls.screenings', function (Builder|HasMany $builder) use ($movie, $date) {
+                $builder->where('movie_id', $movie->id)
+                    ->whereDate('start_at', '=', $date->toDateString())
+                    ->whereTime('start_at', '>=', $date->toTimeString())
+                    ->orderBy('start_at');
+            })
+            ->paginate(config('app.pagination_limit'));
     }
 }

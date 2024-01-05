@@ -4,6 +4,7 @@ use App\Enums\RolesUsersEnum;
 use App\Http\Controllers\Admin\MovieController;
 use App\Http\Controllers\Admin\ScreeningController;
 use App\Http\Controllers\Admin\SeatController;
+use App\Http\Controllers\Public\HomeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,6 +17,10 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+// Public routes
+Route::prefix('afisha')->group(function () {
+    Route::get('/{movie:slug}/get-screenings', [HomeController::class, 'getScreenings'])->name('user.show.screenings');
+});
 
 // Admin-panel routes
 Route::prefix('admin/')

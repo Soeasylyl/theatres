@@ -3,8 +3,8 @@
 namespace App\Services;
 
 use App\DTO\Theatres\CreateTheatreDTO;
-use App\DTO\Theatres\DeleteTheatreDTO;
 use App\DTO\Theatres\EditTheatreDTO;
+use App\DTO\Theatres\FilterTheatreDTO;
 use App\DTO\Theatres\SearchTheatreDTO;
 use App\DTO\Theatres\UpdateTheatreDTO;
 use App\Enums\RolesUsersEnum;
@@ -161,5 +161,25 @@ class TheatreService
 
             throw $e;
         }
+    }
+
+    /**
+     *  Receives and returns paged lists of movie theaters with filtered movie information
+     *  according to the parameters passed in the FilterTheatreDTO object.
+     *
+     * @param FilterTheatreDTO $dto
+     * @return LengthAwarePaginator
+     */
+    public function getFilteredTheatersWithPaginateList(FilterTheatreDTO $dto): LengthAwarePaginator
+    {
+        return $this->theatreRepository->getTheatersWithMovieInfo(
+            movie: $dto->getMovie(),
+            date: $dto->getDate(),
+            theatreId: $dto->getTheatreId(),
+            relations: [
+                'halls.seats',
+                'halls.screenings.bookings',
+            ]
+        );
     }
 }

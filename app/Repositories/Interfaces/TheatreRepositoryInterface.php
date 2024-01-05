@@ -4,8 +4,10 @@ namespace App\Repositories\Interfaces;
 
 use App\DTO\Theatres\CreateTheatreDTO;
 use App\DTO\Theatres\UpdateTheatreDTO;
+use App\Models\Movie;
 use App\Models\Theatre;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 interface TheatreRepositoryInterface
@@ -62,4 +64,21 @@ interface TheatreRepositoryInterface
      * @return Theatre
      */
     public function updateTheatreInfo(Theatre $theatre, UpdateTheatreDTO $dto): Theatre;
+
+    /**
+     *  Receives and returns a paginated list of theaters with detailed information about films and reserved seats
+     *  in the halls, filtered according to the parameters passed in the FilterTheatreDTO object.
+     *
+     * @param Movie $movie
+     * @param int|null $theatreId
+     * @param Carbon $date
+     * @param array|null $relations
+     * @return LengthAwarePaginator
+     */
+    public function getTheatersWithMovieInfo(
+        Movie  $movie,
+        Carbon $date,
+        ?int   $theatreId = null,
+        ?array $relations = [],
+    ): LengthAwarePaginator;
 }

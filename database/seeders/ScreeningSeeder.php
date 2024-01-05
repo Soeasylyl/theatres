@@ -22,12 +22,14 @@ class ScreeningSeeder extends Seeder
 
         foreach ($movies as $movie) {
             foreach ($halls as $hall) {
-                Screening::create([
-                    'movie_id' => $movie->id,
-                    'hall_id' => $hall->id,
-                    'price' => fake()->randomFloat(2, 10, 20),
-                    'start_at' => fake()->dateTimeBetween('-1 years','+1 years'),
-                ]);
+                for ($i = 0; $i < 10; $i++) {
+                    Screening::create([
+                        'movie_id' => $movie->id,
+                        'hall_id' => $hall->id,
+                        'price' => fake()->randomFloat(2, 10, 20),
+                        'start_at' => fake()->dateTimeBetween('-10 days', '+10 days'),
+                    ]);
+                }
             }
         }
     }

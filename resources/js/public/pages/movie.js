@@ -15,6 +15,8 @@ class PublicMovie {
         this.movieSvgArrowForTime = document.querySelector('#svgIconRoundArrowTime');
         this.movieTimeName = document.querySelector('.movie__select-time-name');
 
+        this.timeZoneInput = document.querySelector('.movie__timezone-input');
+
         this.init();
     }
 
@@ -30,6 +32,8 @@ class PublicMovie {
 
         this.openCloseTimeSelect();
         this.selectTimeOption();
+
+        this.setTimeZone();
     }
 
     openCloseTheatresSelect() {
@@ -44,13 +48,33 @@ class PublicMovie {
 
         theatreOptions?.forEach((option) => {
             option.addEventListener('click', (event) => {
-                theatreOptions?.forEach((opt) => opt.classList.remove('movie__theatre-selected'));
-                option?.classList.add('movie__theatre-selected');
 
+                theatreOptions?.forEach((opt) => opt.classList.remove('movie__theatre-selected'));
+
+                option?.classList.add('movie__theatre-selected');
                 const theatreNameElement = option.querySelector('.movie__select-theatre-options-name');
                 this.movieTheatreName.textContent = theatreNameElement ? theatreNameElement.textContent.trim() : '';
+
+                this.removeTheatreSelect();
+
+                this.filteredScreeningsAjax();
             });
         });
+    }
+
+    removeTheatreSelect() {
+        this.movieSelectBodyForTheatre?.classList.add('movie__hidden');
+        this.movieSvgArrowForTheatre?.classList.remove('movie__svg-rotate');
+    }
+
+    removeDateSelect() {
+        this.movieSelectBodyForDate?.classList.add('movie__hidden');
+        this.movieSvgArrowForDate?.classList.remove('movie__svg-rotate');
+    }
+
+    removeTimeSelect() {
+        this.movieSelectBodyForTime?.classList.add('movie__hidden');
+        this.movieSvgArrowForTime?.classList.remove('movie__svg-rotate');
     }
 
     closeSelectMenuOnOutsideClick() {
@@ -63,18 +87,15 @@ class PublicMovie {
                 || this.movieSelectBodyForTime?.contains(event.target);
 
             if (!isClickInsideTheatreSelect) {
-                this.movieSelectBodyForTheatre?.classList.add('movie__hidden');
-                this.movieSvgArrowForTheatre?.classList.remove('movie__svg-rotate');
+                this.removeTheatreSelect();
             }
 
             if (!isClickInsideDateSelect) {
-                this.movieSelectBodyForDate?.classList.add('movie__hidden');
-                this.movieSvgArrowForDate?.classList.remove('movie__svg-rotate');
+                this.removeDateSelect();
             }
 
             if (!isClickInsideTimeSelect) {
-                this.movieSelectBodyForTime?.classList.add('movie__hidden');
-                this.movieSvgArrowForTime?.classList.remove('movie__svg-rotate');
+                this.removeTimeSelect();
             }
         });
     }
@@ -87,36 +108,41 @@ class PublicMovie {
     }
 
     displayCurrentDate() {
-        const currentDate = new Date();
-        const options = {day: 'numeric', month: 'long'};
-        const formattedDate = currentDate.toLocaleDateString('ru-RU', options);
+        if (this.movieDateName) {
+            const currentDate = new Date();
+            const options = {day: 'numeric', month: 'long'};
+            const formattedDate = currentDate.toLocaleDateString('ru-RU', options);
 
-        this.movieDateName.textContent = `Сегодня, ${formattedDate}`;
+            this.movieDateName.textContent = `Сегодня, ${formattedDate}`;
+        }
     }
 
     displayNextSevenDays() {
-        const options = {day: 'numeric', month: 'long'};
-        const dateOptions = {weekday: 'long', day: 'numeric', month: 'long'};
-        const today = new Date();
+        if (this.movieSelectBodyForDate) {
+            const options = {day: 'numeric', month: 'long'};
+            const dateOptions = {weekday: 'long', day: 'numeric', month: 'long'};
+            const today = new Date();
 
-        for (let i = 0; i < 7; i++) {
-            const currentDate = new Date(today);
-            currentDate.setDate(today.getDate() + i);
-            const formattedDate = currentDate.toLocaleDateString('ru-RU', i === 0 ? options : dateOptions);
+            for (let i = 0; i < 7; i++) {
+                const currentDate = new Date(today);
+                currentDate.setDate(today.getDate() + i);
+                const formattedDate = currentDate.toLocaleDateString('ru-RU', i === 0 ? options : dateOptions);
 
-            const dateOption = document.createElement('div');
-            dateOption.classList.add('movie__select-date-options');
+                const dateOption = document.createElement('div');
+                dateOption.classList.add('movie__select-date-options');
+                dateOption.setAttribute('data-date', currentDate.toISOString().split('T')[0]);
 
-            if (i === 0) {
-                dateOption.classList.add('movie__date-selected');
+                if (i === 0) {
+                    dateOption.classList.add('movie__date-selected');
+                }
+
+                const dateName = document.createElement('div');
+                dateName.classList.add('movie__select-date-options-name');
+                dateName.textContent = i === 0 ? `Сегодня, ${formattedDate}` : formattedDate;
+
+                dateOption.appendChild(dateName);
+                this.movieSelectBodyForDate.appendChild(dateOption);
             }
-
-            const dateName = document.createElement('div');
-            dateName.classList.add('movie__select-date-options-name');
-            dateName.textContent = i === 0 ? `Сегодня, ${formattedDate}` : formattedDate;
-
-            dateOption.appendChild(dateName);
-            this.movieSelectBodyForDate.appendChild(dateOption);
         }
     }
 
@@ -130,6 +156,9 @@ class PublicMovie {
 
                 const dateNameElement = option.querySelector('.movie__select-date-options-name');
                 this.movieDateName.textContent = dateNameElement ? dateNameElement.textContent.trim() : '';
+
+                this.removeDateSelect();
+                this.filteredScreeningsAjax();
             });
         });
     }
@@ -151,8 +180,78 @@ class PublicMovie {
 
                 const timeNameElement = option.querySelector('.movie__select-time-options-name');
                 this.movieTimeName.textContent = timeNameElement ? timeNameElement.textContent.trim() : '';
+
+                this.removeTimeSelect();
             });
         });
+    }
+
+    filteredScreeningsAjax() {
+        const url = document.querySelector('.movie__header').getAttribute('data-url');
+        const htmlContainer = document.querySelector('.movie__left-column-theatre-template-wrapper');
+        const theatreId = document.querySelector('.movie__theatre-selected').dataset.theatreId;
+        const date = document.querySelector('.movie__date-selected').dataset.date;
+        const timeFrame = document.querySelector('.movie__time-selected').dataset.timeFrame;
+
+        fetch(`
+                    ${url}?theatre_id=${theatreId}
+                    &date=${date}
+                    &timeZone=${this.timeZoneInput.value}
+                    &timeFrame=${timeFrame}
+                     `, {
+            method: 'get',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+        })
+            .then((response) => {
+
+                return response.json();
+            })
+            .then((resp) => {
+                htmlContainer.innerHTML = resp.htmlClients;
+                const cards = document.querySelectorAll('.movie__left-column-theatre');
+                cards.forEach((card) => {
+                    card.classList.add('movie__loading');
+                })
+                // this.setTimeZone();
+
+                setTimeout(function () {
+                    cards.forEach((card) => {
+                        card.classList.remove('movie__loading');
+                    })
+                }, 100);
+            })
+            .catch(error => {
+                console.log('Error', error);
+            })
+    }
+
+    setTimeZone() {
+        const screeningTime = document.querySelectorAll('.movie__screening-time');
+        const clientTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+        if (screeningTime) {
+            this.timeZoneInput.value = clientTimezone;
+
+            screeningTime?.forEach(function (element) {
+                const utcTimeString = element.textContent;
+
+                // Создаем объект Date с явным указанием, что время в UTC
+                const utcTime = new Date(utcTimeString + ' UTC');
+
+                const clientTime = new Date(utcTime.toLocaleString(
+                    'en-US', {timeZone: clientTimezone}
+                ));
+
+                element.textContent = clientTime.toLocaleString('en-US', {
+                    timeZone: clientTimezone,
+                    hour12: false,
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+            });
+        }
     }
 
 }
