@@ -169,12 +169,14 @@ class TheatreService
      *
      * @param FilterTheatreDTO $dto
      * @return LengthAwarePaginator
+     * @throws \Exception
      */
     public function getFilteredTheatersWithPaginateList(FilterTheatreDTO $dto): LengthAwarePaginator
     {
         return $this->theatreRepository->getTheatersWithMovieInfo(
             movie: $dto->getMovie(),
-            date: $dto->getDate(),
+            startTime: $dto->getStartTime(),
+            endTime: $dto->getEndTime(),
             theatreId: $dto->getTheatreId(),
             relations: [
                 'halls.seats',

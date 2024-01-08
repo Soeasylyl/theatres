@@ -4,6 +4,7 @@ namespace App\DTO\Theatres;
 
 use App\Models\Movie;
 use Carbon\Carbon;
+use DateTimeZone;
 
 class FilterTheatreDTO
 {
@@ -12,14 +13,26 @@ class FilterTheatreDTO
      * @param int|null $theatreId
      * @param string|null $date
      * @param string|null $timeZone
+     * @param string|null $startTime
+     * @param string|null $endTime
      */
     public function __construct(
         private readonly Movie   $movie,
         private readonly ?int    $theatreId = null,
         private readonly ?string $date = null,
-        private readonly ?string $timeZone = null,
+        private readonly ?string $timeZone = 'UTC',
+        private readonly ?string $startTime = null,
+        private readonly ?string $endTime = null,
     )
     {
+    }
+
+    /**
+     * @return Movie
+     */
+    public function getMovie(): Movie
+    {
+        return $this->movie;
     }
 
     /**
@@ -31,36 +44,93 @@ class FilterTheatreDTO
     }
 
     /**
-     *  Get the formatted date based on the provided timezone.
+     *  Retrieves the start time of the specified event,
+     *  considering default values if not set.
      *
-     *  If no timezone is specified, return the original date string.
-     *  If a timezone is specified, parse the date, adjust to the server's timezone,
-     *  and then shift to the specified timezone before returning the formatted date string.
+     * @return Carbon
+     * @throws \Exception
+     */
+    public function getStartTime(): Carbon
+    {
+        $startTime = $this->startTime === null
+            ? now()->startOfDay()
+            : $this->createDateTime($this->date, $this->startTime);
+
+        return $startTime->lt($this->getDate())
+            ? $startTime
+            : $this->getDate()->setTimeFrom($startTime);
+    }
+
+    /**
+     *  Retrieves the end time of the specified event,
+     *  handling scenarios where end time is before start time.
+     *
+     * @return Carbon
+     * @throws \Exception
+     */
+    public function getEndTime(): Carbon
+    {
+        $endTime = $this->endTime === null
+            ? now()->endOfDay()
+            : $this->createDateTime($this->date, $this->endTime);
+
+        if (
+            (Carbon::parse($this->endTime)->second(0))
+            < (Carbon::parse($this->startTime)->second(0))
+        ) {
+             return $endTime->addDay();
+        }
+
+        return $endTime->lt($this->getDate())
+            ? $endTime
+            : $this->getDate()->setTimeFrom($endTime);
+    }
+
+    /**
+     *  Retrieves the date of the event, defaulting to the current date if not set.
      *
      * @return Carbon|null
+     * @throws \Exception
      */
     public function getDate(): ?Carbon
     {
         return $this->date === null || $this->date === now()->toDateString()
-            ? Carbon::parse(now())
-            : Carbon::parse($this->date)
-                ->setTimezone(now()->timezone->getName())
-                ->shiftTimezone($this->timeZone);
+            ? now()->second(0)
+            : $this->createDateTime($this->date);
     }
 
     /**
-     * @return string|null
+     *  Creates a Carbon instance based on the provided date and optional time,
+     *  considering the configured time zone.
+     *
+     * @param string|null $date
+     * @param string|null $time
+     * @return Carbon
+     * @throws \Exception
      */
-    public function getTimeZone(): ?string
+    private function createDateTime(?string $date, ?string $time = null): Carbon
     {
-        return $this->timeZone;
+        $dateTime = Carbon::parse($date, $this->getTimeZone());
+
+        if ($time !== null) {
+            $timeParts = explode(':', $time);
+            $dateTime->setTime(
+                hour: $timeParts[0],
+                minute: $timeParts[1]
+            );
+        }
+
+        return $dateTime;
     }
 
     /**
-     * @return Movie
+     * Returns a DateTimeZone object representing the specified time zone.
+     *
+     * @return DateTimeZone
+     * @throws \Exception
      */
-    public function getMovie(): Movie
+    private function getTimeZone(): DateTimeZone
     {
-        return $this->movie;
+        return new DateTimeZone($this->timeZone);
     }
 }

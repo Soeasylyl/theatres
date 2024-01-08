@@ -182,6 +182,8 @@ class PublicMovie {
                 this.movieTimeName.textContent = timeNameElement ? timeNameElement.textContent.trim() : '';
 
                 this.removeTimeSelect();
+
+                this.filteredScreeningsAjax();
             });
         });
     }
@@ -192,12 +194,16 @@ class PublicMovie {
         const theatreId = document.querySelector('.movie__theatre-selected').dataset.theatreId;
         const date = document.querySelector('.movie__date-selected').dataset.date;
         const timeFrame = document.querySelector('.movie__time-selected').dataset.timeFrame;
+        const startTime = document.querySelector('.movie__time-selected').dataset.startTime;
+        const endTime = document.querySelector('.movie__time-selected').dataset.endTime;
 
         fetch(`
                     ${url}?theatre_id=${theatreId}
                     &date=${date}
                     &timeZone=${this.timeZoneInput.value}
                     &timeFrame=${timeFrame}
+                    &startTime=${startTime}
+                    &endTime=${endTime}
                      `, {
             method: 'get',
             headers: {

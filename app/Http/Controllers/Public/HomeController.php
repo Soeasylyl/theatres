@@ -10,6 +10,7 @@ use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class HomeController extends BasePublicController
@@ -38,6 +39,7 @@ class HomeController extends BasePublicController
      * @param Movie $movie
      * @param TheatreService $theatreService
      * @return Application|Factory|View|\Illuminate\Foundation\Application
+     * @throws \Exception
      */
     public function show(
         Movie          $movie,
@@ -56,18 +58,26 @@ class HomeController extends BasePublicController
         ));
     }
 
+    /**
+     * @param Request $request
+     * @param Movie $movie
+     * @param TheatreService $theatreService
+     * @return JsonResponse
+     * @throws \Exception
+     */
     public function getScreenings(
         Request        $request,
         Movie          $movie,
         TheatreService $theatreService,
     )
     {
-        dd($request->all());
         $filterTheatreDto = new FilterTheatreDTO(
             movie: $movie,
             theatreId: $request->input('theatre_id'),
             date: $request->input('date', now()),
             timeZone: $request->input('timeZone'),
+            startTime: $request->input('startTime'),
+            endTime: $request->input('endTime'),
         );
 
         $theatres = $theatreService->getFilteredTheatersWithPaginateList($filterTheatreDto);

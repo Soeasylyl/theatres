@@ -70,14 +70,16 @@ interface TheatreRepositoryInterface
      *  in the halls, filtered according to the parameters passed in the FilterTheatreDTO object.
      *
      * @param Movie $movie
+     * @param Carbon $startTime
+     * @param Carbon $endTime
      * @param int|null $theatreId
-     * @param Carbon $date
      * @param array|null $relations
      * @return LengthAwarePaginator
      */
     public function getTheatersWithMovieInfo(
         Movie  $movie,
-        Carbon $date,
+        Carbon $startTime,
+        Carbon $endTime,
         ?int   $theatreId = null,
         ?array $relations = [],
     ): LengthAwarePaginator;

@@ -110,14 +110,16 @@ class TheatreRepository implements TheatreRepositoryInterface
      *  in the halls, filtered according to the parameters passed in the FilterTheatreDTO object.
      *
      * @param Movie $movie
+     * @param Carbon $startTime
+     * @param Carbon $endTime
      * @param int|null $theatreId
-     * @param Carbon $date
      * @param array|null $relations
      * @return LengthAwarePaginator
      */
     public function getTheatersWithMovieInfo(
         Movie  $movie,
-        Carbon $date,
+        Carbon $startTime,
+        Carbon $endTime,
         ?int   $theatreId = null,
         ?array $relations = [],
     ): LengthAwarePaginator
@@ -125,12 +127,14 @@ class TheatreRepository implements TheatreRepositoryInterface
         return Theatre::with($relations)
             ->when($theatreId, fn(Builder $builder) =>
                 $builder->where('id', $theatreId))
-            ->WithWhereHas('halls.screenings', function (Builder|HasMany $builder) use ($movie, $date) {
-                $builder->where('movie_id', $movie->id)
-                    ->whereDate('start_at', '=', $date->toDateString())
-                    ->whereTime('start_at', '>=', $date->toTimeString())
-                    ->orderBy('start_at');
-            })
+            ->WithWhereHas(
+                'halls.screenings',
+                function (Builder|HasMany $builder) use ($endTime, $startTime, $movie,) {
+                    $builder->where('movie_id', $movie->id)
+                        ->whereBetween('start_at', [$startTime, $endTime])
+                        ->orderBy('start_at');
+                }
+            )
             ->paginate(config('app.pagination_limit'));
     }
 }
