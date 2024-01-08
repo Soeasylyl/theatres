@@ -62,6 +62,7 @@ class HomeController extends BasePublicController
         TheatreService $theatreService,
     )
     {
+        dd($request->all());
         $filterTheatreDto = new FilterTheatreDTO(
             movie: $movie,
             theatreId: $request->input('theatre_id'),

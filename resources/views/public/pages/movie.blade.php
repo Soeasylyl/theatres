@@ -133,22 +133,40 @@
                                 </div>
                             </div>
                             <div class="movie__select-body movie__hidden" id="movieSelectBodyForTime">
-                                <div class="movie__select-time-options movie__time-selected">
+                                <div class="movie__select-time-options movie__time-selected"
+                                     data-start-time="7:00"
+                                     data-end-time="11:59">
                                     <div class="movie__select-time-options-name">
                                         {{ __('Все сеансы') }}
                                     </div>
                                 </div>
-                                <div class="movie__select-time-options" >
-                                    <div class="movie__select-time-options-name">7:00 - 11:59</div>
+                                <div class="movie__select-time-options"
+                                     data-start-time="7:00"
+                                     data-end-time="11:59">
+                                    <div class="movie__select-time-options-name">
+                                         7:00 - 11:59
+                                    </div>
                                 </div>
-                                <div class="movie__select-time-options">
-                                    <div class="movie__select-time-options-name">12:00 - 16:59</div>
+                                <div class="movie__select-time-options"
+                                     data-start-time="12:00"
+                                     data-end-time="16:59">
+                                    <div class="movie__select-time-options-name">
+                                         12:00 - 16:59
                                 </div>
-                                <div class="movie__select-time-options">
-                                    <div class="movie__select-time-options-name">17:00 - 21:59</div>
                                 </div>
-                                <div class="movie__select-time-options">
-                                    <div class="movie__select-time-options-name">22:00 - 6:59</div>
+                                <div class="movie__select-time-options"
+                                     data-start-time="17:00"
+                                     data-end-tme="21:59">
+                                    <div class="movie__select-time-options-name">
+                                         17:00 - 21:59
+                                    </div>
+                                </div>
+                                <div class="movie__select-time-options"
+                                     data-start-time="22:00"
+                                     data-end-time="6:59">
+                                    <div class="movie__select-time-options-name">
+                                         22:00 - 6:59
+                                    </div>
                                 </div>
                             </div>
                         </div>
