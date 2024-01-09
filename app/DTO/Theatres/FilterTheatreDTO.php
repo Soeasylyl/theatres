@@ -20,7 +20,7 @@ class FilterTheatreDTO
         private readonly Movie   $movie,
         private readonly ?int    $theatreId = null,
         private readonly ?string $date = null,
-        private readonly ?string $timeZone = 'UTC',
+        private readonly ?string $timeZone = null,
         private readonly ?string $startTime = null,
         private readonly ?string $endTime = null,
     )
@@ -94,7 +94,7 @@ class FilterTheatreDTO
      */
     public function getDate(): ?Carbon
     {
-        return $this->date === null || $this->date === now()->toDateString()
+        return $this->date === null
             ? now()->second(0)
             : $this->createDateTime($this->date);
     }
@@ -126,11 +126,13 @@ class FilterTheatreDTO
     /**
      * Returns a DateTimeZone object representing the specified time zone.
      *
-     * @return DateTimeZone
+     * @return DateTimeZone|string
      * @throws \Exception
      */
-    private function getTimeZone(): DateTimeZone
+    private function getTimeZone(): DateTimeZone|string
     {
-        return new DateTimeZone($this->timeZone);
+        return $this->timeZone === null
+            ?   date_default_timezone_get()
+            :   new DateTimeZone($this->timeZone);
     }
 }

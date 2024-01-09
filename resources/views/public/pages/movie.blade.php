@@ -142,7 +142,7 @@
                                     </div>
                                 </div>
                                 <div class="movie__select-time-options"
-                                     data-start-time="7:00"
+                                     data-start-time="07:00"
                                      data-end-time="11:59"
                                 >
                                     <div class="movie__select-time-options-name">
@@ -167,7 +167,7 @@
                                 </div>
                                 <div class="movie__select-time-options"
                                      data-start-time="22:00"
-                                     data-end-time="6:59"
+                                     data-end-time="06:59"
                                 >
                                     <div class="movie__select-time-options-name">
                                          22:00 - 6:59

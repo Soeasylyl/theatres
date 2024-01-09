@@ -175,8 +175,8 @@ class TheatreService
     {
         return $this->theatreRepository->getTheatersWithMovieInfo(
             movie: $dto->getMovie(),
-            startTime: $dto->getStartTime(),
-            endTime: $dto->getEndTime(),
+            startTime: $dto->getStartTime()->setTimezone(date_default_timezone_get()),
+            endTime: $dto->getEndTime()->setTimezone(date_default_timezone_get()),
             theatreId: $dto->getTheatreId(),
             relations: [
                 'halls.seats',

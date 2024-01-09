@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Public;
 
 use App\DTO\Theatres\FilterTheatreDTO;
+use App\Http\Requests\Public\ajaxGetScreeningsRequest;
 use App\Models\Movie;
 use App\Services\MovieService;
 use App\Services\TheatreService;
@@ -11,7 +12,6 @@ use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 class HomeController extends BasePublicController
 {
@@ -59,16 +59,17 @@ class HomeController extends BasePublicController
     }
 
     /**
-     * @param Request $request
+     *  Retrieves and returns filtered lists of movie theaters with showings for the movie shown.
+     *
+     * @param ajaxGetScreeningsRequest $request
      * @param Movie $movie
      * @param TheatreService $theatreService
      * @return JsonResponse
-     * @throws \Exception
      */
     public function getScreenings(
-        Request        $request,
-        Movie          $movie,
-        TheatreService $theatreService,
+        ajaxGetScreeningsRequest $request,
+        Movie                    $movie,
+        TheatreService           $theatreService,
     )
     {
         $filterTheatreDto = new FilterTheatreDTO(
@@ -80,12 +81,18 @@ class HomeController extends BasePublicController
             endTime: $request->input('endTime'),
         );
 
-        $theatres = $theatreService->getFilteredTheatersWithPaginateList($filterTheatreDto);
+        try {
+            $theatres = $theatreService->getFilteredTheatersWithPaginateList($filterTheatreDto);
 
-        return response()->json([
-            'htmlClients' => view(
-                'public.partials.theatre_template',
-                compact('theatres'))->render(),
-        ]);
+            return response()->json([
+                'htmlClients' => view(
+                    'public.partials.theatre_template',
+                    compact('theatres'))->render(),
+            ]);
+        } catch (\Throwable $exception) {
+            return response()->json([
+                'error' => $exception->getMessage(),
+            ], 500);
+        }
     }
 }
