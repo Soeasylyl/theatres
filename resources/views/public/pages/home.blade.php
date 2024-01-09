@@ -14,7 +14,7 @@
                                     <div class="swiper-slide-item">
                                         <div class="h7">{{ $movie->name }}</div>
                                     </div>
-                                    <a href="{{ route('user.show.movie', $movie->slug) }}"
+                                    <a href="{{ route('public.show.movie', $movie->slug) }}"
                                        class="btn-by-ticket">{{ __('Купить билет') }}</a>
                                 </div>
                                 <div class="swiper-slide-img">
@@ -103,7 +103,7 @@
                                 @endforelse
                             </div>
                             <div>
-                                <a href="{{ route('user.show.movie', $movie->slug) }}"
+                                <a href="{{ route('public.show.movie', $movie->slug) }}"
                                    class="btn-by-ticket">{{ __('Купить билет') }}</a>
                             </div>
                         </div>
@@ -143,7 +143,7 @@
                                 @endforelse
                             </div>
                             <div>
-                                <a href="{{ route('user.show.movie', $movie->slug) }}"
+                                <a href="{{ route('public.show.movie', $movie->slug) }}"
                                    class="btn-by-ticket">{{ __('Купить билет') }}</a>
                             </div>
                         </div>

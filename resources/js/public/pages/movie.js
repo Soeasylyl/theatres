@@ -218,7 +218,8 @@ class PublicMovie {
                 cards.forEach((card) => {
                     card.classList.add('movie__loading');
                 })
-                // this.setTimeZone();
+
+               //TODO: Включить для корректного отображения времени // this.setTimeZone();
 
                 setTimeout(function () {
                     cards.forEach((card) => {

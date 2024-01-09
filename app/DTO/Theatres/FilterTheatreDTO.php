@@ -75,8 +75,8 @@ class FilterTheatreDTO
             : $this->createDateTime($this->date, $this->endTime);
 
         if (
-            (Carbon::parse($this->endTime)->second(0))
-            < (Carbon::parse($this->startTime)->second(0))
+            (Carbon::parse($this->endTime))
+            < (Carbon::parse($this->startTime))
         ) {
              return $endTime->addDay();
         }

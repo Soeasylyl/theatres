@@ -16,7 +16,9 @@
             @forelse($halls = $theatre->halls as $hall)
                 @forelse($screenings = $hall->screenings as $screening)
                     <div class="movie__hall">
-                        <div class="movie__hall-wrapper">
+                        <a href="{{ route('public.show.movie.booking', [$movie, $screening->id]) }}"
+                           class="movie__hall-wrapper"
+                        >
                             <div class="movie__screening-time">
                                 {{ $screening->start_at  }}
                             </div>
@@ -33,7 +35,7 @@
 
                                 </div>
                             </div>
-                        </div>
+                        </a>
                     </div>
                 @empty
 

@@ -28,7 +28,11 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [HomeController::class, 'index'])->name('public.pages.home');
 
 Route::prefix('afisha')->group(function () {
-    Route::get('/{movie:slug}', [HomeController::class, 'show'])->name('user.show.movie');
+    Route::prefix('/{movie:slug}')->group(function () {
+        Route::get('/', [HomeController::class, 'show'])->name('public.show.movie');
+        Route::get('/booking/{screening}', [HomeController::class, 'showHall'])
+            ->name('public.show.movie.booking');
+    });
 });
 
 // Authentication routes

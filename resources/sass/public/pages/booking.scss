@@ -1,0 +1,88 @@
+.booking {
+
+    &__hero {
+        display: flex;
+        //border-top: 1px solid rgba(255, 255, 255, 0.15);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+        padding: 20px 0;
+    }
+
+    &__poster {
+        position: relative;
+        flex: 0 0 auto;
+        width: 85px;
+        margin: -5px 0px;
+        align-self: center;
+
+        img {
+            width: 55px;
+            height: 80px;
+            border-radius: 5px;
+        }
+
+        &:after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            opacity: 0.2;
+            background: rgb(39, 39, 42);
+        }
+    }
+
+    &__description {
+        width: 100%;
+        gap: 10px;
+        color: white;
+        opacity: 0.8;
+
+        svg {
+            width: 24px;
+            height: 24px;
+            margin-right: 12px;
+
+            text {
+                opacity: 0.8;
+                color: white;
+            }
+
+            path {
+                fill: rgba(255, 255, 255, 0.35);
+            }
+        }
+    }
+
+    &__movie-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        vertical-align: top;
+        margin: 0;
+        font: 700 1em / 1.625em Ubuntu, Roboto, Arial, Helvetica, sans-serif;
+    }
+
+    &__movie-address-wrapper {
+        display: flex;
+    }
+
+    &__movie-name {
+        color: white;
+        opacity: 0.8;
+        text-size-adjust: 100%;
+        white-space: pre-line;
+        font: 700 2.25em / 42px Ubuntu, Roboto, Arial, Helvetica, sans-serif;
+        margin: 0;
+    }
+
+    &__movie-date-wrapper {
+        display: flex;
+    }
+
+    &__movie-date {
+        display: flex;
+    }
+
+
+    &__movie-date-time {
+
+    }
+}

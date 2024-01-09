@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Public;
 use App\DTO\Theatres\FilterTheatreDTO;
 use App\Http\Requests\Public\ajaxGetScreeningsRequest;
 use App\Models\Movie;
+use App\Models\Screening;
 use App\Services\MovieService;
 use App\Services\TheatreService;
 use Illuminate\Contracts\Foundation\Application;
@@ -12,6 +13,7 @@ use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Carbon;
 
 class HomeController extends BasePublicController
 {
@@ -87,12 +89,34 @@ class HomeController extends BasePublicController
             return response()->json([
                 'htmlClients' => view(
                     'public.partials.theatre_template',
-                    compact('theatres'))->render(),
+                    compact('theatres', 'movie'))->render(),
             ]);
         } catch (\Throwable $exception) {
             return response()->json([
                 'error' => $exception->getMessage(),
             ], 500);
         }
+    }
+
+    public function showHall(
+        Movie $movie,
+        int $screeningId,
+    )
+    {
+        $screening =  Screening::with('movie', 'bookings','hall.theatre')
+            ->findOrFail($screeningId);
+
+        //Дата начала и окончания фильма
+        $sessionStart = $screening->start_at;
+        $sessionDuration = Carbon::parse($screening->movie->session_duration);
+        $sessionEnd = $sessionStart->clone();
+        $sessionEnd->add($sessionDuration->hour, 'hours')->add($sessionDuration->minute, 'minutes');
+
+        return view('public.pages.booking', compact(
+            'movie',
+            'screening',
+            'sessionStart',
+            'sessionEnd',
+        ));
     }
 }

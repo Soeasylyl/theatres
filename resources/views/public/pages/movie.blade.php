@@ -11,7 +11,7 @@
                               vector-effect="non-scaling-stroke" d="M2.5,11 L12,1 M2.5,11 L12,21 M1.7,11 L27,11"></path>
                     </svg>
                 </a>
-                <div class="movie-header__name">{{ $movie->name }}</div>
+                <div class="movie__header-name">{{ $movie->name }}</div>
                 <div></div>
             </div>
             <div class="movie__body">

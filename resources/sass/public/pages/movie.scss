@@ -15,8 +15,9 @@
         box-shadow: rgba(255, 255, 255, 0.15) 0 1px 0 0;
     }
 
-    &__hader-name {
-        align-content: center;
+    &__header-name {
+        color: rgba(255, 255, 255, 0.35);
+        font: 700 1.125em / 1.75em Ubuntu, Roboto, Arial, Helvetica, sans-serif;
     }
 
     &__header-btn-back {
@@ -276,6 +277,8 @@
     }
 
     &__hall-wrapper {
+        color: white;
+        text-decoration: none;
         position: relative;
         width: 100%;
         min-height: 144px;
@@ -290,6 +293,11 @@
         display: flex;
         flex-direction: column;
         justify-content: space-between;
+
+        &:hover {
+            color: white;
+            border: 2px solid white;
+        }
     }
 
     &__hall-load {
