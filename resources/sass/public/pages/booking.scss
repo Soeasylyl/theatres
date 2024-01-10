@@ -124,6 +124,75 @@
         color: rgb(140, 134, 134);
     }
 
+    &__body-right-column {
+        margin: 0;
+        padding-left: 40px;
+        width: 37.5%;
+        position: relative;
+    }
+
+    &__right-column-content {
+        width: 100%;
+        max-width: 100%;
+        padding: 0;
+    }
+
+    &__right-column-seats-type-title {
+        margin: 25px 0;
+        text-size-adjust: 100%;
+        white-space: pre-line;
+        font: 700 1.47em / 30px Ubuntu, Roboto, Arial, Helvetica, sans-serif;
+        color: rgba(255, 255, 255, 0.8);
+    }
+
+    &__right-column-theatre-name {
+        color: rgba(255, 255, 255, 0.8);
+        line-height: 50px;
+        opacity: 0.5;
+    }
+
+    &__right-column-seat-type-item, &__right-column-seat-type {
+        border-top: 1px solid rgba(255, 255, 255, 0.15);
+
+
+    }
+    &__right-column-seat-type-item {
+        padding-top: 25px;
+
+        button {
+            width: 100%;
+            color: rgba(255, 255, 255, 0.35);
+            box-shadow: rgba(255, 255, 255, 0.35) 0 0 0 2px inset;
+            border-radius: 22px;
+            height: 44px;
+            padding: 9px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            background: none;
+            pointer-events: none;
+        }
+    }
+
+    &__right-column-seat-type {
+        display: flex;
+        flex-direction: column;
+        padding: 15px;
+    }
+
+    &__right-column-seat-type-title {
+        color: rgba(255, 255, 255, 0.8);
+        display: flex;
+        justify-content: space-between;
+    }
+
+    &__right-column-seat-type-description {
+        font-size: 14px;
+        line-height: 24px;
+        color: rgba(200, 199, 198, 0.8);
+    }
+
     &__active {
         display: block;
     }

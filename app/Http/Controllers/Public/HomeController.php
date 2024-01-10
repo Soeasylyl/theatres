@@ -107,7 +107,7 @@ class HomeController extends BasePublicController
     {
         $screening = $screeningRepository->getScreeningByIdOrFail(
             screeningId: $screeningId,
-            relations: ['movie', 'bookings','hall.theatre'],
+            relations: ['movie', 'bookings','hall.theatre.seatTypes'],
         );
 
         return view('public.pages.booking', compact(
