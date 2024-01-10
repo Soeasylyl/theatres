@@ -6,7 +6,7 @@ class HallMap {
 
         this.draggedElement = null;
         this.editingSVGElement = null;
-        this.resrveSeats = null;
+        this.bookingSeat = null;
 
         this.init();
     }
@@ -563,13 +563,24 @@ class HallMap {
 
     autoLoadMap() {
         const elementUrl = document.querySelector('[data-page-url]');
+        const bookingUrl = document.querySelector('[data-booking-url]');
 
         if (elementUrl) {
             const url = elementUrl.dataset.pageUrl;
-            const autoload = true;
-            this.addHallMap(autoload);
+            this.bookingSeat = false;
+
+            this.addHallMap();
             this.ajaxGetDataHallMap(url);
         }
+
+        if (bookingUrl) {
+            const url = bookingUrl.dataset.bookingUrl;
+            this.bookingSeat = true;
+            // const url = elementUrl.dataset.pageUrl;
+            this.addHallMap();
+            this.ajaxGetDataHallMap(url);
+        }
+
         this.seatsWrapperContainer && this.seatsWrapperContainer.classList.add('admin-halls__hidden');
     }
 
@@ -777,6 +788,7 @@ class HallMap {
                 return response.json();
             })
             .then((data) => {
+                console.log(data)
                 const seatEntries = Object.entries(data.dataSeats);
                 const eventType = 'edit-place';
                 for (const [rowKey, seats] of seatEntries) {
@@ -798,7 +810,7 @@ class HallMap {
             });
     }
 
-    addHallMap(autoload) {
+    addHallMap() {
         const isMapVisible = this.previewHallMapContainer.classList.contains('fade-in');
 
         if (!isMapVisible) {
@@ -814,8 +826,12 @@ class HallMap {
               </text>
             </svg>
         `;
+            if (this.bookingSeat === true) {
+                document.querySelector('.admin-halls__map').classList.add('booking__map');
+            } else {
+                this.addBorderToMap();
+            }
             this.findGElementInMap();
-            this.addBorderToMap();
 
             this.previewHallMapContainer && this.previewHallMapContainer.classList.add('fade-in');
             this.addHallMapButton && this.addHallMapButton.classList.add('admin-halls__hidden');

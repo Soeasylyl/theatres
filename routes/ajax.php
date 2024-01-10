@@ -4,6 +4,7 @@ use App\Enums\RolesUsersEnum;
 use App\Http\Controllers\Admin\MovieController;
 use App\Http\Controllers\Admin\ScreeningController;
 use App\Http\Controllers\Admin\SeatController;
+use App\Http\Controllers\Public\BookingController;
 use App\Http\Controllers\Public\HomeController;
 use Illuminate\Support\Facades\Route;
 
@@ -17,16 +18,24 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
 // Public routes
 Route::prefix('afisha')->group(function () {
-    Route::get('/{movie:slug}/get-screenings', [HomeController::class, 'getScreenings'])
-        ->name('public.show.screenings');
+    Route::prefix('/{movie:slug}')->group(function () {
+        Route::get('/get-screenings', [HomeController::class, 'getScreenings'])
+            ->name('public.show.screenings');
 
-    Route::prefix('/{movie:slug}/get-screenings-time/{screening}')->group(function () {
-        Route::get('/', [HomeController::class, 'getScreeningsTime'])
-            ->name('public.get.screenings.time');
+        Route::prefix('/{screening}/get-screenings-times')->group(function () {
+            Route::get('/', [HomeController::class, 'getScreeningsTime'])
+                ->name('public.get.screenings.time');
+        });
     });
 });
+
+Route::get(
+    uri: 'theatres/{theatre}/halls/{hall}/screenings/{screening}/booking-map',
+    action: [BookingController::class, 'generateBookingMap']
+)->name('generate-booking-map');
 
 // Admin-panel routes
 Route::prefix('admin/')

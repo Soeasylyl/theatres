@@ -124,6 +124,16 @@
         color: rgb(140, 134, 134);
     }
 
+    &__body-wrapper {
+        display: flex;
+        margin-top: 25px;
+    }
+
+    &__body-left-column {
+        width: 62.5%;
+        box-sizing: border-box;
+    }
+
     &__body-right-column {
         margin: 0;
         padding-left: 40px;
@@ -195,5 +205,17 @@
 
     &__active {
         display: block;
+    }
+
+    &__map {
+        width: 800px !important;
+
+        path {
+            fill: rgba(255, 255, 255, 0.8);
+        }
+
+        text {
+            color: rgba(255, 255, 255, 0.8);
+        }
     }
 }

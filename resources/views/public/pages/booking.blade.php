@@ -102,52 +102,72 @@
                         </p>
                     </div>
                 </div>
-                <div class="booking__body-left-column">
 
-                </div>
+                <div class="booking__body-wrapper">
+                    <div class="booking__body-left-column"
+{{--                         data-page-url="{{ route('generateMap.create', ['theatre' => $screening->hall->theatre->id, 'hall' => $screening->hall->id]) }}"--}}
+                         data-booking-url="{{ route('generate-booking-map', [
+                        'theatre' => $screening->hall->theatre->id,
+                        'hall' => $screening->hall->id,
+                        'screening' => $screening->id,
+                        ])
+                     }}"
 
-                <div class="booking__body-right-column">
-                    <div class="booking__right-column-content">
+                    >
+
+                        <div class="admin-halls__map-container">
+                            <div id="contextMenu" class="admin-halls__map-context-menu">
+                                <ul id="menuList"></ul>
+                            </div>
+                            <div class="admin-halls__preview-map">
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="booking__body-right-column">
+                        <div class="booking__right-column-content">
                         <span class="booking__right-column-seats-type-title">
                             {{ __('Типы мест') }}
                         </span>
-                        <div class="booking__right-column-theatre-name">
-                            {{ $screening->hall->theatre->name }}
-                        </div>
-                        <div class="booking__right-column-seats-type">
-                            <div class="booking__right-column-seats-type-wrapper">
-                                @forelse($screening->hall->theatre->seatTypes as $seatType)
-                                    <div class="booking__right-column-seat-type">
-                                        <div class="booking__right-column-seat-type-title">
-                                            <div class="booking__right-column-seat-type-name">
-                                                {{$seatType->name}}
-                                            </div>
-                                            <div class="booking__right-column-seat-type-price">
-                                                {{$seatType->amount}}
-                                            </div>
-                                        </div>
-                                        <div class="booking__right-column-seat-type-description">
-                                            {{$seatType->description}}
-                                        </div>
-                                    </div>
-                                @empty
-                                    <div class="booking__right-column-seat-type">
-                                        <div class="booking__right-column-seat-type-title">
-                                            <div class="booking__right-column-seat-type-name">
-                                                {{ __('Нет доступных типов мест') }}
-                                            </div>
-                                        </div>
-                                    </div>
-                                @endforelse
+                            <div class="booking__right-column-theatre-name">
+                                {{ $screening->hall->theatre->name }}
                             </div>
+                            <div class="booking__right-column-seats-type">
+                                <div class="booking__right-column-seats-type-wrapper">
+                                    @forelse($screening->hall->theatre->seatTypes as $seatType)
+                                        <div class="booking__right-column-seat-type">
+                                            <div class="booking__right-column-seat-type-title">
+                                                <div class="booking__right-column-seat-type-name">
+                                                    {{$seatType->name}}
+                                                </div>
+                                                <div class="booking__right-column-seat-type-price">
+                                                    {{$seatType->amount}}
+                                                </div>
+                                            </div>
+                                            <div class="booking__right-column-seat-type-description">
+                                                {{$seatType->description}}
+                                            </div>
+                                        </div>
+                                    @empty
+                                        <div class="booking__right-column-seat-type">
+                                            <div class="booking__right-column-seat-type-title">
+                                                <div class="booking__right-column-seat-type-name">
+                                                    {{ __('Нет доступных типов мест') }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endforelse
+                                </div>
 
-                            <div class="booking__right-column-seat-type-item">
+                                <div class="booking__right-column-seat-type-item">
                                     <button>
                                         {{ __('Выберите места') }}
                                     </button>
+                                </div>
                             </div>
-                        </div>
 
+                        </div>
                     </div>
                 </div>
             </div>
