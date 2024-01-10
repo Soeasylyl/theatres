@@ -81,8 +81,50 @@
         display: flex;
     }
 
+    &__movie-age-limit {
+        border: 2px solid rgb(119, 118, 119);
+        border-radius: 50%;
+        padding: 2px;
+        margin-top: -5px;
+        height: 33px;
+        width: 33px;
 
-    &__movie-date-time {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
 
+    &__notification {
+        width: 62.5%;
+        display: none;
+    }
+
+    &__notification-wrapper {
+        margin: 17px auto 15px;
+        padding: 16px;
+        background-color: rgba(255, 255, 255, 0.05);
+        border-radius: 15px;
+    }
+
+    &__notification-title {
+        padding: 0;
+        margin: 0 0 16px;
+        font-size: 22px;
+        font-weight: 700;
+        line-height: 30px;
+        color: rgba(255, 255, 255, 0.8);
+    }
+
+    &__notification-text {
+        padding: 0;
+        margin: 0;
+        font-size: 14px;
+        font-weight: 500;
+        line-height: 26px;
+        color: rgb(140, 134, 134);
+    }
+
+    &__active {
+        display: block;
     }
 }

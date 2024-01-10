@@ -4,7 +4,7 @@
     <section>
         <div class="container">
             <input class="movie__timezone-input" name="timezone" type="hidden">
-            <div class="movie__header" data-url="{{ route('user.show.screenings', ['movie' => $movie]) }}">
+            <div class="movie__header" data-url="{{ route('public.show.screenings', ['movie' => $movie]) }}">
                 <a href="{{ route('public.pages.home') }}" class="movie__header-btn-back">
                     <svg id="svg-icon-lg-arrow-left" viewBox="0 0 28 22" width="100%" height="100%">
                         <path fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="miter"

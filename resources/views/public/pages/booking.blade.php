@@ -66,31 +66,42 @@
                                         </defs>
                                     </svg>
                                 </div>
-                                <div class="booking__movie-date">
-                                    <span>
+                                <span>
                                     {{ $screening->start_at->locale('ru')->isoFormat('DD MMMM') }}
-                                    </span>
-                                    <span>
-                                        &nbsp;/&nbsp;
-                                    </span>
-                                    <div>
-                                        <span>{{ $sessionStart->format('H:i') }}</span>
-                                        <span> &nbsp;-&nbsp;</span>
-                                        <span>{{ $sessionEnd->format('H:i') }}</span>
-                                    </div>
-                                </div>
-                                <div class="booking__movie-time">
-
+                                </span>
+                                <span>
+                                    &nbsp;/&nbsp;
+                                </span>
+                                <div class="booking__movie-time"
+                                     data-time-url="{{
+                                        route('public.get.screenings.time', [
+                                            'movie' => $movie,
+                                            'screening' => $screening->id,
+                                        ])
+                                     }}"
+                                >
                                 </div>
                             </div>
                             <div class="booking__movie-age-limit">
+                                {{ $screening->movie->age_limit }}+
                             </div>
                         </div>
                     </div>
                 </div>
 
             </div>
-            <div class="movie__body-content">
+            <div class="booking__body-content">
+                <div class="booking__notification">
+                    <div class="booking__notification-wrapper">
+                        <div class="booking__notification-title">
+                            {{ __('Этот сеанс закончится после 23:00.') }}
+                        </div>
+                        <p class="booking__notification-text">
+                            {{ __('Обратите внимание! После 23:00 выход из кинотеатра, осуществляется через улицу.
+                                    В случае возникновения вопросов, обращайтесь к нашим сотрудникам, они будут рады Вам помочь.') }}
+                        </p>
+                    </div>
+                </div>
                 <div class="movie__body-left-column">
 
                 </div>

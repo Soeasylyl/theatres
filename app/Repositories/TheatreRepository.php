@@ -54,9 +54,9 @@ class TheatreRepository implements TheatreRepositoryInterface
     {
         return $authUser->theatres()
             ->with($relations)
-            ->when(!is_null($searchTerm), function (Builder $builder) use ($searchTerm) {
-                $builder->where('name', 'ilike', "%$searchTerm%");
-            })
+            ->when(!is_null($searchTerm), fn (Builder $builder) =>
+                $builder->where('name', 'ilike', "%$searchTerm%")
+            )
             ->paginate(config('app.pagination_limit'));
     }
 
@@ -127,14 +127,10 @@ class TheatreRepository implements TheatreRepositoryInterface
         return Theatre::with($relations)
             ->when($theatreId, fn(Builder $builder) =>
                 $builder->where('id', $theatreId))
-            ->WithWhereHas(
-                'halls.screenings',
-                function (Builder|HasMany $builder) use ($endTime, $startTime, $movie,) {
+            ->WithWhereHas('halls.screenings', fn (Builder|HasMany $builder) =>
                     $builder->where('movie_id', $movie->id)
                         ->whereBetween('start_at', [$startTime, $endTime])
-                        ->orderBy('start_at');
-                }
-            )
+                        ->orderBy('start_at'))
             ->paginate(config('app.pagination_limit'));
     }
 }

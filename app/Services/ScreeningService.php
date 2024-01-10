@@ -7,6 +7,7 @@ use App\DTO\Screening\CreateScreeningDTO;
 use App\DTO\Screening\DeleteScreeningDTO;
 use App\DTO\Screening\EditScreeningDTO;
 use App\DTO\Screening\SearchScreeningDTO;
+use App\DTO\Screening\TimeConversionScreeningDTO;
 use App\DTO\Screening\UpdateScreeningDTO;
 use App\Enums\RolesUsersEnum;
 use App\Models\Screening;
@@ -15,6 +16,7 @@ use App\Repositories\HallRepository;
 use App\Repositories\ScreeningRepository;
 use App\Repositories\TheatreRepository;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 
 class ScreeningService
@@ -220,5 +222,34 @@ class ScreeningService
         }
 
         return $this->screeningRepository->updateScreening(screening: $screening, dto: $dto);
+    }
+
+    /**
+     *  Get the start and end time of a movie screening based on the provided TimeConversionScreeningDTO.
+     *
+     * @param TimeConversionScreeningDTO $dto
+     * @return array
+     * @throws \Exception
+     */
+    public function getStartAndEndTimeMovieScreening(TimeConversionScreeningDTO $dto): array
+    {
+        if (
+            $dto->getMovie()->screenings->contains(
+                key: 'id',
+                value: $dto->getScreeningId(),
+            )
+        ) {
+            $screening = $this->screeningRepository->getScreeningByIdOrFail(screeningId: $dto->getScreeningId());
+
+            $sessionStart = $screening->start_at;
+            $sessionDuration = Carbon::parse($screening->movie->session_duration);
+            $sessionEnd = $sessionStart->clone();
+            $sessionEnd->add($sessionDuration->hour, 'hours')
+                ->add($sessionDuration->minute, 'minutes');
+        } else {
+            throw new \Exception('Сеанс не найден', 404);
+        }
+
+        return compact('sessionStart', 'sessionEnd');
     }
 }

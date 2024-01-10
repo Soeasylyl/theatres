@@ -2,18 +2,19 @@
 
 namespace App\Http\Controllers\Public;
 
+use App\DTO\Screening\TimeConversionScreeningDTO;
 use App\DTO\Theatres\FilterTheatreDTO;
 use App\Http\Requests\Public\ajaxGetScreeningsRequest;
 use App\Models\Movie;
-use App\Models\Screening;
+use App\Repositories\Interfaces\ScreeningRepositoryInterface;
 use App\Services\MovieService;
+use App\Services\ScreeningService;
 use App\Services\TheatreService;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Carbon;
 
 class HomeController extends BasePublicController
 {
@@ -100,23 +101,53 @@ class HomeController extends BasePublicController
 
     public function showHall(
         Movie $movie,
-        int $screeningId,
+        int   $screeningId,
+        ScreeningRepositoryInterface $screeningRepository
     )
     {
-        $screening =  Screening::with('movie', 'bookings','hall.theatre')
-            ->findOrFail($screeningId);
-
-        //Дата начала и окончания фильма
-        $sessionStart = $screening->start_at;
-        $sessionDuration = Carbon::parse($screening->movie->session_duration);
-        $sessionEnd = $sessionStart->clone();
-        $sessionEnd->add($sessionDuration->hour, 'hours')->add($sessionDuration->minute, 'minutes');
+        $screening = $screeningRepository->getScreeningByIdOrFail(
+            screeningId: $screeningId,
+            relations: ['movie', 'bookings','hall.theatre'],
+        );
 
         return view('public.pages.booking', compact(
             'movie',
             'screening',
-            'sessionStart',
-            'sessionEnd',
         ));
+    }
+
+    /**
+     *  Get the start and end time of a movie screening in a time zone-converted format.
+     *
+     * @param Movie $movie
+     * @param int $screeningId
+     * @param ScreeningService $screeningService
+     * @return JsonResponse
+     */
+    public function getScreeningsTime(
+        Movie            $movie,
+        int              $screeningId,
+        ScreeningService $screeningService,
+    ): JsonResponse
+    {
+        $timeConversionScreeningDto = new TimeConversionScreeningDTO(
+            movie: $movie,
+            screeningId: $screeningId,
+        );
+
+        try {
+            $data = $screeningService->getStartAndEndTimeMovieScreening($timeConversionScreeningDto);
+
+            return response()->json([
+                'status' => true,
+                'sessionStart' => $data['sessionStart'],
+                'sessionEnd' => $data['sessionEnd'],
+            ]);
+        } catch (\Throwable $exception) {
+            return response()->json([
+                'status' => false,
+                'error' => $exception->getMessage(),
+            ], 500);
+        }
     }
 }

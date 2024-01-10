@@ -19,7 +19,13 @@ use Illuminate\Support\Facades\Route;
 */
 // Public routes
 Route::prefix('afisha')->group(function () {
-    Route::get('/{movie:slug}/get-screenings', [HomeController::class, 'getScreenings'])->name('user.show.screenings');
+    Route::get('/{movie:slug}/get-screenings', [HomeController::class, 'getScreenings'])
+        ->name('public.show.screenings');
+
+    Route::prefix('/{movie:slug}/get-screenings-time/{screening}')->group(function () {
+        Route::get('/', [HomeController::class, 'getScreeningsTime'])
+            ->name('public.get.screenings.time');
+    });
 });
 
 // Admin-panel routes

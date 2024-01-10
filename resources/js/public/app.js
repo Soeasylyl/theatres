@@ -6,3 +6,4 @@ import './partials/swiper.js'
 import './partials/home.js'
 
 import './pages/movie.js'
+import './partials/time-movie-conversion-ajax.js'
