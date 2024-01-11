@@ -34,6 +34,6 @@ class DatabaseSeeder extends Seeder
             ScreeningSeeder::class,
         ]);
 
-        Booking::factory(700)->create();
+        Booking::factory(10000)->create();
     }
 }

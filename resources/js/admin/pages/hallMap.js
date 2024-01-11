@@ -7,6 +7,7 @@ class HallMap {
         this.draggedElement = null;
         this.editingSVGElement = null;
         this.bookingSeat = null;
+        this.selectedNumberOfSeatsForBooking = 0;
 
         this.init();
     }
@@ -15,12 +16,54 @@ class HallMap {
         this.addDragEventListeners();
         this.editInputListener();
         this.autoLoadMap();
+        if (this.bookingSeat === false) {
+            this.saveSeatAjaxButtonClick();
+            this.createSeatAjax();
 
-        this.saveSeatAjaxButtonClick();
-        this.createSeatAjax();
+            this.addMapContextMenu();
+            this.addSVGContextMenuRecursively(this.gElement);
+        }
+    }
 
-        this.addMapContextMenu();
-        this.addSVGContextMenuRecursively(this.gElement);
+    openBookingMenu() {
+
+    }
+
+    selectedSeatForBooking(
+        svgElement,
+        textElement,
+    ) {
+        svgElement.setAttribute('cursor', 'pointer');
+        textElement.setAttribute('cursor', 'pointer');
+        svgElement?.addEventListener('click', () => {
+            if (
+                this.selectedNumberOfSeatsForBooking < 5
+                && !svgElement.classList.contains('booking__seat-blocking')
+                && !svgElement.classList.contains('booking__seat-booking')
+            ) {
+                svgElement.classList.toggle('booking__seat-booking');
+                this.selectedNumberOfSeatsForBooking += 1;
+
+
+                // Метод для отобржения данных о месте и подсчёте стоимости билетов
+                // Складывание мест и вывод цены
+            } else {
+                if (
+                    svgElement.classList.contains('booking__seat-booking')
+                    && !svgElement.classList.contains('booking__seat-blocking')
+                ) {
+                    svgElement.classList.toggle('booking__seat-booking');
+                    this.selectedNumberOfSeatsForBooking += -1;
+
+                    // Метод для отобржения данных о месте и подсчёте стоимости билетов
+                    // Вычитание мест и вывод цены
+                }
+            }
+        });
+    }
+
+    checkSeatForBookingAjax() {
+
     }
 
     addMapContextMenu() {
@@ -203,18 +246,6 @@ class HallMap {
             urlSegments[urlSegments.length - 1] = seatId;
             url.dataset.pageUrl = urlSegments.join('/');
         }
-    }
-
-    extractIdFromUrl() {
-        const url = document.querySelector('[data-page-url]');
-        if (url) {
-            const urlSegments = url.dataset.pageUrl.split('/');
-            const lastSegment = urlSegments[urlSegments.length - 1];
-
-            return lastSegment || null;
-        }
-
-        return null;
     }
 
     addNewPlace(event) {
@@ -576,12 +607,18 @@ class HallMap {
         if (bookingUrl) {
             const url = bookingUrl.dataset.bookingUrl;
             this.bookingSeat = true;
-            // const url = elementUrl.dataset.pageUrl;
+
             this.addHallMap();
             this.ajaxGetDataHallMap(url);
+
+
         }
 
         this.seatsWrapperContainer && this.seatsWrapperContainer.classList.add('admin-halls__hidden');
+    }
+
+    bookingClick() {
+
     }
 
     handleDragStart(event) {
@@ -674,6 +711,7 @@ class HallMap {
         renderSeatPosX,
         renderSeatPosY,
         seatId,
+        isBooking
     ) {
         this.findGElementInMap();
         const svgElement = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
@@ -685,14 +723,24 @@ class HallMap {
 
         svgElement.setAttribute('contextmenu', 'seatContextMenu');
 
-        if (eventType === 'add-place') {
+        if (
+            eventType === 'add-place'
+        ) {
             // довешиваем класс для редактирования и делаем элемент редактируемым
             svgElement.setAttribute('class', 'selected hall-new-place');
 
             this.editingSVGElement = svgElement;
         }
 
-        if (eventType === 'edit-place') {
+        if (
+            isBooking === true
+        ) {
+            svgElement.setAttribute('class', 'booking__seat-blocking');
+        }
+
+        if (
+            eventType === 'edit-place'
+        ) {
             seatId && svgElement.setAttribute('data-seat-id', seatId);
         }
 
@@ -713,7 +761,13 @@ class HallMap {
         textElement.setAttribute('dy', '0.35em');
         textElement.setAttribute('text-anchor', 'middle');
         textElement.setAttribute('font-size', '20');
-        textElement.setAttribute('fill', 'white');
+        textElement.setAttribute('cursor', 'default');
+
+        if (this.bookingSeat === true) {
+            textElement.setAttribute('fill', 'black');
+        } else {
+            textElement.setAttribute('fill', 'white');
+        }
 
         textElement.textContent = numberSeatInputValue;
 
@@ -769,11 +823,21 @@ class HallMap {
         svgElement.appendChild(textElement);
         this.gElement.appendChild(svgElement);
 
-        const numberSeatInputClear = this.seatsWrapperContainer.querySelector('input[name="number_seat"]');
+        const numberSeatInputClear = this.seatsWrapperContainer?.querySelector('input[name="number_seat"]');
 
         if (numberSeatInputClear) {
             numberSeatInputClear.value = ''; // Очищаем только инпут с именем "number_seat"
         }
+
+        if (
+            this.bookingSeat === true
+        ) {
+          this.selectedSeatForBooking(
+              svgElement,
+              textElement,
+          )
+        }
+
     }
 
     ajaxGetDataHallMap(url) {
@@ -788,13 +852,11 @@ class HallMap {
                 return response.json();
             })
             .then((data) => {
-                console.log(data)
                 const seatEntries = Object.entries(data.dataSeats);
                 const eventType = 'edit-place';
                 for (const [rowKey, seats] of seatEntries) {
                     for (const [seatKey, seat] of Object.entries(seats)) {
-                        const {number, posX, posY, seatsTypeId, seatsTypeName} = seat;
-
+                        const {number, posX, posY, seatsTypeId, seatsTypeName, isBooking} = seat;
                         this.renderMapToPreview(
                             eventType,
                             number,
@@ -804,6 +866,7 @@ class HallMap {
                             posX,
                             posY,
                             seatKey,
+                            isBooking
                         );
                     }
                 }

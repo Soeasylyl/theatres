@@ -23,8 +23,8 @@ class SeatFactory extends Factory
             'seat_type_id' => SeatType::inRandomOrder()->first()->id,
             'row' => rand(1,10),
             'number' =>rand(1,30),
-            'position_x' => rand(100,1000),
-            'position_y' => rand(100,1000),
+            'position_x' => rand(100,800),
+            'position_y' => rand(100,800),
         ];
     }
 }

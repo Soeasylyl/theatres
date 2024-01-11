@@ -148,11 +148,26 @@
     }
 
     &__right-column-seats-type-title {
+        white-space: pre-line;
+    }
+
+    &__right-column-seats-type-title, &__right-column-seats-type-amount, &__right-column-seats-type-price {
         margin: 25px 0;
         text-size-adjust: 100%;
-        white-space: pre-line;
         font: 700 1.47em / 30px Ubuntu, Roboto, Arial, Helvetica, sans-serif;
         color: rgba(255, 255, 255, 0.8);
+        gap: 10px;
+
+        span {
+            font-weight: 400;
+            font-size: 0.8em;
+        }
+    }
+
+    &__right-column-seats-type-amount, &__right-column-seats-type-price {
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
     &__right-column-theatre-name {
@@ -163,9 +178,32 @@
 
     &__right-column-seat-type-item, &__right-column-seat-type {
         border-top: 1px solid rgba(255, 255, 255, 0.15);
-
-
     }
+
+    &__right-column-seat-type-ticket {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+
+        button {
+            width: 100%;
+            border: none;
+            border-radius: 22px;
+            padding: 9px 30px;
+            position: relative;
+            background: rgba(255, 255, 255, 0);
+            box-shadow: rgb(255, 255, 255) 0px 0px 0px 2px inset;
+            color: rgba(255, 255, 255, 0.8);
+
+            &:hover {
+                color: rgb(24, 24, 24);
+                background: rgb(255, 255, 255);
+                box-shadow: rgba(255, 255, 255, 0) 0px 0px 0px 2px inset;
+            }
+        }
+    }
+
     &__right-column-seat-type-item {
         padding-top: 25px;
 
@@ -216,6 +254,23 @@
 
         text {
             color: rgba(255, 255, 255, 0.8);
+        }
+    }
+
+    &__seat-blocking {
+        path {
+            fill: rgba(255, 255, 255, 0.20);
+            cursor: not-allowed;
+        }
+
+        text {
+            cursor: not-allowed;
+        }
+    }
+
+    &__seat-booking {
+        path {
+            fill: rgb(149, 27, 129);
         }
     }
 }

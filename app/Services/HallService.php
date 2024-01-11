@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\DTO\Booking\CheckBookingSeatForScreeningDTO;
 use App\DTO\Halls\CreateHallDTO;
 use App\DTO\Halls\DeleteHallDTO;
 use App\DTO\Halls\EditHallDTO;
@@ -9,9 +10,7 @@ use App\DTO\Halls\UpdateHallDTO;
 use App\Models\Hall;
 use App\Repositories\Interfaces\HallRepositoryInterface;
 use App\Repositories\Interfaces\TheatreRepositoryInterface;
-use App\Repositories\SeatRepository;
 use App\Repositories\SeatTypeRepository;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
@@ -101,10 +100,12 @@ class HallService
      * Retrieves the contents of the room for editing.
      * Retrieves information about seats in the hall, including seat numbers, seat types, coordinates and other data.
      *
-     * @param EditHallDTO $dto
+     * @param CheckBookingSeatForScreeningDTO|EditHallDTO $dto
      * @return array
      */
-    public function getHallContent(EditHallDTO $dto): array
+    public function getHallContent(
+        CheckBookingSeatForScreeningDTO|EditHallDTO $dto
+    ): array
     {
         $hall = $this->hallRepository->getHallByIdOrFail($dto->getHallId(), ['seats.seatType']);
         $seats = $hall->seats;
@@ -117,7 +118,6 @@ class HallService
                 'seatsTypeId' => $seat->seatType->id,
                 'posX' => $seat->position_x,
                 'posY' => $seat->position_y,
-//                'isBooking'=> false,
             ];
         }
 

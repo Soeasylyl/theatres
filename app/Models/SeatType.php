@@ -37,6 +37,9 @@ use Laravel\Sanctum\HasApiTokens;
  * @method static \Illuminate\Database\Eloquent\Builder|SeatType whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|SeatType whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|SeatType whereUpdatedAt($value)
+ * @property int $theatre_id
+ * @property-read \App\Models\Theatre $theatre
+ * @method static \Illuminate\Database\Eloquent\Builder|SeatType whereTheatreId($value)
  * @mixin \Eloquent
  */
 class SeatType extends Model

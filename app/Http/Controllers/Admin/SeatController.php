@@ -58,7 +58,7 @@ class SeatController extends BaseAdminController
      * @param int $hallId
      * @return JsonResponse
      */
-    public function generateMap(int $theatreId, int $hallId)
+    public function generateMap(int $theatreId, int $hallId): JsonResponse
     {
         $editHallDto = new EditHallDTO(
             theatreId: $theatreId,

@@ -129,8 +129,8 @@ class TheatreRepository implements TheatreRepositoryInterface
                 $builder->where('id', $theatreId))
             ->WithWhereHas('halls.screenings', fn (Builder|HasMany $builder) =>
                     $builder->where('movie_id', $movie->id)
-                        ->whereBetween('start_at', [$startTime, $endTime])
-                        ->orderBy('start_at'))
+                            ->whereBetween('start_at', [$startTime, $endTime])
+                            ->orderBy('start_at'))
             ->paginate(config('app.pagination_limit'));
     }
 }

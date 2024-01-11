@@ -40,6 +40,8 @@ use Laravel\Sanctum\HasApiTokens;
  * @method static \Illuminate\Database\Eloquent\Builder|Seat whereRow($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Seat whereSeatTypeId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Seat whereUpdatedAt($value)
+ * @property int $number
+ * @method static \Illuminate\Database\Eloquent\Builder|Seat whereNumber($value)
  * @mixin \Eloquent
  */
 class Seat extends Model

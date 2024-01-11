@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Repositories\BookingRepository;
 use App\Repositories\HallRepository;
+use App\Repositories\Interfaces\BookingRepositoryInterface;
 use App\Repositories\Interfaces\HallRepositoryInterface;
 use App\Repositories\Interfaces\MovieRepositoryInterface;
 use App\Repositories\Interfaces\SeatRepositoryInterface;
@@ -58,6 +60,11 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(
             ScreeningRepositoryInterface::class,
             ScreeningRepository::class
+        );
+
+        $this->app->bind(
+            BookingRepositoryInterface::class,
+            BookingRepository::class
         );
     }
 

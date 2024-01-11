@@ -42,6 +42,9 @@ use Laravel\Sanctum\HasApiTokens;
  * @method static \Illuminate\Database\Eloquent\Builder|Hall whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Hall whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Hall whereUpdatedAt($value)
+ * @property int $theatre_id
+ * @property-read \App\Models\Theatre $theatre
+ * @method static \Illuminate\Database\Eloquent\Builder|Hall whereTheatreId($value)
  * @mixin \Eloquent
  */
 class Hall extends Model implements MediaHandling

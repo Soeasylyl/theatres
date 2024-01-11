@@ -32,10 +32,13 @@ Route::prefix('afisha')->group(function () {
     });
 });
 
-Route::get(
-    uri: 'theatres/{theatre}/halls/{hall}/screenings/{screening}/booking-map',
-    action: [BookingController::class, 'generateBookingMap']
-)->name('generate-booking-map');
+Route::prefix('theatres/{theatre}/halls/{hall}/screenings/{screening}')->group(function () {
+    Route::get('/booking-map', [BookingController::class, 'generateBookingMap'])
+        ->name('generate-booking-map');
+    Route::get('/check-booking-seats', [BookingController::class, 'checkBookingSeats'])
+        ->name('check-booking-seats');
+});
+
 
 // Admin-panel routes
 Route::prefix('admin/')
