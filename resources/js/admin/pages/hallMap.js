@@ -44,6 +44,7 @@ class HallMap {
                 svgElement.classList.toggle('booking__seat-booking');
                 this.selectedNumberOfSeatsForBooking += 1;
 
+                this.checkSeatForBookingAjax();
 
                 // Метод для отобржения данных о месте и подсчёте стоимости билетов
                 // Складывание мест и вывод цены
@@ -55,6 +56,7 @@ class HallMap {
                     svgElement.classList.toggle('booking__seat-booking');
                     this.selectedNumberOfSeatsForBooking += -1;
 
+                    this.checkSeatForBookingAjax();
                     // Метод для отобржения данных о месте и подсчёте стоимости билетов
                     // Вычитание мест и вывод цены
                 }
@@ -63,7 +65,56 @@ class HallMap {
     }
 
     checkSeatForBookingAjax() {
+        const url = document.querySelector('[data-check-booking-url]')
+            .getAttribute('data-check-booking-url');
+        const htmlContainer = document.querySelector('.booking__body-right-column');
 
+        const seatIds = document.querySelectorAll('.booking__seat-booking');
+        const seatIdArray = JSON.stringify(Array.from(seatIds).map(seat =>
+            seat.getAttribute('data-seat-id')) || []);
+
+
+        fetch(`${url}?seatIds=${seatIdArray}`, {
+            method: 'get',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+        })
+            .then((response) => {
+
+                return response.json();
+            })
+                .then((resp) => {
+                     if (
+                         resp.status
+                     ) {
+                         htmlContainer.innerHTML = resp.htmlTemplate;
+
+                         if (
+                             resp.bookingSeats && resp.bookingSeats.length > 0
+                         ) {
+                             const typeNotification = 'notifications-warning';
+                            this.selectedNumberOfSeatsForBooking -= 1;
+
+                             resp.bookingSeats.map(seat => {
+                                 const messageNotification = `Место номер ${seat.number}
+                                    ряда ${seat.row} уже забронировано`;
+
+                                 const svg = document.querySelector(`svg[data-seat-id="${seat.id}"]`);
+                                 svg.classList.add('booking__seat-blocking')
+                                 svg.classList.remove('booking__seat-booking');
+
+                                 this.errorAjaxSeatNotification(typeNotification, messageNotification)
+                             });
+                         }
+                     } else {
+                         htmlContainer.innerHTML = resp.htmlTemplate;
+                     }
+                }
+            )
+            .catch(error => {
+                console.log('Error', error);
+            })
     }
 
     addMapContextMenu() {
@@ -343,7 +394,8 @@ class HallMap {
     }
 
     findSeatAndSetSVGValuesAjax(seatId, svgElement) {
-        const url = document.querySelector('[data-check-url]').getAttribute('data-check-url');
+        const url = document.querySelector('[data-check-url]')
+            .getAttribute('data-check-url');
         fetch(`${url}?seat_id=${seatId}`, {
             method: 'get',
             headers: {

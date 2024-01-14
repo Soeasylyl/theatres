@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Public;
 
 use App\DTO\Booking\CheckBookingSeatForScreeningDTO;
 use App\Services\BookingService;
+use App\Services\ScreeningService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -44,17 +45,41 @@ class BookingController extends BasePublicController
         int            $hallId,
         int            $screeningId,
         BookingService $bookingService,
+        ScreeningService $screeningService,
     )
     {
         $bookingDto = new CheckBookingSeatForScreeningDTO(
             theatreId: $theatreId,
             hallId: $hallId,
             screeningId: $screeningId,
-            seatIds: $request->input('seatIds'),
+            seatIds: json_decode($request->input('seatIds')),
         );
 
-        $bookingSeats = $bookingService->checkSeatStatus($bookingDto);
+        try {
+            $dataSeats = $bookingService->checkSeatStatus($bookingDto);
 
-        dd("Тут будет срендерена и отправлена страница, 2 шаблона готовы");
+            return response()->json([
+                'status' => true,
+                'bookingSeats' => $dataSeats['bookingSeats'],
+                'htmlTemplate' => view(
+                    'public.pages.booking-partials.right-column-tickets', [
+                        'screening' => $dataSeats['screening'],
+                        'totalPrice' => $dataSeats['totalPrice'],
+                        'availableSeats' => $dataSeats['availableSeats'],
+                    ])->render()
+            ]);
+
+        } catch(\Throwable $exception) {
+            $screening = $screeningService->getScreening($bookingDto->getScreeningId());
+
+            return response()->json([
+                'status' => false,
+                'message' => $exception->getMessage(),
+                'htmlTemplate' => view(
+                    'public.pages.booking-partials.right-column-seats-type', [
+                        'screening' => $screening,
+                    ])->render(),
+            ]);
+        }
     }
 }

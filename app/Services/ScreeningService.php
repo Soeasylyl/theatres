@@ -252,4 +252,18 @@ class ScreeningService
 
         return compact('sessionStart', 'sessionEnd');
     }
+
+    /**
+     *  Get the screening details by screening ID.
+     *
+     * @param int $screeningId
+     * @return Screening
+     */
+    public function getScreening(int $screeningId): Screening
+    {
+        return $this->screeningRepository->getScreeningByIdOrFail(
+            screeningId: $screeningId,
+            relations: ['hall.theatre.seatTypes'],
+        );
+    }
 }

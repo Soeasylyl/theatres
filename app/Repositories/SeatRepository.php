@@ -105,16 +105,18 @@ class SeatRepository implements SeatRepositoryInterface
      * @param int $hallId
      * @param int $seatId
      * @param array|null $columns
+     * @param array|null $relations
      * @return Seat
      */
     public function getSeatWithTheatreAndHallChecking(
         int $theatreId,
         int $hallId,
         int $seatId,
-        ?array $columns = ['*']
+        ?array $columns = ['*'],
+        ?array $relations = [],
     ): Seat
     {
-        return Seat::query()
+        return Seat::with($relations)
             ->select($columns)
             ->whereHas('hall', function (Builder $builder) use ($theatreId, $hallId) {
                 $builder->where('id', $hallId)

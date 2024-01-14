@@ -1,6 +1,8 @@
 @extends('public.layouts.app')
 
 @section('content')
+    @include('admin.partials.notification')
+
     <section>
         <div class="container">
             <input class="movie__timezone-input" name="timezone" type="hidden">
@@ -123,9 +125,15 @@
                         </div>
                     </div>
 
-                    <div class="booking__body-right-column">
+                    <div class="booking__body-right-column"
+                         data-check-booking-url="{{ route('check-booking-seats', [
+                                'theatre' => $screening->hall->theatre->id,
+                                'hall' => $screening->hall->id,
+                                'screening' => $screening->id
+                         ]) }}"
+                    >
 
-                        @include('public.pages.booking-partials.right-column-tickets')
+                        @include('public.pages.booking-partials.right-column-seats-type')
 
                     </div>
                 </div>
