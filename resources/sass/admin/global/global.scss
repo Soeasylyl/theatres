@@ -48,3 +48,20 @@ ul {
     font-size: 14px;
     line-height: normal;
 }
+
+.booking__seat-blocking {
+    path {
+        fill: rgba(0, 0, 0, 0.44);
+        cursor: not-allowed;
+    }
+
+    text {
+        cursor: not-allowed;
+    }
+}
+
+.booking__seat-booking {
+    path {
+        fill: rgb(149, 27, 129);
+    }
+}

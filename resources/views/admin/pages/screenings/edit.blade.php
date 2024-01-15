@@ -112,6 +112,13 @@
                                 {{ __('Отобразить карту бронирования') }}
                             </div>
                         </div>
+                        <div id="admin-panel" style="display: none"
+                             data-check-booking-url="{{ route('check-booking-seats', [
+                                'theatre' => $screening->hall->theatre->id,
+                                'hall' => $screening->hall->id,
+                                'screening' => $screening->id
+                         ]) }}"
+                        ></div>
                         <div class="admin-halls__map-container admin-screenings__map admin-screenings__hidden"
                              data-booking-url="{{ route('generate-booking-map', [
                                                             'theatre' => $screening->hall->theatre->id,

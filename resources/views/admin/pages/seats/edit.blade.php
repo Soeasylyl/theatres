@@ -42,7 +42,11 @@
                                     <label for="">{{ __('Выберите тип места:') }}</label>
                                     <select class="admin-halls__seats-type" name="seats_type">
                                         @forelse($seatTypes as $seatType)
-                                            <option value="{{ $seatType->id }}">{{ $seatType->name }}</option>
+                                            <option data-seat-type-price="{{ $seatType->amount }}"
+                                                    value="{{ $seatType->id }}"
+                                            >
+                                                {{ $seatType->name }}
+                                            </option>
                                         @empty
                                             <option value="none">{{ __(('Нет доступных типов')) }}</option>
                                         @endforelse

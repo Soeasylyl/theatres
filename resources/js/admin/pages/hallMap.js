@@ -8,6 +8,7 @@ class HallMap {
         this.editingSVGElement = null;
         this.bookingSeat = null;
         this.selectedNumberOfSeatsForBooking = 0;
+        this.isAdminPanel = false;
 
         this.init();
     }
@@ -83,13 +84,14 @@ class HallMap {
                      if (
                          resp.status
                      ) {
-                         htmlContainer.innerHTML = resp.htmlTemplate;
-
+                         if (this.isAdminPanel === false) {
+                             htmlContainer.innerHTML = resp.htmlTemplate;
+                         }
                          if (
                              resp.bookingSeats && resp.bookingSeats.length > 0
                          ) {
                              const typeNotification = 'notifications-warning';
-                            this.selectedNumberOfSeatsForBooking -= 1;
+                             this.selectedNumberOfSeatsForBooking -= 1;
 
                              resp.bookingSeats.map(seat => {
                                  const messageNotification = `Место номер ${seat.number}
@@ -103,7 +105,9 @@ class HallMap {
                              });
                          }
                      } else {
-                         htmlContainer.innerHTML = resp.htmlTemplate;
+                         if (this.isAdminPanel === false) {
+                             htmlContainer.innerHTML = resp.htmlTemplate;
+                         }
                      }
                 }
             )
@@ -300,7 +304,7 @@ class HallMap {
         const titleElement = document.querySelector('.admin-halls__seats-title');
         titleElement.textContent = 'Добавление нового места:';
         this.seatsWrapperContainer && this.seatsWrapperContainer.classList.remove('admin-halls__hidden');
-        const svgElement = document.querySelector('.admin-halls__map'); // Замените на ваш класс SVG
+        const svgElement = document.querySelector('.admin-halls__map');
 
         const saveOldSeatBtn = document.querySelector('.admin-halls__save-seat-btn');
         saveOldSeatBtn?.classList.add('admin-halls__hidden');
@@ -313,16 +317,23 @@ class HallMap {
         const x = event.clientX - rect.left + 200;
         const y = event.clientY - rect.top + 60;
 
+        const selectedOption = document.querySelector('select[name="seats_type"] option:checked');
+        const selectedValue = selectedOption.value;
+        const selectName = selectedOption.textContent;
+        const dataAttribute = selectedOption.getAttribute('data-seat-type-price');
+
         const eventType = 'add-place';
 
         this.renderMapToPreview(
             eventType,
             'new',
             null,
-            null,
-            null,
+            selectedValue,
+            selectName,
             x,
             y,
+            null,
+            dataAttribute,
         );
 
         document.querySelector('input[name="x_pos_seat"]').value = x;
@@ -437,7 +448,6 @@ class HallMap {
 
             const url = addSeatButton.getAttribute('data-create-seat-url');
             const csrfToken = document.querySelector('input[name="_token"]').value;
-            console.log(url)
 
             fetch(`${url}`, {
                 method: 'POST',
@@ -594,6 +604,16 @@ class HallMap {
                 selectedElement.setAttributeNS(null, 'data-number-row', numberRow);
                 selectedElement.setAttributeNS(null, 'data-number-seat', numberSeat);
                 selectedElement.setAttributeNS(null, 'data-seat-type', seatsType);
+                selectedElement.setAttribute(
+                    'data-seat-type-price',
+                    document.querySelector('select[name="seats_type"] option:checked')
+                        .getAttribute('data-seat-type-price')
+                );
+                selectedElement.setAttribute(
+                    'data-seat-type-name',
+                    document.querySelector('select[name="seats_type"] option:checked')
+                        .textContent
+                );
 
                 const textElement = selectedElement.querySelector('text');
                 textElement?.textContent && (textElement.textContent = numberSeat.toString());
@@ -653,6 +673,8 @@ class HallMap {
 
         if (bookingUrl) {
             const url = bookingUrl.dataset.bookingUrl;
+
+            this.isAdminPanel = document.getElementById('admin-panel') !== null;
             this.bookingSeat = true;
 
             this.addHallMap();
@@ -851,10 +873,10 @@ class HallMap {
         textElement.setAttribute('font-size', '20');
         textElement.setAttribute('cursor', 'default');
 
-        if (this.bookingSeat === true) {
-            textElement.setAttribute('fill', 'black');
-        } else {
+        if (this.bookingSeat === false || this.isAdminPanel === true ) {
             textElement.setAttribute('fill', 'white');
+        } else {
+            textElement.setAttribute('fill', 'black');
         }
 
         textElement.textContent = numberSeatInputValue;
