@@ -14,7 +14,6 @@ use App\Repositories\SeatTypeRepository;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
-
 class HallService
 {
     public function __construct(

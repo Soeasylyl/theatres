@@ -35,7 +35,10 @@ class TheatreController extends BaseAdminController
 
         $theatres = $theatreService->getTheatresWithHallsPaginated($searchTheatreDTO);
 
-        return view('admin.pages.theatres.theatres-information', compact('theatres', 'searchTern'));
+        return view(
+            'admin.pages.theatres.theatres-information',
+            compact('theatres', 'searchTern'),
+        );
     }
 
     /**

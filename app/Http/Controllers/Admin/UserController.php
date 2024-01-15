@@ -196,7 +196,9 @@ class UserController extends BaseAdminController
         try {
             $userService->updatePasswordByUser($requestDTO);
 
-            return redirect()->route('user.edit', $userId)->with('success_update_user_password', 'Пароль успешно изменен.');
+            return redirect()
+                ->route('user.edit', $userId)
+                ->with('success_update_user_password', 'Пароль успешно изменен.');
         } catch (\Throwable $e) {
             return redirect()->back()->with('password_error', $e->getMessage());
         }
@@ -229,7 +231,9 @@ class UserController extends BaseAdminController
         try {
             $userService->updatePasswordByUser($requestDTO);
 
-            return redirect()->route('user.edit', $userId)->with('success_update_user_password', 'Пароль успешно изменен.');
+            return redirect()
+                ->route('user.edit', $userId)
+                ->with('success_update_user_password', 'Пароль успешно изменен.');
         } catch (\Throwable $e) {
             return redirect()->back()->with('password_error', $e->getMessage());
         }

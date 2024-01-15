@@ -20,7 +20,11 @@ interface UserRepositoryInterface
      * @param array|null $relations
      * @return LengthAwarePaginator
      */
-    public function getUsersWithoutAdminRolePaginatedList(int $authUserId, ?string $searchTerm, ?array $relations = []): LengthAwarePaginator;
+    public function getUsersWithoutAdminRolePaginatedList(
+        int $authUserId,
+        ?string $searchTerm,
+        ?array $relations = [],
+    ): LengthAwarePaginator;
 
     /**
      * Receiving all users from one cinema, except the authorized one
@@ -30,7 +34,11 @@ interface UserRepositoryInterface
      * @param string|null $searchTerm
      * @return LengthAwarePaginator
      */
-    public function getUsersByCinemaPaginatedList(Collection $cinemaIds, int $authUserId, ?string $searchTerm): LengthAwarePaginator;
+    public function getUsersByCinemaPaginatedList(
+        Collection $cinemaIds,
+        int $authUserId,
+        ?string $searchTerm,
+    ): LengthAwarePaginator;
 
     /**
      * Searching for a user by ID

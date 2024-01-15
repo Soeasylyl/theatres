@@ -57,7 +57,11 @@ class MovieRepository implements MovieRepositoryInterface
      * @param array|null $relations
      * @return Collection
      */
-    public function getRandomMoviesWithScreenings(Carbon $currentDateTime, int $limit = null, ?array $relations = []): Collection
+    public function getRandomMoviesWithScreenings(
+        Carbon $currentDateTime,
+        int $limit = null,
+        ?array $relations = [],
+    ): Collection
     {
         return Movie::with($relations)
             ->withWhereHas('screenings', function (Builder|HasMany $query) use ($currentDateTime) {

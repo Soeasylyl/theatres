@@ -9,7 +9,6 @@ use App\Models\Seat;
 use App\Repositories\HallRepository;
 use App\Repositories\SeatRepository;
 
-
 class SeatService
 {
     public function __construct(

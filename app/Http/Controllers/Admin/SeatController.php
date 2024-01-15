@@ -119,9 +119,9 @@ class SeatController extends BaseAdminController
      */
     public function check(
         CheckSeatRequest $request,
-        int         $theatreId,
-        int         $hallId,
-        SeatService $seatService,
+        int              $theatreId,
+        int              $hallId,
+        SeatService      $seatService,
     )
     {
         $checkSeatDto = new CheckAndDeleteSeatDTO(

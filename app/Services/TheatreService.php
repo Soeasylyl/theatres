@@ -146,7 +146,10 @@ class TheatreService
      */
     public function deleteTheatre(int $theatreId): void
     {
-        $theatre = $this->theatreRepository->getTheatreByIdOrFail(theatreId: $theatreId, relations: ['halls.medias', 'medias']);
+        $theatre = $this->theatreRepository->getTheatreByIdOrFail(
+            theatreId: $theatreId,
+            relations: ['halls.medias', 'medias'],
+        );
 
         try {
             DB::transaction(function () use ($theatre) {

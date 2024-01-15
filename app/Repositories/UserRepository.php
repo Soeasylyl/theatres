@@ -23,7 +23,11 @@ class UserRepository implements UserRepositoryInterface
      * @param array|null $relations
      * @return LengthAwarePaginator
      */
-    public function getUsersWithoutAdminRolePaginatedList(int $authUserId, ?string $searchTerm, ?array $relations = []): LengthAwarePaginator
+    public function getUsersWithoutAdminRolePaginatedList(
+        int $authUserId,
+        ?string $searchTerm,
+        ?array $relations = [],
+    ): LengthAwarePaginator
     {
         return User::with($relations)
             ->whereDoesntHave('roles', function (Builder $query) {

@@ -31,7 +31,11 @@ interface MovieRepositoryInterface
      * @param array $relations
      * @return Collection
      */
-    public function getRandomMoviesWithScreenings(Carbon $currentDateTime, int $limit = null, array $relations = []): Collection;
+    public function getRandomMoviesWithScreenings(
+        Carbon $currentDateTime,
+        int $limit = null,
+        array $relations = [],
+    ): Collection;
 
     /**
      * Retrieve a movie with specified relationships or throw an exception if not found.

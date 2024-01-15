@@ -129,14 +129,6 @@ class ScreeningController extends BaseAdminController
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
      * Displays the session edit page with relevant data.
      *
      * @param int $screeningId
