@@ -48,4 +48,14 @@
         margin: 0;
         z-index: -999;
     }
+
+    &__map {
+        display: flex;
+        justify-content: center;
+        grid-column: 1/span 2;
+    }
+
+    &__hidden {
+        display: none;
+    }
 }

@@ -108,6 +108,29 @@
                         </div>
                         <div class="login-container__button-wrapper admin-screenings__button-wrapper"
                              style="justify-content: center">
+                            <div class="login-container__btn admin-screenings__open-map" style="width: 50%">
+                                {{ __('Отобразить карту бронирования') }}
+                            </div>
+                        </div>
+                        <div class="admin-halls__map-container admin-screenings__map admin-screenings__hidden"
+                             data-booking-url="{{ route('generate-booking-map', [
+                                                            'theatre' => $screening->hall->theatre->id,
+                                                            'hall' => $screening->hall->id,
+                                                            'screening' => $screening->id,
+                                                            ]) }}   "
+                        >
+
+                            @include('admin.partials.seat-info-for-map')
+
+                            <div id="contextMenu" class="admin-halls__map-context-menu">
+                                <ul id="menuList"></ul>
+                            </div>
+                            <div class="admin-halls__preview-map">
+
+                            </div>
+                        </div>
+                        <div class="login-container__button-wrapper admin-screenings__button-wrapper"
+                             style="justify-content: center">
                             <button type="submit" class="login-container__btn" style="width: 50%">
                                 {{ __('Сохранить изменения') }}
                             </button>

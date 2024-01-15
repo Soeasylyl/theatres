@@ -17,18 +17,16 @@
     @vite(['resources/sass/admin/app.scss', 'resources/js/admin/app.js'])
 </head>
 <body>
-<div id="app">
+    @include('admin.partials.header')
 
-        @include('admin.partials.header')
-
+    <section class="admin-main">
         @include('admin.partials.menu')
 
-        <section class="admin-main">
-            @include('admin.partials.notification')
-            @yield('content')
-        </section>
+        @include('admin.partials.notification')
 
-        @include('admin.partials.footer')
-</div>
+        @yield('content')
+    </section>
+
+    @include('admin.partials.footer')
 </body>
 </html>

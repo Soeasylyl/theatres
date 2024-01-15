@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Public;
 
 use App\DTO\Booking\CheckBookingSeatForScreeningDTO;
+use App\Http\Requests\Public\ajaxCheckSeatsRequest;
 use App\Services\BookingService;
 use App\Services\ScreeningService;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 class BookingController extends BasePublicController
 {
@@ -40,12 +40,12 @@ class BookingController extends BasePublicController
     }
 
     public function checkBookingSeats(
-        Request        $request,
-        int            $theatreId,
-        int            $hallId,
-        int            $screeningId,
-        BookingService $bookingService,
-        ScreeningService $screeningService,
+        ajaxCheckSeatsRequest $request,
+        int                   $theatreId,
+        int                   $hallId,
+        int                   $screeningId,
+        BookingService        $bookingService,
+        ScreeningService      $screeningService,
     )
     {
         $bookingDto = new CheckBookingSeatForScreeningDTO(

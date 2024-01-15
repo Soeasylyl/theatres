@@ -109,6 +109,89 @@
         }
     }
 
+    &__map-hover-info {
+        background: rgba(0, 0, 0, 0.8);
+        position: absolute;
+        z-index: 15;
+        border-radius: 5px;
+        padding: 5px;
+        width: 190px;
+        margin-left: -95px;
+        margin-top: -10px;
+        display: flex;
+        -webkit-box-align: center;
+        align-items: center;
+        text-align: center;
+        transform: translate3d(0px, -100%, 0px);
+        pointer-events: none;
+        top: 471.778px;
+        left: 435.702px;
+        color: rgba(255, 255, 255, 0.8);
+        transition: $transition-main;
+        opacity: 1;
+
+        &:after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            pointer-events: none;
+            margin-left: -10px;
+            border-top: 10px solid rgba(0, 0, 0, 0.8);
+            border-right: 10px solid transparent;
+            border-left: 10px solid transparent;
+            border-image: initial;
+            border-bottom: none;
+        }
+
+        span {
+            margin: 1.125em 0;
+            text-size-adjust: 100%;
+            white-space: pre-line;
+            font: 400 1em / 1.625em Ubuntu, Roboto, Arial, Helvetica, sans-serif;
+        }
+    }
+
+    &__map-hover-info-right-column {
+        flex: 1 1 auto;
+        padding: 10px;
+    }
+
+    &__map-hover-info-seat-type, &__map-hover-info-seat-type-price {
+        font-size: 14px;
+        line-height: 24px;
+    }
+
+    &__map-hover-info-seat-type-price {
+        font-weight: 700;
+        margin-top: 8px;
+    }
+
+    &__map-hover-info-left-column {
+        display: flex;
+        flex-direction: column;
+        -webkit-box-pack: center;
+        justify-content: center;
+        flex: 0 0 auto;
+        width: 72px;
+        min-height: 90px;
+        margin-right: 5px;
+        border-radius: 3px;
+        border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    &__map-hover-info-row, &__map-hover-info-item {
+        font-size: 12px;
+        line-height: 16px;
+    }
+
+    &__map-hover-info-seat {
+        font-size: 30px;
+        line-height: 36px;
+        font-weight: 700;
+    }
+
+
     &__map {
         width: 800px;
         height: 700px;

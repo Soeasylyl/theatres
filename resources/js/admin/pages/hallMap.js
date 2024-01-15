@@ -25,10 +25,6 @@ class HallMap {
         }
     }
 
-    openBookingMenu() {
-
-    }
-
     selectedSeatForBooking(
         svgElement,
         textElement,
@@ -72,7 +68,6 @@ class HallMap {
         const seatIds = document.querySelectorAll('.booking__seat-booking');
         const seatIdArray = JSON.stringify(Array.from(seatIds).map(seat =>
             seat.getAttribute('data-seat-id')) || []);
-
 
         fetch(`${url}?seatIds=${seatIdArray}`, {
             method: 'get',
@@ -156,8 +151,8 @@ class HallMap {
 
     showMapContextMenu(event) {
         event.preventDefault();
-        const x = event.pageX - 200;
-        const y = event.pageY - 60;
+        const x = event.pageX;
+        const y = event.pageY;
 
         const svgElement = this.getEditingSVGElement();
 
@@ -203,8 +198,8 @@ class HallMap {
 
     showSVGContextMenu(event) {
         event.preventDefault();
-        const x = event.pageX - 200;
-        const y = event.pageY - 60;
+        const x = event.pageX;
+        const y = event.pageY;
         const svgElement = this.getEditingSVGElement();
 
         const contextMenuItems = [];
@@ -663,14 +658,22 @@ class HallMap {
             this.addHallMap();
             this.ajaxGetDataHallMap(url);
 
-
+            this.openCloseMapBookingClick();
         }
 
         this.seatsWrapperContainer && this.seatsWrapperContainer.classList.add('admin-halls__hidden');
     }
 
-    bookingClick() {
+    openCloseMapBookingClick() {
+        const openCloseMapButton = document.querySelector('.admin-screenings__open-map');
+        const mapContainer = document.querySelector('.admin-screenings__map');
 
+        openCloseMapButton?.addEventListener('click', () => {
+            mapContainer?.classList.toggle('admin-screenings__hidden');
+
+            const isOpened = mapContainer?.classList.contains('admin-screenings__hidden');
+            openCloseMapButton.textContent = isOpened ? 'Отобразить карту бронирования' : 'Скрыть карту бронирования';
+        });
     }
 
     handleDragStart(event) {
@@ -754,6 +757,39 @@ class HallMap {
         this.handleScaleChange();
     }
 
+    addHoverInfoForSeat(svgElement) {
+        const hoverInfo = document.querySelector('#hoverInfo');
+        const hoverInfoRow = hoverInfo.querySelector('.admin-halls__map-hover-info-row span');
+        const hoverInfoNumber = hoverInfo.querySelector('.admin-halls__map-hover-info-seat span');
+        const hoverInfoSeatType = hoverInfo.querySelector('.admin-halls__map-hover-info-seat-type');
+        const hoverInfoSeatTypePrice = hoverInfo.querySelector('.admin-halls__map-hover-info-seat-type-price');
+
+        svgElement.addEventListener('mouseover', (event) => {
+            const numberRow = svgElement.getAttribute('data-number-row');
+            const numberSeat = svgElement.getAttribute('data-number-seat');
+            const seatTypeName = svgElement.getAttribute('data-seat-type-name');
+            const seatTypePrice = svgElement.getAttribute('data-seat-type-price');
+
+            hoverInfoRow.textContent = `${numberRow} ряд`;
+            hoverInfoNumber.textContent = `${numberSeat}`;
+            hoverInfoSeatType.textContent = `${seatTypeName}`;
+            hoverInfoSeatTypePrice.textContent  = `${seatTypePrice} $`;
+
+
+            const x = event.pageX ;
+            const y = event.pageY ;
+
+            hoverInfo.style.left =  x + 'px';
+            hoverInfo.style.top = y - 35 + 'px';
+
+            hoverInfo.classList.remove('admin-halls__hidden');
+        });
+
+        svgElement.addEventListener('mouseout', () => {
+            hoverInfo.classList.add('admin-halls__hidden');
+        });
+    }
+
     renderMapToPreview(
         eventType,
         numberSeatInputValue,
@@ -763,6 +799,7 @@ class HallMap {
         renderSeatPosX,
         renderSeatPosY,
         seatId,
+        price,
         isBooking
     ) {
         this.findGElementInMap();
@@ -799,12 +836,11 @@ class HallMap {
         // Устанавливаем значения номера ряда и места в атрибуты data
         svgElement.setAttribute('data-number-row', numberRowInputValue);
         svgElement.setAttribute('data-number-seat', numberSeatInputValue);
+        svgElement.setAttribute('data-seat-type-price', price);
 
         svgElement.setAttribute('data-seat-type', seatTypeId);
+        svgElement.setAttribute('data-seat-type-name', seatTypeName);
         svgElement.setAttribute('data-number-row', numberRowInputValue);
-
-        const titleElement = document.createElementNS('http://www.w3.org/2000/svg', 'title');
-        titleElement.textContent = `Номер ряда: ${numberRowInputValue}, Тип места: ${seatTypeName}`;
 
         // Create the text element
         const textElement = document.createElementNS('http://www.w3.org/2000/svg', 'text');
@@ -871,7 +907,6 @@ class HallMap {
         pathElement12.setAttribute('d', 'M17.64,25.27a5.66,5.66,0,0,1-2.19-.43,10.27,10.27,0,0,0-1.21.82,7.09,7.09,0,0,0,3.4.86h3.28V25.27Z');
         svgElement.appendChild(pathElement12);
 
-        svgElement.appendChild(titleElement);
         svgElement.appendChild(textElement);
         this.gElement.appendChild(svgElement);
 
@@ -884,12 +919,13 @@ class HallMap {
         if (
             this.bookingSeat === true
         ) {
-          this.selectedSeatForBooking(
-              svgElement,
-              textElement,
-          )
+            this.selectedSeatForBooking(
+                svgElement,
+                textElement,
+            )
         }
 
+        this.addHoverInfoForSeat(svgElement)
     }
 
     ajaxGetDataHallMap(url) {
@@ -908,7 +944,7 @@ class HallMap {
                 const eventType = 'edit-place';
                 for (const [rowKey, seats] of seatEntries) {
                     for (const [seatKey, seat] of Object.entries(seats)) {
-                        const {number, posX, posY, seatsTypeId, seatsTypeName, isBooking} = seat;
+                        const {number, posX, posY, seatsTypeId, seatsTypeName, isBooking, price} = seat;
                         this.renderMapToPreview(
                             eventType,
                             number,
@@ -918,6 +954,7 @@ class HallMap {
                             posX,
                             posY,
                             seatKey,
+                            price,
                             isBooking
                         );
                     }

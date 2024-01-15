@@ -115,6 +115,9 @@
                      }}"
 
                     >
+
+                        @include('admin.partials.seat-info-for-map')
+
                         <div class="admin-halls__map-container">
                             <div id="contextMenu" class="admin-halls__map-context-menu">
                                 <ul id="menuList"></ul>

@@ -1,10 +1,6 @@
 .admin-main {
-    position: absolute;
-    left:0;
-    top:0;
-    margin: 75px 0 40px 200px;
-    width: 85%;
-    height: 80%;
+    min-height: calc(100vh - 60px);
+    display: flex;
 }
 
 .open-modal-overflow-hidden {
@@ -12,7 +8,10 @@
 }
 
 body {
-    background-color: rgba(178, 190, 204, 0.7);;
+    background-color: rgba(178, 190, 204, 0.7);
+    display: flex;
+    flex-direction: column;
+    margin: 0;
 }
 
 ul {

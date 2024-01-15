@@ -12,15 +12,17 @@
 
                 <div class="admin-halls__body">
                     <div class="admin-halls__seats ">
+
                         <div class="admin-halls__map-container">
+                            @include('admin.partials.seat-info-for-map')
                             <div id="contextMenu" class="admin-halls__map-context-menu">
                                 <ul id="menuList"></ul>
                             </div>
                             <div class="admin-halls__preview-map">
 
                             </div>
-
                         </div>
+
                         <div class="admin-halls__seats-wrapper admin-halls__hidden">
                             <div class="admin-halls__seats-title">{{ __('Добавление нового места:') }}</div>
                             <div class="admin-halls__seats-body">

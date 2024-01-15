@@ -118,6 +118,7 @@ class HallService
                 'seatsTypeId' => $seat->seatType->id,
                 'posX' => $seat->position_x,
                 'posY' => $seat->position_y,
+                'price' => $seat->seatType->amount,
             ];
         }
 
