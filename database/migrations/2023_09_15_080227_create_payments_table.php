@@ -15,6 +15,7 @@ return new class extends Migration
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('booking_id');
+            $table->string('currency_id');
             $table->timestamps();
             $table->decimal('amount')->unsigned();
 
@@ -24,6 +25,11 @@ return new class extends Migration
                   ->references('id')
                   ->on('bookings')
                   ->nullOnDelete();
+
+            $table->foreign('currency_id')
+                ->references('id')
+                ->on('currencies')
+                ->nullOnDelete();
         });
 
         DB::statement('ALTER TABLE payments ALTER COLUMN amount TYPE money USING amount::money');

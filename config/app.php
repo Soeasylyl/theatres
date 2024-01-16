@@ -170,7 +170,11 @@ return [
         App\Providers\RouteServiceProvider::class,
         Spatie\Permission\PermissionServiceProvider::class,
 
+        /*
+         * My Service Providers...
+         */
         App\Providers\RepositoryServiceProvider::class,
+        App\Services\Currencies\CurrencyServiceProvider::class,
     ])->toArray(),
 
     /*

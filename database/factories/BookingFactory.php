@@ -8,6 +8,7 @@ use App\Models\Payment;
 use App\Models\Screening;
 use App\Models\Seat;
 use App\Models\User;
+use App\Services\Currencies\Models\Currency;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -51,7 +52,10 @@ class BookingFactory extends Factory
         return $this->afterCreating(function (Booking $booking) {
             Payment::factory()
                 ->count(rand(1,2))
-                ->create(['booking_id' => $booking->id]);
+                ->create([
+                    'booking_id' => $booking->id,
+                    'currency_id' => Currency::inRandomOrder()->first()->id,
+                ]);
         });
     }
 }

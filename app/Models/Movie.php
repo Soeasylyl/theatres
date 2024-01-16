@@ -57,6 +57,9 @@ use Laravel\Sanctum\PersonalAccessToken;
  * @method static \Illuminate\Database\Eloquent\Builder|Movie whereSessionDuration($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Movie whereSlug($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Movie whereUpdatedAt($value)
+ * @property-read Collection<int, \App\Models\Media> $frames
+ * @property-read int|null $frames_count
+ * @property-read \App\Models\Media|null $poster
  * @mixin \Eloquent
  */
 class Movie extends Model implements MediaHandling

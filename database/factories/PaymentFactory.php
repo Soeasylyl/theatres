@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Enums\StatusPaymentsEnum;
 use App\Models\Payment;
+use App\Support\Values\AmountValues;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -20,7 +21,7 @@ class PaymentFactory extends Factory
     {
         return [
             'status' => $this->faker->randomElement(StatusPaymentsEnum::asSelectArray())['value'],
-            'amount' => fake()->randomFloat(2, 10, 20),
+            'amount' => new AmountValues(fake()->randomFloat(2, 10, 20)),
         ];
     }
 }

@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use App\Enums\StatusPaymentsEnum;
+use App\Services\Currencies\Models\Currency;
+use App\Support\Values\AmountValues;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -46,6 +48,7 @@ class Payment extends Model
         'status',
         'amount',
         'booking_id',
+        'currency_id',
     ];
 
     /**
@@ -53,6 +56,7 @@ class Payment extends Model
      */
     protected $casts = [
         'status' => StatusPaymentsEnum::class,
+        'amount' => AmountValues::class,
     ];
 
     /**
@@ -61,5 +65,13 @@ class Payment extends Model
     public function booking(): BelongsTo
     {
         return $this->belongsTo(Booking::class);
+    }
+
+    /**
+     * @return BelongsTo
+     */
+    public function currencies(): BelongsTo
+    {
+        return $this->belongsTo(Currency::class);
     }
 }

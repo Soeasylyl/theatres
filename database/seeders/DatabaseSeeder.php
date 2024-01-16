@@ -8,6 +8,7 @@ use App\Models\Theatre;
 use App\Models\Genre;
 use App\Models\Movie;
 use App\Models\User;
+use App\Services\Currencies\Models\Currency;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -26,7 +27,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         User::factory(100)->create();
-        Theatre::factory(rand(3, 8))->create();
+        Theatre::factory(rand(3, 5))->create();
         Genre::factory(20)->create();
         Movie::factory(30)->create();
 
@@ -34,6 +35,7 @@ class DatabaseSeeder extends Seeder
             ScreeningSeeder::class,
         ]);
 
-        Booking::factory(10000)->create();
+        Currency::factory(2)->create();
+        Booking::factory(1000)->create();
     }
 }
