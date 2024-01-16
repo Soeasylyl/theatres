@@ -35,4 +35,9 @@ class AmountValues implements Castable
     {
         return AmountCast::class;
     }
+
+    public function __toString()
+    {
+        return $this->getValue();
+    }
 }
