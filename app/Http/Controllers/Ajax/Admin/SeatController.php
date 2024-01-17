@@ -1,20 +1,17 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Ajax\Admin;
 
 use App\DTO\Halls\EditHallDTO;
-use App\DTO\Seats\CreateSeatDTO;
 use App\DTO\Seats\CheckAndDeleteSeatDTO;
+use App\DTO\Seats\CreateSeatDTO;
 use App\DTO\Seats\UpdateSeatDTO;
+use App\Http\Controllers\Ajax\Admin\BaseAdminController;
 use App\Http\Requests\Admin\Seats\CheckSeatRequest;
 use App\Http\Requests\Admin\Seats\CreateSeatRequest;
 use App\Http\Requests\Admin\Seats\UpdateSeatRequest;
 use App\Services\HallService;
 use App\Services\SeatService;
-use App\Services\SeatTypeService;
-use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Contracts\View\Factory;
-use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Log;
 
@@ -22,33 +19,8 @@ class SeatController extends BaseAdminController
 {
     public function __construct(
         private readonly HallService     $hallService,
-        private readonly SeatTypeService $seatTypeService,
     )
     {
-    }
-
-    /**
-     *  Show the form for creating a new resource.
-     *
-     * @param int $theatreId
-     * @param int $hallId
-     * @return Application|Factory|View|\Illuminate\Foundation\Application
-     */
-    public function create(int $theatreId, int $hallId)
-    {
-        $editHallDto = new EditHallDTO(
-            theatreId: $theatreId,
-            hallId: $hallId,
-        );
-
-        $seatTypes = $this->seatTypeService->getSeatsTypeToHall($editHallDto->getTheatreId());
-
-        return view('admin.pages.seats.edit',
-            compact(
-                'theatreId',
-                'hallId',
-                'seatTypes'
-            ));
     }
 
     /**

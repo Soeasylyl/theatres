@@ -1,11 +1,11 @@
 <?php
 
 use App\Enums\RolesUsersEnum;
-use App\Http\Controllers\Admin\MovieController;
-use App\Http\Controllers\Admin\ScreeningController;
-use App\Http\Controllers\Admin\SeatController;
-use App\Http\Controllers\Public\BookingController;
-use App\Http\Controllers\Public\HomeController;
+use App\Http\Controllers\Ajax\Admin\MovieController;
+use App\Http\Controllers\Ajax\Admin\ScreeningController;
+use App\Http\Controllers\Ajax\Admin\SeatController;
+use App\Http\Controllers\Ajax\Public\BookingController;
+use App\Http\Controllers\Ajax\Public\HomeController;
 use Illuminate\Support\Facades\Route;
 
 /*

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Web\Admin;
 
 use App\DTO\Users\BanUserDTO;
 use App\DTO\Users\CreateUserDTO;
@@ -11,11 +11,11 @@ use App\DTO\Users\UpdateUserInfoDTO;
 use App\DTO\Users\UpdateUserPasswordDTO;
 use App\DTO\Users\UpdateUserRoleDTO;
 use App\Http\Requests\Admin\Users\BlockRequest;
+use App\Http\Requests\Admin\Users\CreateUserRequest;
 use App\Http\Requests\Admin\Users\SearchRequest;
 use App\Http\Requests\Admin\Users\UpdatePasswordRequest;
 use App\Http\Requests\Admin\Users\UpdateProfileRequest;
 use App\Http\Requests\Admin\Users\UpdateRoleRequest;
-use App\Http\Requests\Admin\Users\CreateUserRequest;
 use App\Services\TheatreService;
 use App\Services\UserService;
 use Carbon\Carbon;

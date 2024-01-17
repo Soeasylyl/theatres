@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Web\Admin;
 
 use App\DTO\SeatTypes\CreateSeatTypeDTO;
 use App\DTO\SeatTypes\DeleteSeatTypeDTO;
 use App\DTO\SeatTypes\UpdateSeatTypeDTO;
-use App\Http\Requests\Admin\SeatTypes\DeleteSeatTypeRequest;
 use App\Http\Requests\Admin\SeatTypes\CreateSeatTypeRequest;
+use App\Http\Requests\Admin\SeatTypes\DeleteSeatTypeRequest;
 use App\Http\Requests\Admin\SeatTypes\UpdateSeatTypeRequest;
 use App\Services\SeatTypeService;
 use Illuminate\Http\RedirectResponse;

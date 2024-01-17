@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Web\Admin;
 
 use App\DTO\Halls\CreateHallDTO;
 use App\DTO\Halls\DeleteHallDTO;
 use App\DTO\Halls\EditHallDTO;
 use App\DTO\Halls\UpdateHallDTO;
-use App\Http\Requests\Admin\Halls\DeleteHallRequest;
 use App\Http\Requests\Admin\Halls\CreateAndUpdateHallRequest;
+use App\Http\Requests\Admin\Halls\DeleteHallRequest;
 use App\Services\HallService;
 use App\Services\SeatTypeService;
 use Illuminate\Contracts\Foundation\Application;
