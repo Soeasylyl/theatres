@@ -39,9 +39,11 @@
                     {{ sprintf('%s %s', $totalPrice, '$') }}
                 </div>
             </div>
-            <button>
+            <a
+                href="{{ route('public.create.movie.payment', [$screening->movie->id, $screening->id]) }}"
+            >
                 {{ __('Подтвердить и перейти к оплате') }}
-            </button>
+            </a>
         </div>
     </div>
 

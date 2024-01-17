@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Ajax\Public;
 
 use App\DTO\Booking\CheckBookingSeatForScreeningDTO;
 use App\Http\Controllers\Ajax\Public\BasePublicController;
-use App\Http\Requests\Public\ajaxCheckSeatsRequest;
+use App\Http\Requests\Public\AjaxCheckSeatsRequest;
 use App\Services\BookingService;
 use App\Services\ScreeningService;
 use Illuminate\Http\JsonResponse;
@@ -41,7 +41,7 @@ class BookingController extends BasePublicController
     }
 
     public function checkBookingSeats(
-        ajaxCheckSeatsRequest $request,
+        AjaxCheckSeatsRequest $request,
         int                   $theatreId,
         int                   $hallId,
         int                   $screeningId,

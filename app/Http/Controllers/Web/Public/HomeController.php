@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Web\Public;
 
 use App\DTO\Screening\TimeConversionScreeningDTO;
 use App\DTO\Theatres\FilterTheatreDTO;
-use App\Http\Requests\Public\ajaxGetScreeningsRequest;
+use App\Http\Requests\Public\AjaxGetScreeningsRequest;
 use App\Models\Movie;
 use App\Repositories\Interfaces\ScreeningRepositoryInterface;
 use App\Services\MovieService;

@@ -11,6 +11,7 @@ use App\Http\Controllers\Web\Admin\TheatreController;
 use App\Http\Controllers\Web\Admin\UserController;
 use App\Http\Controllers\Web\Auth\AuthController;
 use App\Http\Controllers\Web\Auth\RegisterController;
+use App\Http\Controllers\Web\Public\BookingController;
 use App\Http\Controllers\Web\Public\HomeController;
 use Illuminate\Support\Facades\Route;
 
@@ -30,8 +31,13 @@ Route::get('/', [HomeController::class, 'index'])->name('public.pages.home');
 Route::prefix('afisha')->group(function () {
     Route::prefix('/{movie:slug}')->group(function () {
         Route::get('/', [HomeController::class, 'show'])->name('public.show.movie');
-        Route::get('/booking/{screening}', [HomeController::class, 'showHall'])
-            ->name('public.show.movie.booking');
+
+
+        Route::prefix('/booking/{screening}')->group(function () {
+            Route::get('/', [HomeController::class, 'showHall'])->name('public.show.movie.booking');
+            Route::get('/payment', [BookingController::class, 'create'])->name('public.create.movie.payment');
+
+        });
     });
 });
 

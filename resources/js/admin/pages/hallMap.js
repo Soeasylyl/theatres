@@ -81,6 +81,8 @@ class HallMap {
                 return response.json();
             })
                 .then((resp) => {
+
+                    console.log(resp)
                      if (
                          resp.status
                      ) {

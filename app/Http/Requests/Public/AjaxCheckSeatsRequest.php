@@ -8,7 +8,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\JsonResponse;
 
-class ajaxCheckSeatsRequest extends FormRequest
+class AjaxCheckSeatsRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -27,6 +27,7 @@ class ajaxCheckSeatsRequest extends FormRequest
     {
         return [
             'seatIds' => ['required', 'json'],
+            'seatIds.*' => 'required_with:iDs|int|exists:seats,id'
         ];
     }
 

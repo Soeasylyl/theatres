@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Ajax\Public;
 use App\DTO\Screening\TimeConversionScreeningDTO;
 use App\DTO\Theatres\FilterTheatreDTO;
 use App\Http\Controllers\Ajax\Public\BasePublicController;
-use App\Http\Requests\Public\ajaxGetScreeningsRequest;
+use App\Http\Requests\Public\AjaxGetScreeningsRequest;
 use App\Models\Movie;
 use App\Services\ScreeningService;
 use App\Services\TheatreService;
@@ -16,13 +16,13 @@ class HomeController extends BasePublicController
     /**
      *  Retrieves and returns filtered lists of movie theaters with showings for the movie shown.
      *
-     * @param ajaxGetScreeningsRequest $request
+     * @param AjaxGetScreeningsRequest $request
      * @param Movie $movie
      * @param TheatreService $theatreService
      * @return JsonResponse
      */
     public function getScreenings(
-        ajaxGetScreeningsRequest $request,
+        AjaxGetScreeningsRequest $request,
         Movie                    $movie,
         TheatreService           $theatreService,
     )
@@ -30,7 +30,7 @@ class HomeController extends BasePublicController
         $filterTheatreDto = new FilterTheatreDTO(
             movie: $movie,
             theatreId: $request->input('theatre_id'),
-            date: $request->input('date', now()),
+            date: $request->input('date', now()->toDateString()),
             timeZone: $request->input('timeZone'),
             startTime: $request->input('startTime'),
             endTime: $request->input('endTime'),
