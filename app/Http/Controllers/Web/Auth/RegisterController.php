@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
+namespace App\Http\Controllers\Web\Auth;
 
 use App\DTO\Users\CreateUserDTO;
-use App\Http\Controllers\Admin\BaseAdminController;
+use App\Http\Controllers\Web\Admin\BaseAdminController;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use App\Services\UserService;

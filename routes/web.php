@@ -1,17 +1,17 @@
 <?php
 
 use App\Enums\RolesUsersEnum;
-use App\Http\Controllers\Admin\AdminController;
-use App\Http\Controllers\Admin\HallController;
-use App\Http\Controllers\Admin\MovieController;
-use App\Http\Controllers\Admin\SeatController;
-use App\Http\Controllers\Admin\SeatTypeController;
-use App\Http\Controllers\Admin\ScreeningController;
-use App\Http\Controllers\Admin\TheatreController;
-use App\Http\Controllers\Admin\UserController;
-use App\Http\Controllers\Auth\AuthController;
-use App\Http\Controllers\Auth\RegisterController;
-use App\Http\Controllers\Public\HomeController;
+use App\Http\Controllers\Web\Admin\AdminController;
+use App\Http\Controllers\Web\Admin\HallController;
+use App\Http\Controllers\Web\Admin\MovieController;
+use App\Http\Controllers\Web\Admin\ScreeningController;
+use App\Http\Controllers\Web\Admin\SeatController;
+use App\Http\Controllers\Web\Admin\SeatTypeController;
+use App\Http\Controllers\Web\Admin\TheatreController;
+use App\Http\Controllers\Web\Admin\UserController;
+use App\Http\Controllers\Web\Auth\AuthController;
+use App\Http\Controllers\Web\Auth\RegisterController;
+use App\Http\Controllers\Web\Public\HomeController;
 use Illuminate\Support\Facades\Route;
 
 /*

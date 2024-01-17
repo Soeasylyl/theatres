@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Web\Admin;
 
 use App\DTO\Movies\CreateMovieDTO;
 use App\DTO\Movies\DeleteMovieDTO;
-use App\DTO\Movies\UpdateMovieDTO;
 use App\DTO\Movies\SearchMovieDTO;
-use App\Http\Requests\Admin\Movies\SearchRequest;
+use App\DTO\Movies\UpdateMovieDTO;
 use App\Http\Requests\Admin\Movies\CreateAndUpdateMovieRequest;
+use App\Http\Requests\Admin\Movies\SearchRequest;
 use App\Models\Movie;
 use App\Services\MovieService;
 use Illuminate\Contracts\Foundation\Application;
@@ -142,31 +142,6 @@ class MovieController extends BaseAdminController
             return redirect()->route('movies')->with('successMessages', 'Фильм успешно удален.');
         } catch (\Throwable $e) {
             return redirect()->back()->with('error', $e->getMessage());
-        }
-    }
-
-    public function getMovies(
-        SearchRequest $request,
-        MovieService  $movieService,
-    )
-    {
-        $searchMovieDTO = new SearchMovieDTO(
-            searchTerm: $request->input('search'),
-        );
-
-
-        try {
-            $movies = $movieService->getAllMovies($searchMovieDTO);
-
-            return response()->json([
-                'status' => true,
-                'movies' => $movies,
-            ]);
-        } catch (\Throwable $exception) {
-            return response()->json([
-                'status' => false,
-                'message' => $exception->getMessage(),
-            ]);
         }
     }
 }

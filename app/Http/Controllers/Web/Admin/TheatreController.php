@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Web\Admin;
 
 use App\DTO\Theatres\CreateTheatreDTO;
 use App\DTO\Theatres\DeleteTheatreDTO;
 use App\DTO\Theatres\EditTheatreDTO;
 use App\DTO\Theatres\SearchTheatreDTO;
 use App\DTO\Theatres\UpdateTheatreDTO;
-use App\Http\Requests\Admin\Theatres\SearchRequest;
 use App\Http\Requests\Admin\Theatres\CreateTheatreRequest;
+use App\Http\Requests\Admin\Theatres\SearchRequest;
 use App\Http\Requests\Admin\Theatres\UpdateTheatreRequest;
 use App\Services\TheatreService;
 use Illuminate\Contracts\Foundation\Application;

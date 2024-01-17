@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\Public;
+namespace App\Http\Controllers\Ajax\Public;
 
 use App\DTO\Booking\CheckBookingSeatForScreeningDTO;
+use App\Http\Controllers\Ajax\Public\BasePublicController;
 use App\Http\Requests\Public\ajaxCheckSeatsRequest;
 use App\Services\BookingService;
 use App\Services\ScreeningService;

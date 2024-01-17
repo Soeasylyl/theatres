@@ -34,7 +34,28 @@ class PublicMovie {
         this.selectTimeOption();
 
         this.setTimeZone();
+        this.setActiveScreeningLinks();
     }
+
+    setActiveScreeningLinks() {
+        const currentTime = new Date();
+        const screeningTimes = document.querySelectorAll('.movie__screening-time');
+
+        screeningTimes.forEach(screeningTimeElement => {
+            // Преобразуем строку времени в формате 'HH:mm' в дату текущего дня
+            const screeningTimeString = screeningTimeElement.textContent;
+            const [hours, minutes] = screeningTimeString.split(':').map(Number);
+            const screeningTime = new Date();
+            screeningTime.setHours(hours, minutes, 0, 0);
+
+            if (currentTime > screeningTime) {
+                const parentLink = screeningTimeElement.closest('.movie__hall-wrapper');
+                parentLink.href = '#';
+                parentLink.classList.add('movie__inactive-link');
+            }
+        });
+    }
+
 
     openCloseTheatresSelect() {
         this.movieSelectHeaderForTheatre?.addEventListener('click', () => {
@@ -219,7 +240,7 @@ class PublicMovie {
                     card.classList.add('movie__loading');
                 })
 
-               //TODO: Включить для корректного отображения времени // this.setTimeZone();
+               this.setTimeZone();
 
                 setTimeout(function () {
                     cards.forEach((card) => {
@@ -236,7 +257,7 @@ class PublicMovie {
         const screeningTime = document.querySelectorAll('.movie__screening-time');
         const clientTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
-        if (screeningTime) {
+        if (screeningTime && this.timeZoneInput) {
             this.timeZoneInput.value = clientTimezone;
 
             screeningTime?.forEach(function (element) {
@@ -258,7 +279,6 @@ class PublicMovie {
             });
         }
     }
-
 }
 
 new PublicMovie();
