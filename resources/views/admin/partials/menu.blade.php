@@ -9,8 +9,8 @@
         <li class="admin-menu__item {{ Route::currentRouteName() === 'movies' ? 'active' : '' }}">
             <a href="{{ route('movies') }}">{{ __('Фильмы') }}</a>
         </li>
-        <li class="admin-menu__item {{ Route::currentRouteName() === 'screening.index' ? 'active' : '' }}">
-            <a href="{{ route('screening.index') }}">{{ __('Сеансы') }}</a>
+        <li class="admin-menu__item {{ Route::currentRouteName() === 'screenings.index' ? 'active' : '' }}">
+            <a href="{{ route('screenings.index') }}">{{ __('Сеансы') }}</a>
         </li>
 
         @hasrole(\App\Enums\RolesUsersEnum::SUPER_ADMIN->value . '|' . App\Enums\RolesUsersEnum::CINEMA_ADMIN->value)

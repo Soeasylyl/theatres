@@ -9,7 +9,7 @@
                 </div>
                 <div class="admin-screenings__body">
                     <form method="POST"
-                          action="{{ route('screening.update', ['screening' => $screening->id]) }}"
+                          action="{{ route('screenings.update', ['screening' => $screening->id]) }}"
                           class="admin-screenings__form" enctype="multipart/form-data">
                         @csrf
                         @method('PATCH')

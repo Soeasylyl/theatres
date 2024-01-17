@@ -6,6 +6,7 @@ use App\DTO\Booking\CheckBookingSeatForScreeningDTO;
 use App\Http\Controllers\Ajax\Public\BasePublicController;
 use App\Http\Requests\Public\ajaxCheckSeatsRequest;
 use App\Services\BookingService;
+use App\Services\HallService;
 use App\Services\ScreeningService;
 use Illuminate\Http\JsonResponse;
 
@@ -22,7 +23,8 @@ class BookingController extends BasePublicController
         int            $theatreId,
         int            $hallId,
         int            $screeningId,
-        BookingService $bookingService,
+//        BookingService $bookingService,
+        HallService $hallService,
     ): JsonResponse
     {
         $bookingDto = new CheckBookingSeatForScreeningDTO(
@@ -32,7 +34,8 @@ class BookingController extends BasePublicController
         );
 
         try {
-            $bookingData = $bookingService->generateBookingDataForScreening($bookingDto);
+            $bookingData = $hallService->getHallContent($bookingDto);
+//            $bookingData = $bookingService->generateBookingDataForScreening($bookingDto);
 
             return response()->json($bookingData);
         } catch (\Throwable $exception) {

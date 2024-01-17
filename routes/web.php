@@ -48,14 +48,9 @@ Route::prefix('admin')->middleware(['auth', 'isBlock', 'AdminAccess'])->group(fu
     Route::get('/', [AdminController::class, 'index'])->name('admin');
 
     // Screenings management
-    Route::prefix('screenings')->group(function () {
-        Route::get('/', [ScreeningController::class, 'index'])->name('screening.index');
-        Route::get('/create', [ScreeningController::class, 'create'])->name('screening.create');
-        Route::post('/', [ScreeningController::class, 'store'])->name('screening.store');
-        Route::get('{screening}/edit', [ScreeningController::class, 'edit'])->name('screening.edit');
-        Route::patch('{screening}/', [ScreeningController::class, 'update'])->name('screening.update');
-        Route::delete('{screening}/', [ScreeningController::class, 'destroy'])->name('screening.delete');
-    });
+    Route::resource('screenings', ScreeningController::class)->except([
+        'show',
+    ]);
 
     // Movies management
     Route::prefix('movies')->group(function () {

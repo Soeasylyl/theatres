@@ -87,7 +87,7 @@ class ScreeningController extends BaseAdminController
             $screeningService->createScreening($createScreeningDto);
 
             return redirect()
-                ->route('screening.index')
+                ->route('screenings.index')
                 ->with('successMessages', 'Сеанс успешно добавлен');
         } catch (\Throwable $exception) {
             return redirect()->back()->with('error', $exception->getMessage());
@@ -147,7 +147,7 @@ class ScreeningController extends BaseAdminController
             $screeningService->updateScreening($updateScreeningDto);
 
             return redirect()
-                ->route('screening.index')
+                ->route('screenings.index')
                 ->with('successMessages', 'Информация о сеансе успешно обновлена');
         } catch (\Throwable $exception) {
             return redirect()->back()->with('error', $exception->getMessage());
@@ -178,7 +178,7 @@ class ScreeningController extends BaseAdminController
             $screeningService->deleteScreening($deleteScreeningDto);
 
             return redirect()
-                ->route('screening.index')
+                ->route('screenings.index')
                 ->with('successMessages', 'Сеанс успешно удалён');
         } catch (\Throwable $exception) {
             return redirect()->back()->with('error', $exception->getMessage());

@@ -143,11 +143,11 @@
         @endif
     </div>
 
-    @if(request()->route()->getName() === 'screening.index')
+    @if(request()->route()->getName() === 'screenings.index')
         <div class="modal" id="filteredScreeningsModal">
             <div class="modal__container">
                 <div class="modal__title">{{ __('Выберите необходимые фильтры') }}</div>
-                <form method="GET" action="{{ route("screening.index") }}">
+                <form method="GET" action="{{ route("screenings.index") }}">
                     <div class="modal__item">
                         <select class="admin-halls__seats-type" name="fTheatre">
                             @if(isset($theatres))

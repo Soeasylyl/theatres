@@ -29,22 +29,23 @@ class BookingService
     {
         $dataSeats = $this->hallService->getHallContent($dto);
 
-        foreach ($dataSeats as &$rows) {
-            foreach ($rows as &$seat) {
-                foreach ($seat as $seatId => &$value) {
+//        foreach ($dataSeats as &$rows) {
+//            foreach ($rows as &$seat) {
+//                foreach ($seat as $seatId => &$value) {
+//
+//                    $value['isBooking'] = $this->bookingRepository->isSeatBookedForScreening(
+//                        theatreId: $dto->getTheatreId(),
+//                        hallId: $dto->getHallId(),
+//                        screeningId: $dto->getScreeningId(),
+//                        seatId: $seatId,
+//                        relations: ['halls.screenings.bookings'],
+//                    );
+//                }
+//            }
+//        }
+//
+//        unset($rows, $seat, $value);
 
-                    $value['isBooking'] = $this->bookingRepository->isSeatBookedForScreening(
-                        theatreId: $dto->getTheatreId(),
-                        hallId: $dto->getHallId(),
-                        screeningId: $dto->getScreeningId(),
-                        seatId: $seatId,
-                        relations: ['halls.screenings.bookings'],
-                    );
-                }
-            }
-        }
-
-        unset($rows, $seat, $value);
 
         return $dataSeats;
     }

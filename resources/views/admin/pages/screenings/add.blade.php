@@ -9,7 +9,7 @@
                 </div>
                 <div class="admin-screenings__body">
                     <form method="POST"
-                          action="{{ route('screening.store') }}"
+                          action="{{ route('screenings.store') }}"
                           class="admin-screenings__form" enctype="multipart/form-data">
                         @csrf
                         @method('POST')

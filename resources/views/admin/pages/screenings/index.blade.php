@@ -21,10 +21,10 @@
             <div class="admin-container__form-body">
                 <div class="admin-container__menu">
                     <a class="page-wrapper__panel-btn"
-                       href="{{ route('screening.create') }}"> {{ __('Добавить сеанс') }}</a>
+                       href="{{ route('screenings.create') }}"> {{ __('Добавить сеанс') }}</a>
 
                         <div class="admin-container__search-element-wrapper">
-                            <form method="get" action="{{ route('screening.index') }}" class="admin-container__search-form" >
+                            <form method="get" action="{{ route('screenings.index') }}" class="admin-container__search-form" >
                             <input name="search" type="text"
                                    class="admin-container__search-bar"
                                    placeholder="{{ __('Поиск') }}">
@@ -36,7 +36,7 @@
                                 {{ __('Настроить фильтры') }}
                             </button>
 
-                            <a href="{{ route('screening.index') }}" class="page-wrapper__panel-btn">
+                            <a href="{{ route('screenings.index') }}" class="page-wrapper__panel-btn">
                                 {{ __('Сбросить фильтры') }}
                             </a>
                         </div>
@@ -59,7 +59,7 @@
                             <td>{{ $screening->start_at }}</td>
                             <td>
                                 <div class="admin-container__table_last_cell">
-                                    <a href="{{ route('screening.edit', $screening->id) }}"
+                                    <a href="{{ route('screenings.edit', $screening->id) }}"
                                        class="admin-container__table_last_cell_edit"
                                        title="{{ __('Редактировать') }}">
                                         <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="20" height="23"
@@ -69,7 +69,7 @@
                                         </svg>
                                     </a>
 
-                                    <form action="{{ route('screening.delete', $screening->id) }}" method="post">
+                                    <form action="{{ route('screenings.destroy', $screening->id) }}" method="post">
                                         @csrf
                                         @method('delete')
                                         <input type="hidden" name="theatre_id" value="{{ $screening->hall->theatre->id }}">
@@ -98,7 +98,7 @@
                 'fDate'=> $fDate,
                 'fScreenings'=> $fScreenings,
                 'search' => $searchTern,
-                ])->links('admin.partials.pagination') }}
+                ])->withQueryString()->links('admin.partials.pagination') }}
             </div>
         </div>
     </div>
