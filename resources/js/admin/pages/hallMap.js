@@ -962,24 +962,40 @@ class HallMap {
                 return response.json();
             })
             .then((data) => {
-                const seatEntries = Object.entries(data.dataSeats);
+                // const seatEntries = Object.entries(data.dataSeats);
                 const eventType = 'edit-place';
-                for (const [rowKey, seats] of seatEntries) {
-                    for (const [seatKey, seat] of Object.entries(seats)) {
-                        const {number, posX, posY, seatsTypeId, seatsTypeName, isBooking, price} = seat;
-                        this.renderMapToPreview(
-                            eventType,
-                            number,
-                            rowKey,
-                            seatsTypeId,
-                            seatsTypeName,
-                            posX,
-                            posY,
-                            seatKey,
-                            price,
-                            isBooking
-                        );
-                    }
+                // for (const [rowKey, seats] of seatEntries) {
+                //     for (const [seatKey, seat] of Object.entries(seats)) {
+                //         const {number, posX, posY, seatsTypeId, seatsTypeName, isBooking, price} = seat;
+                //         this.renderMapToPreview(
+                //             eventType,
+                //             number,
+                //             rowKey,
+                //             seatsTypeId,
+                //             seatsTypeName,
+                //             posX,
+                //             posY,
+                //             seatKey,
+                //             price,
+                //             isBooking
+                //         );
+                //     }
+                // }
+
+                for (const seat of data) {
+                    const { number, posX, posY, seatsTypeId, seatsTypeName, isBooking, price, row } = seat;
+                    this.renderMapToPreview(
+                        eventType,
+                        number,
+                        row,
+                        seatsTypeId,
+                        seatsTypeName,
+                        posX,
+                        posY,
+                        seat.id,  // Используйте id или seatKey в зависимости от вашего предпочтения
+                        price,
+                        isBooking
+                    );
                 }
             });
     }

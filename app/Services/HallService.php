@@ -104,24 +104,12 @@ class HallService
      */
     public function getHallContent(
         CheckBookingSeatForScreeningDTO|EditHallDTO $dto
-    ): array
+    )
     {
         $hall = $this->hallRepository->getHallByIdOrFail($dto->getHallId(), ['seats.seatType']);
         $seats = $hall->seats;
-        $dataSeats = [];
 
-        foreach ($seats as $seat) {
-            $dataSeats[$seat->row][$seat->id] = [
-                'number' => $seat->number,
-                'seatsTypeName' => $seat->seatType->name,
-                'seatsTypeId' => $seat->seatType->id,
-                'posX' => $seat->position_x,
-                'posY' => $seat->position_y,
-                'price' => $seat->seatType->amount,
-            ];
-        }
-
-        return compact('dataSeats');
+        return $seats;
     }
 
     /**

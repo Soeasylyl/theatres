@@ -5,6 +5,9 @@ namespace App\Http\Controllers\Ajax\Public;
 use App\DTO\Booking\CheckBookingSeatForScreeningDTO;
 use App\Http\Controllers\Ajax\Public\BasePublicController;
 use App\Http\Requests\Public\ajaxCheckSeatsRequest;
+use App\Http\Resources\SeatResourceCollection;
+use App\Http\Resources\SeatResource;
+use App\Repositories\HallRepository;
 use App\Services\BookingService;
 use App\Services\HallService;
 use App\Services\ScreeningService;
@@ -24,6 +27,7 @@ class BookingController extends BasePublicController
         int            $hallId,
         int            $screeningId,
 //        BookingService $bookingService,
+        HallRepository $hallRepository,
         HallService $hallService,
     ): JsonResponse
     {
@@ -34,15 +38,23 @@ class BookingController extends BasePublicController
         );
 
         try {
-            $bookingData = $hallService->getHallContent($bookingDto);
+            $seats = $hallService->getHallContent($bookingDto);
 //            $bookingData = $bookingService->generateBookingDataForScreening($bookingDto);
-
-            return response()->json($bookingData);
+            return response()->json(SeatResource::collection($seats ));
         } catch (\Throwable $exception) {
             return response()->json(['error' => $exception->getMessage()], 500);
         }
     }
 
+    /**
+     * @param ajaxCheckSeatsRequest $request
+     * @param int $theatreId
+     * @param int $hallId
+     * @param int $screeningId
+     * @param BookingService $bookingService
+     * @param ScreeningService $screeningService
+     * @return JsonResponse
+     */
     public function checkBookingSeats(
         ajaxCheckSeatsRequest $request,
         int                   $theatreId,
