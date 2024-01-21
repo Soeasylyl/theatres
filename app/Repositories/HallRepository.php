@@ -88,8 +88,8 @@ class HallRepository implements HallRepositoryInterface
      */
     public function getHallsByTheatreId(int $theatreId, ?array $columns = ['*']): Collection
     {
-        return Hall::select($columns)->
-            where('theatre_id', $theatreId)
+        return Hall::select($columns)
+            ->where('theatre_id', $theatreId)
             ->get();
     }
 }

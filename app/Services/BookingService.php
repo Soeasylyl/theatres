@@ -27,25 +27,28 @@ class BookingService
      */
     public function generateBookingDataForScreening(CheckBookingSeatForScreeningDTO $dto): array
     {
-        $dataSeats = $this->hallService->getHallContent($dto);
+        $seats = $this->hallService->getHallContent($dto);
 
-//        foreach ($dataSeats as &$rows) {
-//            foreach ($rows as &$seat) {
-//                foreach ($seat as $seatId => &$value) {
-//
-//                    $value['isBooking'] = $this->bookingRepository->isSeatBookedForScreening(
-//                        theatreId: $dto->getTheatreId(),
-//                        hallId: $dto->getHallId(),
-//                        screeningId: $dto->getScreeningId(),
-//                        seatId: $seatId,
-//                        relations: ['halls.screenings.bookings'],
-//                    );
-//                }
-//            }
-//        }
-//
-//        unset($rows, $seat, $value);
-
+        $dataSeats = [];
+        foreach ($seats as $seat) {
+            $dataSeats[] = [
+                'id' => $seat->id,
+                'number' => $seat->number,
+                'posX' => $seat->position_x,
+                'posY' => $seat->position_y,
+                'price' => $seat->seatType->amount,
+                'row' => $seat->row,
+                'seatsTypeId' => $seat->seatType->id,
+                'seatsTypeName' => $seat->seatType->name,
+                'isBooking' => $this->bookingRepository->isSeatBookedForScreening(
+                        theatreId: $dto->getTheatreId(),
+                        hallId: $dto->getHallId(),
+                        screeningId: $dto->getScreeningId(),
+                        seatId: $seat->id,
+                        relations: ['halls.screenings.bookings'],
+                )
+            ];
+        }
 
         return $dataSeats;
     }

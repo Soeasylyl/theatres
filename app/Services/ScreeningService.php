@@ -204,16 +204,11 @@ class ScreeningService
         $screening = $this->screeningRepository->getScreeningByIdOrFail($dto->getScreeningId());
 
         if (
-            $dto->getProducer()->hasAnyRole(
+            ! $dto->getProducer()->hasAnyRole(
                 RolesUsersEnum::SUPER_ADMIN->value,
                 RolesUsersEnum::MODERATOR->value,
             )
-        ) {
-            return $this->screeningRepository->updateScreening(screening: $screening, dto: $dto);
-        }
-
-        if (
-            !in_array(
+            || ! in_array(
                 $this->hallRepository->getHallByIdOrFail($dto->getHallId())->theatre->id,
                 $dto->getProducer()->theatres->pluck('id')->toArray()
             )
@@ -234,21 +229,21 @@ class ScreeningService
     public function getStartAndEndTimeMovieScreening(TimeConversionScreeningDTO $dto): array
     {
         if (
-            $dto->getMovie()->screenings->contains(
+           ! $dto->getMovie()->screenings->contains(
                 key: 'id',
                 value: $dto->getScreeningId(),
             )
         ) {
-            $screening = $this->screeningRepository->getScreeningByIdOrFail(screeningId: $dto->getScreeningId());
-
-            $sessionStart = $screening->start_at;
-            $sessionDuration = Carbon::parse($screening->movie->session_duration);
-            $sessionEnd = $sessionStart->clone();
-            $sessionEnd->add($sessionDuration->hour, 'hours')
-                ->add($sessionDuration->minute, 'minutes');
-        } else {
             throw new \Exception('Сеанс не найден', 404);
         }
+
+        $screening = $this->screeningRepository->getScreeningByIdOrFail(screeningId: $dto->getScreeningId());
+
+        $sessionStart = $screening->start_at;
+        $sessionDuration = Carbon::parse($screening->movie->session_duration);
+        $sessionEnd = $sessionStart->clone();
+        $sessionEnd->add($sessionDuration->hour, 'hours')
+            ->add($sessionDuration->minute, 'minutes');
 
         return compact('sessionStart', 'sessionEnd');
     }

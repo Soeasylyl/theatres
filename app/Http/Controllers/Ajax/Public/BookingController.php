@@ -5,11 +5,7 @@ namespace App\Http\Controllers\Ajax\Public;
 use App\DTO\Booking\CheckBookingSeatForScreeningDTO;
 use App\Http\Controllers\Ajax\Public\BasePublicController;
 use App\Http\Requests\Public\ajaxCheckSeatsRequest;
-use App\Http\Resources\SeatResourceCollection;
-use App\Http\Resources\SeatResource;
-use App\Repositories\HallRepository;
 use App\Services\BookingService;
-use App\Services\HallService;
 use App\Services\ScreeningService;
 use Illuminate\Http\JsonResponse;
 
@@ -26,9 +22,7 @@ class BookingController extends BasePublicController
         int            $theatreId,
         int            $hallId,
         int            $screeningId,
-//        BookingService $bookingService,
-        HallRepository $hallRepository,
-        HallService $hallService,
+        BookingService $bookingService,
     ): JsonResponse
     {
         $bookingDto = new CheckBookingSeatForScreeningDTO(
@@ -38,9 +32,9 @@ class BookingController extends BasePublicController
         );
 
         try {
-            $seats = $hallService->getHallContent($bookingDto);
-//            $bookingData = $bookingService->generateBookingDataForScreening($bookingDto);
-            return response()->json(SeatResource::collection($seats ));
+            $bookingData = $bookingService->generateBookingDataForScreening($bookingDto);
+
+            return response()->json($bookingData);
         } catch (\Throwable $exception) {
             return response()->json(['error' => $exception->getMessage()], 500);
         }

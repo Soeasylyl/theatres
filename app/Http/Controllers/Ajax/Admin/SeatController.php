@@ -10,6 +10,7 @@ use App\Http\Controllers\Ajax\Admin\BaseAdminController;
 use App\Http\Requests\Admin\Seats\CheckSeatRequest;
 use App\Http\Requests\Admin\Seats\CreateSeatRequest;
 use App\Http\Requests\Admin\Seats\UpdateSeatRequest;
+use App\Http\Resources\SeatResource;
 use App\Services\HallService;
 use App\Services\SeatService;
 use Illuminate\Http\JsonResponse;
@@ -39,7 +40,7 @@ class SeatController extends BaseAdminController
 
         $dataSeats = $this->hallService->getHallContent($editHallDto);
 
-        return response()->json($dataSeats);
+        return response()->json(SeatResource::collection($dataSeats));
     }
 
     /**
